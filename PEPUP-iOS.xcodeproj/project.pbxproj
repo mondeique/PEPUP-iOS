@@ -3,13 +3,15 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		7AEBDB01025068B1478B1DBE /* Pods_PEPUP_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B58BC0CA3A889CCCEFFECCEA /* Pods_PEPUP_iOS.framework */; };
+		E932135323E1B9D800503CA8 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135223E1B9D800503CA8 /* HomeCell.swift */; };
+		E932135523E1BA1000503CA8 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135423E1BA1000503CA8 /* BaseCollectionViewCell.swift */; };
+		E932135723E1BA5C00503CA8 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135623E1BA5C00503CA8 /* BaseViewController.swift */; };
 		E9C8467023E1A5D200359A93 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C8466F23E1A5D200359A93 /* AppDelegate.swift */; };
-		E9C8467423E1A5D200359A93 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C8467323E1A5D200359A93 /* ViewController.swift */; };
 		E9C8467723E1A5D200359A93 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E9C8467523E1A5D200359A93 /* Main.storyboard */; };
 		E9C8467A23E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E9C8467823E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld */; };
 		E9C8467C23E1A5D500359A93 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E9C8467B23E1A5D500359A93 /* Assets.xcassets */; };
@@ -22,9 +24,11 @@
 		1363A93A8BEF1668743D9C6F /* Pods-PEPUP-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PEPUP-iOS.release.xcconfig"; path = "Target Support Files/Pods-PEPUP-iOS/Pods-PEPUP-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		B58BC0CA3A889CCCEFFECCEA /* Pods_PEPUP_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PEPUP_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3A9220E366E031B61452603 /* Pods-PEPUP-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PEPUP-iOS.debug.xcconfig"; path = "Target Support Files/Pods-PEPUP-iOS/Pods-PEPUP-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		E932135223E1B9D800503CA8 /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
+		E932135423E1BA1000503CA8 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
+		E932135623E1BA5C00503CA8 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		E9C8466C23E1A5D200359A93 /* PEPUP-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PEPUP-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9C8466F23E1A5D200359A93 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E9C8467323E1A5D200359A93 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E9C8467623E1A5D200359A93 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E9C8467923E1A5D200359A93 /* PEPUP_iOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PEPUP_iOS.xcdatamodel; sourceTree = "<group>"; };
 		E9C8467B23E1A5D500359A93 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -60,7 +64,6 @@
 				E3A9220E366E031B61452603 /* Pods-PEPUP-iOS.debug.xcconfig */,
 				1363A93A8BEF1668743D9C6F /* Pods-PEPUP-iOS.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -86,7 +89,6 @@
 			isa = PBXGroup;
 			children = (
 				E9C8466F23E1A5D200359A93 /* AppDelegate.swift */,
-				E9C8467323E1A5D200359A93 /* ViewController.swift */,
 				E9C8467523E1A5D200359A93 /* Main.storyboard */,
 				E9C8467B23E1A5D500359A93 /* Assets.xcassets */,
 				E9C8467D23E1A5D600359A93 /* LaunchScreen.storyboard */,
@@ -94,6 +96,9 @@
 				E9C8467823E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld */,
 				E9C8468623E1A77300359A93 /* TabBarController.swift */,
 				E9C8468823E1A89E00359A93 /* HomeVC.swift */,
+				E932135223E1B9D800503CA8 /* HomeCell.swift */,
+				E932135423E1BA1000503CA8 /* BaseCollectionViewCell.swift */,
+				E932135623E1BA5C00503CA8 /* BaseViewController.swift */,
 			);
 			path = "PEPUP-iOS";
 			sourceTree = "<group>";
@@ -213,10 +218,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E9C8467423E1A5D200359A93 /* ViewController.swift in Sources */,
+				E932135523E1BA1000503CA8 /* BaseCollectionViewCell.swift in Sources */,
 				E9C8468923E1A89E00359A93 /* HomeVC.swift in Sources */,
 				E9C8468723E1A77300359A93 /* TabBarController.swift in Sources */,
 				E9C8467023E1A5D200359A93 /* AppDelegate.swift in Sources */,
+				E932135723E1BA5C00503CA8 /* BaseViewController.swift in Sources */,
+				E932135323E1B9D800503CA8 /* HomeCell.swift in Sources */,
 				E9C8467A23E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
