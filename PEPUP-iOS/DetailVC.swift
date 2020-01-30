@@ -7,25 +7,47 @@
 //
 
 import UIKit
+import Alamofire
 
 class DetailVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .white
-//        navigationItem.hidesBackButton = true
+        setup()
         // Do any additional setup after loading the view.
+        getData()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func setup() {
+        self.view.backgroundColor = .white
+//        navigationItem.hidesBackButton = true
+//        setImage()
+//        setInfo()
     }
-    */
-
+//
+//    fileprivate func setImage() {
+//        view.addSubview(view: UIView)
+//    }
+//
+//    fileprivate func setInfo() {
+//        view.addSubview(view: UIView)
+//    }
+//
+//    fileprivate func setButton() {
+//        view.addSubview(UIView)
+//    }
+    func getData() {
+        Alamofire.AF.request("http://54.180.150.167/api/products/5", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
+            (response) in switch response.result {
+            case .success(let JSON):
+                print("Success with JSON: \(JSON)")
+                
+                let response = JSON as! NSDictionary
+                let results = response["results"] as! Array<Dictionary<String, Any>>
+                
+            case .failure(let error):
+                print("Request failed with error: \(error)")
+            }
+        }
+    }
 }

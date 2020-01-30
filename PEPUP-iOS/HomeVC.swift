@@ -60,7 +60,7 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
             Alamofire.AF.request("http://54.180.150.167/api/products/?page=1", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": "Token fd05a1d4c9d3d6dfdae7cf7249cee0043a8db04e"]) .validate(statusCode: 200..<300) .responseJSON {
                 (response) in switch response.result {
                 case .success(let JSON):
-                    print("Success with JSON: \(JSON)")
+//                    print("Success with JSON: \(JSON)")
                     
                     let response = JSON as! NSDictionary
                     let results = response["results"] as! Array<Dictionary<String, Any>>

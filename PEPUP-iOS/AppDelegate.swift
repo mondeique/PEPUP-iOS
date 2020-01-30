@@ -9,12 +9,23 @@
 import UIKit
 import CoreData
 
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        let userLoggedIn = false
+        
+        if (userLoggedIn) {
+            loadHome()
+        }
+        else {
+            loadLogin()
+        }
+        
         // Override point for customization after application launch.
 //        if UserDefaults.standard.bool(forKey: "logged") {
 //            if Auth.auth().currentUser == nil {
@@ -26,18 +37,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        } else {
 //            loadLogin()
 //        }
-        loadHome()
         return true
-        
-    
+
     }
     
-//    fileprivate func loadLogin() {
-//        let controller = UINavigationController(rootViewController: LoginVC())
-//        window = UIWindow(frame: UIScreen.main.bounds)
-//        window?.rootViewController = controller
-//        window?.makeKeyAndVisible()
-//    }
+    fileprivate func loadLogin() {
+        let controller = UINavigationController(rootViewController: LoginVC())
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.rootViewController = controller
+        window?.makeKeyAndVisible()
+    }
     
     fileprivate func loadHome() {
         let controller = TabBarController()

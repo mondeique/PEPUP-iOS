@@ -10,7 +10,6 @@
 		7AEBDB01025068B1478B1DBE /* Pods_PEPUP_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B58BC0CA3A889CCCEFFECCEA /* Pods_PEPUP_iOS.framework */; };
 		E932135323E1B9D800503CA8 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135223E1B9D800503CA8 /* HomeCell.swift */; };
 		E932135523E1BA1000503CA8 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135423E1BA1000503CA8 /* BaseCollectionViewCell.swift */; };
-		E932135723E1BA5C00503CA8 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135623E1BA5C00503CA8 /* BaseViewController.swift */; };
 		E932135B23E26F7200503CA8 /* FollowVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135A23E26F7200503CA8 /* FollowVC.swift */; };
 		E932135D23E26FC400503CA8 /* FollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135C23E26FC400503CA8 /* FollowCell.swift */; };
 		E932136723E29E2100503CA8 /* HomeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932136623E29E2100503CA8 /* HomeHeaderCell.swift */; };
@@ -25,6 +24,7 @@
 		E9D07A4323E2B1110095AD05 /* NotiVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4223E2B1110095AD05 /* NotiVC.swift */; };
 		E9D07A4523E2B4780095AD05 /* CartVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4423E2B4780095AD05 /* CartVC.swift */; };
 		E9D07A4723E2B6DE0095AD05 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4623E2B6DE0095AD05 /* SearchVC.swift */; };
+		E9D07A4923E2E4DD0095AD05 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4823E2E4DD0095AD05 /* LoginVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +33,6 @@
 		E3A9220E366E031B61452603 /* Pods-PEPUP-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PEPUP-iOS.debug.xcconfig"; path = "Target Support Files/Pods-PEPUP-iOS/Pods-PEPUP-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		E932135223E1B9D800503CA8 /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
 		E932135423E1BA1000503CA8 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
-		E932135623E1BA5C00503CA8 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		E932135A23E26F7200503CA8 /* FollowVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowVC.swift; sourceTree = "<group>"; };
 		E932135C23E26FC400503CA8 /* FollowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCell.swift; sourceTree = "<group>"; };
 		E932136623E29E2100503CA8 /* HomeHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeaderCell.swift; sourceTree = "<group>"; };
@@ -50,6 +49,7 @@
 		E9D07A4223E2B1110095AD05 /* NotiVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiVC.swift; sourceTree = "<group>"; };
 		E9D07A4423E2B4780095AD05 /* CartVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartVC.swift; sourceTree = "<group>"; };
 		E9D07A4623E2B6DE0095AD05 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
+		E9D07A4823E2E4DD0095AD05 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,7 +112,6 @@
 				E9C8468823E1A89E00359A93 /* HomeVC.swift */,
 				E932135223E1B9D800503CA8 /* HomeCell.swift */,
 				E932135423E1BA1000503CA8 /* BaseCollectionViewCell.swift */,
-				E932135623E1BA5C00503CA8 /* BaseViewController.swift */,
 				E932135A23E26F7200503CA8 /* FollowVC.swift */,
 				E932135C23E26FC400503CA8 /* FollowCell.swift */,
 				E932136623E29E2100503CA8 /* HomeHeaderCell.swift */,
@@ -120,6 +119,7 @@
 				E9D07A4223E2B1110095AD05 /* NotiVC.swift */,
 				E9D07A4423E2B4780095AD05 /* CartVC.swift */,
 				E9D07A4623E2B6DE0095AD05 /* SearchVC.swift */,
+				E9D07A4823E2E4DD0095AD05 /* LoginVC.swift */,
 			);
 			path = "PEPUP-iOS";
 			sourceTree = "<group>";
@@ -248,11 +248,11 @@
 				E9D07A4723E2B6DE0095AD05 /* SearchVC.swift in Sources */,
 				E9C8467023E1A5D200359A93 /* AppDelegate.swift in Sources */,
 				E9D07A4323E2B1110095AD05 /* NotiVC.swift in Sources */,
-				E932135723E1BA5C00503CA8 /* BaseViewController.swift in Sources */,
 				E932135B23E26F7200503CA8 /* FollowVC.swift in Sources */,
 				E932135323E1B9D800503CA8 /* HomeCell.swift in Sources */,
 				E932135D23E26FC400503CA8 /* FollowCell.swift in Sources */,
 				E9C8467A23E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld in Sources */,
+				E9D07A4923E2E4DD0095AD05 /* LoginVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
