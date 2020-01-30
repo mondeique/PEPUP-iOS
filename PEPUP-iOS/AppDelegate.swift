@@ -16,11 +16,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+//        if UserDefaults.standard.bool(forKey: "logged") {
+//            if Auth.auth().currentUser == nil {
+//                let email = UserDefaults.standard.object(forKey: "email") as! String
+//                let password = UserDefaults.standard.object(forKey: "password") as! String
+//                Auth.auth().signIn(withEmail: email, password: password, completion: nil)
+//            }
+//            loadHome()
+//        } else {
+//            loadLogin()
+//        }
         loadHome()
         return true
         
     
     }
+    
+//    fileprivate func loadLogin() {
+//        let controller = UINavigationController(rootViewController: LoginVC())
+//        window = UIWindow(frame: UIScreen.main.bounds)
+//        window?.rootViewController = controller
+//        window?.makeKeyAndVisible()
+//    }
     
     fileprivate func loadHome() {
         let controller = TabBarController()

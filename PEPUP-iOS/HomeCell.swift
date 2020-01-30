@@ -9,7 +9,11 @@
 import UIKit
 
 class HomeCell: BaseCollectionViewCell {
+    
+    var productImg: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 125, height: 125))
+    
     override func setup() {
-        backgroundColor = .blue
+        backgroundColor = .black
+        self.addSubview(productImg)
     }
 }

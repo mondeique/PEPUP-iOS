@@ -25,9 +25,14 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         let home = UINavigationController(rootViewController: HomeVC(collectionViewLayout: homeFlow))
         home.tabBarItem.image = #imageLiteral(resourceName: "home_unselected")
         home.tabBarItem.selectedImage = #imageLiteral(resourceName: "home_selected")
+        //Follow
+        let followFlow = UICollectionViewFlowLayout()
+        let follow = UINavigationController(rootViewController: FollowVC(collectionViewLayout: followFlow))
+        follow.tabBarItem.image = #imageLiteral(resourceName: "home_unselected")
+        follow.tabBarItem.selectedImage = #imageLiteral(resourceName: "home_selected")
         
         tabBar.tintColor = .black
-        viewControllers = [home]
+        viewControllers = [home, follow]
         if let items = tabBar.items {
             for item in items{
                 item.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
