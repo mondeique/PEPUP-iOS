@@ -17,19 +17,20 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Login 에서 push 될 때 navigationBar가 생기는데 이를 없앰
         self.navigationController?.isNavigationBarHidden = true
     }
     
     fileprivate func setup() {
         view.backgroundColor = .white
         delegate = self
-        //Instantiate controllers
-        //Home
+        // Instantiate controllers
+        // Home
         let homeFlow = UICollectionViewFlowLayout()
         let home = UINavigationController(rootViewController: HomeVC(collectionViewLayout: homeFlow))
         home.tabBarItem.image = #imageLiteral(resourceName: "home_unselected")
         home.tabBarItem.selectedImage = #imageLiteral(resourceName: "home_selected")
-        //Follow
+        // Follow
         let followFlow = UICollectionViewFlowLayout()
         let follow = UINavigationController(rootViewController: FollowVC(collectionViewLayout: followFlow))
         follow.tabBarItem.image = #imageLiteral(resourceName: "home_unselected")

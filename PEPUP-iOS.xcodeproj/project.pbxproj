@@ -25,6 +25,9 @@
 		E9D07A4523E2B4780095AD05 /* CartVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4423E2B4780095AD05 /* CartVC.swift */; };
 		E9D07A4723E2B6DE0095AD05 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4623E2B6DE0095AD05 /* SearchVC.swift */; };
 		E9D07A4923E2E4DD0095AD05 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4823E2E4DD0095AD05 /* LoginVC.swift */; };
+		E9D07A4B23E3CC590095AD05 /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4A23E3CC590095AD05 /* SplashVC.swift */; };
+		E9D07A4D23E3FB980095AD05 /* SignupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4C23E3FB980095AD05 /* SignupVC.swift */; };
+		E9D07A4F23E4050D0095AD05 /* PhoneConfirmVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4E23E4050D0095AD05 /* PhoneConfirmVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +53,9 @@
 		E9D07A4423E2B4780095AD05 /* CartVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartVC.swift; sourceTree = "<group>"; };
 		E9D07A4623E2B6DE0095AD05 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
 		E9D07A4823E2E4DD0095AD05 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		E9D07A4A23E3CC590095AD05 /* SplashVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVC.swift; sourceTree = "<group>"; };
+		E9D07A4C23E3FB980095AD05 /* SignupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupVC.swift; sourceTree = "<group>"; };
+		E9D07A4E23E4050D0095AD05 /* PhoneConfirmVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneConfirmVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +126,9 @@
 				E9D07A4423E2B4780095AD05 /* CartVC.swift */,
 				E9D07A4623E2B6DE0095AD05 /* SearchVC.swift */,
 				E9D07A4823E2E4DD0095AD05 /* LoginVC.swift */,
+				E9D07A4A23E3CC590095AD05 /* SplashVC.swift */,
+				E9D07A4C23E3FB980095AD05 /* SignupVC.swift */,
+				E9D07A4E23E4050D0095AD05 /* PhoneConfirmVC.swift */,
 			);
 			path = "PEPUP-iOS";
 			sourceTree = "<group>";
@@ -242,14 +251,17 @@
 				E932135523E1BA1000503CA8 /* BaseCollectionViewCell.swift in Sources */,
 				E9C8468923E1A89E00359A93 /* HomeVC.swift in Sources */,
 				E9D07A4123E2B0930095AD05 /* DetailVC.swift in Sources */,
+				E9D07A4F23E4050D0095AD05 /* PhoneConfirmVC.swift in Sources */,
 				E9C8468723E1A77300359A93 /* TabBarController.swift in Sources */,
 				E9D07A4523E2B4780095AD05 /* CartVC.swift in Sources */,
 				E932136723E29E2100503CA8 /* HomeHeaderCell.swift in Sources */,
 				E9D07A4723E2B6DE0095AD05 /* SearchVC.swift in Sources */,
 				E9C8467023E1A5D200359A93 /* AppDelegate.swift in Sources */,
+				E9D07A4D23E3FB980095AD05 /* SignupVC.swift in Sources */,
 				E9D07A4323E2B1110095AD05 /* NotiVC.swift in Sources */,
 				E932135B23E26F7200503CA8 /* FollowVC.swift in Sources */,
 				E932135323E1B9D800503CA8 /* HomeCell.swift in Sources */,
+				E9D07A4B23E3CC590095AD05 /* SplashVC.swift in Sources */,
 				E932135D23E26FC400503CA8 /* FollowCell.swift in Sources */,
 				E9C8467A23E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld in Sources */,
 				E9D07A4923E2E4DD0095AD05 /* LoginVC.swift in Sources */,

@@ -19,11 +19,10 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
         getData()
-        // Do any additional setup after loading the view.
     }
+    
+    // MARK: collectionView 전체 View setting
     
     fileprivate func setup() {
         collectionView.backgroundColor = .white
@@ -40,12 +39,16 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
         
         let pepupImage = UIImage(named: "home_selected")
         
-        let pepupButton = UIBarButtonItem(image: pepupImage,  style: .plain, target: self, action: #selector(didTapNotiButton))
+        let pepupButton = UIBarButtonItem(image: pepupImage,  style: .plain, target: self, action: #selector(didTapPepupButton))
         let notiButton = UIBarButtonItem(image: notiImage,  style: .plain, target: self, action: #selector(didTapNotiButton))
         let cartButton = UIBarButtonItem(image: cartImage,  style: .plain, target: self, action: #selector(didTapCartButton))
         
         navigationItem.leftBarButtonItem = pepupButton
         navigationItem.rightBarButtonItems = [cartButton, notiButton]
+    }
+    
+    @objc func didTapPepupButton(sender: AnyObject) {
+        print("User Click Main LOGO")
     }
     
     @objc func didTapNotiButton(sender: AnyObject){
@@ -56,11 +59,11 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
         self.navigationController?.pushViewController(CartVC(), animated: true)
     }
     
+    // MARK: Server 로부터 Main에 뿌릴 Data Alamofire로 받아오기
     func getData() {
-            Alamofire.AF.request("http://54.180.150.167/api/products/?page=1", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": "Token fd05a1d4c9d3d6dfdae7cf7249cee0043a8db04e"]) .validate(statusCode: 200..<300) .responseJSON {
+        Alamofire.AF.request("http://mypepup.com/api/products/?page=1", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
                 (response) in switch response.result {
                 case .success(let JSON):
-//                    print("Success with JSON: \(JSON)")
                     
                     let response = JSON as! NSDictionary
                     let results = response["results"] as! Array<Dictionary<String, Any>>
@@ -92,7 +95,8 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
             let productUrlDictionary = productImgArray[0] as NSDictionary
             let imageUrlString = productUrlDictionary.object(forKey: "thumbnail") as! String
             let imageUrl:NSURL = NSURL(string: imageUrlString)!
-
+            
+            // todo : sold image 처리
             let is_sold = productDictionary.object(forKey: "sold") as! Bool
 
             DispatchQueue.global(qos: .userInitiated).async {
@@ -123,34 +127,37 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
         fatalError()
     }
     
-    @objc func tapDetected(sender: UITapGestureRecognizer) {
-        self.navigationController?.pushViewController(SearchVC(), animated: true)
-    }
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 60)
     }
     
+    @objc func tapDetected(sender: UITapGestureRecognizer) {
+        self.navigationController?.pushViewController(SearchVC(), animated: true)
+    }
     
-
+    
     // MARK: UICollectionViewDelegate
     
+    // 해당 cell 선택 시 DetailVC로 넘어감
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         navigationController?.pushViewController(DetailVC(), animated: true)
     }
     
+    // cell size 설정
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 120, height: 120)
     }
-
+    
+    // item = cell 마다 space 설정
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0.0
     }
-
+    
+    // line 마다 space 설정
     func collectionView(_ collectionView: UICollectionView, layout
         collectionViewLayout: UICollectionViewLayout,
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {

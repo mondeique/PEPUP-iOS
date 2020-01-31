@@ -51,6 +51,23 @@ class LoginVC: UIViewController {
         return btn
     }()
     
+    let btnSignup:UIButton = {
+        let btn = UIButton(type:.system)
+        btn.backgroundColor = .blue
+        btn.setTitle("Signup", for: .normal)
+        btn.tintColor = .white
+        btn.layer.cornerRadius = 5
+        btn.clipsToBounds = true
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(phoneconfirm), for: .touchUpInside)
+        return btn
+    }()
+    
+    @objc func phoneconfirm() {
+        let controller = PhoneConfirmVC()
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+    
     @objc func login() {
         guard let emailText = unameTxtField.text else {
             return
@@ -64,20 +81,27 @@ class LoginVC: UIViewController {
                 "password" : passwordText,
                 "email" : emailText,
             ]
-            Alamofire.AF.request("http://54.180.150.167/api/accounts/login/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
+            Alamofire.AF.request("http://mypepup.com/accounts/login/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
                             (response) in switch response.result {
                             case .success(let JSON):
                                 print("Success with JSON: \(JSON)")
-                                
+                                let JSONDic = JSON as! NSDictionary
+                                let token_name = "Token "
+                                let token_ = JSONDic.object(forKey: "token") as! String
+                                let token = token_name + token_ 
+                                print(token)
+                                self.setCurrentLoginToken(token)
+                                self.successAlert()
                             case .failure(let error):
                                 print("Request failed with error: \(error)")
+                                self.joinAlert()
                             }
                         }
-            if emailText == "test@test.com" && passwordText == "abc123123" {
-                successAlert()
-            } else {
-                joinAlert()
-            }
+//            if emailText == "test@test.com" && passwordText == "abc123123" {
+//                print("Good!")
+//            } else {
+//                joinAlert()
+//            }
         }
         
         if !isValidEmailAddress(email: emailText) {
@@ -87,6 +111,10 @@ class LoginVC: UIViewController {
         if !isVailedPassword(password: passwordText) {
             failedAlert(message: "패스워드를")
         }
+    }
+    
+    func setCurrentLoginToken(_ struserid: String) {
+        UserDefaults.standard.set(struserid, forKey: "token")
     }
     
     func failedAlert(message: String) {
@@ -123,18 +151,20 @@ class LoginVC: UIViewController {
         loginContentView.addSubview(unameTxtField)
         loginContentView.addSubview(pwordTxtField)
         loginContentView.addSubview(btnLogin)
+        loginContentView.addSubview(btnSignup)
         view.addSubview(loginContentView)
         
         loginContentViewLayout()
         unameTxtFieldLayout()
         pwordTxtFieldLayout()
         btnLoginLayout()
+        btnSignupLayout()
     }
     
     func loginContentViewLayout() {
         loginContentView.leftAnchor.constraint(equalTo:view.leftAnchor).isActive = true
         loginContentView.rightAnchor.constraint(equalTo:view.rightAnchor).isActive = true
-        loginContentView.heightAnchor.constraint(equalToConstant: view.frame.height/3).isActive = true
+        loginContentView.heightAnchor.constraint(equalToConstant: view.frame.height/2).isActive = true
         loginContentView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
     
@@ -159,5 +189,12 @@ class LoginVC: UIViewController {
         btnLogin.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:20).isActive = true
         btnLogin.rightAnchor.constraint(equalTo:loginContentView.rightAnchor, constant:-20).isActive = true
         btnLogin.heightAnchor.constraint(equalToConstant:50).isActive = true
+    }
+    
+    func btnSignupLayout() {
+        btnSignup.topAnchor.constraint(equalTo:pwordTxtField.bottomAnchor, constant:100).isActive = true
+        btnSignup.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:20).isActive = true
+        btnSignup.rightAnchor.constraint(equalTo:loginContentView.rightAnchor, constant:-20).isActive = true
+        btnSignup.heightAnchor.constraint(equalToConstant:50).isActive = true
     }
 }

@@ -9,36 +9,30 @@
 import UIKit
 import CoreData
 
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        let userLoggedIn = false
-        
-        if (userLoggedIn) {
-            loadHome()
-        }
-        else {
-            loadLogin()
-        }
-        
-        // Override point for customization after application launch.
-//        if UserDefaults.standard.bool(forKey: "logged") {
-//            if Auth.auth().currentUser == nil {
-//                let email = UserDefaults.standard.object(forKey: "email") as! String
-//                let password = UserDefaults.standard.object(forKey: "password") as! String
-//                Auth.auth().signIn(withEmail: email, password: password, completion: nil)
-//            }
+//        // MARK: token 있을 때는 바로 Home 화면 load or 없을 때는 Login 화면 load
+//        if (isUserLoggedIn()) {
 //            loadHome()
-//        } else {
+//        }
+//        else {
 //            loadLogin()
 //        }
+        loadLogin()
         return true
-
+    }
+    
+    // MARK: 기기 UserDefaults에 저장된 token 유무 확인
+    func isUserLoggedIn() -> Bool {
+        if (UserDefaults.standard.object(forKey: "token") as? String) != nil {
+            return true
+        }
+        return false
     }
     
     fileprivate func loadLogin() {

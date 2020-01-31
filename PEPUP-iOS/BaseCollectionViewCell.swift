@@ -8,6 +8,7 @@
 
 import UIKit
 
+// MARK: 공통적으로 사용하는 Cell setting 
 class BaseCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
