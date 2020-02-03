@@ -13,6 +13,8 @@
 		E932135B23E26F7200503CA8 /* FollowVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135A23E26F7200503CA8 /* FollowVC.swift */; };
 		E932135D23E26FC400503CA8 /* FollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135C23E26FC400503CA8 /* FollowCell.swift */; };
 		E932136723E29E2100503CA8 /* HomeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932136623E29E2100503CA8 /* HomeHeaderCell.swift */; };
+		E94D142223E817E70001F3A0 /* CartVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94D142123E817E70001F3A0 /* CartVC.swift */; };
+		E94D142423E818000001F3A0 /* CartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94D142323E818000001F3A0 /* CartCell.swift */; };
 		E9C8467023E1A5D200359A93 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C8466F23E1A5D200359A93 /* AppDelegate.swift */; };
 		E9C8467723E1A5D200359A93 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E9C8467523E1A5D200359A93 /* Main.storyboard */; };
 		E9C8467A23E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E9C8467823E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld */; };
@@ -22,10 +24,8 @@
 		E9C8468923E1A89E00359A93 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C8468823E1A89E00359A93 /* HomeVC.swift */; };
 		E9D07A4123E2B0930095AD05 /* DetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4023E2B0930095AD05 /* DetailVC.swift */; };
 		E9D07A4323E2B1110095AD05 /* NotiVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4223E2B1110095AD05 /* NotiVC.swift */; };
-		E9D07A4523E2B4780095AD05 /* CartVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4423E2B4780095AD05 /* CartVC.swift */; };
 		E9D07A4723E2B6DE0095AD05 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4623E2B6DE0095AD05 /* SearchVC.swift */; };
 		E9D07A4923E2E4DD0095AD05 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4823E2E4DD0095AD05 /* LoginVC.swift */; };
-		E9D07A4B23E3CC590095AD05 /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4A23E3CC590095AD05 /* SplashVC.swift */; };
 		E9D07A4D23E3FB980095AD05 /* SignupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4C23E3FB980095AD05 /* SignupVC.swift */; };
 		E9D07A4F23E4050D0095AD05 /* PhoneConfirmVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4E23E4050D0095AD05 /* PhoneConfirmVC.swift */; };
 /* End PBXBuildFile section */
@@ -39,6 +39,8 @@
 		E932135A23E26F7200503CA8 /* FollowVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowVC.swift; sourceTree = "<group>"; };
 		E932135C23E26FC400503CA8 /* FollowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCell.swift; sourceTree = "<group>"; };
 		E932136623E29E2100503CA8 /* HomeHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeaderCell.swift; sourceTree = "<group>"; };
+		E94D142123E817E70001F3A0 /* CartVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartVC.swift; sourceTree = "<group>"; };
+		E94D142323E818000001F3A0 /* CartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartCell.swift; sourceTree = "<group>"; };
 		E9C8466C23E1A5D200359A93 /* PEPUP-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PEPUP-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9C8466F23E1A5D200359A93 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E9C8467623E1A5D200359A93 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -50,10 +52,8 @@
 		E9C8468823E1A89E00359A93 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		E9D07A4023E2B0930095AD05 /* DetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC.swift; sourceTree = "<group>"; };
 		E9D07A4223E2B1110095AD05 /* NotiVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiVC.swift; sourceTree = "<group>"; };
-		E9D07A4423E2B4780095AD05 /* CartVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartVC.swift; sourceTree = "<group>"; };
 		E9D07A4623E2B6DE0095AD05 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
 		E9D07A4823E2E4DD0095AD05 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
-		E9D07A4A23E3CC590095AD05 /* SplashVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVC.swift; sourceTree = "<group>"; };
 		E9D07A4C23E3FB980095AD05 /* SignupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupVC.swift; sourceTree = "<group>"; };
 		E9D07A4E23E4050D0095AD05 /* PhoneConfirmVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneConfirmVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -123,12 +123,12 @@
 				E932136623E29E2100503CA8 /* HomeHeaderCell.swift */,
 				E9D07A4023E2B0930095AD05 /* DetailVC.swift */,
 				E9D07A4223E2B1110095AD05 /* NotiVC.swift */,
-				E9D07A4423E2B4780095AD05 /* CartVC.swift */,
 				E9D07A4623E2B6DE0095AD05 /* SearchVC.swift */,
 				E9D07A4823E2E4DD0095AD05 /* LoginVC.swift */,
-				E9D07A4A23E3CC590095AD05 /* SplashVC.swift */,
 				E9D07A4C23E3FB980095AD05 /* SignupVC.swift */,
 				E9D07A4E23E4050D0095AD05 /* PhoneConfirmVC.swift */,
+				E94D142123E817E70001F3A0 /* CartVC.swift */,
+				E94D142323E818000001F3A0 /* CartCell.swift */,
 			);
 			path = "PEPUP-iOS";
 			sourceTree = "<group>";
@@ -253,15 +253,15 @@
 				E9D07A4123E2B0930095AD05 /* DetailVC.swift in Sources */,
 				E9D07A4F23E4050D0095AD05 /* PhoneConfirmVC.swift in Sources */,
 				E9C8468723E1A77300359A93 /* TabBarController.swift in Sources */,
-				E9D07A4523E2B4780095AD05 /* CartVC.swift in Sources */,
 				E932136723E29E2100503CA8 /* HomeHeaderCell.swift in Sources */,
 				E9D07A4723E2B6DE0095AD05 /* SearchVC.swift in Sources */,
 				E9C8467023E1A5D200359A93 /* AppDelegate.swift in Sources */,
 				E9D07A4D23E3FB980095AD05 /* SignupVC.swift in Sources */,
 				E9D07A4323E2B1110095AD05 /* NotiVC.swift in Sources */,
+				E94D142223E817E70001F3A0 /* CartVC.swift in Sources */,
+				E94D142423E818000001F3A0 /* CartCell.swift in Sources */,
 				E932135B23E26F7200503CA8 /* FollowVC.swift in Sources */,
 				E932135323E1B9D800503CA8 /* HomeCell.swift in Sources */,
-				E9D07A4B23E3CC590095AD05 /* SplashVC.swift in Sources */,
 				E932135D23E26FC400503CA8 /* FollowCell.swift in Sources */,
 				E9C8467A23E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld in Sources */,
 				E9D07A4923E2E4DD0095AD05 /* LoginVC.swift in Sources */,

@@ -35,13 +35,13 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
         collectionView.register(HomeHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         
         let notiImage = UIImage(named: "home_selected")
-        let cartImage = UIImage(named: "home_unselected")
+        let cartImage = UIImage(named: "home_selected")
         
         let pepupImage = UIImage(named: "home_selected")
         
         let pepupButton = UIBarButtonItem(image: pepupImage,  style: .plain, target: self, action: #selector(didTapPepupButton))
         let notiButton = UIBarButtonItem(image: notiImage,  style: .plain, target: self, action: #selector(didTapNotiButton))
-        let cartButton = UIBarButtonItem(image: cartImage,  style: .plain, target: self, action: #selector(didTapCartButton))
+        let cartButton = UIBarButtonItem(image: cartImage, style: .plain, target: self, action: #selector(didTapCartButton))
         
         navigationItem.leftBarButtonItem = pepupButton
         navigationItem.rightBarButtonItems = [cartButton, notiButton]
@@ -54,7 +54,7 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     @objc func didTapNotiButton(sender: AnyObject){
         self.navigationController?.pushViewController(NotiVC(), animated: true)
     }
-
+    
     @objc func didTapCartButton(sender: AnyObject){
         self.navigationController?.pushViewController(CartVC(), animated: true)
     }

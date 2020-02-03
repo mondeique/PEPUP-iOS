@@ -17,6 +17,11 @@ class PhoneConfirmVC: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = true
+    }
+    
     private let loginContentView: UIView = {
                let view = UIView()
                view.translatesAutoresizingMaskIntoConstraints = false
@@ -69,22 +74,27 @@ class PhoneConfirmVC: UIViewController {
             return
         }
         
-        let parameters = [
-            "phone": phonenum
-        ]
-        Alamofire.AF.request("http://mypepup.com/accounts/confirmsms/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
-                               (response) in switch response.result {
-                               case .success(let JSON):
-                                   print("Success with JSON: \(JSON)")
-                                   let JSONDic = JSON as! NSDictionary
-                                   let token_name = "Token "
-                                   let token_ = JSONDic.object(forKey: "token") as! String
-                                   let token = token_name + token_
-                                   self.setCurrentLoginToken(token)
-                               case .failure(let error):
-                                   print("Request failed with error: \(error)")
-                               }
-            }
+        if isValidPhonenumber(phonenumber: phonenum) {
+            let parameters = [
+                "phone": phonenum
+            ]
+            Alamofire.AF.request("http://mypepup.com/accounts/confirmsms/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
+                                   (response) in switch response.result {
+                                   case .success(let JSON):
+                                       print("Success with JSON: \(JSON)")
+                                       let JSONDic = JSON as! NSDictionary
+                                       let token_name = "Token "
+                                       let token_ = JSONDic.object(forKey: "token") as! String
+                                       let token = token_name + token_
+                                       self.setCurrentLoginToken(token)
+                                   case .failure(let error):
+                                       print("Request failed with error: \(error)")
+                                   }
+                }
+        }
+        else {
+            phonefailAlert()
+        }
     }
     
     @objc func confirm() {
@@ -106,6 +116,18 @@ class PhoneConfirmVC: UIViewController {
             print("Request failed with error: \(error)")
         }
         }
+    }
+    
+    func phonefailAlert() {
+        let alertController = UIAlertController(title: nil, message: "올바른 번호를 입력하세요.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func isValidPhonenumber(phonenumber: String) -> Bool{
+        let phonenumRegEx = "[0-1]{3,}+[0-9]{7,}"
+        let phonenumTest = NSPredicate(format:"SELF MATCHES %@", phonenumRegEx)
+        return phonenumTest.evaluate(with: phonenumber)
     }
     
     func login() {
