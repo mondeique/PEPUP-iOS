@@ -27,7 +27,6 @@ class FollowVC: UICollectionViewController {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.keyboardDismissMode = .onDrag
         collectionView.register(FollowCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        let nav = navigationController?.navigationBar
     }
     
     // MARK: UICollectionViewDataSource

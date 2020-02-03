@@ -96,8 +96,7 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
             let imageUrlString = productUrlDictionary.object(forKey: "thumbnail") as! String
             let imageUrl:NSURL = NSURL(string: imageUrlString)!
             
-            // todo : sold image 처리
-            let is_sold = productDictionary.object(forKey: "sold") as! Bool
+            // TODO: - sold 처리
 
             DispatchQueue.global(qos: .userInitiated).async {
                 let imageData:NSData = NSData(contentsOf: imageUrl as URL)!

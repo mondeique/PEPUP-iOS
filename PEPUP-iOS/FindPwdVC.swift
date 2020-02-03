@@ -19,10 +19,12 @@ class FindPwdVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        self.navigationController?.isNavigationBarHidden = true
+        self.navigationController?.isNavigationBarHidden = true
     }
     
-    private let loginContentView: UIView = {
+    // MARK: Declare each view programmatically 
+    
+    private let findpwdContentView: UIView = {
                let view = UIView()
                view.translatesAutoresizingMaskIntoConstraints = false
                view.backgroundColor = .gray
@@ -76,9 +78,13 @@ class FindPwdVC: UIViewController {
           btn.addTarget(self, action: #selector(confirm), for: .touchUpInside)
           return btn
       }()
+    
     // TODO: - 비밀번호 찾기는 아이디까지 같이 확인한 다음 주는 것인가?
+    
+    // MARK: Button Action Selector
+    
     @objc func sendsms() {
-        guard let userid = IdTxtField.text else {
+        guard let unameTxt = IdTxtField.text else {
             return
         }
         guard let phonenum = phonenumTxtField.text else {
@@ -86,15 +92,13 @@ class FindPwdVC: UIViewController {
         }
         if isValidPhonenumber(phonenumber: phonenum) {
             let parameters = [
+                "username": unameTxt,
                 "phone": phonenum
             ]
             Alamofire.AF.request("http://mypepup.com/accounts/confirmsms/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
                                    (response) in switch response.result {
                                    case .success(let JSON):
                                        print("Success with JSON: \(JSON)")
-                                       let response = JSON as! NSDictionary
-//                                       let Id = response.object(forKey: "id") as! String
-                                       
                                    case .failure(let error):
                                        print("Request failed with error: \(error)")
                                    }
@@ -116,20 +120,23 @@ class FindPwdVC: UIViewController {
             "confirm_key": authnumber
         ]
         Alamofire.AF.request("http://mypepup.com/accounts/confirmsms/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": token as! String]) .validate(statusCode: 200..<300) .responseJSON {
-        (response) in switch response.result {
-        case .success(let JSON):
-            print("Success with JSON: \(JSON)")
-            let Pwd = "Qwe123123"
-            self.successAlert(message: Pwd)
-        case .failure(let error):
-            print("Request failed with error: \(error)")
-        }
+                                (response) in switch response.result {
+                                case .success(let JSON):
+                                    print("Success with JSON: \(JSON)")
+                                    let Pwd = "Qwe123123"
+                                    self.successAlert(message: Pwd)
+                                case .failure(let error):
+                                    print("Request failed with error: \(error)")
+                                }
         }
     }
+    
+    // MARK: 그 외 함수
     
     func successAlert(message: String) {
         let alertController = UIAlertController(title: nil, message: "패스워드는 \(message)입니다.", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.login()
         self.present(alertController, animated: true, completion: nil)
     }
     
@@ -146,74 +153,73 @@ class FindPwdVC: UIViewController {
     }
     
     func login() {
-        let controller = SignupVC()
+        let controller = LoginVC()
         self.navigationController?.pushViewController(controller, animated: true)
-    }
-    func setCurrentLoginToken(_ struserid: String) {
-        UserDefaults.standard.set(struserid, forKey: "token")
     }
     
     func setup() {
         view.backgroundColor = .purple
-        loginContentView.addSubview(IdTxtField)
-        loginContentView.addSubview(phonenumTxtField)
-        loginContentView.addSubview(authnumTxtField)
-        loginContentView.addSubview(btnSendSMS)
-        loginContentView.addSubview(btnConfirm)
-        view.addSubview(loginContentView)
+        findpwdContentView.addSubview(IdTxtField)
+        findpwdContentView.addSubview(phonenumTxtField)
+        findpwdContentView.addSubview(authnumTxtField)
+        findpwdContentView.addSubview(btnSendSMS)
+        findpwdContentView.addSubview(btnConfirm)
+        view.addSubview(findpwdContentView)
 
-        loginContentViewLayout()
+        findpwdContentViewLayout()
         IdTxtFieldLayout()
         phonenumTxtFieldLayout()
         authnumTxtFieldLayout()
         btnSendSMSLayout()
         btnConfirmLayout()
     }
-    //
-    func loginContentViewLayout() {
-        loginContentView.leftAnchor.constraint(equalTo:view.leftAnchor).isActive = true
-        loginContentView.rightAnchor.constraint(equalTo:view.rightAnchor).isActive = true
-        loginContentView.heightAnchor.constraint(equalToConstant: view.frame.height).isActive = true
-        loginContentView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    
+    // MARK: Set Layout of each view
+    
+    func findpwdContentViewLayout() {
+        findpwdContentView.leftAnchor.constraint(equalTo:view.leftAnchor).isActive = true
+        findpwdContentView.rightAnchor.constraint(equalTo:view.rightAnchor).isActive = true
+        findpwdContentView.heightAnchor.constraint(equalToConstant: view.frame.height).isActive = true
+        findpwdContentView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
 
     func IdTxtFieldLayout() {
         IdTxtField.keyboardType = .emailAddress
         IdTxtField.placeholder = "아이디를 입력해주세요"
-        IdTxtField.topAnchor.constraint(equalTo:loginContentView.topAnchor, constant:100).isActive = true
-        IdTxtField.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:20).isActive = true
-        IdTxtField.rightAnchor.constraint(equalTo:loginContentView.rightAnchor, constant:-20).isActive = true
+        IdTxtField.topAnchor.constraint(equalTo:findpwdContentView.topAnchor, constant:100).isActive = true
+        IdTxtField.leftAnchor.constraint(equalTo:findpwdContentView.leftAnchor, constant:20).isActive = true
+        IdTxtField.rightAnchor.constraint(equalTo:findpwdContentView.rightAnchor, constant:-20).isActive = true
         IdTxtField.heightAnchor.constraint(equalToConstant:50).isActive = true
     }
     
     func phonenumTxtFieldLayout() {
         phonenumTxtField.keyboardType = .emailAddress
         phonenumTxtField.placeholder = "전화번호를 입력해주세요"
-        phonenumTxtField.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:20).isActive = true
-        phonenumTxtField.rightAnchor.constraint(equalTo:loginContentView.rightAnchor, constant:-20).isActive = true
+        phonenumTxtField.leftAnchor.constraint(equalTo:findpwdContentView.leftAnchor, constant:20).isActive = true
+        phonenumTxtField.rightAnchor.constraint(equalTo:findpwdContentView.rightAnchor, constant:-20).isActive = true
         phonenumTxtField.topAnchor.constraint(equalTo:IdTxtField.bottomAnchor, constant:20).isActive = true
         phonenumTxtField.heightAnchor.constraint(equalToConstant:50).isActive = true
     }
 
     func authnumTxtFieldLayout() {
         authnumTxtField.placeholder = "인증번호를 입력해주세요"
-        authnumTxtField.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:20).isActive = true
-        authnumTxtField.rightAnchor.constraint(equalTo:loginContentView.rightAnchor, constant:-20).isActive = true
+        authnumTxtField.leftAnchor.constraint(equalTo:findpwdContentView.leftAnchor, constant:20).isActive = true
+        authnumTxtField.rightAnchor.constraint(equalTo:findpwdContentView.rightAnchor, constant:-20).isActive = true
         authnumTxtField.heightAnchor.constraint(equalToConstant:50).isActive = true
         authnumTxtField.topAnchor.constraint(equalTo:phonenumTxtField.bottomAnchor, constant:20).isActive = true
     }
     
     func btnSendSMSLayout() {
         btnSendSMS.topAnchor.constraint(equalTo:authnumTxtField.bottomAnchor, constant:20).isActive = true
-        btnSendSMS.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:20).isActive = true
-        btnSendSMS.rightAnchor.constraint(equalTo:loginContentView.rightAnchor, constant:-20).isActive = true
+        btnSendSMS.leftAnchor.constraint(equalTo:findpwdContentView.leftAnchor, constant:20).isActive = true
+        btnSendSMS.rightAnchor.constraint(equalTo:findpwdContentView.rightAnchor, constant:-20).isActive = true
         btnSendSMS.heightAnchor.constraint(equalToConstant:50).isActive = true
     }
     
     func btnConfirmLayout() {
-        btnConfirm.topAnchor.constraint(equalTo:authnumTxtField.bottomAnchor, constant:100).isActive = true
-        btnConfirm.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:20).isActive = true
-        btnConfirm.rightAnchor.constraint(equalTo:loginContentView.rightAnchor, constant:-20).isActive = true
+        btnConfirm.topAnchor.constraint(equalTo:btnSendSMS.bottomAnchor, constant:20).isActive = true
+        btnConfirm.leftAnchor.constraint(equalTo:findpwdContentView.leftAnchor, constant:20).isActive = true
+        btnConfirm.rightAnchor.constraint(equalTo:findpwdContentView.rightAnchor, constant:-20).isActive = true
         btnConfirm.heightAnchor.constraint(equalToConstant:50).isActive = true
     }
 

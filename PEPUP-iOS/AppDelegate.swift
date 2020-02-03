@@ -28,12 +28,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     // MARK: 기기 UserDefaults에 저장된 token 유무 확인
+    
     func isUserLoggedIn() -> Bool {
         if (UserDefaults.standard.object(forKey: "token") as? String) != nil {
             return true
         }
         return false
     }
+    
+    // MARK: Load RootViewController
     
     fileprivate func loadLogin() {
         let controller = UINavigationController(rootViewController: LoginVC())

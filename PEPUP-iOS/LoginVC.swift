@@ -16,6 +16,8 @@ class LoginVC: UIViewController {
         setup()
     }
     
+    // MARK: Declare each view programmatically 
+    
     private let loginContentView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -86,6 +88,56 @@ class LoginVC: UIViewController {
         btn.addTarget(self, action: #selector(findpwd), for: .touchUpInside)
         return btn
     }()
+
+    // MARK: 각 Button에 따른 selector action 설정
+    
+    @objc func login() {
+        guard let emailText = unameTxtField.text else {
+            return
+        }
+        guard let passwordText = pwordTxtField.text else {
+            return
+        }
+        
+        // Email과 Password 형식 확인 후 login 진행
+        
+        if isValidEmailAddress(email: emailText) && isVaildPassword(password: passwordText) {
+            let parameters: [String: String] = [
+                "password" : passwordText,
+                "email" : emailText,
+            ]
+            Alamofire.AF.request("http://mypepup.com/accounts/login/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
+                            (response) in switch response.result {
+                            case .success(let JSON):
+                                print("Success with JSON: \(JSON)")
+                                // 만료되지 않은 token이 저장되어 있을 경우
+                                if (UserDefaults.standard.object(forKey: "token") as! String) != nil {
+                                    self.successAlert()
+                                }
+                                else {
+                                    let JSONDic = JSON as! NSDictionary
+                                    let token_name = "Token "
+                                    let token_ = JSONDic.object(forKey: "token") as! String
+                                    let token = token_name + token_
+                                    print(token)
+                                    self.setCurrentLoginToken(token)
+                                    self.successAlert()
+                                }
+                            case .failure(let error):
+                                print("Request failed with error: \(error)")
+                                self.joinAlert()
+                            }
+            }
+        }
+        
+        if !isValidEmailAddress(email: emailText) {
+            failedAlert(message: "이메일을")
+        }
+        
+        if !isVaildPassword(password: passwordText) {
+            failedAlert(message: "패스워드를")
+        }
+    }
     
     @objc func phoneconfirm() {
         let controller = PhoneConfirmVC()
@@ -102,69 +154,26 @@ class LoginVC: UIViewController {
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
-    @objc func login() {
-        guard let emailText = unameTxtField.text else {
-            return
-        }
-        guard let passwordText = pwordTxtField.text else {
-            return
-        }
-        
-        if isValidEmailAddress(email: emailText) && isVailedPassword(password: passwordText) {
-            let parameters: [String: String] = [
-                "password" : passwordText,
-                "email" : emailText,
-            ]
-            // TODO: - login 할 때 이미 token 있으면 갱신 안하도록
-            Alamofire.AF.request("http://mypepup.com/accounts/login/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
-                            (response) in switch response.result {
-                            case .success(let JSON):
-                                print("Success with JSON: \(JSON)")
-                                let JSONDic = JSON as! NSDictionary
-                                let token_name = "Token "
-                                let token_ = JSONDic.object(forKey: "token") as! String
-                                let token = token_name + token_ 
-                                print(token)
-                                self.setCurrentLoginToken(token)
-                                self.successAlert()
-                            case .failure(let error):
-                                print("Request failed with error: \(error)")
-                                self.joinAlert()
-                            }
-                        }
-//            if emailText == "test@test.com" && passwordText == "abc123123" {
-//                print("Good!")
-//            } else {
-//                joinAlert()
-//            }
-        }
-        
-        if !isValidEmailAddress(email: emailText) {
-            failedAlert(message: "이메일을")
-        }
-        
-        if !isVailedPassword(password: passwordText) {
-            failedAlert(message: "패스워드를")
-        }
-    }
+    // MARK: 그 외 함수
     
     func setCurrentLoginToken(_ struserid: String) {
         UserDefaults.standard.set(struserid, forKey: "token")
     }
+    
+    func successAlert() {
+           let controller = TabBarController()
+           self.navigationController?.pushViewController(controller, animated: true)
+       }
+       
     
     func failedAlert(message: String) {
         let alertController = UIAlertController(title: nil, message: "\(message) 다시 입력해 주세요.", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
         self.present(alertController, animated: true, completion: nil)
     }
-    
-    func successAlert() {
-        let controller = TabBarController()
-        self.navigationController?.pushViewController(controller, animated: true)
-    }
-    
+   
     func joinAlert() {
-        let alertController = UIAlertController(title: nil, message: "입력하신 내용으로 회원가입을 해주세요!", preferredStyle: .alert)
+        let alertController = UIAlertController(title: nil, message: "입력하신 내용으로 회원가입을 해주세요.", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
         self.present(alertController, animated: true, completion: nil)
     }
@@ -175,7 +184,7 @@ class LoginVC: UIViewController {
         return emailTest.evaluate(with: email)
     }
     
-    func isVailedPassword(password: String) -> Bool {
+    func isVaildPassword(password: String) -> Bool {
         let passwordRegEx = "^[a-zA-Z0-9]{8,}$"
         let passwordTest = NSPredicate(format:"SELF MATCHES %@", passwordRegEx)
         return passwordTest.evaluate(with: password)
@@ -200,6 +209,8 @@ class LoginVC: UIViewController {
         btnFindPwdLayout()
     }
     
+    // MARK: Set Layout of each view
+    
     func loginContentViewLayout() {
         loginContentView.leftAnchor.constraint(equalTo:view.leftAnchor).isActive = true
         loginContentView.rightAnchor.constraint(equalTo:view.rightAnchor).isActive = true
@@ -217,6 +228,7 @@ class LoginVC: UIViewController {
     }
     
     func pwordTxtFieldLayout() {
+        pwordTxtField.placeholder = "패스워드를 입력하세요"
         pwordTxtField.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:20).isActive = true
         pwordTxtField.rightAnchor.constraint(equalTo:loginContentView.rightAnchor, constant:-20).isActive = true
         pwordTxtField.heightAnchor.constraint(equalToConstant:50).isActive = true
