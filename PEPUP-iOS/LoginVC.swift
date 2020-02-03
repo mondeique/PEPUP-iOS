@@ -63,8 +63,42 @@ class LoginVC: UIViewController {
         return btn
     }()
     
+    let btnFindID:UIButton = {
+        let btn = UIButton(type:.system)
+        btn.backgroundColor = .blue
+        btn.setTitle("Find ID", for: .normal)
+        btn.tintColor = .white
+        btn.layer.cornerRadius = 5
+        btn.clipsToBounds = true
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(findid), for: .touchUpInside)
+        return btn
+    }()
+    
+    let btnFindPwd:UIButton = {
+        let btn = UIButton(type:.system)
+        btn.backgroundColor = .blue
+        btn.setTitle("Find Pwd", for: .normal)
+        btn.tintColor = .white
+        btn.layer.cornerRadius = 5
+        btn.clipsToBounds = true
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(findpwd), for: .touchUpInside)
+        return btn
+    }()
+    
     @objc func phoneconfirm() {
         let controller = PhoneConfirmVC()
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    @objc func findid() {
+        let controller = FindIdVC()
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    @objc func findpwd() {
+        let controller = FindPwdVC()
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -81,6 +115,7 @@ class LoginVC: UIViewController {
                 "password" : passwordText,
                 "email" : emailText,
             ]
+            // TODO: - login 할 때 이미 token 있으면 갱신 안하도록
             Alamofire.AF.request("http://mypepup.com/accounts/login/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
                             (response) in switch response.result {
                             case .success(let JSON):
@@ -152,6 +187,8 @@ class LoginVC: UIViewController {
         loginContentView.addSubview(pwordTxtField)
         loginContentView.addSubview(btnLogin)
         loginContentView.addSubview(btnSignup)
+        loginContentView.addSubview(btnFindID)
+        loginContentView.addSubview(btnFindPwd)
         view.addSubview(loginContentView)
         
         loginContentViewLayout()
@@ -159,19 +196,21 @@ class LoginVC: UIViewController {
         pwordTxtFieldLayout()
         btnLoginLayout()
         btnSignupLayout()
+        btnFindIdLayout()
+        btnFindPwdLayout()
     }
     
     func loginContentViewLayout() {
         loginContentView.leftAnchor.constraint(equalTo:view.leftAnchor).isActive = true
         loginContentView.rightAnchor.constraint(equalTo:view.rightAnchor).isActive = true
-        loginContentView.heightAnchor.constraint(equalToConstant: view.frame.height/2).isActive = true
+        loginContentView.heightAnchor.constraint(equalToConstant: view.frame.height).isActive = true
         loginContentView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
     
     func unameTxtFieldLayout() {
         unameTxtField.keyboardType = .emailAddress
         unameTxtField.placeholder = "아이디를 입력하세요"
-        unameTxtField.topAnchor.constraint(equalTo:loginContentView.topAnchor, constant:40).isActive = true
+        unameTxtField.topAnchor.constraint(equalTo:loginContentView.topAnchor, constant:100).isActive = true
         unameTxtField.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:20).isActive = true
         unameTxtField.rightAnchor.constraint(equalTo:loginContentView.rightAnchor, constant:-20).isActive = true
         unameTxtField.heightAnchor.constraint(equalToConstant:50).isActive = true
@@ -185,16 +224,30 @@ class LoginVC: UIViewController {
     }
     
     func btnLoginLayout() {
-        btnLogin.topAnchor.constraint(equalTo:pwordTxtField.bottomAnchor, constant:20).isActive = true
         btnLogin.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:20).isActive = true
         btnLogin.rightAnchor.constraint(equalTo:loginContentView.rightAnchor, constant:-20).isActive = true
         btnLogin.heightAnchor.constraint(equalToConstant:50).isActive = true
+        btnLogin.topAnchor.constraint(equalTo:pwordTxtField.bottomAnchor, constant:20).isActive = true
     }
     
     func btnSignupLayout() {
-        btnSignup.topAnchor.constraint(equalTo:pwordTxtField.bottomAnchor, constant:100).isActive = true
         btnSignup.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:20).isActive = true
         btnSignup.rightAnchor.constraint(equalTo:loginContentView.rightAnchor, constant:-20).isActive = true
         btnSignup.heightAnchor.constraint(equalToConstant:50).isActive = true
+        btnSignup.topAnchor.constraint(equalTo:btnLogin.bottomAnchor, constant:20).isActive = true
+    }
+    
+    func btnFindIdLayout() {
+        btnFindID.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:20).isActive = true
+        btnFindID.rightAnchor.constraint(equalTo:loginContentView.rightAnchor, constant:-20).isActive = true
+        btnFindID.heightAnchor.constraint(equalToConstant:50).isActive = true
+        btnFindID.topAnchor.constraint(equalTo:btnSignup.bottomAnchor, constant:20).isActive = true
+    }
+
+    func btnFindPwdLayout() {
+        btnFindPwd.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:20).isActive = true
+        btnFindPwd.rightAnchor.constraint(equalTo:loginContentView.rightAnchor, constant:-20).isActive = true
+        btnFindPwd.heightAnchor.constraint(equalToConstant:50).isActive = true
+        btnFindPwd.topAnchor.constraint(equalTo:btnFindID.bottomAnchor, constant:20).isActive = true
     }
 }

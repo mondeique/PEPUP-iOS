@@ -15,6 +15,8 @@
 		E932136723E29E2100503CA8 /* HomeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932136623E29E2100503CA8 /* HomeHeaderCell.swift */; };
 		E94D142223E817E70001F3A0 /* CartVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94D142123E817E70001F3A0 /* CartVC.swift */; };
 		E94D142423E818000001F3A0 /* CartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94D142323E818000001F3A0 /* CartCell.swift */; };
+		E94D142623E82A570001F3A0 /* FindIdVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94D142523E82A570001F3A0 /* FindIdVC.swift */; };
+		E94D142823E82A640001F3A0 /* FindPwdVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94D142723E82A640001F3A0 /* FindPwdVC.swift */; };
 		E9C8467023E1A5D200359A93 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C8466F23E1A5D200359A93 /* AppDelegate.swift */; };
 		E9C8467723E1A5D200359A93 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E9C8467523E1A5D200359A93 /* Main.storyboard */; };
 		E9C8467A23E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E9C8467823E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld */; };
@@ -41,6 +43,8 @@
 		E932136623E29E2100503CA8 /* HomeHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeaderCell.swift; sourceTree = "<group>"; };
 		E94D142123E817E70001F3A0 /* CartVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartVC.swift; sourceTree = "<group>"; };
 		E94D142323E818000001F3A0 /* CartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartCell.swift; sourceTree = "<group>"; };
+		E94D142523E82A570001F3A0 /* FindIdVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindIdVC.swift; sourceTree = "<group>"; };
+		E94D142723E82A640001F3A0 /* FindPwdVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPwdVC.swift; sourceTree = "<group>"; };
 		E9C8466C23E1A5D200359A93 /* PEPUP-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PEPUP-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9C8466F23E1A5D200359A93 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E9C8467623E1A5D200359A93 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -129,6 +133,8 @@
 				E9D07A4E23E4050D0095AD05 /* PhoneConfirmVC.swift */,
 				E94D142123E817E70001F3A0 /* CartVC.swift */,
 				E94D142323E818000001F3A0 /* CartCell.swift */,
+				E94D142523E82A570001F3A0 /* FindIdVC.swift */,
+				E94D142723E82A640001F3A0 /* FindPwdVC.swift */,
 			);
 			path = "PEPUP-iOS";
 			sourceTree = "<group>";
@@ -252,6 +258,7 @@
 				E9C8468923E1A89E00359A93 /* HomeVC.swift in Sources */,
 				E9D07A4123E2B0930095AD05 /* DetailVC.swift in Sources */,
 				E9D07A4F23E4050D0095AD05 /* PhoneConfirmVC.swift in Sources */,
+				E94D142623E82A570001F3A0 /* FindIdVC.swift in Sources */,
 				E9C8468723E1A77300359A93 /* TabBarController.swift in Sources */,
 				E932136723E29E2100503CA8 /* HomeHeaderCell.swift in Sources */,
 				E9D07A4723E2B6DE0095AD05 /* SearchVC.swift in Sources */,
@@ -263,6 +270,7 @@
 				E932135B23E26F7200503CA8 /* FollowVC.swift in Sources */,
 				E932135323E1B9D800503CA8 /* HomeCell.swift in Sources */,
 				E932135D23E26FC400503CA8 /* FollowCell.swift in Sources */,
+				E94D142823E82A640001F3A0 /* FindPwdVC.swift in Sources */,
 				E9C8467A23E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld in Sources */,
 				E9D07A4923E2E4DD0095AD05 /* LoginVC.swift in Sources */,
 			);
