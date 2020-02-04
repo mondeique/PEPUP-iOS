@@ -17,13 +17,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         // MARK: token 있을 때는 바로 Home 화면 load or 없을 때는 Login 화면 load
-//        if (isUserLoggedIn()) {
-//            loadHome()
-//        }
-//        else {
-//            loadLogin()
-//        }
-        loadLogin()
+        if (isUserLoggedIn()) {
+            loadHome()
+        }
+        else {
+            loadLogin()
+        }
+//        loadLogin()
         return true
     }
     

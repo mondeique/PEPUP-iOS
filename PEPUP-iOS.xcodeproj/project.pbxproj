@@ -17,6 +17,8 @@
 		E94D142423E818000001F3A0 /* CartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94D142323E818000001F3A0 /* CartCell.swift */; };
 		E94D142623E82A570001F3A0 /* FindIdVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94D142523E82A570001F3A0 /* FindIdVC.swift */; };
 		E94D142823E82A640001F3A0 /* FindPwdVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94D142723E82A640001F3A0 /* FindPwdVC.swift */; };
+		E94D142A23E91EC40001F3A0 /* NickNameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94D142923E91EC40001F3A0 /* NickNameVC.swift */; };
+		E94D142C23E9223F0001F3A0 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94D142B23E9223F0001F3A0 /* ProfileVC.swift */; };
 		E9C8467023E1A5D200359A93 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C8466F23E1A5D200359A93 /* AppDelegate.swift */; };
 		E9C8467723E1A5D200359A93 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E9C8467523E1A5D200359A93 /* Main.storyboard */; };
 		E9C8467A23E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E9C8467823E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld */; };
@@ -45,6 +47,8 @@
 		E94D142323E818000001F3A0 /* CartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartCell.swift; sourceTree = "<group>"; };
 		E94D142523E82A570001F3A0 /* FindIdVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindIdVC.swift; sourceTree = "<group>"; };
 		E94D142723E82A640001F3A0 /* FindPwdVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPwdVC.swift; sourceTree = "<group>"; };
+		E94D142923E91EC40001F3A0 /* NickNameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NickNameVC.swift; sourceTree = "<group>"; };
+		E94D142B23E9223F0001F3A0 /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		E9C8466C23E1A5D200359A93 /* PEPUP-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PEPUP-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9C8466F23E1A5D200359A93 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E9C8467623E1A5D200359A93 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -135,6 +139,8 @@
 				E94D142323E818000001F3A0 /* CartCell.swift */,
 				E94D142523E82A570001F3A0 /* FindIdVC.swift */,
 				E94D142723E82A640001F3A0 /* FindPwdVC.swift */,
+				E94D142923E91EC40001F3A0 /* NickNameVC.swift */,
+				E94D142B23E9223F0001F3A0 /* ProfileVC.swift */,
 			);
 			path = "PEPUP-iOS";
 			sourceTree = "<group>";
@@ -256,12 +262,14 @@
 			files = (
 				E932135523E1BA1000503CA8 /* BaseCollectionViewCell.swift in Sources */,
 				E9C8468923E1A89E00359A93 /* HomeVC.swift in Sources */,
+				E94D142A23E91EC40001F3A0 /* NickNameVC.swift in Sources */,
 				E9D07A4123E2B0930095AD05 /* DetailVC.swift in Sources */,
 				E9D07A4F23E4050D0095AD05 /* PhoneConfirmVC.swift in Sources */,
 				E94D142623E82A570001F3A0 /* FindIdVC.swift in Sources */,
 				E9C8468723E1A77300359A93 /* TabBarController.swift in Sources */,
 				E932136723E29E2100503CA8 /* HomeHeaderCell.swift in Sources */,
 				E9D07A4723E2B6DE0095AD05 /* SearchVC.swift in Sources */,
+				E94D142C23E9223F0001F3A0 /* ProfileVC.swift in Sources */,
 				E9C8467023E1A5D200359A93 /* AppDelegate.swift in Sources */,
 				E9D07A4D23E3FB980095AD05 /* SignupVC.swift in Sources */,
 				E9D07A4323E2B1110095AD05 /* NotiVC.swift in Sources */,

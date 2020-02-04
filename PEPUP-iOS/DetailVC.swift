@@ -9,7 +9,7 @@
 import UIKit
 import Alamofire
 
-class DetailVC: UIViewController {
+class DetailVC: UIViewController{
     
     var productDatas = NSDictionary()
     

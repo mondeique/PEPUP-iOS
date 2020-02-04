@@ -19,7 +19,8 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        getData()
+        getData(pagenum: 1)
+//        getData(pagenum: "2")
     }
     
     // MARK: collectionView 전체 View setting
@@ -60,8 +61,9 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     }
     
     // MARK: Server 로부터 Main에 뿌릴 Data Alamofire로 받아오기
-    func getData() {
-        Alamofire.AF.request("http://mypepup.com/api/products/?page=1", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+    
+    func getData(pagenum: Int) {
+        Alamofire.AF.request("http://mypepup.com/api/products/?page=" + String(pagenum), method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
                 (response) in switch response.result {
                 case .success(let JSON):
                     
@@ -139,6 +141,7 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     
     // 해당 cell 선택 시 DetailVC로 넘어감
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.sendData(data: indexPath.row)
         navigationController?.pushViewController(DetailVC(), animated: true)
     }
     
@@ -162,6 +165,7 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 1.0
     }
+    
     /*
     // Uncomment this method to specify if the specified item should be highlighted during tracking
     override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
