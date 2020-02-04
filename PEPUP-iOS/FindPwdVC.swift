@@ -19,7 +19,7 @@ class FindPwdVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.isNavigationBarHidden = true
+//        self.navigationController?.isNavigationBarHidden = true
     }
     
     // MARK: Declare each view programmatically 
@@ -95,7 +95,7 @@ class FindPwdVC: UIViewController {
                 "username": unameTxt,
                 "phone": phonenum
             ]
-            Alamofire.AF.request("http://mypepup.com/accounts/confirmsms/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
+            Alamofire.AF.request("http://mypepup.com/accounts/reset_password/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
                                    (response) in switch response.result {
                                    case .success(let JSON):
                                        print("Success with JSON: \(JSON)")
@@ -110,24 +110,32 @@ class FindPwdVC: UIViewController {
     }
     
     @objc func confirm() {
-        guard let token = UserDefaults.standard.object(forKey: "token") else {
-                   return
-               }
+        guard let unameTxt = IdTxtField.text else {
+            return
+        }
         guard let authnumber = authnumTxtField.text else {
                    return
-               }
+        }
+        guard let phonenum = phonenumTxtField.text else {
+            return
+        }
         let parameters = [
+            "username" : unameTxt,
+            "phone" : phonenum,
             "confirm_key": authnumber
         ]
-        Alamofire.AF.request("http://mypepup.com/accounts/confirmsms/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": token as! String]) .validate(statusCode: 200..<300) .responseJSON {
-                                (response) in switch response.result {
-                                case .success(let JSON):
-                                    print("Success with JSON: \(JSON)")
-                                    let Pwd = "Qwe123123"
-                                    self.successAlert(message: Pwd)
-                                case .failure(let error):
-                                    print("Request failed with error: \(error)")
-                                }
+        if isValidPhonenumber(phonenumber: phonenum) {
+            Alamofire.AF.request("http://mypepup.com/accounts/reset_password/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
+                                    (response) in switch response.result {
+                                    case .success(let JSON):
+                                        print("Success with JSON: \(JSON)")
+                                        let response = JSON as! NSDictionary
+                                        let password = response.object(forKey: "password") as! String
+                                        self.successAlert(message: password)
+                                    case .failure(let error):
+                                        print("Request failed with error: \(error)")
+                                    }
+            }
         }
     }
     

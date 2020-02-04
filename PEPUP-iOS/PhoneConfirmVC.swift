@@ -19,57 +19,74 @@ class PhoneConfirmVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.isNavigationBarHidden = true
+//        self.navigationController?.isNavigationBarHidden = true
     }
     
     // MARK: Declare each view programmatically 
     
     private let phoneConfirmContentView: UIView = {
-               let view = UIView()
-               view.translatesAutoresizingMaskIntoConstraints = false
-               view.backgroundColor = .gray
-               return view
-           }()
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        return view
+    }()
+    
+    private let signupLabel: UILabel = {
+        let label = UILabel(frame: CGRect(x: 25, y: 104, width: 104, height: 35))
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "회원가입"
+        label.textColor = .black
+        label.font = .systemFont(ofSize: 29)
+        label.backgroundColor = .white
+        return label
+    }()
 
     private let phonenumTxtField:UITextField = {
-       let txtField = UITextField()
-       txtField.backgroundColor = .white
-       txtField.borderStyle = .roundedRect
-       txtField.translatesAutoresizingMaskIntoConstraints = false
-       return txtField
+        let txtField = UITextField(frame: CGRect(x: 25, y: 207, width: 215, height: 45))
+        txtField.placeholder = " 전화번호를 입력해주세요"
+        txtField.backgroundColor = .white
+//        txtField.layer.cornerRadius = 3.0
+        txtField.borderStyle = .line
+        txtField.layer.borderWidth = 1.0
+        txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
+        txtField.translatesAutoresizingMaskIntoConstraints = false
+        return txtField
     }()
-
-    private let authnumTxtField:UITextField = {
-       let txtField = UITextField()
-       txtField.backgroundColor = .white
-       txtField.borderStyle = .roundedRect
-       txtField.translatesAutoresizingMaskIntoConstraints = false
-       return txtField
-    }()
-
+    
     private let btnSendSMS:UIButton = {
-       let btn = UIButton(type:.system)
-       btn.backgroundColor = .blue
-       btn.setTitle("Send SMS", for: .normal)
-       btn.tintColor = .white
-       btn.layer.cornerRadius = 5
-       btn.clipsToBounds = true
-       btn.translatesAutoresizingMaskIntoConstraints = false
-       btn.addTarget(self, action: #selector(sendsms), for: .touchUpInside)
-       return btn
+        let btn = UIButton(frame: CGRect(x: 250, y: 212, width: 100, height: 34))
+        btn.backgroundColor = .black
+        btn.setTitle("인증번호 받기", for: .normal)
+        btn.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        btn.tintColor = .white
+        btn.clipsToBounds = true
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(sendsms), for: .touchUpInside)
+        return btn
+    }()
+    
+    private let authnumTxtField:UITextField = {
+        let txtField = UITextField(frame: CGRect(x: 25, y: 267, width: 215, height: 45))
+        txtField.placeholder = " 인증번호를 입력해주세요"
+        txtField.backgroundColor = .white
+//        txtField.layer.cornerRadius = 3.0
+        txtField.borderStyle = .line
+        txtField.layer.borderWidth = 1.0
+        txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
+        txtField.translatesAutoresizingMaskIntoConstraints = false
+        return txtField
     }()
 
     private let btnConfirm:UIButton = {
-          let btn = UIButton(type:.system)
-          btn.backgroundColor = .blue
-          btn.setTitle("Confirm", for: .normal)
-          btn.tintColor = .white
-          btn.layer.cornerRadius = 5
-          btn.clipsToBounds = true
-          btn.translatesAutoresizingMaskIntoConstraints = false
-          btn.addTarget(self, action: #selector(confirm), for: .touchUpInside)
-          return btn
-      }()
+        let btn = UIButton(frame: CGRect(x: 25, y: 356, width: 325, height: 48))
+        btn.backgroundColor = .black
+        btn.setTitle("본인인증하기", for: .normal)
+        btn.tintColor = .white
+        btn.clipsToBounds = true
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(confirm), for: .touchUpInside)
+        return btn
+    }()
     
     // MARK: 각 Button에 따른 selector action 설정
     
@@ -148,17 +165,19 @@ class PhoneConfirmVC: UIViewController {
     }
 
     func setup() {
-        view.backgroundColor = .purple
+        view.backgroundColor = .white
         phoneConfirmContentView.addSubview(phonenumTxtField)
-        phoneConfirmContentView.addSubview(authnumTxtField)
+        phoneConfirmContentView.addSubview(signupLabel)
         phoneConfirmContentView.addSubview(btnSendSMS)
+        phoneConfirmContentView.addSubview(authnumTxtField)
         phoneConfirmContentView.addSubview(btnConfirm)
         view.addSubview(phoneConfirmContentView)
 
         phoneConfirmContentViewLayout()
+        signupLabelLayout()
         phonenumTxtFieldLayout()
-        authnumTxtFieldLayout()
         btnSendSMSLayout()
+        authnumTxtFieldLayout()
         btnConfirmLayout()
     }
     
@@ -167,39 +186,43 @@ class PhoneConfirmVC: UIViewController {
     func phoneConfirmContentViewLayout() {
         phoneConfirmContentView.leftAnchor.constraint(equalTo:view.leftAnchor).isActive = true
         phoneConfirmContentView.rightAnchor.constraint(equalTo:view.rightAnchor).isActive = true
-        phoneConfirmContentView.heightAnchor.constraint(equalToConstant: view.frame.height/2).isActive = true
+        phoneConfirmContentView.heightAnchor.constraint(equalToConstant: view.frame.height).isActive = true
         phoneConfirmContentView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
-
-    func phonenumTxtFieldLayout() {
-        phonenumTxtField.keyboardType = .emailAddress
-        phonenumTxtField.placeholder = "전화번호를 입력해주세요"
-        phonenumTxtField.topAnchor.constraint(equalTo:phoneConfirmContentView.topAnchor, constant:40).isActive = true
-        phonenumTxtField.leftAnchor.constraint(equalTo:phoneConfirmContentView.leftAnchor, constant:20).isActive = true
-        phonenumTxtField.rightAnchor.constraint(equalTo:phoneConfirmContentView.rightAnchor, constant:-20).isActive = true
-        phonenumTxtField.heightAnchor.constraint(equalToConstant:50).isActive = true
+    
+    func signupLabelLayout() {
+        signupLabel.topAnchor.constraint(equalTo:phoneConfirmContentView.topAnchor, constant:104).isActive = true
+        signupLabel.leftAnchor.constraint(equalTo:phoneConfirmContentView.leftAnchor, constant:25).isActive = true
+        signupLabel.rightAnchor.constraint(equalTo:phoneConfirmContentView.rightAnchor, constant:-246).isActive = true
+        signupLabel.heightAnchor.constraint(equalToConstant:35).isActive = true
     }
-
-    func authnumTxtFieldLayout() {
-        authnumTxtField.placeholder = "인증번호를 입력해주세요"
-        authnumTxtField.leftAnchor.constraint(equalTo:phoneConfirmContentView.leftAnchor, constant:20).isActive = true
-        authnumTxtField.rightAnchor.constraint(equalTo:phoneConfirmContentView.rightAnchor, constant:-20).isActive = true
-        authnumTxtField.heightAnchor.constraint(equalToConstant:50).isActive = true
-        authnumTxtField.topAnchor.constraint(equalTo:phonenumTxtField.bottomAnchor, constant:20).isActive = true
+    
+    func phonenumTxtFieldLayout() {
+        phonenumTxtField.topAnchor.constraint(equalTo:signupLabel.bottomAnchor, constant:68).isActive = true
+        phonenumTxtField.leftAnchor.constraint(equalTo:phoneConfirmContentView.leftAnchor, constant:25).isActive = true
+        phonenumTxtField.rightAnchor.constraint(equalTo:phoneConfirmContentView.rightAnchor, constant:-135).isActive = true
+        phonenumTxtField.heightAnchor.constraint(equalToConstant:45).isActive = true
     }
 
     func btnSendSMSLayout() {
-        btnSendSMS.topAnchor.constraint(equalTo:authnumTxtField.bottomAnchor, constant:20).isActive = true
-        btnSendSMS.leftAnchor.constraint(equalTo:phoneConfirmContentView.leftAnchor, constant:20).isActive = true
-        btnSendSMS.rightAnchor.constraint(equalTo:phoneConfirmContentView.rightAnchor, constant:-20).isActive = true
-        btnSendSMS.heightAnchor.constraint(equalToConstant:50).isActive = true
+        btnSendSMS.topAnchor.constraint(equalTo:phoneConfirmContentView.topAnchor, constant:212).isActive = true
+        btnSendSMS.leftAnchor.constraint(equalTo:phonenumTxtField.rightAnchor, constant:10).isActive = true
+        btnSendSMS.rightAnchor.constraint(equalTo:phoneConfirmContentView.rightAnchor, constant:-25).isActive = true
+        btnSendSMS.heightAnchor.constraint(equalToConstant:34).isActive = true
     }
-
+    
+    func authnumTxtFieldLayout() {
+        authnumTxtField.leftAnchor.constraint(equalTo:phoneConfirmContentView.leftAnchor, constant:25).isActive = true
+        authnumTxtField.rightAnchor.constraint(equalTo:phoneConfirmContentView.rightAnchor, constant:-135).isActive = true
+        authnumTxtField.heightAnchor.constraint(equalToConstant:45).isActive = true
+        authnumTxtField.topAnchor.constraint(equalTo:phonenumTxtField.bottomAnchor, constant:15).isActive = true
+    }
+    
     func btnConfirmLayout() {
-        btnConfirm.topAnchor.constraint(equalTo:authnumTxtField.bottomAnchor, constant:100).isActive = true
-        btnConfirm.leftAnchor.constraint(equalTo:phoneConfirmContentView.leftAnchor, constant:20).isActive = true
-        btnConfirm.rightAnchor.constraint(equalTo:phoneConfirmContentView.rightAnchor, constant:-20).isActive = true
-        btnConfirm.heightAnchor.constraint(equalToConstant:50).isActive = true
+        btnConfirm.topAnchor.constraint(equalTo:authnumTxtField.bottomAnchor, constant:44).isActive = true
+        btnConfirm.leftAnchor.constraint(equalTo:phoneConfirmContentView.leftAnchor, constant:25).isActive = true
+        btnConfirm.rightAnchor.constraint(equalTo:phoneConfirmContentView.rightAnchor, constant:-25).isActive = true
+        btnConfirm.heightAnchor.constraint(equalToConstant:48).isActive = true
     }
 
 }

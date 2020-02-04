@@ -41,7 +41,7 @@ class NickNameVC: UIViewController {
         btn.layer.cornerRadius = 5
         btn.clipsToBounds = true
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.isEnabled = false
+//        btn.isEnabled = false
         btn.addTarget(self, action: #selector(update), for: .touchUpInside)
         return btn
     }()
@@ -56,7 +56,7 @@ class NickNameVC: UIViewController {
         // nicknameText 에 있으면 button 활성화
         
         if isValidNickName(nickname: nicknameText) {
-            btnCheck.isEnabled = true
+//            btnCheck.isEnabled = true
             let parameters: [String: String] = [
                 "nickname" : nicknameText
             ]

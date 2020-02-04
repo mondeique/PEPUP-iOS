@@ -18,7 +18,7 @@ class SignupVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.isNavigationBarHidden = true
+//        self.navigationController?.isNavigationBarHidden = true
     }
     
     // MARK: Declare each view programmatically 
@@ -26,40 +26,79 @@ class SignupVC: UIViewController {
     private let signupContentView: UIView = {
             let view = UIView()
             view.translatesAutoresizingMaskIntoConstraints = false
-            view.backgroundColor = .gray
+            view.backgroundColor = .white
             return view
         }()
+    
+    private let signupLabel: UILabel = {
+        let label = UILabel(frame: CGRect(x: 25, y: 104, width: 104, height: 35))
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "회원가입"
+        label.textColor = .black
+        label.font = .systemFont(ofSize: 29)
+        label.backgroundColor = .white
+        return label
+    }()
+    
+    private let emailLabel: UILabel = {
+        let label = UILabel(frame: CGRect(x: 25, y: 169, width: 45, height: 20))
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "이메일"
+        label.textColor = .black
+        label.font = .systemFont(ofSize: 17)
+        label.backgroundColor = .white
+        return label
+    }()
 
     private let unameTxtField:UITextField = {
-        let txtField = UITextField()
+        let txtField = UITextField(frame: CGRect(x: 25, y: 197, width: 325, height: 45))
+        txtField.placeholder = " 이메일을 입력해주세요"
         txtField.backgroundColor = .white
-        txtField.borderStyle = .roundedRect
+        txtField.borderStyle = .line
+        txtField.layer.borderWidth = 1.0
+        txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
         return txtField
     }()
+    
+    private let passwordLabel: UILabel = {
+        let label = UILabel(frame: CGRect(x: 25, y: 287, width: 60, height: 20))
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "비밀번호"
+        label.textColor = .black
+        label.font = .systemFont(ofSize: 17)
+        label.backgroundColor = .white
+        return label
+    }()
 
     private let pwordTxtField:UITextField = {
-        let txtField = UITextField()
+        let txtField = UITextField(frame: CGRect(x: 25, y: 315, width: 325, height: 45))
+        txtField.placeholder = " 비밀번호 8자 이상"
         txtField.backgroundColor = .white
-        txtField.borderStyle = .roundedRect
+        txtField.borderStyle = .line
+        txtField.layer.borderWidth = 1.0
+        txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
         return txtField
     }()
     
     private let pwordAgainTxtField:UITextField = {
-        let txtField = UITextField()
+        let txtField = UITextField(frame: CGRect(x: 25, y: 368, width: 325, height: 45))
+        txtField.placeholder = " 비밀번호를 다시 입력해 주세요"
         txtField.backgroundColor = .white
-        txtField.borderStyle = .roundedRect
+        txtField.borderStyle = .line
+        txtField.layer.borderWidth = 1.0
+        txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
         return txtField
     }()
     
     private let btnSignup:UIButton = {
-        let btn = UIButton(type:.system)
-        btn.backgroundColor = .blue
-        btn.setTitle("Signup", for: .normal)
+        let btn = UIButton(frame: CGRect(x: 25, y: 623, width: 3250, height: 56))
+        btn.backgroundColor = .black
+        btn.setTitle("가입하기", for: .normal)
+        btn.titleLabel?.font = UIFont.systemFont(ofSize: 17)
         btn.tintColor = .white
-        btn.layer.cornerRadius = 5
         btn.clipsToBounds = true
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(signup), for: .touchUpInside)
@@ -117,7 +156,7 @@ class SignupVC: UIViewController {
     // MARK: 그 외 함수
     
     func successAlert() {
-        let controller = TabBarController()
+        let controller = NickNameVC()
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -157,14 +196,20 @@ class SignupVC: UIViewController {
     
     func setup() {
         view.backgroundColor = .red
+        signupContentView.addSubview(signupLabel)
+        signupContentView.addSubview(emailLabel)
         signupContentView.addSubview(unameTxtField)
+        signupContentView.addSubview(passwordLabel)
         signupContentView.addSubview(pwordTxtField)
         signupContentView.addSubview(pwordAgainTxtField)
         signupContentView.addSubview(btnSignup)
         view.addSubview(signupContentView)
 
         signupContentViewLayout()
+        signupLabelLayout()
+        emailLabelLayout()
         unameTxtFieldLayout()
+        passwordLabelLayout()
         pwordTxtFieldLayout()
         pwordAgainTxtFieldLayout()
         btnSignupLayout()
@@ -175,39 +220,57 @@ class SignupVC: UIViewController {
     func signupContentViewLayout() {
         signupContentView.leftAnchor.constraint(equalTo:view.leftAnchor).isActive = true
         signupContentView.rightAnchor.constraint(equalTo:view.rightAnchor).isActive = true
-        signupContentView.heightAnchor.constraint(equalToConstant: view.frame.height/2).isActive = true
+        signupContentView.heightAnchor.constraint(equalToConstant: view.frame.height).isActive = true
         signupContentView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
-
+    
+    func signupLabelLayout() {
+        signupLabel.topAnchor.constraint(equalTo:signupContentView.topAnchor, constant:104).isActive = true
+        signupLabel.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:25).isActive = true
+        signupLabel.rightAnchor.constraint(equalTo:signupContentView.rightAnchor, constant:-246).isActive = true
+        signupLabel.heightAnchor.constraint(equalToConstant:35).isActive = true
+    }
+    
+    func emailLabelLayout() {
+        emailLabel.topAnchor.constraint(equalTo:signupLabel.bottomAnchor, constant:30).isActive = true
+        emailLabel.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:25).isActive = true
+        emailLabel.rightAnchor.constraint(equalTo:signupContentView.rightAnchor, constant:-305).isActive = true
+        emailLabel.heightAnchor.constraint(equalToConstant:20).isActive = true
+    }
+    
     func unameTxtFieldLayout() {
         unameTxtField.keyboardType = .emailAddress
-        unameTxtField.placeholder = "아이디를 입력하세요"
-        unameTxtField.topAnchor.constraint(equalTo:signupContentView.topAnchor, constant:20).isActive = true
-        unameTxtField.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:20).isActive = true
-        unameTxtField.rightAnchor.constraint(equalTo:signupContentView.rightAnchor, constant:-20).isActive = true
-        unameTxtField.heightAnchor.constraint(equalToConstant:50).isActive = true
+        unameTxtField.topAnchor.constraint(equalTo:emailLabel.bottomAnchor, constant:8).isActive = true
+        unameTxtField.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:25).isActive = true
+        unameTxtField.rightAnchor.constraint(equalTo:signupContentView.rightAnchor, constant:-25).isActive = true
+        unameTxtField.heightAnchor.constraint(equalToConstant:45).isActive = true
     }
 
+    func passwordLabelLayout() {
+        passwordLabel.topAnchor.constraint(equalTo:unameTxtField.bottomAnchor, constant:45).isActive = true
+        passwordLabel.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:25).isActive = true
+        passwordLabel.rightAnchor.constraint(equalTo:signupContentView.rightAnchor, constant:-290).isActive = true
+        passwordLabel.heightAnchor.constraint(equalToConstant:20).isActive = true
+    }
+    
     func pwordTxtFieldLayout() {
-        pwordTxtField.placeholder = "패스워드를 입력하세요"
-        pwordTxtField.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:20).isActive = true
-        pwordTxtField.rightAnchor.constraint(equalTo:signupContentView.rightAnchor, constant:-20).isActive = true
-        pwordTxtField.heightAnchor.constraint(equalToConstant:50).isActive = true
-        pwordTxtField.topAnchor.constraint(equalTo:unameTxtField.bottomAnchor, constant:20).isActive = true
+        pwordTxtField.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:25).isActive = true
+        pwordTxtField.rightAnchor.constraint(equalTo:signupContentView.rightAnchor, constant:-25).isActive = true
+        pwordTxtField.heightAnchor.constraint(equalToConstant:45).isActive = true
+        pwordTxtField.topAnchor.constraint(equalTo:passwordLabel.bottomAnchor, constant:8).isActive = true
     }
 
     func pwordAgainTxtFieldLayout() {
-        pwordAgainTxtField.placeholder = "패스워드를 다시 입력하세요"
-        pwordAgainTxtField.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:20).isActive = true
-        pwordAgainTxtField.rightAnchor.constraint(equalTo:signupContentView.rightAnchor, constant:-20).isActive = true
-        pwordAgainTxtField.heightAnchor.constraint(equalToConstant:50).isActive = true
-        pwordAgainTxtField.topAnchor.constraint(equalTo:pwordTxtField.bottomAnchor, constant:20).isActive = true
+        pwordAgainTxtField.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:25).isActive = true
+        pwordAgainTxtField.rightAnchor.constraint(equalTo:signupContentView.rightAnchor, constant:-25).isActive = true
+        pwordAgainTxtField.heightAnchor.constraint(equalToConstant:45).isActive = true
+        pwordAgainTxtField.topAnchor.constraint(equalTo:pwordTxtField.bottomAnchor, constant:8).isActive = true
     }
 
     func btnSignupLayout() {
-        btnSignup.topAnchor.constraint(equalTo:pwordTxtField.bottomAnchor, constant:100).isActive = true
-        btnSignup.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:20).isActive = true
-        btnSignup.rightAnchor.constraint(equalTo:signupContentView.rightAnchor, constant:-20).isActive = true
-        btnSignup.heightAnchor.constraint(equalToConstant:50).isActive = true
+        btnSignup.topAnchor.constraint(equalTo:pwordTxtField.bottomAnchor, constant:210).isActive = true
+        btnSignup.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:25).isActive = true
+        btnSignup.rightAnchor.constraint(equalTo:signupContentView.rightAnchor, constant:-25).isActive = true
+        btnSignup.heightAnchor.constraint(equalToConstant:56).isActive = true
     }
 }

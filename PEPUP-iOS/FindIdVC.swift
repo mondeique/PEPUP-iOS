@@ -18,7 +18,7 @@ class FindIdVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.isNavigationBarHidden = true
+//        self.navigationController?.isNavigationBarHidden = true
     }
     
     // MARK: Declare each view programmatically 
@@ -83,7 +83,7 @@ class FindIdVC: UIViewController {
             let parameters = [
                 "phone": phonenum
             ]
-            Alamofire.AF.request("http://mypepup.com/accounts/confirmsms/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
+            Alamofire.AF.request("http://mypepup.com/accounts/find_email/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
                                    (response) in switch response.result {
                                    case .success(let JSON):
                                        print("Success with JSON: \(JSON)")
@@ -101,21 +101,23 @@ class FindIdVC: UIViewController {
     }
     
     @objc func confirm() {
-        guard let token = UserDefaults.standard.object(forKey: "token") else {
-                   return
-               }
+        guard let phonenum = phonenumTxtField.text else {
+            return
+                }
         guard let authnumber = authnumTxtField.text else {
                    return
                }
         let parameters = [
+            "phone" : phonenum,
             "confirm_key": authnumber
         ]
-        Alamofire.AF.request("http://mypepup.com/accounts/confirmsms/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": token as! String]) .validate(statusCode: 200..<300) .responseJSON {
+        Alamofire.AF.request("http://mypepup.com/accounts/find_email/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
                                 (response) in switch response.result {
                                 case .success(let JSON):
                                     print("Success with JSON: \(JSON)")
-                                    let Id = "Test@123123.com"
-                                    self.successAlert(message: Id)
+                                    let response = JSON as! NSDictionary
+                                    let email = response.object(forKey: "email") as! String
+                                    self.successAlert(message: email)
                                 case .failure(let error):
                                     print("Request failed with error: \(error)")
                                 }

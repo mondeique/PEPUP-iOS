@@ -14,6 +14,7 @@ private let headerId = "headercell"
 
 class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     
+    var pagenum: Int = 1
     var productDatas = Array<Dictionary<String, Any>>()
     
     override func viewDidLoad() {
@@ -38,18 +39,26 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
         let notiImage = UIImage(named: "home_selected")
         let cartImage = UIImage(named: "home_selected")
         
-        let pepupImage = UIImage(named: "home_selected")
+        let searchImage = UIImage(named: "home_selected")
         
-        let pepupButton = UIBarButtonItem(image: pepupImage,  style: .plain, target: self, action: #selector(didTapPepupButton))
+        let searchButton = UIBarButtonItem(image: searchImage,  style: .plain, target: self, action: #selector(didTapPepupButton))
         let notiButton = UIBarButtonItem(image: notiImage,  style: .plain, target: self, action: #selector(didTapNotiButton))
         let cartButton = UIBarButtonItem(image: cartImage, style: .plain, target: self, action: #selector(didTapCartButton))
         
-        navigationItem.leftBarButtonItem = pepupButton
+//        let menuBarItem = UIBarButtonItem(customView: menuBtn)
+//        let currWidth = menuBarItem.customView?.widthAnchor.constraint(equalToConstant: 24)
+//        currWidth?.isActive = true
+//        let currHeight = menuBarItem.customView?.heightAnchor.constraint(equalToConstant: 24)
+//        currHeight?.isActive = true
+//        self.navigationItem.leftBarButtonItem = menuBarItem
+        
+        navigationItem.leftBarButtonItem = searchButton
         navigationItem.rightBarButtonItems = [cartButton, notiButton]
+        
     }
     
     @objc func didTapPepupButton(sender: AnyObject) {
-        print("User Click Main LOGO")
+        self.navigationController?.pushViewController(SearchVC(), animated: true)
     }
     
     @objc func didTapNotiButton(sender: AnyObject){
@@ -63,28 +72,29 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     // MARK: Server 로부터 Main에 뿌릴 Data Alamofire로 받아오기
     
     func getData(pagenum: Int) {
+//        self.productDatas = []
         Alamofire.AF.request("http://mypepup.com/api/products/?page=" + String(pagenum), method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-                (response) in switch response.result {
-                case .success(let JSON):
-                    
-                    let response = JSON as! NSDictionary
-                    let results = response["results"] as! Array<Dictionary<String, Any>>
-                    self.productDatas = results
-                    DispatchQueue.main.async {
-                        self.collectionView.reloadData()
-                    }
-                case .failure(let error):
-                    print("Request failed with error: \(error)")
+            (response) in switch response.result {
+            case .success(let JSON):
+                let response = JSON as! NSDictionary
+                let results = response["results"] as! Array<Dictionary<String, Any>>
+                for i in 0..<results.count {
+                    self.productDatas.append(results[i])
                 }
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print("Request failed with error: \(error)")
             }
         }
+    }
 
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.productDatas.count
@@ -114,34 +124,33 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
         return cell
     }
     
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if kind == UICollectionView.elementKindSectionHeader {
-            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! HomeHeaderCell
-            
-            headerView.tag = indexPath.section
-            
-            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapDetected))
-            
-            headerView.addGestureRecognizer(tapGestureRecognizer)
-            return headerView
-        }
-        fatalError()
-    }
+//    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//        if kind == UICollectionView.elementKindSectionHeader {
+//            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! HomeHeaderCell
+//
+//            headerView.tag = indexPath.section
+//
+//            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapDetected))
+//
+//            headerView.addGestureRecognizer(tapGestureRecognizer)
+//            return headerView
+//        }
+//        fatalError()
+//    }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 60)
-    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+//        return CGSize(width: collectionView.frame.width, height: 60)
+//    }
     
-    @objc func tapDetected(sender: UITapGestureRecognizer) {
-        self.navigationController?.pushViewController(SearchVC(), animated: true)
-    }
+//    @objc func tapDetected(sender: UITapGestureRecognizer) {
+//        self.navigationController?.pushViewController(SearchVC(), animated: true)
+//    }
     
     
     // MARK: UICollectionViewDelegate
     
     // 해당 cell 선택 시 DetailVC로 넘어감
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.sendData(data: indexPath.row)
         navigationController?.pushViewController(DetailVC(), animated: true)
     }
     
@@ -166,6 +175,14 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
         return 1.0
     }
     
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == self.productDatas.count - 1 {
+            pagenum = pagenum + 1
+            print(pagenum)
+            getData(pagenum: pagenum)
+        }
+    }
+}
     /*
     // Uncomment this method to specify if the specified item should be highlighted during tracking
     override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
@@ -195,4 +212,3 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     }
     */
 
-}
