@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
 //        else {
 //            loadLogin()
-//        }
+        
         loadLogin()
         return true
     }

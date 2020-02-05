@@ -21,61 +21,78 @@ class ProfileVC: UIViewController {
     private let profileContentView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .gray
+        view.backgroundColor = .white
         return view
+    }()
+    
+    private let btnBack:UIButton = {
+        let btn = UIButton()
+        btn.backgroundColor = .white
+        btn.setImage(UIImage(named: "btnBack"), for: .normal)
+        btn.clipsToBounds = true
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(back), for: .touchUpInside)
+        return btn
+    }()
+    
+    private let profileLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "프로필"
+        label.textColor = .black
+        label.font = .systemFont(ofSize: 29)
+        label.backgroundColor = .white
+        return label
     }()
     
     // TODO: - imageView 뭐 들어가야하는지 알아보기
     
-    private let profileImage:UIImageView = {
-        let imageView = UIImageView()
-        imageView.backgroundColor = .white
-        imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    
-    let btnCheck:UIButton = {
-        let btn = UIButton(type:.system)
-        btn.backgroundColor = .blue
-        btn.setTitle("Check", for: .normal)
-        btn.tintColor = .white
-        btn.layer.cornerRadius = 5
-        btn.clipsToBounds = true
-        btn.translatesAutoresizingMaskIntoConstraints = false
-//        btn.isEnabled = false
-        btn.addTarget(self, action: #selector(signup), for: .touchUpInside)
-        return btn
-    }()
-    
-    let btnLater:UIButton = {
-        let btn = UIButton(type:.system)
-        btn.backgroundColor = .blue
-        btn.setTitle("Later", for: .normal)
-        btn.tintColor = .white
-        btn.layer.cornerRadius = 5
-        btn.clipsToBounds = true
-        btn.translatesAutoresizingMaskIntoConstraints = false
-//        btn.isEnabled = false
-        btn.addTarget(self, action: #selector(signup), for: .touchUpInside)
-        return btn
-    }()
-    
-//    let picker:UIImagePickerController = {
-//        let pick = UIImagePicker()
-//        pick.sourceType = .photoLibrary
+//    private let profileImage:UIImageView = {
+//        let imageView = UIImageView()
+//        imageView.backgroundColor = .white
+//        imageView.clipsToBounds = true
+//        imageView.translatesAutoresizingMaskIntoConstraints = false
+//        return imageView
 //    }()
     
+    let btnLater:UIButton = {
+        let btn = UIButton()
+        btn.backgroundColor = .black
+        btn.setTitle("다음에 할래요", for: .normal)
+        btn.titleLabel?.font = UIFont.systemFont(ofSize: 17)
+        btn.tintColor = .white
+        btn.clipsToBounds = true
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(signup), for: .touchUpInside)
+        return btn
+        }()
+    
+    let btnCheck:UIButton = {
+        let btn = UIButton()
+        btn.backgroundColor = .black
+        btn.setTitle("확인", for: .normal)
+        btn.titleLabel?.font = UIFont.systemFont(ofSize: 17)
+        btn.tintColor = .white
+        btn.clipsToBounds = true
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(signup), for: .touchUpInside)
+        return btn
+    }()
+
     // MARK: 각 Button에 따른 selector action 설정
     
+    @objc func back() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     @objc func signup() {
-        guard let profile = profileImage.image else {
-            return
-        }
-        let parameters: [String: [UIImage]?] = [
-            "thumbnail" : profile.images
-        ]
-        Alamofire.AF.request("http://mypepup.com/accounts/reset_password/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+//        guard let profile = profileImage.image else {
+//            return
+//        }
+//        let parameters: [String: [UIImage]?] = [
+//            "thumbnail" : profile.images
+//        ]
+        Alamofire.AF.request("http://mypepup.com/accounts/reset_password/", method: .post, parameters: [:], encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
                         (response) in switch response.result {
                         case .success(let JSON):
                             print("Success with JSON: \(JSON)")
@@ -86,15 +103,6 @@ class ProfileVC: UIViewController {
         }
     }
     
-    func isValidNickName(nickname: String) -> Bool {
-        if nickname.count > 0 {
-            return true
-        }
-        else {
-            return false
-        }
-    }
-    
     func successAlert() {
         let controller = TabBarController()
         self.navigationController?.pushViewController(controller, animated: true)
@@ -102,15 +110,19 @@ class ProfileVC: UIViewController {
     
     func setup() {
         view.backgroundColor = .white
-        profileContentView.addSubview(profileImage)
+//        profileContentView.addSubview(profileImage)
+        profileContentView.addSubview(btnBack)
+        profileContentView.addSubview(profileLabel)
         profileContentView.addSubview(btnCheck)
         profileContentView.addSubview(btnLater)
         view.addSubview(profileContentView)
         
         profileContentViewLayout()
-        profileImageLayout()
-        btnCheckLayout()
-        btnLaterLayout()
+        btnBackLayout()
+//        profileImageLayout()
+        profileLabelLayout()
+//        btnLaterLayout()
+//        btnCheckLayout()
     }
     
     // MARK: Set Layout of each view
@@ -122,26 +134,42 @@ class ProfileVC: UIViewController {
         profileContentView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
     
-    func profileImageLayout() {
-        profileImage.topAnchor.constraint(equalTo:profileContentView.topAnchor, constant:100).isActive = true
-        profileImage.leftAnchor.constraint(equalTo:profileContentView.leftAnchor, constant:20).isActive = true
-        profileImage.rightAnchor.constraint(equalTo:profileContentView.rightAnchor, constant:-20).isActive = true
-        profileImage.heightAnchor.constraint(equalToConstant:50).isActive = true
+    func btnBackLayout() {
+        btnBack.topAnchor.constraint(equalTo:profileContentView.topAnchor, constant:34).isActive = true
+        btnBack.leftAnchor.constraint(equalTo:profileContentView.leftAnchor, constant:18).isActive = true
+        btnBack.widthAnchor.constraint(equalToConstant:10).isActive = true
+        btnBack.heightAnchor.constraint(equalToConstant:18).isActive = true
+    }
+    
+    func profileLabelLayout() {
+        profileLabel.topAnchor.constraint(equalTo:profileContentView.topAnchor, constant:104).isActive = true
+        profileLabel.leftAnchor.constraint(equalTo:profileContentView.leftAnchor, constant:25).isActive = true
+        profileLabel.widthAnchor.constraint(equalToConstant:78).isActive = true
+        profileLabel.heightAnchor.constraint(equalToConstant:35).isActive = true
+    }
+    
+//    func profileImageLayout() {
+//        profileImage.topAnchor.constraint(equalTo:profileContentView.topAnchor, constant:100).isActive = true
+//        profileImage.leftAnchor.constraint(equalTo:profileContentView.leftAnchor, constant:20).isActive = true
+//        profileImage.rightAnchor.constraint(equalTo:profileContentView.rightAnchor, constant:-20).isActive = true
+//        profileImage.heightAnchor.constraint(equalToConstant:50).isActive = true
+//    }
+    
+    func btnLaterLayout() {
+        btnLater.topAnchor.constraint(equalTo:profileLabel.bottomAnchor, constant:448).isActive = true
+        btnLater.leftAnchor.constraint(equalTo:profileContentView.leftAnchor, constant:18).isActive = true
+        btnLater.widthAnchor.constraint(equalToConstant:339).isActive = true
+        btnLater.heightAnchor.constraint(equalToConstant:56).isActive = true
     }
     
     func btnCheckLayout() {
-        btnCheck.leftAnchor.constraint(equalTo:profileContentView.leftAnchor, constant:20).isActive = true
-        btnCheck.rightAnchor.constraint(equalTo:profileContentView.rightAnchor, constant:-20).isActive = true
-        btnCheck.heightAnchor.constraint(equalToConstant:50).isActive = true
-        btnCheck.topAnchor.constraint(equalTo:profileImage.bottomAnchor, constant:20).isActive = true
+        btnCheck.topAnchor.constraint(equalTo:profileLabel.bottomAnchor, constant:448).isActive = true
+        btnCheck.leftAnchor.constraint(equalTo:profileContentView.leftAnchor, constant:18).isActive = true
+        btnCheck.widthAnchor.constraint(equalToConstant:339).isActive = true
+        btnCheck.heightAnchor.constraint(equalToConstant:56).isActive = true
     }
     
-    func btnLaterLayout() {
-        btnLater.leftAnchor.constraint(equalTo:profileContentView.leftAnchor, constant:20).isActive = true
-        btnLater.rightAnchor.constraint(equalTo:profileContentView.rightAnchor, constant:-20).isActive = true
-        btnLater.heightAnchor.constraint(equalToConstant:50).isActive = true
-        btnLater.topAnchor.constraint(equalTo:btnCheck.bottomAnchor, constant:20).isActive = true
-    }
+    
     
 //    extension ProfileVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 //        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {

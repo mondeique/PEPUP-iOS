@@ -21,32 +21,68 @@ class NickNameVC: UIViewController {
     private let nicknameContentView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .gray
+        view.backgroundColor = .white
         return view
+    }()
+    
+    private let btnBack:UIButton = {
+        let btn = UIButton()
+        btn.backgroundColor = .white
+        btn.setImage(UIImage(named: "btnBack"), for: .normal)
+        btn.clipsToBounds = true
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(back), for: .touchUpInside)
+        return btn
+    }()
+    
+    private let nicknameLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "닉네임"
+        label.textColor = .black
+        label.font = .systemFont(ofSize: 29)
+        label.backgroundColor = .white
+        return label
     }()
     
     private let nicknameTxtField:UITextField = {
         let txtField = UITextField()
+        txtField.placeholder = "닉네임을 입력하세요"
         txtField.backgroundColor = .white
-        txtField.borderStyle = .roundedRect
+        txtField.borderStyle = .none
+        txtField.textAlignment = .center
         txtField.translatesAutoresizingMaskIntoConstraints = false
         return txtField
     }()
     
+    private let nicknameerrLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "이미 사용 중인 닉네임입니다."
+        label.textColor = .red
+        label.font = .systemFont(ofSize: 13)
+        label.isHidden = true
+        label.backgroundColor = .white
+        return label
+    }()
+    
     let btnCheck:UIButton = {
-        let btn = UIButton(type:.system)
-        btn.backgroundColor = .blue
-        btn.setTitle("Check", for: .normal)
+        let btn = UIButton()
+        btn.backgroundColor = .black
+        btn.setTitle("다음", for: .normal)
+        btn.titleLabel?.font = UIFont.systemFont(ofSize: 17)
         btn.tintColor = .white
-        btn.layer.cornerRadius = 5
         btn.clipsToBounds = true
         btn.translatesAutoresizingMaskIntoConstraints = false
-//        btn.isEnabled = false
         btn.addTarget(self, action: #selector(update), for: .touchUpInside)
         return btn
     }()
     
     // MARK: 각 Button에 따른 selector action 설정
+    
+    @objc func back() {
+        self.navigationController?.popViewController(animated: true)
+    }
     
     @objc func update() {
         guard let nicknameText = nicknameTxtField.text else {
@@ -88,12 +124,18 @@ class NickNameVC: UIViewController {
     
     func setup() {
         view.backgroundColor = .white
+        nicknameContentView.addSubview(btnBack)
+        nicknameContentView.addSubview(nicknameLabel)
         nicknameContentView.addSubview(nicknameTxtField)
+        nicknameContentView.addSubview(nicknameerrLabel)
         nicknameContentView.addSubview(btnCheck)
         view.addSubview(nicknameContentView)
         
         nicknameContentViewLayout()
+        btnBackLayout()
+        nicknameLabelLayout()
         nicknameTxtFieldLayout()
+        nicknameerrLabelLayout()
         btnCheckLayout()
     }
     
@@ -106,19 +148,38 @@ class NickNameVC: UIViewController {
         nicknameContentView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
     
+    func btnBackLayout() {
+        btnBack.topAnchor.constraint(equalTo:nicknameContentView.topAnchor, constant:34).isActive = true
+        btnBack.leftAnchor.constraint(equalTo:nicknameContentView.leftAnchor, constant:18).isActive = true
+        btnBack.widthAnchor.constraint(equalToConstant:10).isActive = true
+        btnBack.heightAnchor.constraint(equalToConstant:18).isActive = true
+    }
+    
+    func nicknameLabelLayout() {
+        nicknameLabel.topAnchor.constraint(equalTo:nicknameContentView.topAnchor, constant:104).isActive = true
+        nicknameLabel.leftAnchor.constraint(equalTo:nicknameContentView.leftAnchor, constant:25).isActive = true
+        nicknameLabel.widthAnchor.constraint(equalToConstant:78).isActive = true
+        nicknameLabel.heightAnchor.constraint(equalToConstant:35).isActive = true
+    }
+    
     func nicknameTxtFieldLayout() {
-        nicknameTxtField.keyboardType = .emailAddress
-        nicknameTxtField.placeholder = "아이디를 입력하세요"
-        nicknameTxtField.topAnchor.constraint(equalTo:nicknameContentView.topAnchor, constant:100).isActive = true
-        nicknameTxtField.leftAnchor.constraint(equalTo:nicknameContentView.leftAnchor, constant:20).isActive = true
-        nicknameTxtField.rightAnchor.constraint(equalTo:nicknameContentView.rightAnchor, constant:-20).isActive = true
-        nicknameTxtField.heightAnchor.constraint(equalToConstant:50).isActive = true
+        nicknameTxtField.topAnchor.constraint(equalTo:nicknameLabel.bottomAnchor, constant:185).isActive = true
+        nicknameTxtField.leftAnchor.constraint(equalTo:nicknameContentView.leftAnchor, constant:93).isActive = true
+        nicknameTxtField.widthAnchor.constraint(equalToConstant:189).isActive = true
+        nicknameTxtField.heightAnchor.constraint(equalToConstant:25).isActive = true
+    }
+    
+    func nicknameerrLabelLayout() {
+        nicknameerrLabel.topAnchor.constraint(equalTo:nicknameTxtField.bottomAnchor, constant:6).isActive = true
+        nicknameerrLabel.leftAnchor.constraint(equalTo:nicknameContentView.leftAnchor, constant:111).isActive = true
+        nicknameerrLabel.widthAnchor.constraint(equalToConstant:153).isActive = true
+        nicknameerrLabel.heightAnchor.constraint(equalToConstant:16).isActive = true
     }
     
     func btnCheckLayout() {
-        btnCheck.leftAnchor.constraint(equalTo:nicknameContentView.leftAnchor, constant:20).isActive = true
-        btnCheck.rightAnchor.constraint(equalTo:nicknameContentView.rightAnchor, constant:-20).isActive = true
-        btnCheck.heightAnchor.constraint(equalToConstant:50).isActive = true
-        btnCheck.topAnchor.constraint(equalTo:nicknameTxtField.bottomAnchor, constant:20).isActive = true
+        btnCheck.topAnchor.constraint(equalTo:nicknameerrLabel.bottomAnchor, constant:216).isActive = true
+        btnCheck.leftAnchor.constraint(equalTo:nicknameContentView.leftAnchor, constant:18).isActive = true
+        btnCheck.widthAnchor.constraint(equalToConstant:339).isActive = true
+        btnCheck.heightAnchor.constraint(equalToConstant:56).isActive = true
     }
 }
