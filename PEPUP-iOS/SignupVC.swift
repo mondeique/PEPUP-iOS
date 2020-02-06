@@ -71,20 +71,20 @@ class SignupVC: UIViewController {
         return label
     }()
     
-//    private let emailerrorLabel2: UILabel = {
-//        let label = UILabel()
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.text = "이미 사용 중인 이메일 입니다."
-//        label.textColor = UIColor(rgb: 0xFF0000)
-//        label.font = .systemFont(ofSize: 13)
-//        label.backgroundColor = .white
-//        label.isHidden = true
-//        return label
-//    }()
+    private let emailerrorLabel2: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "이미 가입된 이메일입니다."
+        label.textColor = UIColor(rgb: 0xFF0000)
+        label.font = .systemFont(ofSize: 13)
+        label.backgroundColor = .white
+        label.isHidden = true
+        return label
+    }()
 
     private let unameTxtField:UITextField = {
         let txtField = UITextField()
-        txtField.placeholder = " 아이디 또는 이메일"
+        txtField.placeholder = " example@example.com"
         txtField.backgroundColor = .white
         txtField.borderStyle = .line
         txtField.layer.borderWidth = 1.0
@@ -125,7 +125,7 @@ class SignupVC: UIViewController {
     
     private let pwordAgainTxtField:UITextField = {
         let txtField = UITextField()
-        txtField.placeholder = " 비밀번호를 다시 입력해 주세요"
+        txtField.placeholder = " 비밀번호를 확인해주세요"
         txtField.backgroundColor = .white
         txtField.borderStyle = .line
         txtField.layer.borderWidth = 1.0
@@ -169,12 +169,30 @@ class SignupVC: UIViewController {
 //        return image
 //    }()
     
+    private let btnCheckPayment:UIButton = {
+        let btn = UIButton()
+        btn.setImage(UIImage(named: "un_checkbox"), for: .normal)
+        btn.clipsToBounds = true
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(checkpayment), for: .touchUpInside)
+        return btn
+    }()
+    
+    private let btnCheckAD:UIButton = {
+        let btn = UIButton()
+        btn.setImage(UIImage(named: "un_checkbox"), for: .normal)
+        btn.clipsToBounds = true
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(checkad), for: .touchUpInside)
+        return btn
+    }()
+    
     private let btnSignup:UIButton = {
         let btn = UIButton()
-        btn.backgroundColor = .black
+        btn.backgroundColor = UIColor(rgb: 0xEBEBF6)
         btn.setTitle("가입하기", for: .normal)
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 17)
-        btn.tintColor = .white
+        btn.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
         btn.clipsToBounds = true
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(signup), for: .touchUpInside)
@@ -187,22 +205,124 @@ class SignupVC: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+    @objc func checkpayment() {
+        guard let emailText = unameTxtField.text else {
+            return
+        }
+        guard let passwordText = pwordTxtField.text else {
+            return
+        }
+        guard let passwordagainText = pwordAgainTxtField.text else {
+            return
+        }
+        guard let checkPaymentBox = btnCheckPayment.currentImage else {
+            return
+        }
+        guard let checkADBox = btnCheckAD.currentImage else {
+            return
+        }
+        if btnCheckPayment.currentImage == UIImage(named: "un_checkbox") {
+            btnCheckPayment.setImage(UIImage(named: "checkbox"), for: .normal)
+        }
+        else {
+            btnCheckPayment.setImage(UIImage(named: "un_checkbox"), for: .normal)
+        }
+        if isValidEmailAddress(email: emailText) && isVaildPassword(password: passwordText) && isSamePassword(password: passwordText, againpassword: passwordagainText) && isCheckedBox(checkBox1: checkPaymentBox, checkBox2: checkADBox) {
+            btnSignup.backgroundColor = .black
+            btnSignup.setTitleColor(.white, for: .normal)
+        }
+    }
+    
+    @objc func checkad() {
+        guard let emailText = unameTxtField.text else {
+            return
+        }
+        guard let passwordText = pwordTxtField.text else {
+            return
+        }
+        guard let passwordagainText = pwordAgainTxtField.text else {
+            return
+        }
+        guard let checkPaymentBox = btnCheckPayment.currentImage else {
+            return
+        }
+        guard let checkADBox = btnCheckAD.currentImage else {
+            return
+        }
+        if btnCheckAD.currentImage == UIImage(named: "un_checkbox") {
+            btnCheckAD.setImage(UIImage(named: "checkbox"), for: .normal)
+        }
+        else {
+            btnCheckAD.setImage(UIImage(named: "un_checkbox"), for: .normal)
+        }
+        if isValidEmailAddress(email: emailText) && isVaildPassword(password: passwordText) && isSamePassword(password: passwordText, againpassword: passwordagainText) && isCheckedBox(checkBox1: checkPaymentBox, checkBox2: checkADBox) {
+            btnSignup.backgroundColor = .black
+            btnSignup.setTitleColor(.white, for: .normal)
+        }
+    }
+    
     @objc func emailcheck() {
         guard let emailText = unameTxtField.text else {
             return
         }
+        guard let passwordText = pwordTxtField.text else {
+            return
+        }
+        guard let passwordagainText = pwordAgainTxtField.text else {
+            return
+        }
+        guard let checkPaymentBox = btnCheckPayment.currentImage else {
+            return
+        }
+        guard let checkADBox = btnCheckAD.currentImage else {
+            return
+        }
+        let parameters = [
+            "email": emailText
+        ]
+        Alamofire.AF.request("\(Config.baseURL)/accounts/check_email/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+                    (response) in switch response.result {
+                    case .success(let JSON):
+                        print("Success with JSON: \(JSON)")
+                        let response = JSON as! NSDictionary
+                        let code = response.object(forKey: "code") as! Int
+                        if code == -1{
+                            self.emailerrorLabel.isHidden = true
+                            self.emailerrorLabel2.isHidden = false
+                        }
+                    case .failure(let error):
+                        print("Request failed with error: \(error)")
+                    }
+        }
         if !isValidEmailAddress(email: emailText) {
+            self.emailerrorLabel2.isHidden = true
             self.emailerrorLabel.isHidden = false
 //            self.errorImage.isHidden = false
         }
         else {
+            self.emailerrorLabel2.isHidden = true
             self.emailerrorLabel.isHidden = true
         }
-        // TODO: - 이미 사용 중인 이메일 입니다 처리
+        if isValidEmailAddress(email: emailText) && isVaildPassword(password: passwordText) && isSamePassword(password: passwordText, againpassword: passwordagainText) && isCheckedBox(checkBox1: checkPaymentBox, checkBox2: checkADBox) {
+            btnSignup.backgroundColor = .black
+            btnSignup.setTitleColor(.white, for: .normal)
+        }
     }
     
     @objc func pwdcheck() {
+        guard let emailText = unameTxtField.text else {
+            return
+        }
         guard let passwordText = pwordTxtField.text else {
+            return
+        }
+        guard let passwordagainText = pwordAgainTxtField.text else {
+            return
+        }
+        guard let checkPaymentBox = btnCheckPayment.currentImage else {
+            return
+        }
+        guard let checkADBox = btnCheckAD.currentImage else {
             return
         }
         if !isVaildPassword(password: passwordText) {
@@ -213,22 +333,39 @@ class SignupVC: UIViewController {
             self.passworderrorLabel.isHidden = true
             self.pwordAgainTxtField.isEnabled = true
         }
+        if isValidEmailAddress(email: emailText) && isVaildPassword(password: passwordText) && isSamePassword(password: passwordText, againpassword: passwordagainText) && isCheckedBox(checkBox1: checkPaymentBox, checkBox2: checkADBox) {
+            btnSignup.backgroundColor = .black
+            btnSignup.setTitleColor(.white, for: .normal)
+        }
     }
     
     @objc func againpwdcheck() {
         self.passworderrorLabel.isHidden = true
+        guard let emailText = unameTxtField.text else {
+            return
+        }
         guard let passwordText = pwordTxtField.text else {
             return
         }
-        guard let againpasswordText = pwordAgainTxtField.text else {
+        guard let passwordagainText = pwordAgainTxtField.text else {
             return
         }
-        if !isSamePassword(password: passwordText, againpassword: againpasswordText) {
+        guard let checkPaymentBox = btnCheckPayment.currentImage else {
+            return
+        }
+        guard let checkADBox = btnCheckAD.currentImage else {
+            return
+        }
+        if !isSamePassword(password: passwordText, againpassword: passwordagainText) {
             self.passworderrorLabel2.isHidden = false
 //            self.errorImage3.isHidden = false
         }
         else {
             self.passworderrorLabel2.isHidden = true
+        }
+        if isValidEmailAddress(email: emailText) && isVaildPassword(password: passwordText) && isSamePassword(password: passwordText, againpassword: passwordagainText) && isCheckedBox(checkBox1: checkPaymentBox, checkBox2: checkADBox) {
+            btnSignup.backgroundColor = .black
+            btnSignup.setTitleColor(.white, for: .normal)
         }
     }
     
@@ -242,12 +379,18 @@ class SignupVC: UIViewController {
         guard let passwordagainText = pwordAgainTxtField.text else {
             return
         }
-        if isValidEmailAddress(email: emailText) && isVaildPassword(password: passwordText) && isSamePassword(password: passwordText, againpassword: passwordagainText) {
+        guard let checkPaymentBox = btnCheckPayment.currentImage else {
+            return
+        }
+        guard let checkADBox = btnCheckAD.currentImage else {
+            return
+        }
+        if isValidEmailAddress(email: emailText) && isVaildPassword(password: passwordText) && isSamePassword(password: passwordText, againpassword: passwordagainText) && isCheckedBox(checkBox1: checkPaymentBox, checkBox2: checkADBox) {
             let parameters: [String: String] = [
                 "password" : passwordText,
                 "email" : emailText,
             ]
-            Alamofire.AF.request("http://mypepup.com/accounts/signup/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+            Alamofire.AF.request("\(Config.baseURL)/accounts/signup/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
                         (response) in switch response.result {
                         case .success(let JSON):
                             print("Success with JSON: \(JSON)")
@@ -297,6 +440,15 @@ class SignupVC: UIViewController {
             return false
         }
     }
+    
+    func isCheckedBox (checkBox1: UIImage, checkBox2: UIImage) -> Bool{
+        if checkBox1 == UIImage(named: "checkbox") && checkBox2 == UIImage(named: "checkbox") {
+            return true
+        }
+        else {
+            return false
+        }
+    }
 
     
     func setup() {
@@ -305,7 +457,7 @@ class SignupVC: UIViewController {
         signupContentView.addSubview(signupLabel)
         signupContentView.addSubview(emailLabel)
         signupContentView.addSubview(emailerrorLabel)
-//        signupContentView.addSubview(emailerrorLabel2)
+        signupContentView.addSubview(emailerrorLabel2)
         signupContentView.addSubview(unameTxtField)
 //        signupContentView.addSubview(errorImage)
         signupContentView.addSubview(passwordLabel)
@@ -315,6 +467,8 @@ class SignupVC: UIViewController {
 //        signupContentView.addSubview(errorImage2)
         signupContentView.addSubview(pwordAgainTxtField)
 //        signupContentView.addSubview(errorImage3)
+        signupContentView.addSubview(btnCheckPayment)
+        signupContentView.addSubview(btnCheckAD)
         signupContentView.addSubview(btnSignup)
         view.addSubview(signupContentView)
 
@@ -323,7 +477,7 @@ class SignupVC: UIViewController {
         signupLabelLayout()
         emailLabelLayout()
         emailerrorLabelLayout()
-//        emailerrorLabel2Layout()
+        emailerrorLabel2Layout()
         unameTxtFieldLayout()
 //        errorImageLayout()
         passwordLabelLayout()
@@ -332,6 +486,8 @@ class SignupVC: UIViewController {
         pwordTxtFieldLayout()
 //        errorImage2Layout()
         pwordAgainTxtFieldLayout()
+        btnCheckPaymentLayout()
+        btnCheckADLayout()
 //        errorImage3Layout()
         btnSignupLayout()
     }
@@ -369,17 +525,16 @@ class SignupVC: UIViewController {
     func emailerrorLabelLayout() {
         emailerrorLabel.topAnchor.constraint(equalTo:signupLabel.bottomAnchor, constant:44).isActive = true
         emailerrorLabel.rightAnchor.constraint(equalTo:signupContentView.rightAnchor, constant:-25).isActive = true
-        emailerrorLabel.widthAnchor.constraint(equalToConstant: 176).isActive = true
+        emailerrorLabel.widthAnchor.constraint(equalToConstant:176).isActive = true
         emailerrorLabel.heightAnchor.constraint(equalToConstant:16).isActive = true
     }
     
-//    func emailerrorLabel2Layout() {
-//        emailerrorLabel2.topAnchor.constraint(equalTo:signupContentView.bottomAnchor, constant:173).isActive = true
-//        emailerrorLabel2.leftAnchor.constraint(equalTo:emailLabel.rightAnchor, constant:123).isActive = true
-//        emailerrorLabel2.rightAnchor.constraint(equalTo:signupContentView.rightAnchor, constant:-25).isActive = true
-//        emailerrorLabel2.heightAnchor.constraint(equalToConstant:16).isActive = true
-//        emailerrorLabel2.widthAnchor.constraint(equalToConstant: 157).isActive = true
-//    }
+    func emailerrorLabel2Layout() {
+        emailerrorLabel2.topAnchor.constraint(equalTo:signupLabel.bottomAnchor, constant:44).isActive = true
+        emailerrorLabel2.rightAnchor.constraint(equalTo:signupContentView.rightAnchor, constant:-25).isActive = true
+        emailerrorLabel2.widthAnchor.constraint(equalToConstant:138).isActive = true
+        emailerrorLabel2.heightAnchor.constraint(equalToConstant:16).isActive = true
+    }
     
     func unameTxtFieldLayout() {
         unameTxtField.keyboardType = .emailAddress
@@ -444,9 +599,23 @@ class SignupVC: UIViewController {
 //        errorImage3.widthAnchor.constraint(equalToConstant:20).isActive = true
 //        errorImage3.heightAnchor.constraint(equalToConstant:20).isActive = true
 //    }
+    
+    func btnCheckPaymentLayout() {
+        btnCheckPayment.topAnchor.constraint(equalTo:pwordAgainTxtField.bottomAnchor, constant:48).isActive = true
+        btnCheckPayment.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:25).isActive = true
+        btnCheckPayment.widthAnchor.constraint(equalToConstant:24).isActive = true
+        btnCheckPayment.heightAnchor.constraint(equalToConstant:24).isActive = true
+    }
+    
+    func btnCheckADLayout() {
+        btnCheckAD.topAnchor.constraint(equalTo:btnCheckPayment.bottomAnchor, constant:16).isActive = true
+        btnCheckAD.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:25).isActive = true
+        btnCheckAD.widthAnchor.constraint(equalToConstant:24).isActive = true
+        btnCheckAD.heightAnchor.constraint(equalToConstant:24).isActive = true
+    }
 
     func btnSignupLayout() {
-        btnSignup.topAnchor.constraint(equalTo:pwordTxtField.bottomAnchor, constant:160).isActive = true
+        btnSignup.topAnchor.constraint(equalTo:btnCheckAD.bottomAnchor, constant:48).isActive = true
         btnSignup.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:25).isActive = true
         btnSignup.widthAnchor.constraint(equalToConstant:325).isActive = true
         btnSignup.heightAnchor.constraint(equalToConstant:56).isActive = true

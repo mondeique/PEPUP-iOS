@@ -42,7 +42,7 @@ class LoginVC: UIViewController {
     
     private let unameTxtField:UITextField = {
         let txtField = UITextField()
-        txtField.placeholder = " 아이디 또는 이메일"
+        txtField.placeholder = " 이메일"
         txtField.backgroundColor = .white
         txtField.borderStyle = .line
         txtField.layer.borderWidth = 1.0
@@ -142,7 +142,7 @@ class LoginVC: UIViewController {
                 "password" : passwordText,
                 "email" : emailText,
             ]
-            Alamofire.AF.request("http://mypepup.com/accounts/login/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
+            Alamofire.AF.request("\(Config.baseURL)/accounts/login/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
                             (response) in switch response.result {
                             case .success(let JSON):
                                 print("Success with JSON: \(JSON)")

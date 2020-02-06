@@ -89,14 +89,12 @@ class NickNameVC: UIViewController {
             return
         }
         
-        // nicknameText 에 있으면 button 활성화
-        
         if isValidNickName(nickname: nicknameText) {
 //            btnCheck.isEnabled = true
             let parameters: [String: String] = [
                 "nickname" : nicknameText
             ]
-            Alamofire.AF.request("http://mypepup.com/accounts/signup/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+            Alamofire.AF.request("\(Config.baseURL)/accounts/signup/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
                             (response) in switch response.result {
                             case .success(let JSON):
                                 print("Success with JSON: \(JSON)")

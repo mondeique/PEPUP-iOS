@@ -92,7 +92,7 @@ class ProfileVC: UIViewController {
 //        let parameters: [String: [UIImage]?] = [
 //            "thumbnail" : profile.images
 //        ]
-        Alamofire.AF.request("http://mypepup.com/accounts/reset_password/", method: .post, parameters: [:], encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+        Alamofire.AF.request("\(Config.baseURL)/accounts/reset_password/", method: .post, parameters: [:], encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
                         (response) in switch response.result {
                         case .success(let JSON):
                             print("Success with JSON: \(JSON)")
@@ -121,8 +121,8 @@ class ProfileVC: UIViewController {
         btnBackLayout()
 //        profileImageLayout()
         profileLabelLayout()
-//        btnLaterLayout()
-//        btnCheckLayout()
+        btnLaterLayout()
+        btnCheckLayout()
     }
     
     // MARK: Set Layout of each view

@@ -11,6 +11,10 @@ import Alamofire
 
 class PhoneConfirmVC: UIViewController {
     
+    var time = 180
+    var timer = Timer()
+    var startTimer = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
@@ -83,6 +87,19 @@ class PhoneConfirmVC: UIViewController {
         txtField.isEnabled = false
         return txtField
     }()
+    
+    private let timerLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .black
+        label.font = .systemFont(ofSize: 13)
+        label.text = "03:00"
+        label.backgroundColor = .white
+        label.textAlignment = .center
+        label.layer.borderColor = UIColor.black.cgColor
+        label.layer.borderWidth = 1
+        return label
+    }()
 
     private let btnConfirm:UIButton = {
         let btn = UIButton()
@@ -102,7 +119,6 @@ class PhoneConfirmVC: UIViewController {
     }
     
     @objc func sendsms() {
-        btnSendSMS.isEnabled = false
         guard let phonenum = phonenumTxtField.text else {
             return
         }
@@ -113,17 +129,40 @@ class PhoneConfirmVC: UIViewController {
             let parameters = [
                 "phone": phonenum
             ]
-            Alamofire.AF.request("http://mypepup.com/accounts/confirmsms/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
+            Alamofire.AF.request("\(Config.baseURL)/accounts/confirmsms/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
                                    (response) in switch response.result {
                                    case .success(let JSON):
                                        print("Success with JSON: \(JSON)")
                                        let JSONDic = JSON as! NSDictionary
-                                       let token_name = "Token "
-                                       let token_ = JSONDic.object(forKey: "token") as! String
-                                       let token = token_name + token_
-                                       self.setCurrentLoginToken(token)
-                                       self.sendsmsAlert()
-                                       self.authnumTxtField.isEnabled = true
+                                       let code = JSONDic.object(forKey: "code") as! Int
+                                       if code == 1 || code == -2 {
+                                        let token_name = "Token "
+                                        let token_ = JSONDic.object(forKey: "token") as! String
+                                        let token = token_name + token_
+                                        self.setCurrentLoginToken(token)
+                                        self.sendsmsAlert()
+                                        self.timerStart()
+                                        self.authnumTxtField.isEnabled = true
+                                       }
+                                       else if code == 3 {
+                                        if UserDefaults.standard.object(forKey: "token") != nil {
+                                            self.signup()
+                                        }
+                                        else {
+                                            self.signup()
+                                            let token_name = "Token "
+                                            let token_ = JSONDic.object(forKey: "token") as! String
+                                            let token = token_name + token_
+                                            self.setCurrentLoginToken(token)
+                                        }
+                                       }
+                                       else if code == -1 {
+                                        self.smsAlreadyAlert()
+                                        }
+                                       else if code == -3 {
+                                        self.userAlreadyAlert()
+                                        self.login()
+                                    }
                                    case .failure(let error):
                                        print("Request failed with error: \(error)")
                                    }
@@ -144,15 +183,43 @@ class PhoneConfirmVC: UIViewController {
         let parameters = [
             "confirm_key": authnumber
         ]
-        Alamofire.AF.request("http://mypepup.com/accounts/confirmsms/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": token as! String]) .validate(statusCode: 200..<300) .responseJSON {
+        Alamofire.AF.request("\(Config.baseURL)/accounts/confirmsms/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": token as! String]) .validate(statusCode: 200..<300) .responseJSON {
                                 (response) in switch response.result {
                                 case .success(let JSON):
                                     print("Success with JSON: \(JSON)")
-                                    self.confirmAlert()
-                                    
+                                    let response = JSON as! NSDictionary
+                                    let code = response.object(forKey: "code") as! Int
+                                    if code == 1 {
+                                        self.confirmAlert()
+                                    }
+                                    else if code == -1 {
+                                        self.authnumAlert()
+                                    }
+                                    else if code == -2 {
+                                        self.sessionAlert()
+                                    }
+                                    else if code == -3 {
+                                        self.confirmAlreadyAlert()
+                                        self.signup()
+                                    }
                                 case .failure(let error):
                                     print("Request failed with error: \(error)")
                                 }
+        }
+    }
+    
+    @objc func timeLimit() {
+        if time > 0 {
+            time = time - 1
+            if time%60 < 10 {
+                timerLabel.text = "0\(time/60):0\(time%60)"
+            }
+            else {
+                timerLabel.text = "0\(time/60):\(time%60)"
+            }
+        }
+        else {
+            timeLimitStop()
         }
     }
     
@@ -164,8 +231,54 @@ class PhoneConfirmVC: UIViewController {
         return phonenumTest.evaluate(with: phonenumber)
     }
     
+    func timerStart() {
+        if startTimer == false {
+            startTimer = true
+            timerLimitStart()
+        }
+    }
+    
+    func timerLimitStart() {
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timeLimit), userInfo: nil, repeats: true)
+    }
+    
+    func timeLimitStop() {
+        startTimer = false
+        timer.invalidate()
+    }
+    
+    func sessionAlert() {
+        let alertController = UIAlertController(title: nil, message: "세션이 만료되었습니다. 다시 인증번호를 받아주세요", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
     func sendsmsAlert() {
         let alertController = UIAlertController(title: nil, message: "인증번호가 발송되었습니다.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func authnumAlert() {
+        let alertController = UIAlertController(title: nil, message: "인증번호가 일치하지 않습니다.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func smsAlreadyAlert() {
+        let alertController = UIAlertController(title: nil, message: "인증번호가 이미 발송되었습니다.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func userAlreadyAlert() {
+        let alertController = UIAlertController(title: nil, message: "유저가 이미 존재합니다.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func confirmAlreadyAlert() {
+        let alertController = UIAlertController(title: nil, message: "이미 인증되었습니다.", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
         self.present(alertController, animated: true, completion: nil)
     }
@@ -181,6 +294,11 @@ class PhoneConfirmVC: UIViewController {
         let alertController = UIAlertController(title: nil, message: "올바른 번호를 입력하세요.", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func login() {
+        let controller = LoginVC()
+        self.navigationController?.pushViewController(controller, animated: true)
     }
 
     func signup() {
@@ -199,6 +317,7 @@ class PhoneConfirmVC: UIViewController {
         phoneConfirmContentView.addSubview(phonenumTxtField)
         phoneConfirmContentView.addSubview(btnSendSMS)
         phoneConfirmContentView.addSubview(authnumTxtField)
+        phoneConfirmContentView.addSubview(timerLabel)
         phoneConfirmContentView.addSubview(btnConfirm)
         view.addSubview(phoneConfirmContentView)
 
@@ -206,8 +325,8 @@ class PhoneConfirmVC: UIViewController {
         btnBackLayout()
         signupLabelLayout()
         phonenumTxtFieldLayout()
+        timerLabelLayout()
         btnSendSMSLayout()
-        
         authnumTxtFieldLayout()
         btnConfirmLayout()
     }
@@ -254,6 +373,13 @@ class PhoneConfirmVC: UIViewController {
         authnumTxtField.leftAnchor.constraint(equalTo:phoneConfirmContentView.leftAnchor, constant:25).isActive = true
         authnumTxtField.widthAnchor.constraint(equalToConstant:215).isActive = true
         authnumTxtField.heightAnchor.constraint(equalToConstant:45).isActive = true
+    }
+    
+    func timerLabelLayout() {
+        timerLabel.topAnchor.constraint(equalTo:btnSendSMS.bottomAnchor, constant:26).isActive = true
+        timerLabel.leftAnchor.constraint(equalTo:authnumTxtField.rightAnchor, constant:10).isActive = true
+        timerLabel.widthAnchor.constraint(equalToConstant:100).isActive = true
+        timerLabel.heightAnchor.constraint(equalToConstant:34).isActive = true
     }
     
     func btnConfirmLayout() {

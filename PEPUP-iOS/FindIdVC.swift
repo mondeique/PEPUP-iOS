@@ -10,7 +10,11 @@ import UIKit
 import Alamofire
 
 class FindIdVC: UIViewController {
-
+    
+    var time = 180
+    var timer = Timer()
+    var startTimer = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
@@ -85,6 +89,19 @@ class FindIdVC: UIViewController {
        return txtField
     }()
     
+    private let timerLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .black
+        label.font = .systemFont(ofSize: 13)
+        label.text = "03:00"
+        label.backgroundColor = .white
+        label.textAlignment = .center
+        label.layer.borderColor = UIColor.black.cgColor
+        label.layer.borderWidth = 1
+        return label
+    }()
+    
     private let btnConfirm:UIButton = {
         let btn = UIButton()
         btn.backgroundColor = .black
@@ -111,14 +128,15 @@ class FindIdVC: UIViewController {
             let parameters = [
                 "phone": phonenum
             ]
-            Alamofire.AF.request("http://mypepup.com/accounts/find_email/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
+            Alamofire.AF.request("\(Config.baseURL)/accounts/find_email/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
                                    (response) in switch response.result {
                                    case .success(let JSON):
-                                    self.authnumTxtField.isEnabled = true
                                     print("Success with JSON: \(JSON)")
+                                    self.timerStart()
+                                    self.authnumTxtField.isEnabled = true
                                     
                                    case .failure(let error):
-                                       print("Request failed with error: \(error)")
+                                    print("Request failed with error: \(error)")
                                    }
             }
         }
@@ -138,7 +156,7 @@ class FindIdVC: UIViewController {
             "phone" : phonenum,
             "confirm_key": authnumber
         ]
-        Alamofire.AF.request("http://mypepup.com/accounts/find_email/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
+        Alamofire.AF.request("\(Config.baseURL)/accounts/find_email/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
                                 (response) in switch response.result {
                                 case .success(let JSON):
                                     print("Success with JSON: \(JSON)")
@@ -148,6 +166,21 @@ class FindIdVC: UIViewController {
                                 case .failure(let error):
                                     print("Request failed with error: \(error)")
                                 }
+        }
+    }
+    
+    @objc func timeLimit() {
+        if time > 0 {
+            time = time - 1
+            if time%60 < 10 {
+                timerLabel.text = "0\(time/60):0\(time%60)"
+            }
+            else {
+                timerLabel.text = "0\(time/60):\(time%60)"
+            }
+        }
+        else {
+            timeLimitStop()
         }
     }
     
@@ -176,6 +209,22 @@ class FindIdVC: UIViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
+    func timerStart() {
+        if startTimer == false {
+            startTimer = true
+            timerLimitStart()
+        }
+    }
+    
+    func timerLimitStart() {
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timeLimit), userInfo: nil, repeats: true)
+    }
+    
+    func timeLimitStop() {
+        startTimer = false
+        timer.invalidate()
+    }
+    
     func findpwd() {
         let controller = FindPwdVC()
         self.navigationController?.pushViewController(controller, animated: true)
@@ -193,6 +242,7 @@ class FindIdVC: UIViewController {
         findIdContentView.addSubview(phonenumTxtField)
         findIdContentView.addSubview(authnumTxtField)
         findIdContentView.addSubview(btnSendSMS)
+        findIdContentView.addSubview(timerLabel)
         findIdContentView.addSubview(btnConfirm)
         view.addSubview(findIdContentView)
 
@@ -202,6 +252,7 @@ class FindIdVC: UIViewController {
         phonenumTxtFieldLayout()
         authnumTxtFieldLayout()
         btnSendSMSLayout()
+        timerLabelLayout()
         btnConfirmLayout()
     }
     
@@ -247,6 +298,13 @@ class FindIdVC: UIViewController {
         authnumTxtField.leftAnchor.constraint(equalTo:findIdContentView.leftAnchor, constant:25).isActive = true
         authnumTxtField.widthAnchor.constraint(equalToConstant:215).isActive = true
         authnumTxtField.heightAnchor.constraint(equalToConstant:44).isActive = true
+    }
+    
+    func timerLabelLayout() {
+        timerLabel.topAnchor.constraint(equalTo:btnSendSMS.bottomAnchor, constant:26).isActive = true
+        timerLabel.leftAnchor.constraint(equalTo:authnumTxtField.rightAnchor, constant:10).isActive = true
+        timerLabel.widthAnchor.constraint(equalToConstant:100).isActive = true
+        timerLabel.heightAnchor.constraint(equalToConstant:34).isActive = true
     }
 
     func btnConfirmLayout() {
