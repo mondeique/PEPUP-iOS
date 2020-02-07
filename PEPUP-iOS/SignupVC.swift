@@ -280,7 +280,7 @@ class SignupVC: UIViewController {
         let parameters = [
             "email": emailText
         ]
-        Alamofire.AF.request("\(Config.baseURL)/accounts/check_email/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+        Alamofire.AF.request("\(Config.baseURL)/accounts/check_email/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": Config.token]) .validate(statusCode: 200..<300) .responseJSON {
                     (response) in switch response.result {
                     case .success(let JSON):
                         print("Success with JSON: \(JSON)")
@@ -390,7 +390,7 @@ class SignupVC: UIViewController {
                 "password" : passwordText,
                 "email" : emailText,
             ]
-            Alamofire.AF.request("\(Config.baseURL)/accounts/signup/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+            Alamofire.AF.request("\(Config.baseURL)/accounts/signup/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": Config.token]) .validate(statusCode: 200..<300) .responseJSON {
                         (response) in switch response.result {
                         case .success(let JSON):
                             print("Success with JSON: \(JSON)")
@@ -450,7 +450,6 @@ class SignupVC: UIViewController {
         }
     }
 
-    
     func setup() {
         view.backgroundColor = .white
         signupContentView.addSubview(btnBack)

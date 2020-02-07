@@ -135,7 +135,7 @@ class PhoneConfirmVC: UIViewController {
                                        print("Success with JSON: \(JSON)")
                                        let JSONDic = JSON as! NSDictionary
                                        let code = JSONDic.object(forKey: "code") as! Int
-                                       if code == 1 || code == -2 {
+                                       if code == 1 {
                                         let token_name = "Token "
                                         let token_ = JSONDic.object(forKey: "token") as! String
                                         let token = token_name + token_
@@ -145,7 +145,7 @@ class PhoneConfirmVC: UIViewController {
                                         self.authnumTxtField.isEnabled = true
                                        }
                                        else if code == 3 {
-                                        if UserDefaults.standard.object(forKey: "token") != nil {
+                                        if Config.token != nil {
                                             self.signup()
                                         }
                                         else {
@@ -159,6 +159,15 @@ class PhoneConfirmVC: UIViewController {
                                        else if code == -1 {
                                         self.smsAlreadyAlert()
                                         }
+                                       else if code == -2 {
+                                        self.sessionAlert()
+                                        let token_name = "Token "
+                                        let token_ = JSONDic.object(forKey: "token") as! String
+                                        let token = token_name + token_
+                                        self.setCurrentLoginToken(token)
+                                        self.timerStart()
+                                        self.authnumTxtField.isEnabled = true
+                                       }
                                        else if code == -3 {
                                         self.userAlreadyAlert()
                                         self.login()
@@ -174,16 +183,14 @@ class PhoneConfirmVC: UIViewController {
     }
     
     @objc func confirm() {
-        guard let token = UserDefaults.standard.object(forKey: "token") else {
-                   return
-               }
+        let token = Config.token
         guard let authnumber = authnumTxtField.text else {
                    return
                }
         let parameters = [
             "confirm_key": authnumber
         ]
-        Alamofire.AF.request("\(Config.baseURL)/accounts/confirmsms/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": token as! String]) .validate(statusCode: 200..<300) .responseJSON {
+        Alamofire.AF.request("\(Config.baseURL)/accounts/confirmsms/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": token]) .validate(statusCode: 200..<300) .responseJSON {
                                 (response) in switch response.result {
                                 case .success(let JSON):
                                     print("Success with JSON: \(JSON)")
@@ -254,13 +261,13 @@ class PhoneConfirmVC: UIViewController {
     }
     
     func sendsmsAlert() {
-        let alertController = UIAlertController(title: nil, message: "인증번호가 발송되었습니다.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: nil, message: "인증번호가 발송되었습니다", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
         self.present(alertController, animated: true, completion: nil)
     }
     
     func authnumAlert() {
-        let alertController = UIAlertController(title: nil, message: "인증번호가 일치하지 않습니다.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: nil, message: "인증번호가 일치하지 않습니다", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
         self.present(alertController, animated: true, completion: nil)
     }

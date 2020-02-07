@@ -147,7 +147,7 @@ class LoginVC: UIViewController {
                             case .success(let JSON):
                                 print("Success with JSON: \(JSON)")
                                 // 만료되지 않은 token이 저장되어 있을 경우
-                                if (UserDefaults.standard.object(forKey: "token") as! String) != nil {
+                                if (Config.token) != nil {
                                     self.successAlert()
                                 }
                                 else {

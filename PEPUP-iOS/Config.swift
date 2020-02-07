@@ -10,4 +10,5 @@ import Foundation
 
 struct Config {
     static let baseURL = "http://mypepup.com"
+    static let token = UserDefaults.standard.object(forKey: "token") as! String
 }

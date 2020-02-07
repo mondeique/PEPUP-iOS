@@ -73,7 +73,7 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     
     func getData(pagenum: Int) {
 //        self.productDatas = []
-        Alamofire.AF.request("\(Config.baseURL)/api/products/?page=" + String(pagenum), method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+        Alamofire.AF.request("\(Config.baseURL)/api/products/?page=" + String(pagenum), method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": Config.token]) .validate(statusCode: 200..<300) .responseJSON {
             (response) in switch response.result {
             case .success(let JSON):
                 let response = JSON as! NSDictionary

@@ -94,7 +94,7 @@ class NickNameVC: UIViewController {
             let parameters: [String: String] = [
                 "nickname" : nicknameText
             ]
-            Alamofire.AF.request("\(Config.baseURL)/accounts/signup/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+            Alamofire.AF.request("\(Config.baseURL)/accounts/signup/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": Config.token]) .validate(statusCode: 200..<300) .responseJSON {
                             (response) in switch response.result {
                             case .success(let JSON):
                                 print("Success with JSON: \(JSON)")
@@ -104,15 +104,21 @@ class NickNameVC: UIViewController {
                             }
             }
         }
+        else {
+            self.nicknamefailAlert()
+        }
+    }
+    
+    func nicknamefailAlert() {
+        let alertController = UIAlertController(title: nil, message: "닉네임 형식이) 올바르지 않습니다.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
     
     func isValidNickName(nickname: String) -> Bool {
-        if nickname.count > 0 {
-            return true
-        }
-        else {
-            return false
-        }
+        let nicknameRegEx = "[a-zA-Z가-힣ㄱ-ㅎㅏ-ㅣ0-9]{1,15}"
+        let nicknameTest = NSPredicate(format:"SELF MATCHES %@", nicknameRegEx)
+        return nicknameTest.evaluate(with: nickname)
     }
     
     func changeprofile() {

@@ -202,7 +202,7 @@ class FindPwdVC: UIViewController {
                                (response) in switch response.result {
                                case .success(let JSON):
                                 print("Success with JSON: \(JSON)")
-                                if (UserDefaults.standard.object(forKey: "token") as! String) != nil {
+                                if (Config.token) != nil {
                                     self.resetpwd()
                                 }
                                 else {
