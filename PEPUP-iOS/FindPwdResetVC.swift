@@ -171,7 +171,12 @@ class FindPwdResetVC: UIViewController {
                                    (response) in switch response.result {
                                    case .success(let JSON):
                                     print("Success with JSON: \(JSON)")
-                                    self.resetpwd()
+                                    let response = JSON as! NSDictionary
+                                    let code = response.object(forKey: "code") as! Int
+                                    if code == 1 {
+                                        self.resetpwdAlert()
+                                        self.login()
+                                    }
                                    case .failure(let error):
                                     print("Request failed with error: \(error)")
                                    }
@@ -196,9 +201,15 @@ class FindPwdResetVC: UIViewController {
         }
     }
     
-    func resetpwd() {
+    func login() {
         let controller = LoginVC()
         self.navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    func resetpwdAlert() {
+        let alertController = UIAlertController(title: nil, message: "비밀번호가 변경되었습니다", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
     
     func setup() {

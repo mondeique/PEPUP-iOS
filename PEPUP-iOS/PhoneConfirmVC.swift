@@ -136,42 +136,41 @@ class PhoneConfirmVC: UIViewController {
                                        let JSONDic = JSON as! NSDictionary
                                        let code = JSONDic.object(forKey: "code") as! Int
                                        if code == 1 {
-                                        let token_name = "Token "
-                                        let token_ = JSONDic.object(forKey: "token") as! String
-                                        let token = token_name + token_
-                                        self.setCurrentLoginToken(token)
-                                        self.sendsmsAlert()
-                                        self.timerStart()
-                                        self.authnumTxtField.isEnabled = true
-                                       }
-                                       else if code == 3 {
-                                        if Config.token != nil {
-                                            self.signup()
-                                        }
-                                        else {
-                                            self.signup()
                                             let token_name = "Token "
                                             let token_ = JSONDic.object(forKey: "token") as! String
                                             let token = token_name + token_
                                             self.setCurrentLoginToken(token)
-                                        }
+                                            self.sendsmsAlert()
+                                            self.timerStart()
+                                            self.authnumTxtField.isEnabled = true
+                                       }
+                                       else if code == 3 {
+                                            let token_name = "Token "
+                                            let token_ = JSONDic.object(forKey: "token") as! String
+                                            let token = token_name + token_
+                                            self.setCurrentLoginToken(token)
+                                            self.signup()
                                        }
                                        else if code == -1 {
-                                        self.smsAlreadyAlert()
+                                            self.smsAlreadyAlert()
+                                            self.authnumTxtField.isEnabled = true
                                         }
                                        else if code == -2 {
-                                        self.sessionAlert()
-                                        let token_name = "Token "
-                                        let token_ = JSONDic.object(forKey: "token") as! String
-                                        let token = token_name + token_
-                                        self.setCurrentLoginToken(token)
-                                        self.timerStart()
-                                        self.authnumTxtField.isEnabled = true
+                                            self.sessionAlert()
+                                            let token_name = "Token "
+                                            let token_ = JSONDic.object(forKey: "token") as! String
+                                            let token = token_name + token_
+                                            self.setCurrentLoginToken(token)
+                                            self.timerStart()
+                                            self.authnumTxtField.isEnabled = true
                                        }
                                        else if code == -3 {
-                                        self.userAlreadyAlert()
-                                        self.login()
-                                    }
+                                            self.login()
+                                            self.userAlreadyAlert()
+                                        }
+                                       else if code == -20 {
+                                            self.helpmondeAlert()
+                                        }
                                    case .failure(let error):
                                        print("Request failed with error: \(error)")
                                    }
@@ -183,7 +182,7 @@ class PhoneConfirmVC: UIViewController {
     }
     
     @objc func confirm() {
-        let token = Config.token
+        let token = UserDefaults.standard.object(forKey: "token") as! String
         guard let authnumber = authnumTxtField.text else {
                    return
                }
@@ -206,8 +205,8 @@ class PhoneConfirmVC: UIViewController {
                                         self.sessionAlert()
                                     }
                                     else if code == -3 {
-                                        self.confirmAlreadyAlert()
                                         self.signup()
+                                        self.confirmAlreadyAlert()
                                     }
                                 case .failure(let error):
                                     print("Request failed with error: \(error)")
@@ -231,6 +230,23 @@ class PhoneConfirmVC: UIViewController {
     }
     
     // MARK: 그 외 함수
+    
+    func formattedNumber(number: String) -> String {
+        let cleanPhoneNumber = number.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        let mask = "XXX-XXX-XXXX"
+
+        var result = ""
+        var index = cleanPhoneNumber.startIndex
+        for ch in mask where index < cleanPhoneNumber.endIndex {
+            if ch == "X" {
+                result.append(cleanPhoneNumber[index])
+                index = cleanPhoneNumber.index(after: index)
+            } else {
+                result.append(ch)
+            }
+        }
+        return result
+    }
     
     func isValidPhonenumber(phonenumber: String) -> Bool{
         let phonenumRegEx = "[0-1]{3,}+[0-9]{7,}"
@@ -256,6 +272,12 @@ class PhoneConfirmVC: UIViewController {
     
     func sessionAlert() {
         let alertController = UIAlertController(title: nil, message: "세션이 만료되었습니다. 다시 인증번호를 받아주세요", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func helpmondeAlert() {
+        let alertController = UIAlertController(title: nil, message: "몽데이크 CS팀으로 문의해주세요", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
         self.present(alertController, animated: true, completion: nil)
     }

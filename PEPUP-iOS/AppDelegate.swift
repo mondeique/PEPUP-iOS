@@ -17,32 +17,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-//        if let token = Config.token {
-//            Alamofire.AF.request("\(Config.baseURL)/accounts/check_userinfo/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": token]) .validate(statusCode: 200..<300) .responseJSON {
-//                            (response) in switch response.result {
-//                            case .success(let JSON):
-//                                print("Success with JSON: \(JSON)")
-//                                // 만료되지 않은 token이 저장되어 있을 경우
-//                                let response = JSON as! NSDictionary
-//                                let code = response.object(forKey: "status") as! Int
-//                                print(code)
-//                                if code == 1 {
-//                                    self.loadHome()
-//                                }
-//                                else if code == -1 {
-//                                    self.loadLogin()
-//                                }
-//                                else if code == -2 {
-//                                    self.loadLogin()
-//                                }
-//                                else if code == -3 {
-//                                    self.loadNickName()
-//                                }
-//                            case .failure(let error):
-//                                print("Request failed with error: \(error)")
-//                            }
-//            }
-//        }
+        if let token = UserDefaults.standard.object(forKey: "token") as? String {
+            Alamofire.AF.request("\(Config.baseURL)/accounts/check_userinfo/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": token]) .validate(statusCode: 200..<300) .responseJSON {
+                            (response) in switch response.result {
+                            case .success(let JSON):
+                                print("Success with JSON: \(JSON)")
+                                // 만료되지 않은 token이 저장되어 있을 경우
+                                let response = JSON as! NSDictionary
+                                let code = response.object(forKey: "code") as! Int
+                                if code == 1 {
+                                    self.loadHome()
+                                }
+                                else if code == -1 {
+                                    print("Invalid Token")
+                                }
+                                else if code == -2 {
+                                    self.loadLogin()
+                                }
+                                else if code == -3 {
+                                    self.loadNickName()
+                                }
+                                else if code == -4 {
+                                    UserDefaults.standard.set(nil, forKey: "token")
+                                    self.loadLogin()
+                                }
+                            case .failure(let error):
+                                print("Request failed with error: \(error)")
+                                if error.responseCode == 401 {
+                                    self.loadLogin()
+                                }
+                            }
+            }
+        }
+        else {
+            print("NO TOKEN")
+            self.loadLogin()
+        }
         loadLogin()
         return true
     }

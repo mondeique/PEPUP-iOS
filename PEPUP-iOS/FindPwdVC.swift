@@ -172,9 +172,17 @@ class FindPwdVC: UIViewController {
                                     print("Success with JSON: \(JSON)")
                                     let response = JSON as! NSDictionary
                                     let code = response.object(forKey: "code") as! Int
-                                    if code == 1 || code == -1 {
+                                    if code == 1 {
+                                        self.sendsmsAlert()
                                         self.authnumTxtField.isEnabled = true
                                         self.timerStart()
+                                    }
+                                    else if code == -1 {
+                                        self.smsAlreadyAlert()
+                                        self.authnumTxtField.isEnabled = true
+                                    }
+                                    else if code == -2 {
+                                        self.sessionAlert()
                                     }
                                    case .failure(let error):
                                        print("Request failed with error: \(error)")
@@ -202,17 +210,27 @@ class FindPwdVC: UIViewController {
                                (response) in switch response.result {
                                case .success(let JSON):
                                 print("Success with JSON: \(JSON)")
-                                if (Config.token) != nil {
-                                    self.resetpwd()
+                                let response = JSON as! NSDictionary
+                                let code = response.object(forKey: "code") as! Int
+                                if code == 1 {
+                                    if UserDefaults.standard.object(forKey: "token") as! String != nil {
+                                        self.resetpwd()
+                                    }
+                                    else {
+                                        let JSONDic = JSON as! NSDictionary
+                                        let token_name = "Token "
+                                        let token_ = JSONDic.object(forKey: "token") as! String
+                                        let token = token_name + token_
+                                        print(token)
+                                        self.setCurrentLoginToken(token)
+                                        self.resetpwd()
+                                    }
                                 }
-                                else {
-                                    let JSONDic = JSON as! NSDictionary
-                                    let token_name = "Token "
-                                    let token_ = JSONDic.object(forKey: "token") as! String
-                                    let token = token_name + token_
-                                    print(token)
-                                    self.setCurrentLoginToken(token)
-                                    self.resetpwd()
+                                else if code == -1 {
+                                    self.authnumAlert()
+                                }
+                                else if code == -2 {
+                                    self.sessionAlert()
                                 }
                                case .failure(let error):
                                 print("Request failed with error: \(error)")
@@ -261,6 +279,42 @@ class FindPwdVC: UIViewController {
     func timeLimitStop() {
         startTimer = false
         timer.invalidate()
+    }
+    
+    func helpmondeAlert() {
+        let alertController = UIAlertController(title: nil, message: "몽데이크 CS팀으로 문의해주세요", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func sessionAlert() {
+        let alertController = UIAlertController(title: nil, message: "세션이 만료되었습니다. 다시 인증번호를 받아주세요", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func nouserAlert() {
+        let alertController = UIAlertController(title: nil, message: "유저가 존재하지 않습니다", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func sendsmsAlert() {
+        let alertController = UIAlertController(title: nil, message: "인증번호가 발송되었습니다", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func authnumAlert() {
+        let alertController = UIAlertController(title: nil, message: "인증번호가 일치하지 않습니다", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func smsAlreadyAlert() {
+        let alertController = UIAlertController(title: nil, message: "인증번호가 이미 발송되었습니다.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
     
     func resetpwd() {

@@ -146,21 +146,32 @@ class LoginVC: UIViewController {
                             (response) in switch response.result {
                             case .success(let JSON):
                                 print("Success with JSON: \(JSON)")
-                                // 만료되지 않은 token이 저장되어 있을 경우
-                                if (Config.token) != nil {
-                                    self.successAlert()
-                                }
-                                else {
-                                    let JSONDic = JSON as! NSDictionary
+                                let response = JSON as! NSDictionary
+                                let code = response.object(forKey: "code") as! Int
+                                if code == 1 {
                                     let token_name = "Token "
-                                    let token_ = JSONDic.object(forKey: "token") as! String
+                                    let token_ = response.object(forKey: "token") as! String
                                     let token = token_name + token_
-                                    print(token)
                                     self.setCurrentLoginToken(token)
                                     self.successAlert()
                                 }
+                                else if code == -1 {
+                                    self.failloginAlert()
+                                }
+                                else if code == 2 {
+                                    let token_name = "Token "
+                                    let token_ = response.object(forKey: "token") as! String
+                                    let token = token_name + token_
+                                    self.setCurrentLoginToken(token)
+                                    let controller = NickNameVC()
+                                    self.navigationController?.pushViewController(controller, animated: true)
+                                    self.nicknameAlert()
+                                }
                             case .failure(let error):
                                 print("Request failed with error: \(error)")
+                                if error.responseCode == 400 {
+                                    self.failloginAlert()
+                                }
                             }
             }
         }
@@ -199,6 +210,18 @@ class LoginVC: UIViewController {
            let controller = TabBarController()
            self.navigationController?.pushViewController(controller, animated: true)
        }
+    
+    func failloginAlert() {
+        let alertController = UIAlertController(title: nil, message: "로그인 정보가 올바르지 않습니다.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func nicknameAlert() {
+        let alertController = UIAlertController(title: nil, message: "닉네임이 설정되지 않았습니다.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
     
     func failedAlert(message: String) {
         let alertController = UIAlertController(title: nil, message: "\(message) 올바르지 않습니다.", preferredStyle: .alert)

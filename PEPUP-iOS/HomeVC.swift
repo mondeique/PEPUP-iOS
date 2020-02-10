@@ -21,7 +21,6 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
         super.viewDidLoad()
         setup()
         getData(pagenum: 1)
-//        getData(pagenum: "2")
     }
     
     // MARK: collectionView 전체 View setting
@@ -36,33 +35,37 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
         collectionView.register(HomeCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionView.register(HomeHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         
-        let notiImage = UIImage(named: "home_selected")
-        let cartImage = UIImage(named: "home_selected")
+        let messageImage = UIImage(named: "btnMessage")
+        let cartImage = UIImage(named: "btnCart")
         
-        let searchImage = UIImage(named: "home_selected")
+        let searchImage = UIImage(named: "search_bar")
         
         let searchButton = UIBarButtonItem(image: searchImage,  style: .plain, target: self, action: #selector(didTapPepupButton))
-        let notiButton = UIBarButtonItem(image: notiImage,  style: .plain, target: self, action: #selector(didTapNotiButton))
+        let messageButton = UIBarButtonItem(image: messageImage,  style: .plain, target: self, action: #selector(didTapMessageButton))
         let cartButton = UIBarButtonItem(image: cartImage, style: .plain, target: self, action: #selector(didTapCartButton))
         
-//        let menuBarItem = UIBarButtonItem(customView: menuBtn)
-//        let currWidth = menuBarItem.customView?.widthAnchor.constraint(equalToConstant: 24)
-//        currWidth?.isActive = true
-//        let currHeight = menuBarItem.customView?.heightAnchor.constraint(equalToConstant: 24)
-//        currHeight?.isActive = true
-//        self.navigationItem.leftBarButtonItem = menuBarItem
+//        let mesRight = messageButton.customView?.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 8).isActive = true
+//        let mesWidth = messageButton.customView?.widthAnchor.constraint(equalToConstant:40).isActive = true
+//        let mesHeight = messageButton.customView?.heightAnchor.constraint(equalToConstant:40).isActive = true
+//
+//        let cartRight = cartButton.customView?.rightAnchor.constraint(equalTo: messageButton.customView!.leftAnchor, constant: 8).isActive = true
+//        let cartWidth = cartButton.customView?.widthAnchor.constraint(equalToConstant:40).isActive = true
+//        let cartHeigth = cartButton.customView?.heightAnchor.constraint(equalToConstant:40).isActive = true
+//
+//        let searchLeft = searchButton.customView?.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 18).isActive = true
+//        let searchWidth = searchButton.customView?.widthAnchor.constraint(equalToConstant:245).isActive = true
+//        let searchHeight = searchButton.customView?.heightAnchor.constraint(equalToConstant:32).isActive = true
         
         navigationItem.leftBarButtonItem = searchButton
-        navigationItem.rightBarButtonItems = [cartButton, notiButton]
-        
+        navigationItem.rightBarButtonItems = [messageButton, cartButton]
     }
     
     @objc func didTapPepupButton(sender: AnyObject) {
         self.navigationController?.pushViewController(SearchVC(), animated: true)
     }
     
-    @objc func didTapNotiButton(sender: AnyObject){
-        self.navigationController?.pushViewController(NotiVC(), animated: true)
+    @objc func didTapMessageButton(sender: AnyObject){
+        self.navigationController?.pushViewController(MessageVC(), animated: true)
     }
     
     @objc func didTapCartButton(sender: AnyObject){
@@ -72,8 +75,7 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     // MARK: Server 로부터 Main에 뿌릴 Data Alamofire로 받아오기
     
     func getData(pagenum: Int) {
-//        self.productDatas = []
-        Alamofire.AF.request("\(Config.baseURL)/api/products/?page=" + String(pagenum), method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": Config.token]) .validate(statusCode: 200..<300) .responseJSON {
+        Alamofire.AF.request("\(Config.baseURL)/api/products/?page=" + String(pagenum), method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
             (response) in switch response.result {
             case .success(let JSON):
                 let response = JSON as! NSDictionary

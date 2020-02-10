@@ -93,11 +93,19 @@ class ProfileVC: UIViewController {
     }
     
     @objc func changeprofile() {
-        // TODO: - Image Upload
+        // TODO: - image AF upload
+        self.successAlert()
+        self.successsignupAlert()
+    }
+    
+    func successsignupAlert() {
+        let alertController = UIAlertController(title: nil, message: "회원가입이 완료되었습니다.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
     
     func successAlert() {
-        let controller = TabBarController()
+        let controller = LoginVC()
         self.navigationController?.pushViewController(controller, animated: true)
     }
     

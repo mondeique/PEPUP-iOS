@@ -231,6 +231,10 @@ class SignupVC: UIViewController {
             btnSignup.backgroundColor = .black
             btnSignup.setTitleColor(.white, for: .normal)
         }
+        else {
+            btnSignup.backgroundColor = UIColor(rgb: 0xEBEBF6)
+            btnSignup.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
+        }
     }
     
     @objc func checkad() {
@@ -259,6 +263,10 @@ class SignupVC: UIViewController {
             btnSignup.backgroundColor = .black
             btnSignup.setTitleColor(.white, for: .normal)
         }
+        else {
+            btnSignup.backgroundColor = UIColor(rgb: 0xEBEBF6)
+            btnSignup.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
+        }
     }
     
     @objc func emailcheck() {
@@ -280,13 +288,13 @@ class SignupVC: UIViewController {
         let parameters = [
             "email": emailText
         ]
-        Alamofire.AF.request("\(Config.baseURL)/accounts/check_email/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": Config.token]) .validate(statusCode: 200..<300) .responseJSON {
+        Alamofire.AF.request("\(Config.baseURL)/accounts/check_email/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
                     (response) in switch response.result {
                     case .success(let JSON):
                         print("Success with JSON: \(JSON)")
                         let response = JSON as! NSDictionary
                         let code = response.object(forKey: "code") as! Int
-                        if code == -1{
+                        if code == -1 {
                             self.emailerrorLabel.isHidden = true
                             self.emailerrorLabel2.isHidden = false
                         }
@@ -306,6 +314,10 @@ class SignupVC: UIViewController {
         if isValidEmailAddress(email: emailText) && isVaildPassword(password: passwordText) && isSamePassword(password: passwordText, againpassword: passwordagainText) && isCheckedBox(checkBox1: checkPaymentBox, checkBox2: checkADBox) {
             btnSignup.backgroundColor = .black
             btnSignup.setTitleColor(.white, for: .normal)
+        }
+        else {
+            btnSignup.backgroundColor = UIColor(rgb: 0xEBEBF6)
+            btnSignup.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
         }
     }
     
@@ -337,6 +349,10 @@ class SignupVC: UIViewController {
             btnSignup.backgroundColor = .black
             btnSignup.setTitleColor(.white, for: .normal)
         }
+        else {
+            btnSignup.backgroundColor = UIColor(rgb: 0xEBEBF6)
+            btnSignup.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
+        }
     }
     
     @objc func againpwdcheck() {
@@ -367,6 +383,10 @@ class SignupVC: UIViewController {
             btnSignup.backgroundColor = .black
             btnSignup.setTitleColor(.white, for: .normal)
         }
+        else {
+            btnSignup.backgroundColor = UIColor(rgb: 0xEBEBF6)
+            btnSignup.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
+        }
     }
     
     @objc func signup() {
@@ -390,11 +410,22 @@ class SignupVC: UIViewController {
                 "password" : passwordText,
                 "email" : emailText,
             ]
-            Alamofire.AF.request("\(Config.baseURL)/accounts/signup/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": Config.token]) .validate(statusCode: 200..<300) .responseJSON {
+            Alamofire.AF.request("\(Config.baseURL)/accounts/signup/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
                         (response) in switch response.result {
                         case .success(let JSON):
                             print("Success with JSON: \(JSON)")
-                            self.successAlert()
+                            let response = JSON as! NSDictionary
+                            let code = response.object(forKey: "code") as! Int
+                            if code == 1 {
+                                self.successAlert()
+                            }
+                            else if code == -1 {
+                                self.signupemailAlert()
+                            }
+                            else if code == -2 {
+                                self.userAlreadyAlert()
+                            }
+                            // no header token -> already processed
                         case .failure(let error):
                             print("Request failed with error: \(error)")
                         }
@@ -408,17 +439,17 @@ class SignupVC: UIViewController {
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
-//    func failedAlert(message: String) {
-//        let alertController = UIAlertController(title: nil, message: "\(message) 다시 입력해 주세요.", preferredStyle: .alert)
-//        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-//        self.present(alertController, animated: true, completion: nil)
-//    }
-//
-//    func passwordAlert() {
-//        let alertController = UIAlertController(title: nil, message: "두 비밀번호가 일치하지 않습니다.", preferredStyle: .alert)
-//        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-//        self.present(alertController, animated: true, completion: nil)
-//    }
+    func signupemailAlert() {
+        let alertController = UIAlertController(title: nil, message: "이미 가입된 이메일입니다.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func userAlreadyAlert() {
+        let alertController = UIAlertController(title: nil, message: "해당 이메일로 가입된 유저가 존재합니다.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
     
     func isValidEmailAddress(email: String) -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
