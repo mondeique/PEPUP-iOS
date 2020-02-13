@@ -26,7 +26,7 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     func setup() {
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.itemSize = CGSize(width: 375, height: 250)
+        layout.itemSize = CGSize(width: 375, height: 100)
         
         cartCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         cartCollectionView.backgroundColor = .white
@@ -106,7 +106,7 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 375, height: 120)
+        return CGSize(width: 375, height: 100)
     }
     
     // item = cell 마다 space 설정
@@ -124,10 +124,10 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-            return CGSize(width: collectionView.frame.width, height: 100.0)
+            return CGSize(width: collectionView.frame.width, height: 56.0)
     }
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-            return CGSize(width: collectionView.frame.width, height: 80.0)
+            return CGSize(width: collectionView.frame.width, height: 156.0)
     }
     
     /*
