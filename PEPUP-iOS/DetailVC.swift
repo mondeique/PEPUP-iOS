@@ -12,6 +12,7 @@ import Alamofire
 class DetailVC: UIViewController{
     
     var productDatas = NSDictionary()
+    var Myid:String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +20,11 @@ class DetailVC: UIViewController{
         // Do any additional setup after loading the view.
         getData()
 
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("Hello, \(Myid)")
     }
     func setup() {
         view.backgroundColor = .white
@@ -104,12 +110,12 @@ class DetailVC: UIViewController{
     }()
     
     func getData() {
-        Alamofire.AF.request("http://mypepup.com/api/products/5/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json",  "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+        Alamofire.AF.request("\(Config.baseURL)/api/products/120/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json",  "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
             (response) in switch response.result {
             case .success(let JSON):
                 print("Success with JSON: \(JSON)")
                 let response = JSON as! NSDictionary
-                self.productDatas = response
+                print(response)
                 
             case .failure(let error):
                 print("Request failed with error: \(error)")

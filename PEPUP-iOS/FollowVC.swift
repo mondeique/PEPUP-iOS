@@ -16,8 +16,6 @@ class FollowVC: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
 
         // Do any additional setup after loading the view.
     }

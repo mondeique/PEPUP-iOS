@@ -41,7 +41,7 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     }
     
     func getData() {
-        Alamofire.AF.request("\(Config.baseURL)/api/trades/cart/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": "Token 3d9876c19e72c859b9f82cb3c36706a3de4dad95"]) .validate(statusCode: 200..<300) .responseJSON {
+        Alamofire.AF.request("\(Config.baseURL)/api/trades/cart/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": "Token 9360c128b54444ce7e8c70473be640ecea97fbcf"]) .validate(statusCode: 200..<300) .responseJSON {
             (response) in switch response.result {
             case .success(let JSON):
                 let response = JSON as! Array<NSDictionary>

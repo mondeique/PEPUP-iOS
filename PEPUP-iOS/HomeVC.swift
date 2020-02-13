@@ -153,7 +153,9 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     
     // 해당 cell 선택 시 DetailVC로 넘어감
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        navigationController?.pushViewController(DetailVC(), animated: true)
+        let nextVC = DetailVC()
+        nextVC.Myid = "1356"
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     // cell size 설정
