@@ -166,7 +166,7 @@ class FindPwdVC: UIViewController {
                 "email": unameTxt,
                 "phone": phonenum
             ]
-            Alamofire.AF.request("\(Config.baseURL)/accounts/reset_password_sms/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
+            Alamofire.AF.request("\(Config.baseURL)/accounts/reset_password/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
                                    (response) in switch response.result {
                                    case .success(let JSON):
                                     print("Success with JSON: \(JSON)")
@@ -183,6 +183,12 @@ class FindPwdVC: UIViewController {
                                     }
                                     else if code == -2 {
                                         self.sessionAlert()
+                                    }
+                                    else if code == -5 {
+                                        self.nouserAlert()
+                                    }
+                                    else if code == -20 {
+                                        self.helpmondeAlert()
                                     }
                                    case .failure(let error):
                                        print("Request failed with error: \(error)")
@@ -206,7 +212,7 @@ class FindPwdVC: UIViewController {
             "phone": phonenum,
             "confirm_key": authnum
         ]
-        Alamofire.AF.request("\(Config.baseURL)/accounts/reset_password_sms_confirm/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
+        Alamofire.AF.request("\(Config.baseURL)/accounts/reset_password/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
                                (response) in switch response.result {
                                case .success(let JSON):
                                 print("Success with JSON: \(JSON)")
@@ -231,6 +237,12 @@ class FindPwdVC: UIViewController {
                                 }
                                 else if code == -2 {
                                     self.sessionAlert()
+                                }
+                                else if code == -3 {
+                                    self.smsAlreadyAlert()
+                                }
+                                else if code == -5 {
+                                    self.nouserAlert()
                                 }
                                case .failure(let error):
                                 print("Request failed with error: \(error)")

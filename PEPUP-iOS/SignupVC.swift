@@ -294,7 +294,12 @@ class SignupVC: UIViewController {
                         print("Success with JSON: \(JSON)")
                         let response = JSON as! NSDictionary
                         let code = response.object(forKey: "code") as! Int
-                        if code == -1 {
+                        if code == 1 {
+                            self.emailerrorLabel.isHidden = true
+                            self.emailerrorLabel2.isHidden = true
+                        }
+                        // 중복된 이메일인 경우
+                        else if code == -1 {
                             self.emailerrorLabel.isHidden = true
                             self.emailerrorLabel2.isHidden = false
                         }

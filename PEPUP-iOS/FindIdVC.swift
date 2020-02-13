@@ -146,7 +146,7 @@ class FindIdVC: UIViewController {
                                     else if code == -2 {
                                         self.sessionAlert()
                                     }
-                                    else if code == -3 {
+                                    else if code == -5 {
                                         self.nouserAlert()
                                     }
                                     else if code == -20 {
@@ -189,7 +189,7 @@ class FindIdVC: UIViewController {
                                     else if code == -2 {
                                         self.sessionAlert()
                                     }
-                                    else if code == -3 {
+                                    else if code == -5 {
                                         self.nouserAlert()
                                     }
                                     else if code == -20 {

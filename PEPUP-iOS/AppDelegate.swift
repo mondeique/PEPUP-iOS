@@ -25,18 +25,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 // 만료되지 않은 token이 저장되어 있을 경우
                                 let response = JSON as! NSDictionary
                                 let code = response.object(forKey: "code") as! Int
+                                // user.email, user.nickname 모두 존재할 경우
                                 if code == 1 {
                                     self.loadHome()
                                 }
+                                // token이 없는 경우
                                 else if code == -1 {
                                     print("Invalid Token")
                                 }
+                                // user.email이 없는 경우
                                 else if code == -2 {
                                     self.loadLogin()
                                 }
+                                // user.nickname이 없는 경우
                                 else if code == -3 {
                                     self.loadNickName()
                                 }
+                                // phone confirm 자체도 하지 않은 경우
                                 else if code == -4 {
                                     UserDefaults.standard.set(nil, forKey: "token")
                                     self.loadLogin()
