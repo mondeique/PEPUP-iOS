@@ -2,71 +2,62 @@
 //  CartVC.swift
 //  PEPUP-iOS
 //
-//  Created by Eren-shin on 2020/02/10.
+//  Created by Eren-shin on 2020/02/13.
 //  Copyright © 2020 Mondeique. All rights reserved.
 //
 
 import UIKit
-import Alamofire
 
-private let cartreuseIdentifier = "cartcell"
+private let reuseIdentifier = "cartcell"
+var cartCollectionView: UICollectionView!
 
-
-class CartVC: UICollectionViewController {
-
-    var productDatas = Array<Dictionary<String, Any>>()
-
+class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        getData()
-        setup()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
+        layout.itemSize = CGSize(width: 111, height: 111)
+        
+        cartCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
+        cartCollectionView.backgroundColor = .white
+        cartCollectionView.delegate   = self
+        cartCollectionView.dataSource = self
+        cartCollectionView.register(CartCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        cartCollectionView.backgroundColor = UIColor.white
+        
+        self.view.addSubview(cartCollectionView)
 
+    }
 
-        // Do any additional setup after loading the view.
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using [segue destinationViewController].
+        // Pass the selected object to the new view controller.
     }
-    
-    func getData() {
-        Alamofire.AF.request("\(Config.baseURL)/api/trades/cart/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-            (response) in switch response.result {
-            case .success(let JSON):
-                productDatas = JSON 
-                print(response)
-//                DispatchQueue.main.async {
-//                    self.collectionView.reloadData()
-//                }
-            case .failure(let error):
-                print("Request failed with error: \(error)")
-            }
-        }
-    }
-    
-    fileprivate func setup() {
-        collectionView.backgroundColor = .white
-        collectionView.alwaysBounceVertical = true
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.keyboardDismissMode = .onDrag
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.register(CartCell.self, forCellWithReuseIdentifier: cartreuseIdentifier)
-    }
+    */
 
     // MARK: UICollectionViewDataSource
 
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
 
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
         return 20
     }
 
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cartreuseIdentifier, for: indexPath) as! CartCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CartCell
+            
         // Configure the cell
     
         return cell
