@@ -91,7 +91,7 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
             }
         }
     }
-
+    
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -153,8 +153,10 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     
     // 해당 cell 선택 시 DetailVC로 넘어감
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let productDictionary = self.productDatas[indexPath.row] as NSDictionary
+        let productId = productDictionary.object(forKey: "id") as! Int
         let nextVC = DetailVC()
-        nextVC.Myid = "1356"
+        nextVC.Myid = productId
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
