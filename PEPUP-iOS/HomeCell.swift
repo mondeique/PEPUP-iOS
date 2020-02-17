@@ -10,7 +10,7 @@ import UIKit
 
 class HomeCell: BaseCollectionViewCell {
     
-    var productImg: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 125, height: 125))
+    var productImg: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width / 3, height: UIScreen.main.bounds.width / 3))
     
     override func setup() {
         backgroundColor = .white

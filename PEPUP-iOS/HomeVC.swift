@@ -35,7 +35,7 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
         collectionView.register(HomeCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionView.register(HomeHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         
-        let messageImage = UIImage(named: "btnMessage")
+        let messageImage = UIImage(named: "btnDirect")
         let cartImage = UIImage(named: "btnCart")
         
         let searchImage = UIImage(named: "search_bar")
@@ -164,7 +164,7 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 120, height: 120)
+        return CGSize(width: UIScreen.main.bounds.width / 3, height: UIScreen.main.bounds.width / 3)
     }
     
     // item = cell 마다 space 설정

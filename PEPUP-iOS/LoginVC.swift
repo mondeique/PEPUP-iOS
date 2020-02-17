@@ -19,7 +19,59 @@ class LoginVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = true
+        
+//        registerForKeyboardNotifications()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+//        unregisterForKeyboardNotifications()
+    }
+    
+//    //MARK: Keyboard events
+//    func registerForKeyboardNotifications() {
+//        NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+//    }
+//
+//    func unregisterForKeyboardNotifications() {
+//        NotificationCenter.default.removeObserver(self, name:UIResponder.keyboardWillShowNotification, object: nil)
+//        NotificationCenter.default.removeObserver(self, name:UIResponder.keyboardWillHideNotification, object: nil)
+//    }
+//
+//    @objc func keyboardWillShow(note: NSNotification) {
+//        // UI를 키보드 위로 올려준다
+//        print("keyboardWillShow")
+//
+//        let s = note.userInfo![UIResponder.keyboardFrameEndUserInfoKey]
+//        let rect = (s! as AnyObject).CGRectValue()
+//
+//        // 입력창 위치를 올려줌
+//        var frame = textField.frame
+//        frame.origin.y -= rect.height
+//        textField.frame = frame
+//
+//        let keyboardFrameEnd = view!.convertRect(rect, toView: nil)
+//        view.frame = CGRectMake(0, 0, keyboardFrameEnd.size.width, keyboardFrameEnd.origin.y)
+//        view.layoutIfNeeded()
+//    }
+//
+//    @objc func keyboardWillHide(note: NSNotification) {
+//        // UI를 원위치 한다
+//        print("keyboardWillHide")
+//
+//        let s = note.userInfo![UIKeyboardFrameBeginUserInfoKey]
+//        let rect = s!.CGRectValue()
+//
+//        var frame = textField.frame
+//        frame.origin.y += rect.height
+//        textField.frame = frame
+//
+//        frame = view.frame
+//        view.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.width, frame.height+ rect.height)
+//        view.layoutIfNeeded()
+//    }
     
     // MARK: Declare each view programmatically 
     

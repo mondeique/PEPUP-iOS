@@ -32,8 +32,30 @@ class DetailVC: UIViewController{
         let screensize: CGRect = UIScreen.main.bounds
         let screenWidth = screensize.width
         let screenHeight = screensize.height
+        let defaultWidth: CGFloat = 375
+        let defaultHeight: CGFloat = 667
+        let statusBarHeight: CGFloat! = UIApplication.shared.statusBarFrame.height
+        let navBarHeight: CGFloat! = navigationController?.navigationBar.frame.height
         var scrollView: UIScrollView!
-        scrollView = UIScrollView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: screenWidth, height: screenHeight)))
+        scrollView = UIScrollView(frame: CGRect(origin: CGPoint(x: 0, y: navBarHeight+statusBarHeight), size: CGSize(width: screenWidth, height: screenHeight)))
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        if #available(iOS 11.0, *) {
+            scrollView.contentInsetAdjustmentBehavior = .never
+        } else {
+            automaticallyAdjustsScrollViewInsets = false
+        }
+        scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
+        scrollView.contentInset = UIEdgeInsets.zero
+        view.addSubview(scrollView)
+        
+        scrollView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0.0).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: navBarHeight+statusBarHeight).isActive = true
+        scrollView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0.0).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0.0).isActive = true
+        
+        scrollView.contentSize = CGSize(width: screenWidth, height: 2000)
+        scrollView.contentOffset = CGPoint(x: 0, y: 0)
+        
         
         scrollView.addSubview(productImage)
         scrollView.addSubview(productPrice)
@@ -41,6 +63,7 @@ class DetailVC: UIViewController{
         scrollView.addSubview(btnMessage)
         scrollView.addSubview(productName)
         scrollView.addSubview(pepupImage)
+        scrollView.addSubview(lineLabel1)
         scrollView.addSubview(deliveryLabel)
         scrollView.addSubview(deliveryPriceLabel)
         scrollView.addSubview(mountainLabel)
@@ -52,72 +75,87 @@ class DetailVC: UIViewController{
         scrollView.addSubview(brandInfoLabel)
         scrollView.addSubview(contentLabel)
         scrollView.addSubview(tagLabel)
-        scrollView.addSubview(storeLabel)
+        scrollView.addSubview(storeinfoLabel)
         scrollView.addSubview(sellerProfile)
         scrollView.addSubview(sellerNameLabel)
         scrollView.addSubview(sellerSoldLabel)
         scrollView.addSubview(sellerReviewLabel)
+        scrollView.addSubview(lineLabel2)
+        scrollView.addSubview(storeLabel)
         scrollView.addSubview(btnStore)
+        scrollView.addSubview(lineLabel3)
+        scrollView.addSubview(reviewLabel)
         scrollView.addSubview(btnReview)
+        scrollView.addSubview(lineLabel4)
         scrollView.addSubview(btnCart)
         
     
-        NSLayoutConstraint(item: productImage, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .leftMargin, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: productImage, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 375).isActive = true
-        NSLayoutConstraint(item: productImage, attribute: .top, relatedBy: .equal, toItem: scrollView, attribute: .topMargin, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: productImage, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 375).isActive = true
+        NSLayoutConstraint(item: productImage, attribute: .leading, relatedBy: .equal, toItem: scrollView, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: productImage, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: screenWidth).isActive = true
+        NSLayoutConstraint(item: productImage, attribute: .top, relatedBy: .equal, toItem: scrollView, attribute: .top, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: productImage, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: screenWidth).isActive = true
+        NSLayoutConstraint(item: productImage, attribute: .centerX, relatedBy: .equal, toItem: scrollView, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         
-        NSLayoutConstraint(item: productPrice, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .leftMargin, multiplier: 1, constant: 18).isActive = true
-        NSLayoutConstraint(item: productPrice, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 100).isActive = true
-        NSLayoutConstraint(item: productPrice, attribute: .top, relatedBy: .equal, toItem: productImage, attribute: .bottomMargin, multiplier: 1, constant: 16).isActive = true
-        NSLayoutConstraint(item: productPrice, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 28).isActive = true
+        NSLayoutConstraint(item: productPrice, attribute: .leading, relatedBy: .equal, toItem: scrollView, attribute: .leading, multiplier: 1, constant: screenWidth/defaultWidth * 18).isActive = true
+//        NSLayoutConstraint(item: productPrice, attribute: .width, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 50).isActive = true
+        NSLayoutConstraint(item: productPrice, attribute: .top, relatedBy: .equal, toItem: productImage, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 16).isActive = true
+//        NSLayoutConstraint(item: productPrice, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 28).isActive = true
         
-        NSLayoutConstraint(item: btnMessage, attribute: .right, relatedBy: .equal, toItem: scrollView, attribute: .rightMargin, multiplier: 1, constant: 8).isActive = true
-        NSLayoutConstraint(item: btnMessage, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
-        NSLayoutConstraint(item: btnMessage, attribute: .top, relatedBy: .equal, toItem: productImage, attribute: .bottomMargin, multiplier: 1, constant: 8).isActive = true
-        NSLayoutConstraint(item: btnMessage, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
+        NSLayoutConstraint(item: btnLike, attribute: .leading, relatedBy: .equal, toItem: scrollView, attribute: .leading, multiplier: 1, constant: screenWidth/defaultWidth * 279).isActive = true
+//        NSLayoutConstraint(item: btnLike, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
+        NSLayoutConstraint(item: btnLike, attribute: .top, relatedBy: .equal, toItem: productImage, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 8).isActive = true
+//        NSLayoutConstraint(item: btnLike, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
         
-        NSLayoutConstraint(item: btnLike, attribute: .right, relatedBy: .equal, toItem: btnMessage, attribute: .leftMargin, multiplier: 1, constant: 8).isActive = true
-        NSLayoutConstraint(item: btnLike, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
-        NSLayoutConstraint(item: btnLike, attribute: .top, relatedBy: .equal, toItem: productImage, attribute: .bottomMargin, multiplier: 1, constant: 8).isActive = true
-        NSLayoutConstraint(item: btnLike, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
+        NSLayoutConstraint(item: btnMessage, attribute: .left, relatedBy: .equal, toItem: btnLike, attribute: .right, multiplier: 1, constant: screenWidth/defaultWidth * 8).isActive = true
+//        NSLayoutConstraint(item: btnMessage, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
+        NSLayoutConstraint(item: btnMessage, attribute: .top, relatedBy: .equal, toItem: productImage, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 8).isActive = true
+//        NSLayoutConstraint(item: btnMessage, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
         
-        NSLayoutConstraint(item: productName, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .leftMargin, multiplier: 1, constant: 18).isActive = true
-        NSLayoutConstraint(item: productName, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 120).isActive = true
-        NSLayoutConstraint(item: productName, attribute: .top, relatedBy: .equal, toItem: productPrice, attribute: .bottomMargin, multiplier: 1, constant: 16).isActive = true
-        NSLayoutConstraint(item: productName, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
-        NSLayoutConstraint(item: pepupImage, attribute: .right, relatedBy: .equal, toItem: scrollView, attribute: .rightMargin, multiplier: 1, constant: 8).isActive = true
-        NSLayoutConstraint(item: pepupImage, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
-        NSLayoutConstraint(item: pepupImage, attribute: .top, relatedBy: .equal, toItem: btnMessage, attribute: .bottomMargin, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: pepupImage, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
+        NSLayoutConstraint(item: productName, attribute: .leading, relatedBy: .equal, toItem: scrollView, attribute: .leading, multiplier: 1, constant: screenWidth/defaultWidth * 18).isActive = true
+//        NSLayoutConstraint(item: productName, attribute: .width, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
+        NSLayoutConstraint(item: productName, attribute: .top, relatedBy: .equal, toItem: productPrice, attribute: .bottom, multiplier: 1, constant: 16).isActive = true
+//        NSLayoutConstraint(item: productName, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
-        NSLayoutConstraint(item: deliveryLabel, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .leftMargin, multiplier: 1, constant: 18).isActive = true
-        NSLayoutConstraint(item: deliveryLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
-        NSLayoutConstraint(item: deliveryLabel, attribute: .top, relatedBy: .equal, toItem: productName, attribute: .bottomMargin, multiplier: 1, constant: 32).isActive = true
-        NSLayoutConstraint(item: deliveryLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 19).isActive = true
+        NSLayoutConstraint(item: pepupImage, attribute: .left, relatedBy: .equal, toItem: btnLike, attribute: .rightMargin, multiplier: 1, constant: screenWidth/defaultWidth * 8).isActive = true
+//        NSLayoutConstraint(item: pepupImage, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
+        NSLayoutConstraint(item: pepupImage, attribute: .top, relatedBy: .equal, toItem: productPrice, attribute: .bottom, multiplier: 1, constant: 4).isActive = true
+//        NSLayoutConstraint(item: pepupImage, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
         
-        NSLayoutConstraint(item: deliveryPriceLabel, attribute: .right, relatedBy: .equal, toItem: scrollView, attribute: .rightMargin, multiplier: 1, constant: 18).isActive = true
-        NSLayoutConstraint(item: deliveryPriceLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60).isActive = true
-        NSLayoutConstraint(item: deliveryPriceLabel, attribute: .top, relatedBy: .equal, toItem: productPrice, attribute: .bottomMargin, multiplier: 1, constant: 16).isActive = true
-        NSLayoutConstraint(item: deliveryPriceLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 19).isActive = true
+        NSLayoutConstraint(item: lineLabel1, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .leftMargin, multiplier: 1, constant: screenWidth/defaultWidth * 18).isActive = true
+        NSLayoutConstraint(item: lineLabel1, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: screenWidth/defaultWidth * 339).isActive = true
+        NSLayoutConstraint(item: lineLabel1, attribute: .top, relatedBy: .equal, toItem: productName, attribute: .bottom, multiplier: 1, constant: 16).isActive = true
+        NSLayoutConstraint(item: lineLabel1, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 1).isActive = true
+        NSLayoutConstraint(item: lineLabel1, attribute: .centerX, relatedBy: .equal, toItem: scrollView, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         
-        NSLayoutConstraint(item: mountainLabel, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .leftMargin, multiplier: 1, constant: 18).isActive = true
-        NSLayoutConstraint(item: mountainLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 80).isActive = true
-        NSLayoutConstraint(item: mountainLabel, attribute: .top, relatedBy: .equal, toItem: deliveryLabel, attribute: .bottomMargin, multiplier: 1, constant: 4).isActive = true
-        NSLayoutConstraint(item: mountainLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 19).isActive = true
+        NSLayoutConstraint(item: deliveryLabel, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .leftMargin, multiplier: 1, constant: screenWidth/defaultWidth * 18).isActive = true
+//        NSLayoutConstraint(item: deliveryLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
+        NSLayoutConstraint(item: deliveryLabel, attribute: .top, relatedBy: .equal, toItem: lineLabel1, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 15).isActive = true
+//        NSLayoutConstraint(item: deliveryLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
         
-        NSLayoutConstraint(item: mountainPriceLabel, attribute: .right, relatedBy: .equal, toItem: scrollView, attribute: .rightMargin, multiplier: 1, constant: 18).isActive = true
-        NSLayoutConstraint(item: mountainPriceLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60).isActive = true
-        NSLayoutConstraint(item: mountainPriceLabel, attribute: .top, relatedBy: .equal, toItem: deliveryPriceLabel, attribute: .bottomMargin, multiplier: 1, constant: 4).isActive = true
-        NSLayoutConstraint(item: mountainPriceLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 19).isActive = true
+        NSLayoutConstraint(item: deliveryPriceLabel, attribute: .right, relatedBy: .equal, toItem: scrollView, attribute: .leftMargin, multiplier: 1, constant: screenWidth/defaultWidth * 357).isActive = true
+//        NSLayoutConstraint(item: deliveryPriceLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60).isActive = true
+        NSLayoutConstraint(item: deliveryPriceLabel, attribute: .top, relatedBy: .equal, toItem: lineLabel1, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 15).isActive = true
+//        NSLayoutConstraint(item: deliveryPriceLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 19).isActive = true
         
-        NSLayoutConstraint(item: pepupadImage, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .leftMargin, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: pepupadImage, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 375).isActive = true
+        NSLayoutConstraint(item: mountainLabel, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .leftMargin, multiplier: 1, constant: screenWidth/defaultWidth * 18).isActive = true
+//        NSLayoutConstraint(item: mountainLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 80).isActive = true
+        NSLayoutConstraint(item: mountainLabel, attribute: .top, relatedBy: .equal, toItem: deliveryLabel, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 4).isActive = true
+//        NSLayoutConstraint(item: mountainLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 19).isActive = true
+        
+        NSLayoutConstraint(item: mountainPriceLabel, attribute: .right, relatedBy: .equal, toItem: scrollView, attribute: .leftMargin, multiplier: 1, constant: screenWidth/defaultWidth * 357).isActive = true
+//        NSLayoutConstraint(item: mountainPriceLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60).isActive = true
+        NSLayoutConstraint(item: mountainPriceLabel, attribute: .top, relatedBy: .equal, toItem: deliveryPriceLabel, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 4).isActive = true
+//        NSLayoutConstraint(item: mountainPriceLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 19).isActive = true
+        
+        NSLayoutConstraint(item: pepupadImage, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .left, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: pepupadImage, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: screenWidth).isActive = true
         NSLayoutConstraint(item: pepupadImage, attribute: .top, relatedBy: .equal, toItem: mountainLabel, attribute: .bottomMargin, multiplier: 1, constant: 16).isActive = true
         NSLayoutConstraint(item: pepupadImage, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 200).isActive = true
+    
+        NSLayoutConstraint(item: pepupadImage, attribute: .centerX, relatedBy: .equal, toItem: scrollView, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         
-        NSLayoutConstraint(item: sizeLabel, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .leftMargin, multiplier: 1, constant: 18).isActive = true
+        NSLayoutConstraint(item: sizeLabel, attribute: .left, relatedBy: .greaterThanOrEqual, toItem: scrollView, attribute: .leftMargin, multiplier: 1, constant: 18).isActive = true
         NSLayoutConstraint(item: sizeLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 31).isActive = true
         NSLayoutConstraint(item: sizeLabel, attribute: .top, relatedBy: .equal, toItem: pepupadImage, attribute: .bottomMargin, multiplier: 1, constant: 40).isActive = true
         NSLayoutConstraint(item: sizeLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 19).isActive = true
@@ -147,19 +185,19 @@ class DetailVC: UIViewController{
         NSLayoutConstraint(item: tagLabel, attribute: .top, relatedBy: .equal, toItem: contentLabel, attribute: .bottomMargin, multiplier: 1, constant: 24).isActive = true
         NSLayoutConstraint(item: tagLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 19).isActive = true
         
-        NSLayoutConstraint(item: storeLabel, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .leftMargin, multiplier: 1, constant: 18).isActive = true
-        NSLayoutConstraint(item: storeLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 94).isActive = true
-        NSLayoutConstraint(item: storeLabel, attribute: .top, relatedBy: .equal, toItem: tagLabel, attribute: .bottomMargin, multiplier: 1, constant: 60).isActive = true
-        NSLayoutConstraint(item: storeLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
+        NSLayoutConstraint(item: storeinfoLabel, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .leftMargin, multiplier: 1, constant: 18).isActive = true
+        NSLayoutConstraint(item: storeinfoLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 94).isActive = true
+        NSLayoutConstraint(item: storeinfoLabel, attribute: .top, relatedBy: .equal, toItem: tagLabel, attribute: .bottomMargin, multiplier: 1, constant: 60).isActive = true
+        NSLayoutConstraint(item: storeinfoLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         NSLayoutConstraint(item: sellerProfile, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .leftMargin, multiplier: 1, constant: 18).isActive = true
         NSLayoutConstraint(item: sellerProfile, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 56).isActive = true
-        NSLayoutConstraint(item: sellerProfile, attribute: .top, relatedBy: .equal, toItem: storeLabel, attribute: .bottomMargin, multiplier: 1, constant: 24).isActive = true
+        NSLayoutConstraint(item: sellerProfile, attribute: .top, relatedBy: .equal, toItem: storeinfoLabel, attribute: .bottomMargin, multiplier: 1, constant: 24).isActive = true
         NSLayoutConstraint(item: sellerProfile, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 56).isActive = true
         
         NSLayoutConstraint(item: sellerNameLabel, attribute: .left, relatedBy: .equal, toItem: sellerProfile, attribute: .rightMargin, multiplier: 1, constant: 16).isActive = true
         NSLayoutConstraint(item: sellerNameLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 76).isActive = true
-        NSLayoutConstraint(item: sellerNameLabel, attribute: .top, relatedBy: .equal, toItem: storeLabel, attribute: .bottomMargin, multiplier: 1, constant: 31).isActive = true
+        NSLayoutConstraint(item: sellerNameLabel, attribute: .top, relatedBy: .equal, toItem: storeinfoLabel, attribute: .bottomMargin, multiplier: 1, constant: 31).isActive = true
         NSLayoutConstraint(item: sellerNameLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
         NSLayoutConstraint(item: sellerReviewLabel, attribute: .left, relatedBy: .equal, toItem: sellerProfile, attribute: .rightMargin, multiplier: 1, constant: 38).isActive = true
@@ -172,23 +210,49 @@ class DetailVC: UIViewController{
         NSLayoutConstraint(item: sellerSoldLabel, attribute: .top, relatedBy: .equal, toItem: sellerNameLabel, attribute: .bottomMargin, multiplier: 1, constant: 4).isActive = true
         NSLayoutConstraint(item: sellerSoldLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 19).isActive = true
         
-        NSLayoutConstraint(item: btnStore, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .leftMargin, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: btnStore, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 375).isActive = true
-        NSLayoutConstraint(item: btnStore, attribute: .top, relatedBy: .equal, toItem: sellerReviewLabel, attribute: .bottomMargin, multiplier: 1, constant: 30).isActive = true
-        NSLayoutConstraint(item: btnStore, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 56).isActive = true
+        NSLayoutConstraint(item: lineLabel2, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .left, multiplier: 1, constant: 18).isActive = true
+        NSLayoutConstraint(item: lineLabel2, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 339).isActive = true
+        NSLayoutConstraint(item: lineLabel2, attribute: .top, relatedBy: .equal, toItem: sellerReviewLabel, attribute: .bottom, multiplier: 1, constant: 30).isActive = true
+        NSLayoutConstraint(item: lineLabel2, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 1).isActive = true
+        NSLayoutConstraint(item: lineLabel2, attribute: .centerX, relatedBy: .equal, toItem: scrollView, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         
-        NSLayoutConstraint(item: btnReview, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .leftMargin, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: btnReview, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 375).isActive = true
-        NSLayoutConstraint(item: btnReview, attribute: .top, relatedBy: .equal, toItem: btnStore, attribute: .bottomMargin, multiplier: 1, constant: 1).isActive = true
-        NSLayoutConstraint(item: btnReview, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 56).isActive = true
+        NSLayoutConstraint(item: storeLabel, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .left, multiplier: 1, constant: 18).isActive = true
+//        NSLayoutConstraint(item: storeLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 45).isActive = true
+        NSLayoutConstraint(item: storeLabel, attribute: .top, relatedBy: .equal, toItem: lineLabel2, attribute: .bottom, multiplier: 1, constant: 20).isActive = true
+//        NSLayoutConstraint(item: storeLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
         
-        NSLayoutConstraint(item: btnCart, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .leftMargin, multiplier: 1, constant: 18).isActive = true
+        NSLayoutConstraint(item: btnStore, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .left, multiplier: 1, constant: 348).isActive = true
+//        NSLayoutConstraint(item: btnStore, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 9).isActive = true
+        NSLayoutConstraint(item: btnStore, attribute: .top, relatedBy: .equal, toItem: lineLabel2, attribute: .bottom, multiplier: 1, constant: 20).isActive = true
+//        NSLayoutConstraint(item: btnStore, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 16).isActive = true
+        
+        NSLayoutConstraint(item: lineLabel3, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .left, multiplier: 1, constant: 18).isActive = true
+        NSLayoutConstraint(item: lineLabel3, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 339).isActive = true
+        NSLayoutConstraint(item: lineLabel3, attribute: .top, relatedBy: .equal, toItem: btnStore, attribute: .bottom, multiplier: 1, constant: 20).isActive = true
+        NSLayoutConstraint(item: lineLabel3, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 1).isActive = true
+        NSLayoutConstraint(item: lineLabel3, attribute: .centerX, relatedBy: .equal, toItem: scrollView, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        
+         NSLayoutConstraint(item: reviewLabel, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .left, multiplier: 1, constant: 18).isActive = true
+        //        NSLayoutConstraint(item: reviewLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 45).isActive = true
+                NSLayoutConstraint(item: reviewLabel, attribute: .top, relatedBy: .equal, toItem: lineLabel3, attribute: .bottom, multiplier: 1, constant: 17).isActive = true
+        //        NSLayoutConstraint(item: reviewLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
+        
+        NSLayoutConstraint(item: btnReview, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .left, multiplier: 1, constant: 348).isActive = true
+//        NSLayoutConstraint(item: btnReview, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 9).isActive = true
+        NSLayoutConstraint(item: btnReview, attribute: .top, relatedBy: .equal, toItem: btnStore, attribute: .bottom, multiplier: 1, constant: 40).isActive = true
+//        NSLayoutConstraint(item: btnReview, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 16).isActive = true
+        
+        NSLayoutConstraint(item: lineLabel4, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .left, multiplier: 1, constant: 18).isActive = true
+        NSLayoutConstraint(item: lineLabel4, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 339).isActive = true
+        NSLayoutConstraint(item: lineLabel4, attribute: .top, relatedBy: .equal, toItem: btnReview, attribute: .bottom, multiplier: 1, constant: 20).isActive = true
+        NSLayoutConstraint(item: lineLabel4, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 1).isActive = true
+        NSLayoutConstraint(item: lineLabel4, attribute: .centerX, relatedBy: .equal, toItem: scrollView, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        
+        NSLayoutConstraint(item: btnCart, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .left, multiplier: 1, constant: 18).isActive = true
         NSLayoutConstraint(item: btnCart, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 339).isActive = true
-        NSLayoutConstraint(item: btnCart, attribute: .top, relatedBy: .equal, toItem: btnReview, attribute: .bottomMargin, multiplier: 1, constant: 42).isActive = true
+        NSLayoutConstraint(item: btnCart, attribute: .top, relatedBy: .equal, toItem: btnReview, attribute: .bottom, multiplier: 1, constant: 62).isActive = true
         NSLayoutConstraint(item: btnCart, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 56).isActive = true
-
-        scrollView.contentSize = CGSize(width: screenWidth, height: 1700)
-        view.addSubview(scrollView)
+        NSLayoutConstraint(item: btnCart, attribute: .centerX, relatedBy: .equal, toItem: scrollView, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         
     }
     
@@ -263,6 +327,26 @@ class DetailVC: UIViewController{
         }
     }
     
+    @objc func like() {
+        print("TOUCH LIKE")
+    }
+    
+    @objc func message() {
+        print("TOUCH MESSAGE")
+    }
+    
+    @objc func store() {
+        print("TOUCH STORE")
+    }
+    
+    @objc func review() {
+        print("TOUCH REVIEW")
+    }
+    
+    @objc func cart() {
+        print("TOUCH CART")
+    }
+    
     let productImage: UIImageView = {
         let img = UIImageView()
         img.translatesAutoresizingMaskIntoConstraints = false
@@ -273,24 +357,25 @@ class DetailVC: UIViewController{
         let label = UILabel()
         label.backgroundColor = .white
         label.textColor = .black
-        label.font = .systemFont(ofSize: 23)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 23)
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.sizeToFit()
         return label
     }()
     
     let btnLike: UIButton = {
         let btn = UIButton()
-        btn.setImage(UIImage(named: "home_unselected"), for: .normal)
+        btn.setImage(UIImage(named: "btnLike"), for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.clipsToBounds = true
+        btn.addTarget(self, action: #selector(like), for: .touchUpInside)
         return btn
     }()
     
     let btnMessage: UIButton = {
         let btn = UIButton()
-        btn.setImage(UIImage(named: "home_unselected"), for: .normal)
+        btn.setImage(UIImage(named: "btnMessage"), for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.clipsToBounds = true
+        btn.addTarget(self, action: #selector(message), for: .touchUpInside)
         return btn
     }()
     
@@ -298,16 +383,24 @@ class DetailVC: UIViewController{
         let label = UILabel()
         label.backgroundColor = .white
         label.textColor = .black
-        label.font = .systemFont(ofSize: 17)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.sizeToFit()
         return label
     }()
     
     let pepupImage: UIImageView = {
         let img = UIImageView()
-        img.image = UIImage(named: "home_unselected")
+        img.image = UIImage(named: "pepup_img")
         img.translatesAutoresizingMaskIntoConstraints = false
         return img
+    }()
+    
+    let lineLabel1: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = UIColor(rgb: 0xEBEBF6)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     let deliveryLabel: UILabel = {
@@ -315,7 +408,7 @@ class DetailVC: UIViewController{
         label.backgroundColor = .white
         label.textColor = .black
         label.text = "배송비"
-        label.font = .systemFont(ofSize: 15)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -324,7 +417,7 @@ class DetailVC: UIViewController{
         let label = UILabel()
         label.backgroundColor = .white
         label.textColor = .black
-        label.font = .systemFont(ofSize: 15)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -334,7 +427,7 @@ class DetailVC: UIViewController{
         label.backgroundColor = .white
         label.textColor = .black
         label.text = "도서산간지역"
-        label.font = .systemFont(ofSize: 15)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -343,7 +436,7 @@ class DetailVC: UIViewController{
         let label = UILabel()
         label.backgroundColor = .white
         label.textColor = .black
-        label.font = .systemFont(ofSize: 15)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -360,8 +453,9 @@ class DetailVC: UIViewController{
         label.backgroundColor = .white
         label.textColor = .black
         label.text = "Size"
-        label.font = .systemFont(ofSize: 15)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.sizeToFit()
         return label
     }()
     
@@ -369,8 +463,9 @@ class DetailVC: UIViewController{
         let label = UILabel()
         label.backgroundColor = .white
         label.textColor = .black
-        label.font = .systemFont(ofSize: 15)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.sizeToFit()
         return label
     }()
     
@@ -379,8 +474,9 @@ class DetailVC: UIViewController{
         label.backgroundColor = .white
         label.textColor = .black
         label.text = "Brand"
-        label.font = .systemFont(ofSize: 15)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.sizeToFit()
         return label
     }()
     
@@ -388,8 +484,9 @@ class DetailVC: UIViewController{
         let label = UILabel()
         label.backgroundColor = .white
         label.textColor = .black
-        label.font = .systemFont(ofSize: 15)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.sizeToFit()
         return label
     }()
     
@@ -397,28 +494,30 @@ class DetailVC: UIViewController{
         let label = UILabel()
         label.backgroundColor = .white
         label.textColor = .black
-        label.font = .systemFont(ofSize: 15)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.sizeToFit()
         return label
     }()
     
     let tagLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 15)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
         label.textColor = .black
         label.text = "Tag"
         label.backgroundColor = .white
         return label
     }()
     
-    let storeLabel: UILabel = {
+    let storeinfoLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         label.backgroundColor = .white
-        label.font = .systemFont(ofSize: 17)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         label.text = "STORE INFO"
+        label.sizeToFit()
         return label
     }()
     
@@ -432,6 +531,7 @@ class DetailVC: UIViewController{
         let label = UILabel()
         label.textColor = .black
         label.backgroundColor = .white
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -440,6 +540,7 @@ class DetailVC: UIViewController{
         let label = UILabel()
         label.textColor = .black
         label.backgroundColor = .white
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -448,34 +549,68 @@ class DetailVC: UIViewController{
         let label = UILabel()
         label.textColor = .black
         label.backgroundColor = .white
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
         label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let lineLabel2: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = UIColor(rgb: 0xEBEBF6)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let storeLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .white
+        label.textColor = .black
+        label.text = "Store"
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.sizeToFit()
         return label
     }()
     
     let btnStore: UIButton = {
         let btn = UIButton()
-        btn.setTitle("Store", for: .normal)
-        btn.backgroundColor = .white
-        btn.titleLabel?.textAlignment = .left
-        btn.titleLabel?.textColor = .black
+        btn.setImage(UIImage(named: "btnGO"), for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.clipsToBounds = true
-        btn.titleLabel?.font = UIFont.systemFont(ofSize: 17)
-//        btn.addTarget(self, action: #selector(store), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(store), for: .touchUpInside)
         return btn
+    }()
+    
+    let lineLabel3: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = UIColor(rgb: 0xEBEBF6)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let reviewLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .white
+        label.textColor = .black
+        label.text = "Review"
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.sizeToFit()
+        return label
     }()
     
     let btnReview: UIButton = {
         let btn = UIButton()
-        btn.setTitle("Review", for: .normal)
-        btn.titleLabel?.textAlignment = .left
-        btn.backgroundColor = .white
-        btn.titleLabel?.textColor = .black
+        btn.setImage(UIImage(named: "btnGO"), for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.clipsToBounds = true
-        btn.titleLabel?.font = UIFont.systemFont(ofSize: 17)
-//        btn.addTarget(self, action: #selector(review), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(review), for: .touchUpInside)
         return btn
+    }()
+    
+    let lineLabel4: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = UIColor(rgb: 0xEBEBF6)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     let btnCart: UIButton = {
@@ -485,8 +620,8 @@ class DetailVC: UIViewController{
         btn.setTitleColor(.white, for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.clipsToBounds = true
-        btn.titleLabel?.font = UIFont.systemFont(ofSize: 17)
-//        btn.addTarget(self, action: #selector(review), for: .touchUpInside)
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
+        btn.addTarget(self, action: #selector(cart), for: .touchUpInside)
         return btn
     }()
 
