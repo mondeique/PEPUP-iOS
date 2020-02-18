@@ -25,6 +25,14 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     
     // MARK: collectionView 전체 View setting
     
+//    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0 {
+//            navigationController?.setNavigationBarHidden(true, animated: true)
+//        } else {
+//            navigationController?.setNavigationBarHidden(false, animated: true)
+//        }
+//    }
+    
     fileprivate func setup() {
         collectionView.backgroundColor = .white
         collectionView.alwaysBounceVertical = true
@@ -35,32 +43,28 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
         collectionView.register(HomeCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionView.register(HomeHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         
+        let searchImage = UIImage(named: "search_bar")
         let messageImage = UIImage(named: "btnDirect")
         let cartImage = UIImage(named: "btnCart")
         
-        let searchImage = UIImage(named: "search_bar")
-        
-        let searchButton = UIBarButtonItem(image: searchImage,  style: .plain, target: self, action: #selector(didTapPepupButton))
-        let messageButton = UIBarButtonItem(image: messageImage,  style: .plain, target: self, action: #selector(didTapMessageButton))
+        let searchButton = UIBarButtonItem(image: searchImage, style: .plain, target: self, action: #selector(didTapSearchBar))
+        let messageButton = UIBarButtonItem(image: messageImage, style: .plain, target: self, action: #selector(didTapMessageButton))
         let cartButton = UIBarButtonItem(image: cartImage, style: .plain, target: self, action: #selector(didTapCartButton))
         
-//        let mesRight = messageButton.customView?.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 8).isActive = true
-//        let mesWidth = messageButton.customView?.widthAnchor.constraint(equalToConstant:40).isActive = true
-//        let mesHeight = messageButton.customView?.heightAnchor.constraint(equalToConstant:40).isActive = true
-//
-//        let cartRight = cartButton.customView?.rightAnchor.constraint(equalTo: messageButton.customView!.leftAnchor, constant: 8).isActive = true
-//        let cartWidth = cartButton.customView?.widthAnchor.constraint(equalToConstant:40).isActive = true
-//        let cartHeigth = cartButton.customView?.heightAnchor.constraint(equalToConstant:40).isActive = true
-//
-//        let searchLeft = searchButton.customView?.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 18).isActive = true
-//        let searchWidth = searchButton.customView?.widthAnchor.constraint(equalToConstant:245).isActive = true
-//        let searchHeight = searchButton.customView?.heightAnchor.constraint(equalToConstant:32).isActive = true
+        // TODO: - stackView로 navigationBarItem setting
         
         navigationItem.leftBarButtonItem = searchButton
         navigationItem.rightBarButtonItems = [messageButton, cartButton]
+        
+        let statusBarView = UIView(frame: UIApplication.shared.statusBarFrame)
+        statusBarView.backgroundColor = .white
+        navigationController?.navigationBar.barTintColor = .white
+        view.addSubview(statusBarView)
+        
+//        navigationController?.hidesBarsOnSwipe = true
     }
     
-    @objc func didTapPepupButton(sender: AnyObject) {
+    @objc func didTapSearchBar(sender: AnyObject) {
         self.navigationController?.pushViewController(SearchVC(), animated: true)
     }
     
@@ -105,9 +109,8 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! HomeCell
         let productDictionary = self.productDatas[indexPath.row] as NSDictionary
-        if let productImgArray = productDictionary.object(forKey: "thumbnails") as? Array<Dictionary<String, String>> {
-            let productUrlDictionary = productImgArray[0] as NSDictionary
-            let imageUrlString = productUrlDictionary.object(forKey: "thumbnail") as! String
+        if let productImgDic = productDictionary.object(forKey: "thumbnails") as? NSDictionary {
+            let imageUrlString = productImgDic.object(forKey: "thumbnail") as! String
             let imageUrl:NSURL = NSURL(string: imageUrlString)!
             
             // TODO: - sold 처리
@@ -164,14 +167,14 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width / 3, height: UIScreen.main.bounds.width / 3)
+        return CGSize(width: (UIScreen.main.bounds.width / 3) - 1, height: (UIScreen.main.bounds.width / 3) - 1)
     }
     
     // item = cell 마다 space 설정
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0.0
+        return 1.0
     }
     
     // line 마다 space 설정
@@ -217,4 +220,3 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     
     }
     */
-
