@@ -11,77 +11,93 @@ import UIKit
 class CartCell: BaseCollectionViewCell {
     
     override func setup() {
-        backgroundColor = .orange
-//        CartCellContentView.addSubview(productImage)
-//        CartCellContentView.addSubview(productNameLabel)
-//        CartCellContentView.addSubview(productSizeLabel)
-//        CartCellContentView.addSubview(productPriceLabel)
-//        self.addSubview(CartCellContentView)
-//
-//        CartCellContentViewLayout()
-//        productImageLayout()
-//        productNameLabelLayout()
-//        productSizeLabelLayout()
-//        productPriceLabelLayout()
+        backgroundColor = .white
+        cartcellContentView.addSubview(productImage)
+        cartcellContentView.addSubview(productNameLabel)
+        cartcellContentView.addSubview(productSizeLabel)
+        cartcellContentView.addSubview(productPriceLabel)
+        self.addSubview(cartcellContentView)
+
+        cartcellContentViewLayout()
+        productImageLayout()
+        productNameLabelLayout()
+        productSizeLabelLayout()
+        productPriceLabelLayout()
     }
     
-//    private let CartCellContentView: UIView = {
-//        let view = UIView()
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        view.backgroundColor = .white
-//        return view
-//    }()
-//
-//    private let productImage: UIImageView = {
-//        let imageview = UIImageView()
-////        imageview.image =
-//        return imageview
-//    }()
-//
-//    private let productNameLabel: UILabel = {
-//        let label = UILabel()
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.textColor = .black
-//        label.font = .systemFont(ofSize: 17)
-//        label.backgroundColor = .white
-//        return label
-//    }()
-//
-//    private let productSizeLabel: UILabel = {
-//        let label = UILabel()
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.textColor = .black
-//        label.font = .systemFont(ofSize: 15)
-//        label.backgroundColor = .white
-//        return label
-//    }()
-//
-//    private let productPriceLabel: UILabel = {
-//        let label = UILabel()
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.textColor = .black
-//        label.font = .systemFont(ofSize: 17)
-//        label.backgroundColor = .white
-//        return label
-//    }()
-//
-//    func CartCellContentViewLayout() {
-//
-//    }
-//
-//    func productImageLayout() {
-//
-//    }
-//
-//    func productNameLabelLayout() {
-//
-//    }
-//
-//    func productSizeLabelLayout() {
-//
-//    }
-//
-//    func productPriceLabelLayout() {
-//
-//    }
+    let cartcellContentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        return view
+    }()
+
+    let productImage: UIButton = {
+        let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.clipsToBounds = true
+        return btn
+    }()
+
+    let productNameLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .black
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
+        label.backgroundColor = .white
+        return label
+    }()
+
+    let productSizeLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .black
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
+        label.backgroundColor = .white
+        return label
+    }()
+
+    let productPriceLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .black
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
+        label.backgroundColor = .white
+        return label
+    }()
+
+    func cartcellContentViewLayout() {
+        cartcellContentView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        cartcellContentView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        cartcellContentView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        cartcellContentView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+    }
+
+    func productImageLayout() {
+        productImage.leftAnchor.constraint(equalTo:cartcellContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 18).isActive = true
+        productImage.topAnchor.constraint(equalTo:cartcellContentView.topAnchor, constant:10).isActive = true
+        productImage.widthAnchor.constraint(equalToConstant:80).isActive = true
+        productImage.heightAnchor.constraint(equalToConstant:80).isActive = true
+    }
+
+    func productNameLabelLayout() {
+        productNameLabel.leftAnchor.constraint(equalTo:productImage.rightAnchor, constant:UIScreen.main.bounds.width/375 * 16).isActive = true
+        productNameLabel.topAnchor.constraint(equalTo:cartcellContentView.topAnchor, constant:10).isActive = true
+//        productNameLabel.widthAnchor.constraint(equalToConstant:80).isActive = true
+//        productNameLabel.heightAnchor.constraint(equalToConstant:80).isActive = true
+    }
+
+    func productSizeLabelLayout() {
+        productSizeLabel.leftAnchor.constraint(equalTo:productImage.rightAnchor, constant:UIScreen.main.bounds.width/375 * 16).isActive = true
+        productSizeLabel.topAnchor.constraint(equalTo:productNameLabel.bottomAnchor, constant:4).isActive = true
+//        productSizeLabel.widthAnchor.constraint(equalToConstant:80).isActive = true
+//        productSizeLabel.heightAnchor.constraint(equalToConstant:80).isActive = true
+    }
+
+    func productPriceLabelLayout() {
+        productPriceLabel.rightAnchor.constraint(equalTo:cartcellContentView.rightAnchor, constant:UIScreen.main.bounds.width/375 * -18).isActive = true
+        productPriceLabel.topAnchor.constraint(equalTo:cartcellContentView.topAnchor, constant:10).isActive = true
+//        productPriceLabel.widthAnchor.constraint(equalToConstant:80).isActive = true
+//        productPriceLabel.heightAnchor.constraint(equalToConstant:80).isActive = true
+    }
 }
