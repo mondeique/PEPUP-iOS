@@ -44,7 +44,7 @@ class FindPwdResetVC: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "비밀번호 변경"
         label.textColor = .black
-        label.font = .systemFont(ofSize: 29)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 29)
         label.backgroundColor = .white
         return label
     }()
@@ -54,16 +54,16 @@ class FindPwdResetVC: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "비밀번호"
         label.textColor = .black
-        label.font = .systemFont(ofSize: 17)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         label.backgroundColor = .white
         return label
     }()
 
     private let pwordTxtField:UITextField = {
         let txtField = UITextField()
-        txtField.placeholder = " 비밀번호 8자 이상"
+        txtField.placeholder = "  비밀번호 8자 이상"
         txtField.backgroundColor = .white
-        txtField.borderStyle = .line
+        txtField.layer.cornerRadius = 3
         txtField.layer.borderWidth = 1.0
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
@@ -73,9 +73,9 @@ class FindPwdResetVC: UIViewController {
     
     private let pwordAgainTxtField:UITextField = {
         let txtField = UITextField()
-        txtField.placeholder = " 비밀번호를 확인해주세요"
+        txtField.placeholder = "  비밀번호를 확인해주세요"
         txtField.backgroundColor = .white
-        txtField.borderStyle = .line
+        txtField.layer.cornerRadius = 3
         txtField.layer.borderWidth = 1.0
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
@@ -88,7 +88,7 @@ class FindPwdResetVC: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor(rgb: 0xFF0000)
         label.text = "비밀번호 형식이 올바르지 않습니다."
-        label.font = .systemFont(ofSize: 13)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         label.backgroundColor = .white
         label.isHidden = true
         return label
@@ -99,7 +99,7 @@ class FindPwdResetVC: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor(rgb: 0xFF0000)
         label.text = "비밀번호가 일치하지 않습니다."
-        label.font = .systemFont(ofSize: 13)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         label.backgroundColor = .white
         label.isHidden = true
         return label
@@ -109,7 +109,7 @@ class FindPwdResetVC: UIViewController {
         let btn = UIButton()
         btn.backgroundColor = .black
         btn.setTitle("비밀번호 변경", for: .normal)
-        btn.titleLabel?.font = UIFont.systemFont(ofSize: 17)
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         btn.layer.cornerRadius = 3
         btn.tintColor = .white
         btn.clipsToBounds = true
@@ -245,59 +245,59 @@ class FindPwdResetVC: UIViewController {
     }
     
     func btnBackLayout() {
-        btnBack.topAnchor.constraint(equalTo:resetpwdContentView.topAnchor, constant:34).isActive = true
-        btnBack.leftAnchor.constraint(equalTo:resetpwdContentView.leftAnchor, constant:18).isActive = true
-        btnBack.widthAnchor.constraint(equalToConstant:10).isActive = true
-        btnBack.heightAnchor.constraint(equalToConstant:18).isActive = true
+        btnBack.topAnchor.constraint(equalTo:resetpwdContentView.topAnchor, constant:UIScreen.main.bounds.height/667 * 34).isActive = true
+        btnBack.leftAnchor.constraint(equalTo:resetpwdContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 18).isActive = true
+        btnBack.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 10).isActive = true
+        btnBack.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 18).isActive = true
     }
     
     func resetpwdLabelLayout() {
-        resetpwdLabel.topAnchor.constraint(equalTo:resetpwdContentView.topAnchor, constant:104).isActive = true
-        resetpwdLabel.leftAnchor.constraint(equalTo:resetpwdContentView.leftAnchor, constant:25).isActive = true
-        resetpwdLabel.widthAnchor.constraint(equalToConstant:165).isActive = true
-        resetpwdLabel.heightAnchor.constraint(equalToConstant:35).isActive = true
+        resetpwdLabel.topAnchor.constraint(equalTo:resetpwdContentView.topAnchor, constant:UIScreen.main.bounds.height/667 * 104).isActive = true
+        resetpwdLabel.leftAnchor.constraint(equalTo:resetpwdContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        resetpwdLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 165).isActive = true
+        resetpwdLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 35).isActive = true
     }
     
     func passwordLabelLayout() {
-        passwordLabel.topAnchor.constraint(equalTo:resetpwdLabel.bottomAnchor, constant:40).isActive = true
-        passwordLabel.leftAnchor.constraint(equalTo:resetpwdContentView.leftAnchor, constant:25).isActive = true
-        passwordLabel.widthAnchor.constraint(equalToConstant:60).isActive = true
-        passwordLabel.heightAnchor.constraint(equalToConstant:20).isActive = true
+        passwordLabel.topAnchor.constraint(equalTo:resetpwdLabel.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 40).isActive = true
+        passwordLabel.leftAnchor.constraint(equalTo:resetpwdContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        passwordLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 60).isActive = true
+        passwordLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 20).isActive = true
     }
     
     func passworderrorLabelLayout() {
-        passworderrorLabel.topAnchor.constraint(equalTo:resetpwdLabel.bottomAnchor, constant:44).isActive = true
-        passworderrorLabel.rightAnchor.constraint(equalTo:resetpwdContentView.rightAnchor, constant:-25).isActive = true
-        passworderrorLabel.widthAnchor.constraint(equalToConstant:188).isActive = true
-        passworderrorLabel.heightAnchor.constraint(equalToConstant:16).isActive = true
+        passworderrorLabel.topAnchor.constraint(equalTo:resetpwdLabel.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 44).isActive = true
+        passworderrorLabel.rightAnchor.constraint(equalTo:resetpwdContentView.rightAnchor, constant:UIScreen.main.bounds.width/375 * -25).isActive = true
+        passworderrorLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 188).isActive = true
+        passworderrorLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 16).isActive = true
     }
     
     func passworderrorLabel2Layout() {
-        passworderrorLabel2.topAnchor.constraint(equalTo:resetpwdLabel.bottomAnchor, constant:44).isActive = true
-        passworderrorLabel2.rightAnchor.constraint(equalTo:resetpwdContentView.rightAnchor, constant:-25).isActive = true
-        passworderrorLabel2.widthAnchor.constraint(equalToConstant:161).isActive = true
-        passworderrorLabel2.heightAnchor.constraint(equalToConstant:16).isActive = true
+        passworderrorLabel2.topAnchor.constraint(equalTo:resetpwdLabel.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 44).isActive = true
+        passworderrorLabel2.rightAnchor.constraint(equalTo:resetpwdContentView.rightAnchor, constant:UIScreen.main.bounds.width/375 * -25).isActive = true
+        passworderrorLabel2.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 161).isActive = true
+        passworderrorLabel2.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 16).isActive = true
     }
     
     func pwordTxtFieldLayout() {
-        pwordTxtField.topAnchor.constraint(equalTo:passwordLabel.bottomAnchor, constant:8).isActive = true
-        pwordTxtField.leftAnchor.constraint(equalTo:resetpwdContentView.leftAnchor, constant:25).isActive = true
-        pwordTxtField.widthAnchor.constraint(equalToConstant:325).isActive = true
-        pwordTxtField.heightAnchor.constraint(equalToConstant:44).isActive = true
+        pwordTxtField.topAnchor.constraint(equalTo:passwordLabel.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 8).isActive = true
+        pwordTxtField.leftAnchor.constraint(equalTo:resetpwdContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        pwordTxtField.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 325).isActive = true
+        pwordTxtField.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 44).isActive = true
     }
     
     func pwordAgainTxtFieldLayout() {
-        pwordAgainTxtField.topAnchor.constraint(equalTo:pwordTxtField.bottomAnchor, constant:8).isActive = true
-        pwordAgainTxtField.leftAnchor.constraint(equalTo:resetpwdContentView.leftAnchor, constant:25).isActive = true
-        pwordAgainTxtField.widthAnchor.constraint(equalToConstant:325).isActive = true
-        pwordAgainTxtField.heightAnchor.constraint(equalToConstant:44).isActive = true
+        pwordAgainTxtField.topAnchor.constraint(equalTo:pwordTxtField.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 8).isActive = true
+        pwordAgainTxtField.leftAnchor.constraint(equalTo:resetpwdContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        pwordAgainTxtField.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 325).isActive = true
+        pwordAgainTxtField.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 44).isActive = true
     }
     
     func btnResetLayout() {
-        btnReset.topAnchor.constraint(equalTo:pwordAgainTxtField.bottomAnchor, constant:52).isActive = true
-        btnReset.leftAnchor.constraint(equalTo:resetpwdContentView.leftAnchor, constant:25).isActive = true
-        btnReset.widthAnchor.constraint(equalToConstant:325).isActive = true
-        btnReset.heightAnchor.constraint(equalToConstant:48).isActive = true
+        btnReset.topAnchor.constraint(equalTo:pwordAgainTxtField.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 52).isActive = true
+        btnReset.leftAnchor.constraint(equalTo:resetpwdContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        btnReset.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 325).isActive = true
+        btnReset.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 48).isActive = true
     }
     
     

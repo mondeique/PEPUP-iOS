@@ -87,27 +87,27 @@ class LoginVC: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "로그인"
         label.textColor = .black
-        label.font = .systemFont(ofSize: 29)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 29)
         label.backgroundColor = .white
         return label
     }()
     
     private let unameTxtField:UITextField = {
         let txtField = UITextField()
-        txtField.placeholder = " 이메일"
+        txtField.placeholder = "  이메일"
         txtField.backgroundColor = .white
-        txtField.borderStyle = .line
         txtField.layer.borderWidth = 1.0
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
+        txtField.layer.cornerRadius = 3
         txtField.translatesAutoresizingMaskIntoConstraints = false
         return txtField
     }()
     
     private let pwordTxtField:UITextField = {
         let txtField = UITextField()
-        txtField.placeholder = " 비밀번호"
+        txtField.placeholder = "  비밀번호"
         txtField.backgroundColor = .white
-        txtField.borderStyle = .line
+        txtField.layer.cornerRadius = 3
         txtField.layer.borderWidth = 1.0
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
@@ -119,6 +119,7 @@ class LoginVC: UIViewController {
         let btn = UIButton()
         btn.backgroundColor = .black
         btn.setTitle("Login", for: .normal)
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         btn.tintColor = .white
         btn.layer.cornerRadius = 3
         btn.clipsToBounds = true
@@ -132,7 +133,7 @@ class LoginVC: UIViewController {
         btn.backgroundColor = .white
         btn.setTitle("아이디찾기", for: .normal)
         btn.setTitleColor(UIColor(rgb: 0x6B6A6E), for: .normal)
-        btn.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         btn.clipsToBounds = true
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(findid), for: .touchUpInside)
@@ -151,7 +152,7 @@ class LoginVC: UIViewController {
         btn.backgroundColor = .white
         btn.setTitle("비밀번호 찾기", for: .normal)
         btn.setTitleColor(UIColor(rgb: 0x6B6A6E), for: .normal)
-        btn.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         btn.clipsToBounds = true
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(findpwd), for: .touchUpInside)
@@ -170,7 +171,7 @@ class LoginVC: UIViewController {
         btn.backgroundColor = .white
         btn.setTitle("회원가입", for: .normal)
         btn.setTitleColor(UIColor(rgb: 0x6B6A6E), for: .normal)
-        btn.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         btn.clipsToBounds = true
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(phoneconfirm), for: .touchUpInside)
@@ -328,67 +329,70 @@ class LoginVC: UIViewController {
     }
     
     func loginLabelLayout() {
-        loginLabel.topAnchor.constraint(equalTo:loginContentView.topAnchor, constant:104).isActive = true
-        loginLabel.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:25).isActive = true
-        loginLabel.widthAnchor.constraint(equalToConstant:78).isActive = true
-        loginLabel.heightAnchor.constraint(equalToConstant:35).isActive = true
+        loginLabel.topAnchor.constraint(equalTo:loginContentView.topAnchor, constant:UIScreen.main.bounds.height/667 * 104).isActive = true
+        loginLabel.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+//        loginLabel.widthAnchor.constraint(equalToConstant:78).isActive = true
+//        loginLabel.heightAnchor.constraint(equalToConstant:35).isActive = true
     }
     
     func unameTxtFieldLayout() {
         unameTxtField.keyboardType = .emailAddress
-        unameTxtField.topAnchor.constraint(equalTo:loginLabel.bottomAnchor, constant:40).isActive = true
-        unameTxtField.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:25).isActive = true
-        unameTxtField.widthAnchor.constraint(equalToConstant:325).isActive = true
-        unameTxtField.heightAnchor.constraint(equalToConstant:44).isActive = true
+        unameTxtField.topAnchor.constraint(equalTo:loginLabel.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 40).isActive = true
+        unameTxtField.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        unameTxtField.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 325).isActive = true
+        unameTxtField.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 44).isActive = true
+        unameTxtField.centerXAnchor.constraint(equalTo:loginContentView.centerXAnchor).isActive = true
     }
     
     func pwordTxtFieldLayout() {
-        pwordTxtField.topAnchor.constraint(equalTo:unameTxtField.bottomAnchor, constant:16).isActive = true
-        pwordTxtField.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:25).isActive = true
-        pwordTxtField.widthAnchor.constraint(equalToConstant:325).isActive = true
-        pwordTxtField.heightAnchor.constraint(equalToConstant:44).isActive = true
+        pwordTxtField.topAnchor.constraint(equalTo:unameTxtField.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 16).isActive = true
+        pwordTxtField.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        pwordTxtField.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 325).isActive = true
+        pwordTxtField.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 44).isActive = true
+        pwordTxtField.centerXAnchor.constraint(equalTo:loginContentView.centerXAnchor).isActive = true
     }
     
     func btnLoginLayout() {
-        btnLogin.topAnchor.constraint(equalTo:pwordTxtField.bottomAnchor, constant:28).isActive = true
-        btnLogin.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:25).isActive = true
-        btnLogin.widthAnchor.constraint(equalToConstant:325).isActive = true
-        btnLogin.heightAnchor.constraint(equalToConstant:56).isActive = true
+        btnLogin.topAnchor.constraint(equalTo:pwordTxtField.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 28).isActive = true
+        btnLogin.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        btnLogin.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 325).isActive = true
+        btnLogin.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 56).isActive = true
+        btnLogin.centerXAnchor.constraint(equalTo:loginContentView.centerXAnchor).isActive = true
     }
     
     func btnFindIdLayout() {
-        btnFindID.topAnchor.constraint(equalTo:btnLogin.bottomAnchor, constant:30).isActive = true
-        btnFindID.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:43).isActive = true
-        btnFindID.widthAnchor.constraint(equalToConstant:62).isActive = true
-        btnFindID.heightAnchor.constraint(equalToConstant:16).isActive = true
+        btnFindID.topAnchor.constraint(equalTo:btnLogin.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 30).isActive = true
+        btnFindID.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 43).isActive = true
+        btnFindID.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 62).isActive = true
+        btnFindID.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 16).isActive = true
     }
     
     func lineLabel1Layout() {
-        lineLabel1.topAnchor.constraint(equalTo:btnLogin.bottomAnchor, constant:20).isActive = true
-        lineLabel1.leftAnchor.constraint(equalTo:btnFindID.rightAnchor, constant:22).isActive = true
-        lineLabel1.widthAnchor.constraint(equalToConstant:1).isActive = true
-        lineLabel1.heightAnchor.constraint(equalToConstant:34).isActive = true
+        lineLabel1.topAnchor.constraint(equalTo:btnLogin.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 20).isActive = true
+        lineLabel1.leftAnchor.constraint(equalTo:btnFindID.rightAnchor, constant:UIScreen.main.bounds.width/375 * 22).isActive = true
+        lineLabel1.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 1).isActive = true
+        lineLabel1.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 34).isActive = true
     }
     
     func btnFindPwdLayout() {
-        btnFindPwd.topAnchor.constraint(equalTo:btnLogin.bottomAnchor, constant:30).isActive = true
-        btnFindPwd.leftAnchor.constraint(equalTo:lineLabel1.rightAnchor, constant:22).isActive = true
-        btnFindPwd.widthAnchor.constraint(equalToConstant:78).isActive = true
-        btnFindPwd.heightAnchor.constraint(equalToConstant:16).isActive = true
+        btnFindPwd.topAnchor.constraint(equalTo:btnLogin.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 30).isActive = true
+        btnFindPwd.leftAnchor.constraint(equalTo:lineLabel1.rightAnchor, constant:UIScreen.main.bounds.width/375 * 22).isActive = true
+        btnFindPwd.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 78).isActive = true
+        btnFindPwd.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 16).isActive = true
     }
     
     func lineLabel2Layout() {
-        lineLabel2.topAnchor.constraint(equalTo:btnLogin.bottomAnchor, constant:20).isActive = true
-        lineLabel2.leftAnchor.constraint(equalTo:btnFindPwd.rightAnchor, constant:22).isActive = true
-        lineLabel2.widthAnchor.constraint(equalToConstant:1).isActive = true
-        lineLabel2.heightAnchor.constraint(equalToConstant:34).isActive = true
+        lineLabel2.topAnchor.constraint(equalTo:btnLogin.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 20).isActive = true
+        lineLabel2.leftAnchor.constraint(equalTo:btnFindPwd.rightAnchor, constant:UIScreen.main.bounds.width/375 * 22).isActive = true
+        lineLabel2.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 1).isActive = true
+        lineLabel2.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 34).isActive = true
     }
     
     func btnSignupLayout() {
-        btnSignup.topAnchor.constraint(equalTo:btnLogin.bottomAnchor, constant:30).isActive = true
-        btnSignup.leftAnchor.constraint(equalTo:lineLabel2.rightAnchor, constant:22).isActive = true
-        btnSignup.widthAnchor.constraint(equalToConstant:48).isActive = true
-        btnSignup.heightAnchor.constraint(equalToConstant:16).isActive = true
+        btnSignup.topAnchor.constraint(equalTo:btnLogin.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 30).isActive = true
+        btnSignup.leftAnchor.constraint(equalTo:lineLabel2.rightAnchor, constant:UIScreen.main.bounds.width/375 * 22).isActive = true
+        btnSignup.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 48).isActive = true
+        btnSignup.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 16).isActive = true
     }
 }
 

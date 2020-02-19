@@ -28,10 +28,10 @@ class FindIdVC: UIViewController {
     // MARK: Declare each view programmatically 
     
     private let findIdContentView: UIView = {
-       let view = UIView()
-       view.translatesAutoresizingMaskIntoConstraints = false
-       view.backgroundColor = .white
-       return view
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        return view
     }()
     
     private let btnBack:UIButton = {
@@ -45,31 +45,31 @@ class FindIdVC: UIViewController {
     }()
     
     private let findidLabel: UILabel = {
-       let label = UILabel()
-       label.translatesAutoresizingMaskIntoConstraints = false
-       label.text = "아이디 찾기"
-       label.textColor = .black
-       label.font = .systemFont(ofSize: 29)
-       label.backgroundColor = .white
-       return label
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "아이디 찾기"
+        label.textColor = .black
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 29)
+        label.backgroundColor = .white
+        return label
    }()
 
     private let phonenumTxtField:UITextField = {
-       let txtField = UITextField()
-       txtField.placeholder = " 전화번호를 입력해주세요"
-       txtField.backgroundColor = .white
-       txtField.borderStyle = .line
-       txtField.layer.borderWidth = 1.0
-       txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
-       txtField.translatesAutoresizingMaskIntoConstraints = false
-       return txtField
+        let txtField = UITextField()
+        txtField.placeholder = "  전화번호를 입력해주세요"
+        txtField.backgroundColor = .white
+        txtField.layer.cornerRadius = 3
+        txtField.layer.borderWidth = 1.0
+        txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
+        txtField.translatesAutoresizingMaskIntoConstraints = false
+        return txtField
     }()
     
     private let btnSendSMS:UIButton = {
         let btn = UIButton()
         btn.backgroundColor = .black
         btn.setTitle("인증번호 받기", for: .normal)
-        btn.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         btn.tintColor = .white
         btn.clipsToBounds = true
         btn.translatesAutoresizingMaskIntoConstraints = false
@@ -78,23 +78,23 @@ class FindIdVC: UIViewController {
     }()
     
     private let authnumTxtField:UITextField = {
-       let txtField = UITextField()
-       txtField.placeholder = " 인증번호를 입력해주세요"
-       txtField.backgroundColor = .white
-       txtField.borderStyle = .line
-       txtField.layer.borderWidth = 1.0
-       txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
-       txtField.translatesAutoresizingMaskIntoConstraints = false
-       txtField.isEnabled = false
-       return txtField
+        let txtField = UITextField()
+        txtField.placeholder = "  인증번호를 입력해주세요"
+        txtField.backgroundColor = .white
+        txtField.layer.cornerRadius = 3
+        txtField.layer.borderWidth = 1.0
+        txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
+        txtField.translatesAutoresizingMaskIntoConstraints = false
+        txtField.isEnabled = false
+        return txtField
     }()
     
     private let timerLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
-        label.font = .systemFont(ofSize: 13)
-        label.text = "03:00"
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 13)
+        label.text = "03 : 00"
         label.backgroundColor = .white
         label.textAlignment = .center
         label.layer.borderColor = UIColor.black.cgColor
@@ -106,8 +106,9 @@ class FindIdVC: UIViewController {
         let btn = UIButton()
         btn.backgroundColor = .black
         btn.setTitle("아이디 찾기", for: .normal)
-        btn.titleLabel?.font = UIFont.systemFont(ofSize: 17)
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         btn.tintColor = .white
+        btn.layer.cornerRadius = 3
         btn.clipsToBounds = true
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(confirm), for: .touchUpInside)
@@ -334,51 +335,51 @@ class FindIdVC: UIViewController {
     }
 
     func btnBackLayout() {
-        btnBack.topAnchor.constraint(equalTo:findIdContentView.topAnchor, constant:34).isActive = true
-        btnBack.leftAnchor.constraint(equalTo:findIdContentView.leftAnchor, constant:18).isActive = true
-        btnBack.widthAnchor.constraint(equalToConstant:10).isActive = true
-        btnBack.heightAnchor.constraint(equalToConstant:18).isActive = true
+        btnBack.topAnchor.constraint(equalTo:findIdContentView.topAnchor, constant:UIScreen.main.bounds.height/667 * 34).isActive = true
+        btnBack.leftAnchor.constraint(equalTo:findIdContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 18).isActive = true
+        btnBack.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 10).isActive = true
+        btnBack.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 18).isActive = true
     }
     
     func findidLabelLayout() {
-        findidLabel.topAnchor.constraint(equalTo:findIdContentView.topAnchor, constant:104).isActive = true
-        findidLabel.leftAnchor.constraint(equalTo:findIdContentView.leftAnchor, constant:25).isActive = true
-        findidLabel.widthAnchor.constraint(equalToConstant:139).isActive = true
-        findidLabel.heightAnchor.constraint(equalToConstant:35).isActive = true
+        findidLabel.topAnchor.constraint(equalTo:findIdContentView.topAnchor, constant:UIScreen.main.bounds.height/667 * 104).isActive = true
+        findidLabel.leftAnchor.constraint(equalTo:findIdContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        findidLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 139).isActive = true
+        findidLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 35).isActive = true
     }
     
     func phonenumTxtFieldLayout() {
-        phonenumTxtField.topAnchor.constraint(equalTo:findidLabel.bottomAnchor, constant:68).isActive = true
-        phonenumTxtField.leftAnchor.constraint(equalTo:findIdContentView.leftAnchor, constant:25).isActive = true
-        phonenumTxtField.widthAnchor.constraint(equalToConstant: 215).isActive = true
-        phonenumTxtField.heightAnchor.constraint(equalToConstant:44).isActive = true
+        phonenumTxtField.topAnchor.constraint(equalTo:findidLabel.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 68).isActive = true
+        phonenumTxtField.leftAnchor.constraint(equalTo:findIdContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        phonenumTxtField.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 215).isActive = true
+        phonenumTxtField.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 44).isActive = true
     }
     
     func btnSendSMSLayout() {
-        btnSendSMS.topAnchor.constraint(equalTo:findidLabel.bottomAnchor, constant:73).isActive = true
-        btnSendSMS.rightAnchor.constraint(equalTo:findIdContentView.rightAnchor, constant:-25).isActive = true
-        btnSendSMS.widthAnchor.constraint(equalToConstant:100).isActive = true
-        btnSendSMS.heightAnchor.constraint(equalToConstant:34).isActive = true
+        btnSendSMS.topAnchor.constraint(equalTo:findidLabel.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 73).isActive = true
+        btnSendSMS.rightAnchor.constraint(equalTo:findIdContentView.rightAnchor, constant:UIScreen.main.bounds.width/375 * -25).isActive = true
+        btnSendSMS.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 100).isActive = true
+        btnSendSMS.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 34).isActive = true
     }
     
     func authnumTxtFieldLayout() {
-        authnumTxtField.topAnchor.constraint(equalTo:phonenumTxtField.bottomAnchor, constant:16).isActive = true
-        authnumTxtField.leftAnchor.constraint(equalTo:findIdContentView.leftAnchor, constant:25).isActive = true
-        authnumTxtField.widthAnchor.constraint(equalToConstant:215).isActive = true
-        authnumTxtField.heightAnchor.constraint(equalToConstant:44).isActive = true
+        authnumTxtField.topAnchor.constraint(equalTo:phonenumTxtField.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 16).isActive = true
+        authnumTxtField.leftAnchor.constraint(equalTo:findIdContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        authnumTxtField.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 215).isActive = true
+        authnumTxtField.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 44).isActive = true
     }
     
     func timerLabelLayout() {
-        timerLabel.topAnchor.constraint(equalTo:btnSendSMS.bottomAnchor, constant:26).isActive = true
-        timerLabel.leftAnchor.constraint(equalTo:authnumTxtField.rightAnchor, constant:10).isActive = true
-        timerLabel.widthAnchor.constraint(equalToConstant:100).isActive = true
-        timerLabel.heightAnchor.constraint(equalToConstant:34).isActive = true
+        timerLabel.topAnchor.constraint(equalTo:btnSendSMS.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 26).isActive = true
+        timerLabel.leftAnchor.constraint(equalTo:authnumTxtField.rightAnchor, constant:UIScreen.main.bounds.width/375 * 10).isActive = true
+        timerLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 100).isActive = true
+        timerLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 34).isActive = true
     }
 
     func btnConfirmLayout() {
-        btnConfirm.topAnchor.constraint(equalTo:authnumTxtField.bottomAnchor, constant:44).isActive = true
-        btnConfirm.leftAnchor.constraint(equalTo:findIdContentView.leftAnchor, constant:25).isActive = true
-        btnConfirm.widthAnchor.constraint(equalToConstant:325).isActive = true
-        btnConfirm.heightAnchor.constraint(equalToConstant:48).isActive = true
+        btnConfirm.topAnchor.constraint(equalTo:authnumTxtField.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 44).isActive = true
+        btnConfirm.leftAnchor.constraint(equalTo:findIdContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        btnConfirm.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 325).isActive = true
+        btnConfirm.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 48).isActive = true
     }
 }

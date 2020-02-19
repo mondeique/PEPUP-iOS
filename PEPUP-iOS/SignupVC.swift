@@ -45,7 +45,7 @@ class SignupVC: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "회원가입"
         label.textColor = .black
-        label.font = .systemFont(ofSize: 29)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 29)
         label.backgroundColor = .white
         return label
     }()
@@ -55,7 +55,7 @@ class SignupVC: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "아이디"
         label.textColor = .black
-        label.font = .systemFont(ofSize: 17)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         label.backgroundColor = .white
         return label
     }()
@@ -65,7 +65,7 @@ class SignupVC: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "이메일 형식이 올바르지 않습니다."
         label.textColor = UIColor(rgb: 0xFF0000)
-        label.font = .systemFont(ofSize: 13)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         label.backgroundColor = .white
         label.isHidden = true
         return label
@@ -76,7 +76,7 @@ class SignupVC: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "이미 가입된 이메일입니다."
         label.textColor = UIColor(rgb: 0xFF0000)
-        label.font = .systemFont(ofSize: 13)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         label.backgroundColor = .white
         label.isHidden = true
         return label
@@ -84,9 +84,9 @@ class SignupVC: UIViewController {
 
     private let unameTxtField:UITextField = {
         let txtField = UITextField()
-        txtField.placeholder = " example@example.com"
+        txtField.placeholder = "  example@example.com"
         txtField.backgroundColor = .white
-        txtField.borderStyle = .line
+        txtField.layer.cornerRadius = 3
         txtField.layer.borderWidth = 1.0
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
@@ -106,16 +106,16 @@ class SignupVC: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "비밀번호"
         label.textColor = .black
-        label.font = .systemFont(ofSize: 17)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         label.backgroundColor = .white
         return label
     }()
 
     private let pwordTxtField:UITextField = {
         let txtField = UITextField()
-        txtField.placeholder = " 비밀번호 8자 이상"
+        txtField.placeholder = "  비밀번호 8자 이상"
         txtField.backgroundColor = .white
-        txtField.borderStyle = .line
+        txtField.layer.cornerRadius = 3
         txtField.layer.borderWidth = 1.0
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
@@ -125,9 +125,9 @@ class SignupVC: UIViewController {
     
     private let pwordAgainTxtField:UITextField = {
         let txtField = UITextField()
-        txtField.placeholder = " 비밀번호를 확인해주세요"
+        txtField.placeholder = "  비밀번호를 확인해주세요"
         txtField.backgroundColor = .white
-        txtField.borderStyle = .line
+        txtField.layer.cornerRadius = 3
         txtField.layer.borderWidth = 1.0
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
@@ -140,7 +140,7 @@ class SignupVC: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor(rgb: 0xFF0000)
         label.text = "비밀번호 형식이 올바르지 않습니다."
-        label.font = .systemFont(ofSize: 13)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         label.backgroundColor = .white
         label.isHidden = true
         return label
@@ -151,7 +151,7 @@ class SignupVC: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor(rgb: 0xFF0000)
         label.text = "비밀번호가 일치하지 않습니다."
-        label.font = .systemFont(ofSize: 13)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         label.backgroundColor = .white
         label.isHidden = true
         return label
@@ -191,7 +191,8 @@ class SignupVC: UIViewController {
         let btn = UIButton()
         btn.backgroundColor = UIColor(rgb: 0xEBEBF6)
         btn.setTitle("가입하기", for: .normal)
-        btn.titleLabel?.font = UIFont.systemFont(ofSize: 17)
+        btn.layer.cornerRadius = 3
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         btn.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
         btn.clipsToBounds = true
         btn.translatesAutoresizingMaskIntoConstraints = false
@@ -537,46 +538,46 @@ class SignupVC: UIViewController {
     }
     
     func btnBackLayout() {
-        btnBack.topAnchor.constraint(equalTo:signupContentView.topAnchor, constant:34).isActive = true
-        btnBack.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:18).isActive = true
-        btnBack.widthAnchor.constraint(equalToConstant:10).isActive = true
-        btnBack.heightAnchor.constraint(equalToConstant:18).isActive = true
+        btnBack.topAnchor.constraint(equalTo:signupContentView.topAnchor, constant:UIScreen.main.bounds.height/667 * 34).isActive = true
+        btnBack.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 18).isActive = true
+        btnBack.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 10).isActive = true
+        btnBack.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 18).isActive = true
     }
     
     func signupLabelLayout() {
-        signupLabel.topAnchor.constraint(equalTo:signupContentView.topAnchor, constant:104).isActive = true
-        signupLabel.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:25).isActive = true
-        signupLabel.widthAnchor.constraint(equalToConstant:104).isActive = true
-        signupLabel.heightAnchor.constraint(equalToConstant:35).isActive = true
+        signupLabel.topAnchor.constraint(equalTo:signupContentView.topAnchor, constant:UIScreen.main.bounds.height/667 * 104).isActive = true
+        signupLabel.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        signupLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 104).isActive = true
+        signupLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 35).isActive = true
     }
     
     func emailLabelLayout() {
-        emailLabel.topAnchor.constraint(equalTo:signupLabel.bottomAnchor, constant:40).isActive = true
-        emailLabel.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:25).isActive = true
-        emailLabel.widthAnchor.constraint(equalToConstant:45).isActive = true
-        emailLabel.heightAnchor.constraint(equalToConstant:20).isActive = true
+        emailLabel.topAnchor.constraint(equalTo:signupLabel.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 40).isActive = true
+        emailLabel.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        emailLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 45).isActive = true
+        emailLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 20).isActive = true
     }
     
     func emailerrorLabelLayout() {
-        emailerrorLabel.topAnchor.constraint(equalTo:signupLabel.bottomAnchor, constant:44).isActive = true
-        emailerrorLabel.rightAnchor.constraint(equalTo:signupContentView.rightAnchor, constant:-25).isActive = true
-        emailerrorLabel.widthAnchor.constraint(equalToConstant:176).isActive = true
-        emailerrorLabel.heightAnchor.constraint(equalToConstant:16).isActive = true
+        emailerrorLabel.topAnchor.constraint(equalTo:signupLabel.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 44).isActive = true
+        emailerrorLabel.rightAnchor.constraint(equalTo:signupContentView.rightAnchor, constant:UIScreen.main.bounds.width/375 * -25).isActive = true
+        emailerrorLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 176).isActive = true
+        emailerrorLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 16).isActive = true
     }
     
     func emailerrorLabel2Layout() {
-        emailerrorLabel2.topAnchor.constraint(equalTo:signupLabel.bottomAnchor, constant:44).isActive = true
-        emailerrorLabel2.rightAnchor.constraint(equalTo:signupContentView.rightAnchor, constant:-25).isActive = true
-        emailerrorLabel2.widthAnchor.constraint(equalToConstant:138).isActive = true
-        emailerrorLabel2.heightAnchor.constraint(equalToConstant:16).isActive = true
+        emailerrorLabel2.topAnchor.constraint(equalTo:signupLabel.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 44).isActive = true
+        emailerrorLabel2.rightAnchor.constraint(equalTo:signupContentView.rightAnchor, constant:UIScreen.main.bounds.width/375 * -25).isActive = true
+        emailerrorLabel2.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 138).isActive = true
+        emailerrorLabel2.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 16).isActive = true
     }
     
     func unameTxtFieldLayout() {
         unameTxtField.keyboardType = .emailAddress
-        unameTxtField.topAnchor.constraint(equalTo:emailLabel.bottomAnchor, constant:8).isActive = true
-        unameTxtField.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:25).isActive = true
-        unameTxtField.widthAnchor.constraint(equalToConstant:325).isActive = true
-        unameTxtField.heightAnchor.constraint(equalToConstant:44).isActive = true
+        unameTxtField.topAnchor.constraint(equalTo:emailLabel.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 8).isActive = true
+        unameTxtField.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        unameTxtField.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 325).isActive = true
+        unameTxtField.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 44).isActive = true
     }
     
 //    func errorImageLayout() {
@@ -587,31 +588,31 @@ class SignupVC: UIViewController {
 //    }
 
     func passwordLabelLayout() {
-        passwordLabel.topAnchor.constraint(equalTo:unameTxtField.bottomAnchor, constant:40).isActive = true
-        passwordLabel.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:25).isActive = true
-        passwordLabel.widthAnchor.constraint(equalToConstant:60).isActive = true
-        passwordLabel.heightAnchor.constraint(equalToConstant:20).isActive = true
+        passwordLabel.topAnchor.constraint(equalTo:unameTxtField.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 40).isActive = true
+        passwordLabel.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        passwordLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 60).isActive = true
+        passwordLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 20).isActive = true
     }
     
     func passworderrorLabelLayout() {
-        passworderrorLabel.topAnchor.constraint(equalTo:unameTxtField.bottomAnchor, constant:44).isActive = true
-        passworderrorLabel.leftAnchor.constraint(equalTo:passwordLabel.rightAnchor, constant:77).isActive = true
-        passworderrorLabel.widthAnchor.constraint(equalToConstant: 188).isActive = true
-        passworderrorLabel.heightAnchor.constraint(equalToConstant:16).isActive = true
+        passworderrorLabel.topAnchor.constraint(equalTo:unameTxtField.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 44).isActive = true
+        passworderrorLabel.leftAnchor.constraint(equalTo:passwordLabel.rightAnchor, constant:UIScreen.main.bounds.width/375 * 77).isActive = true
+        passworderrorLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 188).isActive = true
+        passworderrorLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 16).isActive = true
     }
     
     func passworderrorLabel2Layout() {
-        passworderrorLabel2.topAnchor.constraint(equalTo:unameTxtField.bottomAnchor, constant:44).isActive = true
-        passworderrorLabel2.leftAnchor.constraint(equalTo:passwordLabel.rightAnchor, constant:104).isActive = true
-        passworderrorLabel2.widthAnchor.constraint(equalToConstant:161).isActive = true
-        passworderrorLabel2.heightAnchor.constraint(equalToConstant:16).isActive = true
+        passworderrorLabel2.topAnchor.constraint(equalTo:unameTxtField.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 44).isActive = true
+        passworderrorLabel2.leftAnchor.constraint(equalTo:passwordLabel.rightAnchor, constant:UIScreen.main.bounds.width/375 * 104).isActive = true
+        passworderrorLabel2.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 161).isActive = true
+        passworderrorLabel2.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 16).isActive = true
     }
     
     func pwordTxtFieldLayout() {
-        pwordTxtField.topAnchor.constraint(equalTo:passwordLabel.bottomAnchor, constant:8).isActive = true
-        pwordTxtField.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:25).isActive = true
-        pwordTxtField.widthAnchor.constraint(equalToConstant:325).isActive = true
-        pwordTxtField.heightAnchor.constraint(equalToConstant:44).isActive = true
+        pwordTxtField.topAnchor.constraint(equalTo:passwordLabel.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 8).isActive = true
+        pwordTxtField.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        pwordTxtField.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 325).isActive = true
+        pwordTxtField.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 44).isActive = true
     }
     
 //    func errorImage2Layout() {
@@ -622,10 +623,10 @@ class SignupVC: UIViewController {
 //    }
     
     func pwordAgainTxtFieldLayout() {
-        pwordAgainTxtField.topAnchor.constraint(equalTo:pwordTxtField.bottomAnchor, constant:8).isActive = true
-        pwordAgainTxtField.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:25).isActive = true
-        pwordAgainTxtField.widthAnchor.constraint(equalToConstant:325).isActive = true
-        pwordAgainTxtField.heightAnchor.constraint(equalToConstant:45).isActive = true
+        pwordAgainTxtField.topAnchor.constraint(equalTo:pwordTxtField.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 8).isActive = true
+        pwordAgainTxtField.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        pwordAgainTxtField.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 325).isActive = true
+        pwordAgainTxtField.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 45).isActive = true
     }
     
 //    func errorImage3Layout() {
@@ -636,23 +637,23 @@ class SignupVC: UIViewController {
 //    }
     
     func btnCheckPaymentLayout() {
-        btnCheckPayment.topAnchor.constraint(equalTo:pwordAgainTxtField.bottomAnchor, constant:48).isActive = true
-        btnCheckPayment.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:25).isActive = true
-        btnCheckPayment.widthAnchor.constraint(equalToConstant:24).isActive = true
-        btnCheckPayment.heightAnchor.constraint(equalToConstant:24).isActive = true
+        btnCheckPayment.topAnchor.constraint(equalTo:pwordAgainTxtField.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 48).isActive = true
+        btnCheckPayment.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        btnCheckPayment.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 24).isActive = true
+        btnCheckPayment.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 24).isActive = true
     }
     
     func btnCheckADLayout() {
-        btnCheckAD.topAnchor.constraint(equalTo:btnCheckPayment.bottomAnchor, constant:16).isActive = true
-        btnCheckAD.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:25).isActive = true
-        btnCheckAD.widthAnchor.constraint(equalToConstant:24).isActive = true
-        btnCheckAD.heightAnchor.constraint(equalToConstant:24).isActive = true
+        btnCheckAD.topAnchor.constraint(equalTo:btnCheckPayment.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 16).isActive = true
+        btnCheckAD.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        btnCheckAD.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 24).isActive = true
+        btnCheckAD.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 24).isActive = true
     }
 
     func btnSignupLayout() {
-        btnSignup.topAnchor.constraint(equalTo:btnCheckAD.bottomAnchor, constant:48).isActive = true
-        btnSignup.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:25).isActive = true
-        btnSignup.widthAnchor.constraint(equalToConstant:325).isActive = true
-        btnSignup.heightAnchor.constraint(equalToConstant:56).isActive = true
+        btnSignup.topAnchor.constraint(equalTo:btnCheckAD.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 48).isActive = true
+        btnSignup.leftAnchor.constraint(equalTo:signupContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        btnSignup.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 325).isActive = true
+        btnSignup.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 56).isActive = true
     }
 }

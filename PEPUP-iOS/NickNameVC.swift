@@ -40,7 +40,7 @@ class NickNameVC: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "닉네임"
         label.textColor = .black
-        label.font = .systemFont(ofSize: 29)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 29)
         label.backgroundColor = .white
         return label
     }()
@@ -50,6 +50,7 @@ class NickNameVC: UIViewController {
         txtField.placeholder = "닉네임을 입력하세요"
         txtField.backgroundColor = .white
         txtField.borderStyle = .none
+        txtField.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
         txtField.textAlignment = .center
         txtField.translatesAutoresizingMaskIntoConstraints = false
         return txtField
@@ -60,7 +61,7 @@ class NickNameVC: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "이미 사용 중인 닉네임입니다."
         label.textColor = .red
-        label.font = .systemFont(ofSize: 13)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
         label.isHidden = true
         label.backgroundColor = .white
         return label
@@ -70,7 +71,8 @@ class NickNameVC: UIViewController {
         let btn = UIButton()
         btn.backgroundColor = .black
         btn.setTitle("다음", for: .normal)
-        btn.titleLabel?.font = UIFont.systemFont(ofSize: 17)
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
+        btn.layer.cornerRadius = 3
         btn.tintColor = .white
         btn.clipsToBounds = true
         btn.translatesAutoresizingMaskIntoConstraints = false
@@ -153,37 +155,37 @@ class NickNameVC: UIViewController {
     }
     
     func btnBackLayout() {
-        btnBack.topAnchor.constraint(equalTo:nicknameContentView.topAnchor, constant:34).isActive = true
-        btnBack.leftAnchor.constraint(equalTo:nicknameContentView.leftAnchor, constant:18).isActive = true
-        btnBack.widthAnchor.constraint(equalToConstant:10).isActive = true
-        btnBack.heightAnchor.constraint(equalToConstant:18).isActive = true
+        btnBack.topAnchor.constraint(equalTo:nicknameContentView.topAnchor, constant:UIScreen.main.bounds.height/667 * 34).isActive = true
+        btnBack.leftAnchor.constraint(equalTo:nicknameContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 18).isActive = true
+        btnBack.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 10).isActive = true
+        btnBack.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 18).isActive = true
     }
     
     func nicknameLabelLayout() {
-        nicknameLabel.topAnchor.constraint(equalTo:nicknameContentView.topAnchor, constant:104).isActive = true
-        nicknameLabel.leftAnchor.constraint(equalTo:nicknameContentView.leftAnchor, constant:25).isActive = true
-        nicknameLabel.widthAnchor.constraint(equalToConstant:78).isActive = true
-        nicknameLabel.heightAnchor.constraint(equalToConstant:35).isActive = true
+        nicknameLabel.topAnchor.constraint(equalTo:nicknameContentView.topAnchor, constant:UIScreen.main.bounds.height/667 * 104).isActive = true
+        nicknameLabel.leftAnchor.constraint(equalTo:nicknameContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        nicknameLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 78).isActive = true
+        nicknameLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 35).isActive = true
     }
     
     func nicknameTxtFieldLayout() {
-        nicknameTxtField.topAnchor.constraint(equalTo:nicknameLabel.bottomAnchor, constant:185).isActive = true
-        nicknameTxtField.leftAnchor.constraint(equalTo:nicknameContentView.leftAnchor, constant:93).isActive = true
-        nicknameTxtField.widthAnchor.constraint(equalToConstant:189).isActive = true
-        nicknameTxtField.heightAnchor.constraint(equalToConstant:25).isActive = true
+        nicknameTxtField.topAnchor.constraint(equalTo:nicknameLabel.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 185).isActive = true
+        nicknameTxtField.leftAnchor.constraint(equalTo:nicknameContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 93).isActive = true
+        nicknameTxtField.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 189).isActive = true
+        nicknameTxtField.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 25).isActive = true
     }
     
     func nicknameerrLabelLayout() {
         nicknameerrLabel.topAnchor.constraint(equalTo:nicknameTxtField.bottomAnchor, constant:6).isActive = true
-        nicknameerrLabel.leftAnchor.constraint(equalTo:nicknameContentView.leftAnchor, constant:111).isActive = true
-        nicknameerrLabel.widthAnchor.constraint(equalToConstant:153).isActive = true
-        nicknameerrLabel.heightAnchor.constraint(equalToConstant:16).isActive = true
+        nicknameerrLabel.leftAnchor.constraint(equalTo:nicknameContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 111).isActive = true
+        nicknameerrLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 153).isActive = true
+        nicknameerrLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 16).isActive = true
     }
     
     func btnCheckLayout() {
-        btnCheck.topAnchor.constraint(equalTo:nicknameerrLabel.bottomAnchor, constant:216).isActive = true
-        btnCheck.leftAnchor.constraint(equalTo:nicknameContentView.leftAnchor, constant:18).isActive = true
-        btnCheck.widthAnchor.constraint(equalToConstant:339).isActive = true
-        btnCheck.heightAnchor.constraint(equalToConstant:56).isActive = true
+        btnCheck.topAnchor.constraint(equalTo:nicknameerrLabel.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 216).isActive = true
+        btnCheck.leftAnchor.constraint(equalTo:nicknameContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 18).isActive = true
+        btnCheck.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 339).isActive = true
+        btnCheck.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 56).isActive = true
     }
 }

@@ -27,11 +27,11 @@ class FindPwdVC: UIViewController {
     // MARK: Declare each view programmatically 
     
     private let findpwdContentView: UIView = {
-               let view = UIView()
-               view.translatesAutoresizingMaskIntoConstraints = false
-               view.backgroundColor = .white
-               return view
-           }()
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        return view
+    }()
     
     private let btnBack:UIButton = {
         let btn = UIButton()
@@ -48,7 +48,7 @@ class FindPwdVC: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "비밀번호 변경"
         label.textColor = .black
-        label.font = .systemFont(ofSize: 29)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 29)
         label.backgroundColor = .white
         return label
     }()
@@ -60,7 +60,7 @@ class FindPwdVC: UIViewController {
         label.numberOfLines = 0
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.textColor = UIColor(rgb: 0x6B6A6E)
-        label.font = .systemFont(ofSize: 15)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
         label.backgroundColor = .white
         return label
     }()
@@ -70,16 +70,16 @@ class FindPwdVC: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "아이디"
         label.textColor = .black
-        label.font = .systemFont(ofSize: 17)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         label.backgroundColor = .white
         return label
     }()
     
     private let unameTxtField:UITextField = {
         let txtField = UITextField()
-        txtField.placeholder = " 이메일을 입력해주세요"
+        txtField.placeholder = "  이메일을 입력해주세요"
         txtField.backgroundColor = .white
-        txtField.borderStyle = .line
+        txtField.layer.cornerRadius = 3
         txtField.layer.borderWidth = 1.0
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
@@ -88,9 +88,9 @@ class FindPwdVC: UIViewController {
     
     private let phonenumTxtField:UITextField = {
         let txtField = UITextField()
-        txtField.placeholder = " 전화번호를 입력해주세요"
+        txtField.placeholder = "  전화번호를 입력해주세요"
         txtField.backgroundColor = .white
-        txtField.borderStyle = .line
+        txtField.layer.cornerRadius = 3
         txtField.layer.borderWidth = 1.0
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
@@ -101,7 +101,7 @@ class FindPwdVC: UIViewController {
         let btn = UIButton()
         btn.backgroundColor = .black
         btn.setTitle("인증번호 받기", for: .normal)
-        btn.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         btn.tintColor = .white
         btn.clipsToBounds = true
         btn.translatesAutoresizingMaskIntoConstraints = false
@@ -111,9 +111,9 @@ class FindPwdVC: UIViewController {
     
     private let authnumTxtField:UITextField = {
         let txtField = UITextField()
-        txtField.placeholder = " 인증번호를 입력해주세요"
+        txtField.placeholder = "  인증번호를 입력해주세요"
         txtField.backgroundColor = .white
-        txtField.borderStyle = .line
+        txtField.layer.cornerRadius = 3
         txtField.layer.borderWidth = 1.0
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
@@ -125,8 +125,8 @@ class FindPwdVC: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
-        label.font = .systemFont(ofSize: 13)
-        label.text = "03:00"
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
+        label.text = "03 : 00"
         label.backgroundColor = .white
         label.textAlignment = .center
         label.layer.borderColor = UIColor.black.cgColor
@@ -138,7 +138,7 @@ class FindPwdVC: UIViewController {
         let btn = UIButton()
         btn.backgroundColor = .black
         btn.setTitle("다음", for: .normal)
-        btn.titleLabel?.font = UIFont.systemFont(ofSize: 17)
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         btn.layer.cornerRadius = 3
         btn.tintColor = .white
         btn.clipsToBounds = true
@@ -371,73 +371,73 @@ class FindPwdVC: UIViewController {
     }
     
     func btnBackLayout() {
-        btnBack.topAnchor.constraint(equalTo:findpwdContentView.topAnchor, constant:34).isActive = true
-        btnBack.leftAnchor.constraint(equalTo:findpwdContentView.leftAnchor, constant:18).isActive = true
-        btnBack.widthAnchor.constraint(equalToConstant:10).isActive = true
-        btnBack.heightAnchor.constraint(equalToConstant:18).isActive = true
+        btnBack.topAnchor.constraint(equalTo:findpwdContentView.topAnchor, constant:UIScreen.main.bounds.height/667 * 34).isActive = true
+        btnBack.leftAnchor.constraint(equalTo:findpwdContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 18).isActive = true
+        btnBack.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 10).isActive = true
+        btnBack.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 18).isActive = true
     }
     
     func resetpwdLabelLayout() {
-        resetpwdLabel.topAnchor.constraint(equalTo:findpwdContentView.topAnchor, constant:104).isActive = true
-        resetpwdLabel.leftAnchor.constraint(equalTo:findpwdContentView.leftAnchor, constant:25).isActive = true
-        resetpwdLabel.widthAnchor.constraint(equalToConstant:165).isActive = true
-        resetpwdLabel.heightAnchor.constraint(equalToConstant:35).isActive = true
+        resetpwdLabel.topAnchor.constraint(equalTo:findpwdContentView.topAnchor, constant:UIScreen.main.bounds.height/667 * 104).isActive = true
+        resetpwdLabel.leftAnchor.constraint(equalTo:findpwdContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        resetpwdLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 165).isActive = true
+        resetpwdLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 35).isActive = true
     }
     
     func explainLabelLayout() {
-        explainLabel.topAnchor.constraint(equalTo:resetpwdLabel.bottomAnchor, constant:16).isActive = true
-        explainLabel.leftAnchor.constraint(equalTo:findpwdContentView.leftAnchor, constant:25).isActive = true
-        explainLabel.widthAnchor.constraint(equalToConstant:235).isActive = true
-        explainLabel.heightAnchor.constraint(equalToConstant:38).isActive = true
+        explainLabel.topAnchor.constraint(equalTo:resetpwdLabel.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 16).isActive = true
+        explainLabel.leftAnchor.constraint(equalTo:findpwdContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        explainLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 235).isActive = true
+        explainLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 38).isActive = true
     }
     
     func emailLabelLayout() {
-        emailLabel.topAnchor.constraint(equalTo:explainLabel.bottomAnchor, constant:40).isActive = true
-        emailLabel.leftAnchor.constraint(equalTo:findpwdContentView.leftAnchor, constant:25).isActive = true
-        emailLabel.widthAnchor.constraint(equalToConstant:45).isActive = true
-        emailLabel.heightAnchor.constraint(equalToConstant:20).isActive = true
+        emailLabel.topAnchor.constraint(equalTo:explainLabel.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 40).isActive = true
+        emailLabel.leftAnchor.constraint(equalTo:findpwdContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        emailLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 45).isActive = true
+        emailLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 20).isActive = true
     }
     
     func unameTxtFieldLayout() {
-        unameTxtField.topAnchor.constraint(equalTo:emailLabel.bottomAnchor, constant:8).isActive = true
-        unameTxtField.leftAnchor.constraint(equalTo:findpwdContentView.leftAnchor, constant:25).isActive = true
-        unameTxtField.widthAnchor.constraint(equalToConstant:325).isActive = true
-        unameTxtField.heightAnchor.constraint(equalToConstant:44).isActive = true
+        unameTxtField.topAnchor.constraint(equalTo:emailLabel.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 8).isActive = true
+        unameTxtField.leftAnchor.constraint(equalTo:findpwdContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        unameTxtField.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 325).isActive = true
+        unameTxtField.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 44).isActive = true
     }
     
     func phonenumTxtFieldLayout() {
-        phonenumTxtField.topAnchor.constraint(equalTo:unameTxtField.bottomAnchor, constant:36).isActive = true
-        phonenumTxtField.leftAnchor.constraint(equalTo:findpwdContentView.leftAnchor, constant:25).isActive = true
-        phonenumTxtField.widthAnchor.constraint(equalToConstant:215).isActive = true
-        phonenumTxtField.heightAnchor.constraint(equalToConstant:44).isActive = true
+        phonenumTxtField.topAnchor.constraint(equalTo:unameTxtField.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 36).isActive = true
+        phonenumTxtField.leftAnchor.constraint(equalTo:findpwdContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        phonenumTxtField.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 215).isActive = true
+        phonenumTxtField.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 44).isActive = true
     }
     
     func btnSendSMSLayout() {
-        btnSendSMS.topAnchor.constraint(equalTo:unameTxtField.bottomAnchor, constant:41).isActive = true
-        btnSendSMS.leftAnchor.constraint(equalTo:phonenumTxtField.rightAnchor, constant:10).isActive = true
-        btnSendSMS.widthAnchor.constraint(equalToConstant:100).isActive = true
-        btnSendSMS.heightAnchor.constraint(equalToConstant:34).isActive = true
+        btnSendSMS.topAnchor.constraint(equalTo:unameTxtField.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 41).isActive = true
+        btnSendSMS.leftAnchor.constraint(equalTo:phonenumTxtField.rightAnchor, constant:UIScreen.main.bounds.width/375 * 10).isActive = true
+        btnSendSMS.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 100).isActive = true
+        btnSendSMS.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 34).isActive = true
     }
     
     func authnumTxtFieldLayout() {
-        authnumTxtField.topAnchor.constraint(equalTo:phonenumTxtField.bottomAnchor, constant:16).isActive = true
-        authnumTxtField.leftAnchor.constraint(equalTo:findpwdContentView.leftAnchor, constant:25).isActive = true
-        authnumTxtField.widthAnchor.constraint(equalToConstant:215).isActive = true
-        authnumTxtField.heightAnchor.constraint(equalToConstant:44).isActive = true
+        authnumTxtField.topAnchor.constraint(equalTo:phonenumTxtField.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 16).isActive = true
+        authnumTxtField.leftAnchor.constraint(equalTo:findpwdContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        authnumTxtField.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 215).isActive = true
+        authnumTxtField.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 44).isActive = true
     }
     
     func timerLabelLayout() {
-        timerLabel.topAnchor.constraint(equalTo:btnSendSMS.bottomAnchor, constant:26).isActive = true
-        timerLabel.leftAnchor.constraint(equalTo:authnumTxtField.rightAnchor, constant:10).isActive = true
-        timerLabel.widthAnchor.constraint(equalToConstant:100).isActive = true
-        timerLabel.heightAnchor.constraint(equalToConstant:34).isActive = true
+        timerLabel.topAnchor.constraint(equalTo:btnSendSMS.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 26).isActive = true
+        timerLabel.leftAnchor.constraint(equalTo:authnumTxtField.rightAnchor, constant:UIScreen.main.bounds.width/375 * 10).isActive = true
+        timerLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 100).isActive = true
+        timerLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 34).isActive = true
     }
     
     func btnNextLayout() {
-        btnNext.topAnchor.constraint(equalTo:authnumTxtField.bottomAnchor, constant:44).isActive = true
-        btnNext.leftAnchor.constraint(equalTo:findpwdContentView.leftAnchor, constant:25).isActive = true
-        btnNext.widthAnchor.constraint(equalToConstant:325).isActive = true
-        btnNext.heightAnchor.constraint(equalToConstant:48).isActive = true
+        btnNext.topAnchor.constraint(equalTo:authnumTxtField.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 44).isActive = true
+        btnNext.leftAnchor.constraint(equalTo:findpwdContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        btnNext.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 325).isActive = true
+        btnNext.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 48).isActive = true
     }
 
 }

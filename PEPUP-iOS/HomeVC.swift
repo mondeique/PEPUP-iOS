@@ -109,20 +109,23 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! HomeCell
         let productDictionary = self.productDatas[indexPath.row] as NSDictionary
+        let is_sold = productDictionary.object(forKey: "sold") as! Bool
         if let productImgDic = productDictionary.object(forKey: "thumbnails") as? NSDictionary {
             let imageUrlString = productImgDic.object(forKey: "thumbnail") as! String
             let imageUrl:NSURL = NSURL(string: imageUrlString)!
-            
-            // TODO: - sold 처리
-
             DispatchQueue.global(qos: .userInitiated).async {
                 let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
                 DispatchQueue.main.async {
                     let image = UIImage(data: imageData as Data)
                     cell.productImg.image = image
-//                    if is_sold == true {
-//                        cell.soldImg.isHidden = false
-//                    }
+                    if is_sold == true {
+                        cell.soldBG.isHidden = false
+                        cell.soldLabel.isHidden = false
+                    }
+                    else {
+                        cell.soldBG.isHidden = true
+                        cell.soldLabel.isHidden = true
+                    }
                 }
             }
         }

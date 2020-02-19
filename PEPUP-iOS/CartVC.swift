@@ -43,6 +43,7 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         let screenWidth = screensize.width
         let screenHeight = screensize.height
         let defaultWidth: CGFloat = 375
+        let defaultHeight: CGFloat = 667
 //        let statusBarHeight: CGFloat! = UIApplication.shared.statusBarFrame.height
 //        let navBarHeight: CGFloat! = navigationController?.navigationBar.frame.height
         
@@ -65,6 +66,8 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             btn.clipsToBounds = true
             btn.setTitle("나는 얼마를 구매하는 걸까요?", for: .normal)
             btn.translatesAutoresizingMaskIntoConstraints = false
+            btn.layer.cornerRadius = 3
+            btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
             btn.setTitleColor(.white, for: .normal)
             btn.addTarget(self, action: #selector(totalpayment), for: .touchUpInside)
             return btn
@@ -73,10 +76,10 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         self.view.addSubview(btnPayment)
         self.view.addSubview(cartCollectionView)
         
-        btnPayment.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 18).isActive = true
-        btnPayment.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -5).isActive = true
-        btnPayment.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 339).isActive = true
-        btnPayment.heightAnchor.constraint(equalToConstant: 56).isActive = true
+        btnPayment.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant:screenWidth/defaultWidth * 18).isActive = true
+        btnPayment.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant:screenHeight/defaultHeight * -5).isActive = true
+        btnPayment.widthAnchor.constraint(equalToConstant:screenWidth/defaultWidth * 339).isActive = true
+        btnPayment.heightAnchor.constraint(equalToConstant:screenWidth/defaultWidth * 56).isActive = true
     }
     
     func getData() {
@@ -190,7 +193,6 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     @objc func detail(_ sender: UIButton) {
         let nextVC = DetailVC()
         nextVC.Myid = sender.tag
-        print("TOUCH IMAGE")
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
