@@ -23,6 +23,11 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
         getData(pagenum: 1)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = false
+    }
+    
     // MARK: collectionView 전체 View setting
     
     fileprivate func setup() {

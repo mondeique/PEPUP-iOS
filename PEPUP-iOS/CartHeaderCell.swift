@@ -58,17 +58,16 @@ class CartHeaderCell: BaseCollectionViewCell {
     }
 
     func btnsellerProfileLayout() {
-        btnsellerProfile.leftAnchor.constraint(equalTo:cartheadercellContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 18).isActive = true
-//        btnsellerProfile.topAnchor.constraint(equalTo:cartheadercellContentView.topAnchor, constant:6).isActive = true
-        btnsellerProfile.widthAnchor.constraint(equalToConstant:44).isActive = true
-        btnsellerProfile.heightAnchor.constraint(equalToConstant:44).isActive = true
+        btnsellerProfile.leftAnchor.constraint(equalTo:cartheadercellContentView.leftAnchor, constant: UIScreen.main.bounds.width/375 * 18).isActive = true
+        btnsellerProfile.topAnchor.constraint(equalTo:cartheadercellContentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 6).isActive = true
+        btnsellerProfile.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 44).isActive = true
+        btnsellerProfile.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 44).isActive = true
         btnsellerProfile.centerYAnchor.constraint(equalTo:cartheadercellContentView.centerYAnchor).isActive = true
     }
     
     func btnsellerNameLayout() {
-        btnsellerName.leftAnchor.constraint(equalTo:btnsellerProfile.rightAnchor, constant:UIScreen.main.bounds.width/375 * 14).isActive = true
-        btnsellerName.topAnchor.constraint(equalTo:cartheadercellContentView.topAnchor, constant:19).isActive = true
-//        btnsellerName.widthAnchor.constraint(equalToConstant:80).isActive = true
-//        btnsellerName.heightAnchor.constraint(equalToConstant:80).isActive = true
+        btnsellerName.leftAnchor.constraint(equalTo:btnsellerProfile.rightAnchor, constant: UIScreen.main.bounds.width/375 * 14).isActive = true
+        btnsellerName.topAnchor.constraint(equalTo:cartheadercellContentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 19).isActive = true
+        btnsellerName.centerYAnchor.constraint(equalTo:cartheadercellContentView.centerYAnchor).isActive = true
     }
 }

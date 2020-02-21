@@ -36,7 +36,7 @@
 		E9D07A4923E2E4DD0095AD05 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4823E2E4DD0095AD05 /* LoginVC.swift */; };
 		E9D07A4D23E3FB980095AD05 /* SignupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4C23E3FB980095AD05 /* SignupVC.swift */; };
 		E9D07A4F23E4050D0095AD05 /* PhoneConfirmVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4E23E4050D0095AD05 /* PhoneConfirmVC.swift */; };
-		E9D1119023FFA93E006AE20C /* AppleSDGothicNeo-Heavy in Resources */ = {isa = PBXBuildFile; fileRef = E9D1118F23FFA93E006AE20C /* AppleSDGothicNeo-Heavy */; };
+		E9D1119223FFACB1006AE20C /* AppleSDGothicNeo-Heavy in Resources */ = {isa = PBXBuildFile; fileRef = E9D1119123FFACB1006AE20C /* AppleSDGothicNeo-Heavy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,7 +73,7 @@
 		E9D07A4823E2E4DD0095AD05 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		E9D07A4C23E3FB980095AD05 /* SignupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupVC.swift; sourceTree = "<group>"; };
 		E9D07A4E23E4050D0095AD05 /* PhoneConfirmVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneConfirmVC.swift; sourceTree = "<group>"; };
-		E9D1118F23FFA93E006AE20C /* AppleSDGothicNeo-Heavy */ = {isa = PBXFileReference; lastKnownFileType = file; name = "AppleSDGothicNeo-Heavy"; path = "../../../Downloads/AppleSDGothicNeo-Heavy"; sourceTree = SOURCE_ROOT; };
+		E9D1119123FFACB1006AE20C /* AppleSDGothicNeo-Heavy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "AppleSDGothicNeo-Heavy"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,7 +126,7 @@
 		E9C8466E23E1A5D200359A93 /* PEPUP-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				E9D1118F23FFA93E006AE20C /* AppleSDGothicNeo-Heavy */,
+				E9D1119123FFACB1006AE20C /* AppleSDGothicNeo-Heavy */,
 				E9C8466F23E1A5D200359A93 /* AppDelegate.swift */,
 				E9C8467523E1A5D200359A93 /* Main.storyboard */,
 				E9C8467B23E1A5D500359A93 /* Assets.xcassets */,
@@ -220,7 +220,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E9D1119023FFA93E006AE20C /* AppleSDGothicNeo-Heavy in Resources */,
+				E9D1119223FFACB1006AE20C /* AppleSDGothicNeo-Heavy in Resources */,
 				E9C8467C23E1A5D500359A93 /* Assets.xcassets in Resources */,
 				E9C8467723E1A5D200359A93 /* Main.storyboard in Resources */,
 			);

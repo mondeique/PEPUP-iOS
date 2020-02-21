@@ -31,11 +31,13 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.navigationBar.isHidden = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.navigationBar.isHidden = false
     }
 
     func setup() {
@@ -45,14 +47,58 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         let screenHeight = screensize.height
         let defaultWidth: CGFloat = 375
         let defaultHeight: CGFloat = 667
-//        let statusBarHeight: CGFloat! = UIApplication.shared.statusBarFrame.height
-//        let navBarHeight: CGFloat! = navigationController?.navigationBar.frame.height
+        let statusBarHeight: CGFloat! = UIApplication.shared.statusBarFrame.height
+        let navBarHeight: CGFloat! = navigationController?.navigationBar.frame.height
+        
+        
+        let navcontentView: UIView = {
+            let view = UIView()
+            view.translatesAutoresizingMaskIntoConstraints = false
+            view.backgroundColor = .white
+            return view
+        }()
+
+        let btnClose: UIButton = {
+            let btn = UIButton()
+            btn.setImage(UIImage(named: "btnClose"), for: .normal)
+            btn.translatesAutoresizingMaskIntoConstraints = false
+            btn.addTarget(self, action: #selector(back), for: .touchUpInside)
+            return btn
+        }()
+        
+        let cartLabel: UILabel = {
+            let label = UILabel()
+            label.translatesAutoresizingMaskIntoConstraints = false
+            label.text = "C A R T"
+            label.font = UIFont(name: "AppleSDGothicNeo-Heavy", size: 17)
+            label.textColor = .black
+            label.textAlignment = .center
+            return label
+        }()
+        
+        navcontentView.addSubview(btnClose)
+        navcontentView.addSubview(cartLabel)
+        
+        self.view.addSubview(navcontentView)
+        
+        navcontentView.topAnchor.constraint(equalTo: view.topAnchor, constant: screenHeight/defaultHeight * statusBarHeight).isActive = true
+        navcontentView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        navcontentView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
+        navcontentView.heightAnchor.constraint(equalToConstant: navBarHeight).isActive = true
+        
+        btnClose.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 14).isActive = true
+        btnClose.leftAnchor.constraint(equalTo: navcontentView.leftAnchor, constant: screenWidth/defaultWidth * 18).isActive = true
+        btnClose.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 16).isActive = true
+        btnClose.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 16).isActive = true
+        
+        cartLabel.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
+        cartLabel.centerXAnchor.constraint(equalTo: navcontentView.centerXAnchor).isActive = true
         
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.itemSize = CGSize(width: screenWidth/defaultWidth * 375, height: 100)
         
-        cartCollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: screenHeight - 61), collectionViewLayout: layout)
+        cartCollectionView = UICollectionView(frame: CGRect(x: 0, y: statusBarHeight + navBarHeight, width: view.frame.width, height: screenHeight - statusBarHeight - navBarHeight - screenHeight/defaultHeight * 72), collectionViewLayout: layout)
         cartCollectionView.delegate = self
         cartCollectionView.dataSource = self
         cartCollectionView.register(CartCell.self, forCellWithReuseIdentifier: reuseIdentifier)
@@ -198,6 +244,10 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         }
     }
     
+    @objc func back() {
+        navigationController?.popViewController(animated: true)
+    }
+    
     @objc func detail(_ sender: UIButton) {
         let nextVC = DetailVC()
         nextVC.Myid = sender.tag
@@ -240,10 +290,10 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 56)
+        return CGSize(width: collectionView.frame.width, height: UIScreen.main.bounds.height/667 * 56)
     }
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-            return CGSize(width: collectionView.frame.width, height: 164.0)
+            return CGSize(width: collectionView.frame.width, height: UIScreen.main.bounds.height/667 * 164.0)
     }
     
     /*
