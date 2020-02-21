@@ -26,7 +26,12 @@ class DetailVC: UIViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("Hello, \(Myid)")
+        self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = false
     }
     
     func setup() {
@@ -40,10 +45,27 @@ class DetailVC: UIViewController{
         let navBarHeight: CGFloat! = navigationController?.navigationBar.frame.height
         var scrollView: UIScrollView!
         
+        navcontentView.addSubview(btnBack)
+//        navcontentView.addSubview(sellerNameLabel)
         contentView.addSubview(btnCart)
         contentView.addSubview(btnCartBag)
         
+        view.addSubview(navcontentView)
         view.addSubview(contentView)
+        
+        navcontentView.topAnchor.constraint(equalTo: view.topAnchor, constant: screenHeight/defaultHeight * statusBarHeight).isActive = true
+        navcontentView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        navcontentView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
+        navcontentView.heightAnchor.constraint(equalToConstant: navBarHeight).isActive = true
+        
+        btnBack.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 14).isActive = true
+        btnBack.leftAnchor.constraint(equalTo: navcontentView.leftAnchor, constant: screenWidth/defaultWidth * 18).isActive = true
+        btnBack.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 10).isActive = true
+        btnBack.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 16).isActive = true
+        
+//        sellerNameLabel.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
+//        sellerNameLabel.leftAnchor.constraint(equalTo: navcontentView.leftAnchor).isActive = true
+//        sellerNameLabel.centerXAnchor.constraint(equalTo: navcontentView.centerXAnchor).isActive = true
         
         contentView.topAnchor.constraint(equalTo: view.topAnchor, constant: screenHeight/defaultHeight * 567).isActive = true
         contentView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
@@ -443,6 +465,10 @@ class DetailVC: UIViewController{
         setup()
     }
     
+    @objc func back() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     @objc func like() {
         if btnLike.currentImage == UIImage(named: "btnLike") {
             btnLike.setImage(UIImage(named: "btnLike_fill"), for: .normal)
@@ -507,6 +533,21 @@ class DetailVC: UIViewController{
     @objc func tag() {
         print("TOUCH TAG!!")
     }
+    
+    let navcontentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        return view
+    }()
+    
+    let btnBack: UIButton = {
+        let btn = UIButton()
+        btn.setImage(UIImage(named: "btnBack"), for: .normal)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(back), for: .touchUpInside)
+        return btn
+    }()
     
     let contentView: UIView = {
         let view = UIView()

@@ -53,8 +53,6 @@ class ProfileVC: UIViewController {
         btn.backgroundColor = .white
         btn.setImage(UIImage(named: "default_profile"), for: .normal)
         btn.clipsToBounds = true
-//        btn.layer.cornerRadius = btn.bounds.height / 2
-//        btn.layer.masksToBounds = true
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(setimage), for: .touchUpInside)
         return btn

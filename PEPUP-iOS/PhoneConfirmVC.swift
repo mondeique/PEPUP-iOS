@@ -20,10 +20,6 @@ class PhoneConfirmVC: UIViewController {
         setup()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
     // MARK: Declare each view programmatically 
     
     private let phoneConfirmContentView: UIView = {
@@ -33,7 +29,7 @@ class PhoneConfirmVC: UIViewController {
         return view
     }()
     
-    private let btnBack:UIButton = {
+    private let btnBack: UIButton = {
         let btn = UIButton()
         btn.backgroundColor = .white
         btn.setImage(UIImage(named: "btnBack"), for: .normal)
@@ -53,9 +49,9 @@ class PhoneConfirmVC: UIViewController {
         return label
     }()
 
-    private let phonenumTxtField:UITextField = {
-        let txtField = UITextField()
-        txtField.placeholder = "  전화번호를 입력해주세요"
+    private let phonenumTxtField: TextField = {
+        let txtField = TextField()
+        txtField.placeholder = " 전화번호를 입력해주세요"
         txtField.backgroundColor = .white
         txtField.layer.cornerRadius = 3
         txtField.layer.borderWidth = 1.0
@@ -64,7 +60,7 @@ class PhoneConfirmVC: UIViewController {
         return txtField
     }()
     
-    private let btnSendSMS:UIButton = {
+    private let btnSendSMS: UIButton = {
         let btn = UIButton()
         btn.backgroundColor = .black
         btn.setTitle("인증번호 받기", for: .normal)
@@ -76,9 +72,9 @@ class PhoneConfirmVC: UIViewController {
         return btn
     }()
     
-    private let authnumTxtField:UITextField = {
-        let txtField = UITextField()
-        txtField.placeholder = "  인증번호를 입력해주세요"
+    private let authnumTxtField: TextField = {
+        let txtField = TextField()
+        txtField.placeholder = " 인증번호를 입력해주세요"
         txtField.backgroundColor = .white
         txtField.layer.borderWidth = 1.0
         txtField.layer.cornerRadius = 3
@@ -93,7 +89,7 @@ class PhoneConfirmVC: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
-        label.text = "03 : 00"
+        label.text = "03:00"
         label.backgroundColor = .white
         label.textAlignment = .center
         label.layer.borderColor = UIColor.black.cgColor
@@ -101,11 +97,12 @@ class PhoneConfirmVC: UIViewController {
         return label
     }()
 
-    private let btnConfirm:UIButton = {
+    private let btnConfirm: UIButton = {
         let btn = UIButton()
         btn.backgroundColor = .black
         btn.setTitle("본인인증하기", for: .normal)
         btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
+        btn.layer.cornerRadius = 3
         btn.tintColor = .white
         btn.clipsToBounds = true
         btn.translatesAutoresizingMaskIntoConstraints = false
@@ -130,51 +127,51 @@ class PhoneConfirmVC: UIViewController {
             let parameters = [
                 "phone": phonenum
             ]
-            Alamofire.AF.request("\(Config.baseURL)/accounts/confirmsms/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
-                                   (response) in switch response.result {
-                                   case .success(let JSON):
-                                       print("Success with JSON: \(JSON)")
-                                       let JSONDic = JSON as! NSDictionary
-                                       let code = JSONDic.object(forKey: "code") as! Int
-                                       if code == 1 {
-                                            let token_name = "Token "
-                                            let token_ = JSONDic.object(forKey: "token") as! String
-                                            let token = token_name + token_
-                                            self.setCurrentLoginToken(token)
-                                            self.sendsmsAlert()
-                                            self.timerStart()
-                                            self.authnumTxtField.isEnabled = true
-                                       }
-                                       else if code == 3 {
-                                            let token_name = "Token "
-                                            let token_ = JSONDic.object(forKey: "token") as! String
-                                            let token = token_name + token_
-                                            self.setCurrentLoginToken(token)
-                                            self.signup()
-                                       }
-                                       else if code == -1 {
-                                            self.smsAlreadyAlert()
-                                            self.authnumTxtField.isEnabled = true
-                                        }
-                                       else if code == -2 {
-                                            self.sessionAlert()
-                                            let token_name = "Token "
-                                            let token_ = JSONDic.object(forKey: "token") as! String
-                                            let token = token_name + token_
-                                            self.setCurrentLoginToken(token)
-                                            self.timerStart()
-                                            self.authnumTxtField.isEnabled = true
-                                       }
-                                       else if code == -3 {
-                                            self.login()
-                                            self.userAlreadyAlert()
-                                        }
-                                       else if code == -20 {
-                                            self.helpmondeAlert()
-                                        }
-                                   case .failure(let error):
-                                       print("Request failed with error: \(error)")
-                                   }
+            Alamofire.AF.request("\(Config.baseURL)/accounts/confirmsms/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers:  ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
+                (response) in switch response.result {
+                case .success(let JSON):
+                    print("Success with JSON: \(JSON)")
+                    let JSONDic = JSON as! NSDictionary
+                    let code = JSONDic.object(forKey: "code") as! Int
+                    if code == 1 {
+                        let token_name = "Token "
+                        let token_ = JSONDic.object(forKey: "token") as! String
+                        let token = token_name + token_
+                        self.setCurrentLoginToken(token)
+                        self.timerStart()
+                        self.authnumTxtField.isEnabled = true
+                        self.sendsmsAlert()
+                    }
+                    else if code == 3 {
+                        let token_name = "Token "
+                        let token_ = JSONDic.object(forKey: "token") as! String
+                        let token = token_name + token_
+                        self.setCurrentLoginToken(token)
+                        self.signup()
+                    }
+                    else if code == -1 {
+                        self.smsAlreadyAlert()
+                        self.authnumTxtField.isEnabled = true
+                    }
+                    else if code == -2 {
+                        self.sessionAlert()
+                        let token_name = "Token "
+                        let token_ = JSONDic.object(forKey: "token") as! String
+                        let token = token_name + token_
+                        self.setCurrentLoginToken(token)
+                        self.timerStart()
+                        self.authnumTxtField.isEnabled = true
+                    }
+                    else if code == -3 {
+                        self.login()
+                        self.userAlreadyAlert()
+                    }
+                    else if code == -20 {
+                        self.helpmondeAlert()
+                    }
+                case .failure(let error):
+                   print("Request failed with error: \(error)")
+                }
             }
         }
         else {
@@ -191,27 +188,27 @@ class PhoneConfirmVC: UIViewController {
             "confirm_key": authnumber
         ]
         Alamofire.AF.request("\(Config.baseURL)/accounts/confirmsms/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": token]) .validate(statusCode: 200..<300) .responseJSON {
-                                (response) in switch response.result {
-                                case .success(let JSON):
-                                    print("Success with JSON: \(JSON)")
-                                    let response = JSON as! NSDictionary
-                                    let code = response.object(forKey: "code") as! Int
-                                    if code == 1 {
-                                        self.confirmAlert()
-                                    }
-                                    else if code == -1 {
-                                        self.authnumAlert()
-                                    }
-                                    else if code == -2 {
-                                        self.sessionAlert()
-                                    }
-                                    else if code == -3 {
-                                        self.signup()
-                                        self.confirmAlreadyAlert()
-                                    }
-                                case .failure(let error):
-                                    print("Request failed with error: \(error)")
-                                }
+            (response) in switch response.result {
+            case .success(let JSON):
+                print("Success with JSON: \(JSON)")
+                let response = JSON as! NSDictionary
+                let code = response.object(forKey: "code") as! Int
+                if code == 1 {
+                    self.confirmAlert()
+                }
+                else if code == -1 {
+                    self.authnumAlert()
+                }
+                else if code == -2 {
+                    self.sessionAlert()
+                }
+                else if code == -3 {
+                    self.signup()
+                    self.confirmAlreadyAlert()
+                }
+            case .failure(let error):
+                print("Request failed with error: \(error)")
+            }
         }
     }
     
@@ -230,46 +227,7 @@ class PhoneConfirmVC: UIViewController {
         }
     }
     
-    // MARK: 그 외 함수
-    
-    func formattedNumber(number: String) -> String {
-        let cleanPhoneNumber = number.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
-        let mask = "XXX-XXX-XXXX"
-
-        var result = ""
-        var index = cleanPhoneNumber.startIndex
-        for ch in mask where index < cleanPhoneNumber.endIndex {
-            if ch == "X" {
-                result.append(cleanPhoneNumber[index])
-                index = cleanPhoneNumber.index(after: index)
-            } else {
-                result.append(ch)
-            }
-        }
-        return result
-    }
-    
-    func isValidPhonenumber(phonenumber: String) -> Bool{
-        let phonenumRegEx = "[0-1]{3,}+[0-9]{7,}"
-        let phonenumTest = NSPredicate(format:"SELF MATCHES %@", phonenumRegEx)
-        return phonenumTest.evaluate(with: phonenumber)
-    }
-    
-    func timerStart() {
-        if startTimer == false {
-            startTimer = true
-            timerLimitStart()
-        }
-    }
-    
-    func timerLimitStart() {
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timeLimit), userInfo: nil, repeats: true)
-    }
-    
-    func timeLimitStop() {
-        startTimer = false
-        timer.invalidate()
-    }
+    // MARK: Alert
     
     func sessionAlert() {
         let alertController = UIAlertController(title: nil, message: "세션이 만료되었습니다. 다시 인증번호를 받아주세요", preferredStyle: .alert)
@@ -324,6 +282,47 @@ class PhoneConfirmVC: UIViewController {
         let alertController = UIAlertController(title: nil, message: "올바른 번호를 입력하세요.", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    // MARK: 그 외 함수
+    
+    // 휴대폰 번호 형식 mask 씌워서 표현
+    func formattedNumber(number: String) -> String {
+        let cleanPhoneNumber = number.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        let mask = "XXX-XXX-XXXX"
+        var result = ""
+        var index = cleanPhoneNumber.startIndex
+        for ch in mask where index < cleanPhoneNumber.endIndex {
+            if ch == "X" {
+                result.append(cleanPhoneNumber[index])
+                index = cleanPhoneNumber.index(after: index)
+            } else {
+                result.append(ch)
+            }
+        }
+        return result
+    }
+    
+    func isValidPhonenumber(phonenumber: String) -> Bool{
+        let phonenumRegEx = "[0-1]{3,}+[0-9]{7,}"
+        let phonenumTest = NSPredicate(format:"SELF MATCHES %@", phonenumRegEx)
+        return phonenumTest.evaluate(with: phonenumber)
+    }
+    
+    func timerStart() {
+        if startTimer == false {
+            startTimer = true
+            timerLimitStart()
+        }
+    }
+    
+    func timerLimitStart() {
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timeLimit), userInfo: nil, repeats: true)
+    }
+    
+    func timeLimitStop() {
+        startTimer = false
+        timer.invalidate()
     }
     
     func login() {

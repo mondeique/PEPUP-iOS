@@ -34,7 +34,7 @@ class FindIdVC: UIViewController {
         return view
     }()
     
-    private let btnBack:UIButton = {
+    private let btnBack: UIButton = {
         let btn = UIButton()
         btn.backgroundColor = .white
         btn.setImage(UIImage(named: "btnBack"), for: .normal)
@@ -54,9 +54,9 @@ class FindIdVC: UIViewController {
         return label
    }()
 
-    private let phonenumTxtField:UITextField = {
-        let txtField = UITextField()
-        txtField.placeholder = "  전화번호를 입력해주세요"
+    private let phonenumTxtField: TextField = {
+        let txtField = TextField()
+        txtField.placeholder = " 전화번호를 입력해주세요"
         txtField.backgroundColor = .white
         txtField.layer.cornerRadius = 3
         txtField.layer.borderWidth = 1.0
@@ -65,7 +65,7 @@ class FindIdVC: UIViewController {
         return txtField
     }()
     
-    private let btnSendSMS:UIButton = {
+    private let btnSendSMS: UIButton = {
         let btn = UIButton()
         btn.backgroundColor = .black
         btn.setTitle("인증번호 받기", for: .normal)
@@ -77,9 +77,9 @@ class FindIdVC: UIViewController {
         return btn
     }()
     
-    private let authnumTxtField:UITextField = {
-        let txtField = UITextField()
-        txtField.placeholder = "  인증번호를 입력해주세요"
+    private let authnumTxtField: TextField = {
+        let txtField = TextField()
+        txtField.placeholder = " 인증번호를 입력해주세요"
         txtField.backgroundColor = .white
         txtField.layer.cornerRadius = 3
         txtField.layer.borderWidth = 1.0
@@ -93,8 +93,8 @@ class FindIdVC: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 13)
-        label.text = "03 : 00"
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
+        label.text = "03:00"
         label.backgroundColor = .white
         label.textAlignment = .center
         label.layer.borderColor = UIColor.black.cgColor
@@ -102,7 +102,7 @@ class FindIdVC: UIViewController {
         return label
     }()
     
-    private let btnConfirm:UIButton = {
+    private let btnConfirm: UIButton = {
         let btn = UIButton()
         btn.backgroundColor = .black
         btn.setTitle("아이디 찾기", for: .normal)
@@ -130,32 +130,32 @@ class FindIdVC: UIViewController {
                 "phone": phonenum
             ]
             Alamofire.AF.request("\(Config.baseURL)/accounts/find_email/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
-                                   (response) in switch response.result {
-                                   case .success(let JSON):
-                                    print("Success with JSON: \(JSON)")
-                                    let response = JSON as! NSDictionary
-                                    let code = response.object(forKey: "code") as! Int
-                                    if code == 1 {
-                                        self.timerStart()
-                                        self.authnumTxtField.isEnabled = true
-                                        self.sendsmsAlert()
-                                    }
-                                    else if code == -1 {
-                                        self.smsAlreadyAlert()
-                                        self.authnumTxtField.isEnabled = true
-                                    }
-                                    else if code == -2 {
-                                        self.sessionAlert()
-                                    }
-                                    else if code == -5 {
-                                        self.nouserAlert()
-                                    }
-                                    else if code == -20 {
-                                        self.helpmondeAlert()
-                                    }
-                                   case .failure(let error):
-                                    print("Request failed with error: \(error)")
-                                   }
+                (response) in switch response.result {
+                case .success(let JSON):
+                    print("Success with JSON: \(JSON)")
+                    let response = JSON as! NSDictionary
+                    let code = response.object(forKey: "code") as! Int
+                    if code == 1 {
+                        self.timerStart()
+                        self.authnumTxtField.isEnabled = true
+                        self.sendsmsAlert()
+                    }
+                    else if code == -1 {
+                        self.smsAlreadyAlert()
+                        self.authnumTxtField.isEnabled = true
+                    }
+                    else if code == -2 {
+                        self.sessionAlert()
+                    }
+                    else if code == -5 {
+                        self.nouserAlert()
+                    }
+                    else if code == -20 {
+                        self.helpmondeAlert()
+                    }
+                case .failure(let error):
+                    print("Request failed with error: \(error)")
+                }
             }
         }
         else {
@@ -175,30 +175,30 @@ class FindIdVC: UIViewController {
             "confirm_key": authnumber
         ]
         Alamofire.AF.request("\(Config.baseURL)/accounts/find_email/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
-                                (response) in switch response.result {
-                                case .success(let JSON):
-                                    print("Success with JSON: \(JSON)")
-                                    let response = JSON as! NSDictionary
-                                    let code = response.object(forKey: "code") as! Int
-                                    if code == 1 {
-                                        let email = response.object(forKey: "email") as! String
-                                        self.successAlert(message: email)
-                                    }
-                                    else if code == -1 {
-                                        self.authnumAlert()
-                                    }
-                                    else if code == -2 {
-                                        self.sessionAlert()
-                                    }
-                                    else if code == -5 {
-                                        self.nouserAlert()
-                                    }
-                                    else if code == -20 {
-                                        self.helpmondeAlert()
-                                    }
-                                case .failure(let error):
-                                    print("Request failed with error: \(error)")
-                                }
+            (response) in switch response.result {
+            case .success(let JSON):
+                print("Success with JSON: \(JSON)")
+                let response = JSON as! NSDictionary
+                let code = response.object(forKey: "code") as! Int
+                if code == 1 {
+                    let email = response.object(forKey: "email") as! String
+                    self.successAlert(message: email)
+                }
+                else if code == -1 {
+                    self.authnumAlert()
+                }
+                else if code == -2 {
+                    self.sessionAlert()
+                }
+                else if code == -5 {
+                    self.nouserAlert()
+                }
+                else if code == -20 {
+                    self.helpmondeAlert()
+                }
+            case .failure(let error):
+                print("Request failed with error: \(error)")
+            }
         }
     }
     
@@ -217,13 +217,7 @@ class FindIdVC: UIViewController {
         }
     }
     
-    // MARK: 그 외 함수
-    
-    func isValidPhonenumber(phonenumber: String) -> Bool{
-        let phonenumRegEx = "[0-1]{3,}+[0-9]{7,}"
-        let phonenumTest = NSPredicate(format:"SELF MATCHES %@", phonenumRegEx)
-        return phonenumTest.evaluate(with: phonenumber)
-    }
+    // MARK: Alert
     
     func helpmondeAlert() {
         let alertController = UIAlertController(title: nil, message: "몽데이크 CS팀으로 문의해주세요", preferredStyle: .alert)
@@ -276,6 +270,14 @@ class FindIdVC: UIViewController {
         let alertController = UIAlertController(title: nil, message: "올바른 번호를 입력하세요.", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    // MARK: 그 외 함수
+    
+    func isValidPhonenumber(phonenumber: String) -> Bool{
+        let phonenumRegEx = "[0-1]{3,}+[0-9]{7,}"
+        let phonenumTest = NSPredicate(format:"SELF MATCHES %@", phonenumRegEx)
+        return phonenumTest.evaluate(with: phonenumber)
     }
     
     func timerStart() {

@@ -25,14 +25,6 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     
     // MARK: collectionView 전체 View setting
     
-//    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0 {
-//            navigationController?.setNavigationBarHidden(true, animated: true)
-//        } else {
-//            navigationController?.setNavigationBarHidden(false, animated: true)
-//        }
-//    }
-    
     fileprivate func setup() {
         collectionView.backgroundColor = .white
         collectionView.alwaysBounceVertical = true
@@ -47,14 +39,28 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
         let messageImage = UIImage(named: "btnDirect")
         let cartImage = UIImage(named: "btnCart")
         
-        let searchButton = UIBarButtonItem(image: searchImage, style: .plain, target: self, action: #selector(didTapSearchBar))
-        let messageButton = UIBarButtonItem(image: messageImage, style: .plain, target: self, action: #selector(didTapMessageButton))
-        let cartButton = UIBarButtonItem(image: cartImage, style: .plain, target: self, action: #selector(didTapCartButton))
+        let searchBtn: UIButton = UIButton(type: .custom)
+        searchBtn.setImage(searchImage, for: .normal)
+        searchBtn.addTarget(self, action: #selector(didTapSearchBar(sender:)), for: .touchUpInside)
+        searchBtn.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width/375 * 245, height: UIScreen.main.bounds.height/667 * 32)
+        let searchBarBtn = UIBarButtonItem(customView: searchBtn)
+        
+        let messageBtn: UIButton = UIButton(type: .custom)
+        messageBtn.setImage(messageImage, for: .normal)
+        messageBtn.addTarget(self, action: #selector(didTapMessageButton(sender:)), for: .touchUpInside)
+        messageBtn.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width/375 * 40, height: UIScreen.main.bounds.height/667 * 40)
+        let messageBarBtn = UIBarButtonItem(customView: messageBtn)
+        
+        let cartBtn: UIButton = UIButton(type: .custom)
+        cartBtn.setImage(cartImage, for: .normal)
+        cartBtn.addTarget(self, action: #selector(didTapCartButton(sender:)), for: .touchUpInside)
+        cartBtn.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width/375 * 40, height: UIScreen.main.bounds.height/667 * 40)
+        let cartBarBtn = UIBarButtonItem(customView: cartBtn)
         
         // TODO: - stackView로 navigationBarItem setting
         
-        navigationItem.leftBarButtonItem = searchButton
-        navigationItem.rightBarButtonItems = [messageButton, cartButton]
+        navigationItem.leftBarButtonItem = searchBarBtn
+        navigationItem.rightBarButtonItems = [messageBarBtn, cartBarBtn]
         
         let statusBarView = UIView(frame: UIApplication.shared.statusBarFrame)
         statusBarView.backgroundColor = .white
@@ -119,11 +125,9 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
                     let image = UIImage(data: imageData as Data)
                     cell.productImg.image = image
                     if is_sold == true {
-                        cell.soldBG.isHidden = false
                         cell.soldLabel.isHidden = false
                     }
                     else {
-                        cell.soldBG.isHidden = true
                         cell.soldLabel.isHidden = true
                     }
                 }

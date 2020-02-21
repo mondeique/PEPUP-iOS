@@ -59,27 +59,27 @@ class FindPwdResetVC: UIViewController {
         return label
     }()
 
-    private let pwordTxtField:UITextField = {
-        let txtField = UITextField()
-        txtField.placeholder = "  비밀번호 8자 이상"
+    private let pwordTxtField:TextField = {
+        let txtField = TextField()
+        txtField.placeholder = " 비밀번호 8자 이상"
         txtField.backgroundColor = .white
         txtField.layer.cornerRadius = 3
         txtField.layer.borderWidth = 1.0
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
-        txtField.addTarget(self, action: #selector(pwdcheck), for: UIControl.Event.editingDidEnd)
+        txtField.addTarget(self, action: #selector(pwdcheck), for: UIControl.Event.editingChanged)
         return txtField
     }()
     
-    private let pwordAgainTxtField:UITextField = {
-        let txtField = UITextField()
-        txtField.placeholder = "  비밀번호를 확인해주세요"
+    private let pwordAgainTxtField: TextField = {
+        let txtField = TextField()
+        txtField.placeholder = " 비밀번호를 확인해주세요"
         txtField.backgroundColor = .white
         txtField.layer.cornerRadius = 3
         txtField.layer.borderWidth = 1.0
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
-        txtField.addTarget(self, action: #selector(againpwdcheck), for: UIControl.Event.editingDidEnd)
+        txtField.addTarget(self, action: #selector(againpwdcheck), for: UIControl.Event.editingChanged)
         return txtField
     }()
     
@@ -125,18 +125,18 @@ class FindPwdResetVC: UIViewController {
     }
     
     @objc func pwdcheck() {
-            guard let passwordText = pwordTxtField.text else {
-                return
-            }
-            if !isVaildPassword(password: passwordText) {
-                self.passworderrorLabel.isHidden = false
-    //            self.errorImage2.isHidden = false
-            }
-            else {
-                self.passworderrorLabel.isHidden = true
-                self.pwordAgainTxtField.isEnabled = true
-            }
+        guard let passwordText = pwordTxtField.text else {
+            return
         }
+        if !isVaildPassword(password: passwordText) {
+            self.passworderrorLabel.isHidden = false
+//            self.errorImage2.isHidden = false
+        }
+        else {
+            self.passworderrorLabel.isHidden = true
+            self.pwordAgainTxtField.isEnabled = true
+        }
+    }
         
     @objc func againpwdcheck() {
         self.passworderrorLabel.isHidden = true
@@ -168,18 +168,18 @@ class FindPwdResetVC: UIViewController {
                 "password" : passwordText
             ]
             Alamofire.AF.request("\(Config.baseURL)/accounts/reset_password/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": token]) .validate(statusCode: 200..<300) .responseJSON {
-                                   (response) in switch response.result {
-                                   case .success(let JSON):
-                                    print("Success with JSON: \(JSON)")
-                                    let response = JSON as! NSDictionary
-                                    let code = response.object(forKey: "code") as! Int
-                                    if code == 1 {
-                                        self.resetpwdAlert()
-                                        self.login()
-                                    }
-                                   case .failure(let error):
-                                    print("Request failed with error: \(error)")
-                                   }
+                (response) in switch response.result {
+                case .success(let JSON):
+                print("Success with JSON: \(JSON)")
+                let response = JSON as! NSDictionary
+                let code = response.object(forKey: "code") as! Int
+                if code == 1 {
+                    self.login()
+                    self.resetpwdAlert()
+                }
+                case .failure(let error):
+                print("Request failed with error: \(error)")
+                }
             }
         }
     }

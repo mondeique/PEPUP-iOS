@@ -25,7 +25,7 @@ class NickNameVC: UIViewController {
         return view
     }()
     
-    private let btnBack:UIButton = {
+    private let btnBack: UIButton = {
         let btn = UIButton()
         btn.backgroundColor = .white
         btn.setImage(UIImage(named: "btnBack"), for: .normal)
@@ -45,7 +45,7 @@ class NickNameVC: UIViewController {
         return label
     }()
     
-    private let nicknameTxtField:UITextField = {
+    private let nicknameTxtField: UITextField = {
         let txtField = UITextField()
         txtField.placeholder = "닉네임을 입력하세요"
         txtField.backgroundColor = .white
@@ -53,6 +53,7 @@ class NickNameVC: UIViewController {
         txtField.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
         txtField.textAlignment = .center
         txtField.translatesAutoresizingMaskIntoConstraints = false
+        txtField.addTarget(self, action: #selector(checknickname), for: UIControl.Event.editingChanged)
         return txtField
     }()
     
@@ -61,13 +62,13 @@ class NickNameVC: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "이미 사용 중인 닉네임입니다."
         label.textColor = .red
-        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         label.isHidden = true
         label.backgroundColor = .white
         return label
     }()
     
-    let btnCheck:UIButton = {
+    let btnCheck: UIButton = {
         let btn = UIButton()
         btn.backgroundColor = .black
         btn.setTitle("다음", for: .normal)
@@ -77,6 +78,7 @@ class NickNameVC: UIViewController {
         btn.clipsToBounds = true
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(update), for: .touchUpInside)
+        btn.isEnabled = false
         return btn
     }()
     
@@ -84,6 +86,36 @@ class NickNameVC: UIViewController {
     
     @objc func back() {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func checknickname() {
+        guard let nicknameText = nicknameTxtField.text else {
+            return
+        }
+        
+        if isValidNickName(nickname: nicknameText) {
+//            btnCheck.isEnabled = true
+            let parameters: [String: String] = [
+                "nickname" : nicknameText
+            ]
+            Alamofire.AF.request("\(Config.baseURL)/accounts/check_nickname/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+                (response) in switch response.result {
+                case .success(let JSON):
+                    print("Success with JSON: \(JSON)")
+                    let response = JSON as! NSDictionary
+                    let code = response.object(forKey: "code") as! Int
+                    if code == 1 {
+                        self.nicknameerrLabel.isHidden = true
+                        self.btnCheck.isEnabled = true
+                    }
+                    else if code == -1 {
+                        self.nicknameerrLabel.isHidden = false
+                    }
+                case .failure(let error):
+                    print("Request failed with error: \(error)")
+                }
+            }
+        }
     }
     
     @objc func update() {
@@ -97,13 +129,17 @@ class NickNameVC: UIViewController {
                 "nickname" : nicknameText
             ]
             Alamofire.AF.request("\(Config.baseURL)/accounts/signup/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-                            (response) in switch response.result {
-                            case .success(let JSON):
-                                print("Success with JSON: \(JSON)")
-                                self.changeprofile()
-                            case .failure(let error):
-                                print("Request failed with error: \(error)")
-                            }
+                (response) in switch response.result {
+                case .success(let JSON):
+                    print("Success with JSON: \(JSON)")
+                    let response = JSON as! NSDictionary
+                    let code = response.object(forKey: "code") as! Int
+                    if code == 1 {
+                        self.changeprofile()
+                    }
+                case .failure(let error):
+                    print("Request failed with error: \(error)")
+                }
             }
         }
         else {
@@ -112,7 +148,7 @@ class NickNameVC: UIViewController {
     }
     
     func nicknamefailAlert() {
-        let alertController = UIAlertController(title: nil, message: "닉네임 형식이) 올바르지 않습니다.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: nil, message: "닉네임 형식이 올바르지 않습니다.", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
         self.present(alertController, animated: true, completion: nil)
     }

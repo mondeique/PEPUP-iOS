@@ -18,17 +18,16 @@ class SignupVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        self.navigationController?.isNavigationBarHidden = true
     }
     
     // MARK: Declare each view programmatically 
     
     private let signupContentView: UIView = {
-            let view = UIView()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.backgroundColor = .white
-            return view
-        }()
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        return view
+    }()
     
     private let btnBack:UIButton = {
         let btn = UIButton()
@@ -82,9 +81,9 @@ class SignupVC: UIViewController {
         return label
     }()
 
-    private let unameTxtField:UITextField = {
-        let txtField = UITextField()
-        txtField.placeholder = "  example@example.com"
+    private let unameTxtField: TextField = {
+        let txtField = TextField()
+        txtField.placeholder = " example@example.com"
         txtField.backgroundColor = .white
         txtField.layer.cornerRadius = 3
         txtField.layer.borderWidth = 1.0
@@ -111,27 +110,27 @@ class SignupVC: UIViewController {
         return label
     }()
 
-    private let pwordTxtField:UITextField = {
-        let txtField = UITextField()
-        txtField.placeholder = "  비밀번호 8자 이상"
+    private let pwordTxtField: TextField = {
+        let txtField = TextField()
+        txtField.placeholder = " 비밀번호 8자 이상"
         txtField.backgroundColor = .white
         txtField.layer.cornerRadius = 3
         txtField.layer.borderWidth = 1.0
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
-        txtField.addTarget(self, action: #selector(pwdcheck), for: UIControl.Event.editingDidEnd)
+        txtField.addTarget(self, action: #selector(pwdcheck), for: UIControl.Event.editingChanged)
         return txtField
     }()
     
-    private let pwordAgainTxtField:UITextField = {
-        let txtField = UITextField()
-        txtField.placeholder = "  비밀번호를 확인해주세요"
+    private let pwordAgainTxtField:TextField  = {
+        let txtField = TextField ()
+        txtField.placeholder = " 비밀번호를 확인해주세요"
         txtField.backgroundColor = .white
         txtField.layer.cornerRadius = 3
         txtField.layer.borderWidth = 1.0
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
-        txtField.addTarget(self, action: #selector(againpwdcheck), for: UIControl.Event.editingDidEnd)
+        txtField.addTarget(self, action: #selector(againpwdcheck), for: UIControl.Event.editingChanged)
         return txtField
     }()
     
@@ -169,7 +168,7 @@ class SignupVC: UIViewController {
 //        return image
 //    }()
     
-    private let btnCheckPayment:UIButton = {
+    private let btnCheckPayment: UIButton = {
         let btn = UIButton()
         btn.setImage(UIImage(named: "un_checkbox"), for: .normal)
         btn.clipsToBounds = true
@@ -178,7 +177,7 @@ class SignupVC: UIViewController {
         return btn
     }()
     
-    private let btnCheckAD:UIButton = {
+    private let btnCheckAD: UIButton = {
         let btn = UIButton()
         btn.setImage(UIImage(named: "un_checkbox"), for: .normal)
         btn.clipsToBounds = true
@@ -232,10 +231,10 @@ class SignupVC: UIViewController {
             btnSignup.backgroundColor = .black
             btnSignup.setTitleColor(.white, for: .normal)
         }
-        else {
-            btnSignup.backgroundColor = UIColor(rgb: 0xEBEBF6)
-            btnSignup.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
-        }
+//        else {
+//            btnSignup.backgroundColor = UIColor(rgb: 0xEBEBF6)
+//            btnSignup.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
+//        }
     }
     
     @objc func checkad() {
@@ -264,10 +263,10 @@ class SignupVC: UIViewController {
             btnSignup.backgroundColor = .black
             btnSignup.setTitleColor(.white, for: .normal)
         }
-        else {
-            btnSignup.backgroundColor = UIColor(rgb: 0xEBEBF6)
-            btnSignup.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
-        }
+//        else {
+//            btnSignup.backgroundColor = UIColor(rgb: 0xEBEBF6)
+//            btnSignup.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
+//        }
     }
     
     @objc func emailcheck() {
@@ -289,42 +288,39 @@ class SignupVC: UIViewController {
         let parameters = [
             "email": emailText
         ]
-        Alamofire.AF.request("\(Config.baseURL)/accounts/check_email/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-                    (response) in switch response.result {
-                    case .success(let JSON):
-                        print("Success with JSON: \(JSON)")
-                        let response = JSON as! NSDictionary
-                        let code = response.object(forKey: "code") as! Int
-                        if code == 1 {
-                            self.emailerrorLabel.isHidden = true
-                            self.emailerrorLabel2.isHidden = true
-                        }
-                        // 중복된 이메일인 경우
-                        else if code == -1 {
-                            self.emailerrorLabel.isHidden = true
-                            self.emailerrorLabel2.isHidden = false
-                        }
-                    case .failure(let error):
-                        print("Request failed with error: \(error)")
+        if isValidEmailAddress(email: emailText) {
+            Alamofire.AF.request("\(Config.baseURL)/accounts/check_email/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+                (response) in switch response.result {
+                case .success(let JSON):
+                    print("Success with JSON: \(JSON)")
+                    let response = JSON as! NSDictionary
+                    let code = response.object(forKey: "code") as! Int
+                    if code == 1 {
+                        self.emailerrorLabel.isHidden = true
+                        self.emailerrorLabel2.isHidden = true
                     }
-        }
-        if !isValidEmailAddress(email: emailText) {
-            self.emailerrorLabel2.isHidden = true
-            self.emailerrorLabel.isHidden = false
-//            self.errorImage.isHidden = false
+                    // 중복된 이메일인 경우
+                    else if code == -1 {
+                        self.emailerrorLabel.isHidden = true
+                        self.emailerrorLabel2.isHidden = false
+                    }
+                case .failure(let error):
+                    print("Request failed with error: \(error)")
+                }
+            }
         }
         else {
             self.emailerrorLabel2.isHidden = true
-            self.emailerrorLabel.isHidden = true
+            self.emailerrorLabel.isHidden = false
         }
         if isValidEmailAddress(email: emailText) && isVaildPassword(password: passwordText) && isSamePassword(password: passwordText, againpassword: passwordagainText) && isCheckedBox(checkBox1: checkPaymentBox, checkBox2: checkADBox) {
             btnSignup.backgroundColor = .black
             btnSignup.setTitleColor(.white, for: .normal)
         }
-        else {
-            btnSignup.backgroundColor = UIColor(rgb: 0xEBEBF6)
-            btnSignup.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
-        }
+//        else {
+//            btnSignup.backgroundColor = UIColor(rgb: 0xEBEBF6)
+//            btnSignup.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
+//        }
     }
     
     @objc func pwdcheck() {
@@ -355,10 +351,10 @@ class SignupVC: UIViewController {
             btnSignup.backgroundColor = .black
             btnSignup.setTitleColor(.white, for: .normal)
         }
-        else {
-            btnSignup.backgroundColor = UIColor(rgb: 0xEBEBF6)
-            btnSignup.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
-        }
+//        else {
+//            btnSignup.backgroundColor = UIColor(rgb: 0xEBEBF6)
+//            btnSignup.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
+//        }
     }
     
     @objc func againpwdcheck() {
@@ -389,10 +385,10 @@ class SignupVC: UIViewController {
             btnSignup.backgroundColor = .black
             btnSignup.setTitleColor(.white, for: .normal)
         }
-        else {
-            btnSignup.backgroundColor = UIColor(rgb: 0xEBEBF6)
-            btnSignup.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
-        }
+//        else {
+//            btnSignup.backgroundColor = UIColor(rgb: 0xEBEBF6)
+//            btnSignup.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
+//        }
     }
     
     @objc func signup() {
@@ -417,24 +413,24 @@ class SignupVC: UIViewController {
                 "email" : emailText,
             ]
             Alamofire.AF.request("\(Config.baseURL)/accounts/signup/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-                        (response) in switch response.result {
-                        case .success(let JSON):
-                            print("Success with JSON: \(JSON)")
-                            let response = JSON as! NSDictionary
-                            let code = response.object(forKey: "code") as! Int
-                            if code == 1 {
-                                self.successAlert()
-                            }
-                            else if code == -1 {
-                                self.signupemailAlert()
-                            }
-                            else if code == -2 {
-                                self.userAlreadyAlert()
-                            }
-                            // no header token -> already processed
-                        case .failure(let error):
-                            print("Request failed with error: \(error)")
-                        }
+                (response) in switch response.result {
+                case .success(let JSON):
+                    print("Success with JSON: \(JSON)")
+                    let response = JSON as! NSDictionary
+                    let code = response.object(forKey: "code") as! Int
+                    if code == 1 {
+                        self.successAlert()
+                    }
+                    else if code == -1 {
+                        self.signupemailAlert()
+                    }
+                    else if code == -2 {
+                        self.userAlreadyAlert()
+                    }
+                    // no header token -> already processed
+                case .failure(let error):
+                    print("Request failed with error: \(error)")
+                }
             }
         }
     }

@@ -17,48 +17,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        sleep(3)
+        
         if let token = UserDefaults.standard.object(forKey: "token") as? String {
             Alamofire.AF.request("\(Config.baseURL)/accounts/check_userinfo/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": token]) .validate(statusCode: 200..<300) .responseJSON {
-                            (response) in switch response.result {
-                            case .success(let JSON):
-                                print("Success with JSON: \(JSON)")
-                                // 만료되지 않은 token이 저장되어 있을 경우
-                                let response = JSON as! NSDictionary
-                                let code = response.object(forKey: "code") as! Int
-                                // user.email, user.nickname 모두 존재할 경우
-                                if code == 1 {
-                                    self.loadHome()
-                                }
-                                // token이 없는 경우
-                                else if code == -1 {
-                                    print("Invalid Token")
-                                }
-                                // user.email이 없는 경우
-                                else if code == -2 {
-                                    self.loadLogin()
-                                }
-                                // user.nickname이 없는 경우
-                                else if code == -3 {
-                                    self.loadNickName()
-                                }
-                                // phone confirm 자체도 하지 않은 경우
-                                else if code == -4 {
-                                    UserDefaults.standard.set(nil, forKey: "token")
-                                    self.loadLogin()
-                                }
-                            case .failure(let error):
-                                print("Request failed with error: \(error)")
-                                if error.responseCode == 401 {
-                                    self.loadLogin()
-                                }
-                            }
+                (response) in switch response.result {
+                case .success(let JSON):
+                    print("Success with JSON: \(JSON)")
+                    // 만료되지 않은 token이 저장되어 있을 경우
+                    let response = JSON as! NSDictionary
+                    let code = response.object(forKey: "code") as! Int
+                    // user.email, user.nickname 모두 존재할 경우
+                    if code == 1 {
+                        self.loadHome()
+                    }
+                    // token이 없는 경우
+                    else if code == -1 {
+                        print("NO Token")
+                        self.loadHome()
+                    }
+                    // user.email이 없는 경우
+                    else if code == -2 {
+                        self.loadLogin()
+                    }
+                    // user.nickname이 없는 경우
+                    else if code == -3 {
+                        self.loadNickName()
+                    }
+                    // phone confirm 자체도 하지 않은 경우
+                    else if code == -4 {
+                        UserDefaults.standard.set(nil, forKey: "token")
+                        self.loadLogin()
+                    }
+                case .failure(let error):
+                    print("Request failed with error: \(error)")
+                    if error.responseCode == 401 {
+                        self.loadLogin()
+                    }
+                }
             }
         }
         else {
-            print("NO TOKEN")
+            print("Invalid TOKEN")
             self.loadLogin()
         }
-        loadLogin()
         return true
     }
     

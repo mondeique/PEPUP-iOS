@@ -92,8 +92,8 @@ class LoginVC: UIViewController {
         return label
     }()
     
-    private let unameTxtField:UITextField = {
-        let txtField = UITextField()
+    private let unameTxtField: TextField = {
+        let txtField = TextField()
         txtField.placeholder = "  이메일"
         txtField.backgroundColor = .white
         txtField.layer.borderWidth = 1.0
@@ -103,8 +103,8 @@ class LoginVC: UIViewController {
         return txtField
     }()
     
-    private let pwordTxtField:UITextField = {
-        let txtField = UITextField()
+    private let pwordTxtField: TextField = {
+        let txtField = TextField()
         txtField.placeholder = "  비밀번호"
         txtField.backgroundColor = .white
         txtField.layer.cornerRadius = 3
@@ -115,7 +115,7 @@ class LoginVC: UIViewController {
         return txtField
     }()
     
-    let btnLogin:UIButton = {
+    private let btnLogin: UIButton = {
         let btn = UIButton()
         btn.backgroundColor = .black
         btn.setTitle("Login", for: .normal)
@@ -128,7 +128,7 @@ class LoginVC: UIViewController {
         return btn
     }()
     
-    let btnFindID:UIButton = {
+    private let btnFindID: UIButton = {
         let btn = UIButton()
         btn.backgroundColor = .white
         btn.setTitle("아이디찾기", for: .normal)
@@ -147,7 +147,7 @@ class LoginVC: UIViewController {
         return label
     }()
     
-    let btnFindPwd:UIButton = {
+    private let btnFindPwd: UIButton = {
         let btn = UIButton()
         btn.backgroundColor = .white
         btn.setTitle("비밀번호 찾기", for: .normal)
@@ -166,7 +166,7 @@ class LoginVC: UIViewController {
         return label
     }()
     
-    let btnSignup:UIButton = {
+    private let btnSignup: UIButton = {
         let btn = UIButton()
         btn.backgroundColor = .white
         btn.setTitle("회원가입", for: .normal)
@@ -196,36 +196,38 @@ class LoginVC: UIViewController {
                 "email" : emailText,
             ]
             Alamofire.AF.request("\(Config.baseURL)/accounts/login/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"]) .validate(statusCode: 200..<300) .responseJSON {
-                            (response) in switch response.result {
-                            case .success(let JSON):
-                                print("Success with JSON: \(JSON)")
-                                let response = JSON as! NSDictionary
-                                let code = response.object(forKey: "code") as! Int
-                                if code == 1 {
-                                    let token_name = "Token "
-                                    let token_ = response.object(forKey: "token") as! String
-                                    let token = token_name + token_
-                                    self.setCurrentLoginToken(token)
-                                    self.successAlert()
-                                }
-                                else if code == -1 {
-                                    self.failloginAlert()
-                                }
-                                else if code == 2 {
-                                    let token_name = "Token "
-                                    let token_ = response.object(forKey: "token") as! String
-                                    let token = token_name + token_
-                                    self.setCurrentLoginToken(token)
-                                    let controller = NickNameVC()
-                                    self.navigationController?.pushViewController(controller, animated: true)
-                                    self.nicknameAlert()
-                                }
-                            case .failure(let error):
-                                print("Request failed with error: \(error)")
-                                if error.responseCode == 400 {
-                                    self.failloginAlert()
-                                }
-                            }
+                (response) in switch response.result {
+                case .success(let JSON):
+                    print("Success with JSON: \(JSON)")
+                    let response = JSON as! NSDictionary
+                    let code = response.object(forKey: "code") as! Int
+                    // Login success
+                    if code == 1 {
+                        let token_name = "Token "
+                        let token_ = response.object(forKey: "token") as! String
+                        let token = token_name + token_
+                        self.setCurrentLoginToken(token)
+                        self.successAlert()
+                    }
+                    else if code == -1 {
+                        self.failloginAlert()
+                    }
+                    // Login success + NickName 없음
+                    else if code == 2 {
+                        let token_name = "Token "
+                        let token_ = response.object(forKey: "token") as! String
+                        let token = token_name + token_
+                        self.setCurrentLoginToken(token)
+                        let controller = NickNameVC()
+                        self.navigationController?.pushViewController(controller, animated: true)
+                        self.nicknameAlert()
+                    }
+                case .failure(let error):
+                    print("Request failed with error: \(error)")
+                    if error.responseCode == 400 {
+                        self.failloginAlert()
+                    }
+                }
             }
         }
         
@@ -253,11 +255,7 @@ class LoginVC: UIViewController {
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
-    // MARK: 그 외 함수
-    
-    func setCurrentLoginToken(_ struserid: String) {
-        UserDefaults.standard.set(struserid, forKey: "token")
-    }
+    // MARK: Alert
     
     func successAlert() {
            let controller = TabBarController()
@@ -280,6 +278,12 @@ class LoginVC: UIViewController {
         let alertController = UIAlertController(title: nil, message: "\(message) 올바르지 않습니다.", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    // MARK: 그 외 함수
+    
+    func setCurrentLoginToken(_ struserid: String) {
+        UserDefaults.standard.set(struserid, forKey: "token")
     }
     
     func isValidEmailAddress(email: String) -> Bool {
@@ -331,8 +335,8 @@ class LoginVC: UIViewController {
     func loginLabelLayout() {
         loginLabel.topAnchor.constraint(equalTo:loginContentView.topAnchor, constant:UIScreen.main.bounds.height/667 * 104).isActive = true
         loginLabel.leftAnchor.constraint(equalTo:loginContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
-//        loginLabel.widthAnchor.constraint(equalToConstant:78).isActive = true
-//        loginLabel.heightAnchor.constraint(equalToConstant:35).isActive = true
+        loginLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 78).isActive = true
+        loginLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 35).isActive = true
     }
     
     func unameTxtFieldLayout() {
@@ -412,4 +416,21 @@ extension UIColor {
            blue: rgb & 0xFF
        )
    }
+}
+
+class TextField: UITextField {
+    
+    let padding = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+    
+    override open func textRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.inset(by: padding)
+    }
+    
+    override open func placeholderRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.inset(by: padding)
+    }
+    
+    override open func editingRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.inset(by: padding)
+    }
 }
