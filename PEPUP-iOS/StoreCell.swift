@@ -8,15 +8,14 @@
 
 import UIKit
 
-class StoreCell: UICollectionViewCell {
+class StoreCell: BaseCollectionViewCell {
     
     var label: UILabel = {
         let label = UILabel()
-        label.text = "Tab"
         label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        label.font = UIFont(name: "AppleSDGothicNeo-Heavy", size: 13)
         label.backgroundColor = .white
-        label.textColor = .lightGray
+        label.textColor = UIColor(rgb: 0xB7B7BF)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -24,12 +23,15 @@ class StoreCell: UICollectionViewCell {
     override var isSelected: Bool {
         didSet{
             print("Changed")
-            self.label.textColor = isSelected ? .black : .lightGray
+            self.label.textColor = isSelected ? .black : UIColor(rgb: 0xB7B7BF)
         }
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
+    }
+    
+    override func setup() {
         self.addSubview(label)
         label.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         label.topAnchor.constraint(equalTo: self.topAnchor).isActive = true

@@ -14,7 +14,7 @@ import UIKit
 
 class StoreVC: UIViewController, CustomMenuBarDelegate{
     
-    private let pageId = "pagecell"
+    private let reuseIdentifier = "pagecell"
     
     //MARK: Outltes
     
@@ -27,15 +27,16 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
     }()
     
     var customMenuBar = CustomMenuBar()
+    
     //MARK: Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        
         navigationController?.hidesBarsOnSwipe = true
         setupCustomTabBar()
         setupPageCollectionView()
     }
+    
     //MARK: Setup view
     func setupCustomTabBar(){
         self.view.addSubview(customMenuBar)
@@ -56,10 +57,10 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
     func setupPageCollectionView(){
         pageCollectionView.delegate = self
         pageCollectionView.dataSource = self
-        pageCollectionView.backgroundColor = .purple
+        pageCollectionView.backgroundColor = .lightGray
         pageCollectionView.showsHorizontalScrollIndicator = false
         pageCollectionView.isPagingEnabled = true
-        pageCollectionView.register(PageCell.self, forCellWithReuseIdentifier: pageId)
+        pageCollectionView.register(PageCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         self.view.addSubview(pageCollectionView)
         pageCollectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         pageCollectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
@@ -67,14 +68,14 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
         pageCollectionView.topAnchor.constraint(equalTo: self.customMenuBar.bottomAnchor).isActive = true
     }
 }
+
 //MARK:- UICollectionViewDelegate, UICollectionViewDataSource
 
 extension StoreVC: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = pageCollectionView.dequeueReusableCell(withReuseIdentifier: pageId.self, for: indexPath) as! PageCell
-        cell.label.text = "\(indexPath.row + 1)번째 뷰"
-        print("\(indexPath.row + 1)번쨰 뷰ㅠㅠㅠㅠㅠㅠ")
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PageCell
+        cell.label.text = "\(indexPath.row)번째 뷰"
         return cell
     }
     

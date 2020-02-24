@@ -14,7 +14,7 @@ protocol CustomMenuBarDelegate: class {
 
 class CustomMenuBar: UIView {
     
-    private let cellId = "storecell"
+    private let reuseIdentifier = "storecell"
     
     weak var delegate: CustomMenuBarDelegate?
     override init(frame: CGRect) {
@@ -30,7 +30,7 @@ class CustomMenuBar: UIView {
     var customTabBarCollectionView: UICollectionView = {
         let collectionViewLayout = UICollectionViewFlowLayout()
         collectionViewLayout.scrollDirection = .horizontal
-        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), collectionViewLayout: collectionViewLayout)
+        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 55), collectionViewLayout: collectionViewLayout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .white
         return collectionView
@@ -54,7 +54,7 @@ class CustomMenuBar: UIView {
         customTabBarCollectionView.delegate = self
         customTabBarCollectionView.dataSource = self
         customTabBarCollectionView.showsHorizontalScrollIndicator = false
-        customTabBarCollectionView.register(StoreCell.self, forCellWithReuseIdentifier: cellId)
+        customTabBarCollectionView.register(StoreCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         customTabBarCollectionView.isScrollEnabled = false
         
         let indexPath = IndexPath(item: 0, section: 0)
@@ -84,7 +84,16 @@ class CustomMenuBar: UIView {
 extension CustomMenuBar: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = customTabBarCollectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! StoreCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! StoreCell
+        if indexPath.row == 0 {
+            cell.label.text = "SHOP"
+        }
+        else if indexPath.row == 1 {
+            cell.label.text = "LIKE"
+        }
+        else {
+            cell.label.text = "REVIEW"
+        }
         return cell
     }
     

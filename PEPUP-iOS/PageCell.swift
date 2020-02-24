@@ -8,9 +8,9 @@
 
 import UIKit
 
-class PageCell: UICollectionViewCell {
+class PageCell: BaseCollectionViewCell {
 
-    var label: UILabel = {
+    let label: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .center
@@ -21,10 +21,16 @@ class PageCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+    }
+    
+    override func setup() {
         self.addSubview(label)
         self.backgroundColor = .gray
+        
         label.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        label.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        label.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
     }
 }
 
