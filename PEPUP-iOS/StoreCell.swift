@@ -34,9 +34,8 @@ class StoreCell: BaseCollectionViewCell {
     override func setup() {
         self.addSubview(label)
         label.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        label.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        label.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: UIScreen.main.bounds.height/667 * -8).isActive = true
         label.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     }
 }
 

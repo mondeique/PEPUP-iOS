@@ -41,6 +41,8 @@
 		E9D1119824037426006AE20C /* StoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D1119724037426006AE20C /* StoreCell.swift */; };
 		E9D1119A24038C27006AE20C /* CustomMenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D1119924038C27006AE20C /* CustomMenuBar.swift */; };
 		E9D1119C24038CFE006AE20C /* PageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D1119B24038CFE006AE20C /* PageCell.swift */; };
+		E9D1119E2403BF77006AE20C /* TagVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D1119D2403BF77006AE20C /* TagVC.swift */; };
+		E9D111A02403C00E006AE20C /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D1119F2403C00E006AE20C /* TagCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +84,8 @@
 		E9D1119724037426006AE20C /* StoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCell.swift; sourceTree = "<group>"; };
 		E9D1119924038C27006AE20C /* CustomMenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMenuBar.swift; sourceTree = "<group>"; };
 		E9D1119B24038CFE006AE20C /* PageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageCell.swift; sourceTree = "<group>"; };
+		E9D1119D2403BF77006AE20C /* TagVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagVC.swift; sourceTree = "<group>"; };
+		E9D1119F2403C00E006AE20C /* TagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +172,8 @@
 				E9D1119724037426006AE20C /* StoreCell.swift */,
 				E9D1119924038C27006AE20C /* CustomMenuBar.swift */,
 				E9D1119B24038CFE006AE20C /* PageCell.swift */,
+				E9D1119D2403BF77006AE20C /* TagVC.swift */,
+				E9D1119F2403C00E006AE20C /* TagCell.swift */,
 			);
 			path = "PEPUP-iOS";
 			sourceTree = "<group>";
@@ -291,6 +297,7 @@
 				E9C8468923E1A89E00359A93 /* HomeVC.swift in Sources */,
 				E968FF1823F51D6C00B2B1D3 /* CartFooterCell.swift in Sources */,
 				E9D1119824037426006AE20C /* StoreCell.swift in Sources */,
+				E9D111A02403C00E006AE20C /* TagCell.swift in Sources */,
 				E94D142A23E91EC40001F3A0 /* NickNameVC.swift in Sources */,
 				E9D07A4123E2B0930095AD05 /* DetailVC.swift in Sources */,
 				E9D07A4F23E4050D0095AD05 /* PhoneConfirmVC.swift in Sources */,
@@ -302,6 +309,7 @@
 				E9D1119A24038C27006AE20C /* CustomMenuBar.swift in Sources */,
 				E94D142C23E9223F0001F3A0 /* ProfileVC.swift in Sources */,
 				E9C8467023E1A5D200359A93 /* AppDelegate.swift in Sources */,
+				E9D1119E2403BF77006AE20C /* TagVC.swift in Sources */,
 				E968FF1223F5139000B2B1D3 /* CartVC.swift in Sources */,
 				E968FF0223EB1D8A00B2B1D3 /* FindPwdResetVC.swift in Sources */,
 				E9D07A4D23E3FB980095AD05 /* SignupVC.swift in Sources */,

@@ -32,6 +32,7 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+//        navigationController?.navigationBar.isHidden = true
         navigationController?.hidesBarsOnSwipe = true
         setupCustomTabBar()
         setupPageCollectionView()
@@ -42,11 +43,11 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
         self.view.addSubview(customMenuBar)
         customMenuBar.delegate = self
         customMenuBar.translatesAutoresizingMaskIntoConstraints = false
-        customMenuBar.indicatorViewWidthConstraint.constant = self.view.frame.width / 3
+        customMenuBar.indicatorViewWidthConstraint.constant = UIScreen.main.bounds.width/375 * 74
         customMenuBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        customMenuBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        customMenuBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: UIScreen.main.bounds.width/375 * -113).isActive = true
         customMenuBar.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
-        customMenuBar.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        customMenuBar.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 44).isActive = true
     }
     
     func customMenuBar(scrollTo index: Int) {
@@ -75,7 +76,7 @@ extension StoreVC: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PageCell
-        cell.label.text = "\(indexPath.row)번째 뷰"
+        cell.label.text = "\(indexPath.row + 1)번째 뷰"
         return cell
     }
     
@@ -84,7 +85,7 @@ extension StoreVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        customMenuBar.indicatorViewLeadingConstraint.constant = scrollView.contentOffset.x / 3
+        customMenuBar.indicatorViewLeadingConstraint.constant = scrollView.contentOffset.x / 5
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {

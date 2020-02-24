@@ -30,7 +30,7 @@ class CustomMenuBar: UIView {
     var customTabBarCollectionView: UICollectionView = {
         let collectionViewLayout = UICollectionViewFlowLayout()
         collectionViewLayout.scrollDirection = .horizontal
-        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 55), collectionViewLayout: collectionViewLayout)
+        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width/375 * 262, height: UIScreen.main.bounds.height/667 * 44), collectionViewLayout: collectionViewLayout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .white
         return collectionView
@@ -67,12 +67,12 @@ class CustomMenuBar: UIView {
         customTabBarCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         customTabBarCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         customTabBarCollectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        customTabBarCollectionView.heightAnchor.constraint(equalToConstant: 55).isActive = true
+        customTabBarCollectionView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 44).isActive = true
         
         self.addSubview(indicatorView)
-        indicatorViewWidthConstraint = indicatorView.widthAnchor.constraint(equalToConstant: self.frame.width / 3)
+        indicatorViewWidthConstraint = indicatorView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 74)
         indicatorViewWidthConstraint.isActive = true
-        indicatorView.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        indicatorView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 2).isActive = true
         indicatorViewLeadingConstraint = indicatorView.leadingAnchor.constraint(equalTo: self.leadingAnchor)
         indicatorViewLeadingConstraint.isActive = true
         indicatorView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
@@ -102,7 +102,7 @@ extension CustomMenuBar: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.frame.width / 3 , height: 55)
+        return CGSize(width: UIScreen.main.bounds.width/375 * 74 , height: UIScreen.main.bounds.height/667 * 44)
         
     }
     
