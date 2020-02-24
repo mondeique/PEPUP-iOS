@@ -43,12 +43,18 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         let follow = UINavigationController(rootViewController: FollowVC(collectionViewLayout: followFlow))
         follow.tabBarItem.image = #imageLiteral(resourceName: "home_unselected")
         follow.tabBarItem.selectedImage = #imageLiteral(resourceName: "home_selected")
-        viewControllers = [home, follow]
+        // Store
+        let storeFlow = UICollectionViewFlowLayout()
+        let store = UINavigationController(rootViewController: StoreVC())
+        store.tabBarItem.image = #imageLiteral(resourceName: "store_unselected")
+        store.tabBarItem.selectedImage = #imageLiteral(resourceName: "store_selected")
+        viewControllers = [home, follow, store]
         if let items = tabBar.items {
             for item in items{
                 item.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
             }
         }
+        
     }
 
     /*

@@ -37,6 +37,10 @@
 		E9D07A4D23E3FB980095AD05 /* SignupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4C23E3FB980095AD05 /* SignupVC.swift */; };
 		E9D07A4F23E4050D0095AD05 /* PhoneConfirmVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4E23E4050D0095AD05 /* PhoneConfirmVC.swift */; };
 		E9D1119223FFACB1006AE20C /* AppleSDGothicNeo-Heavy in Resources */ = {isa = PBXBuildFile; fileRef = E9D1119123FFACB1006AE20C /* AppleSDGothicNeo-Heavy */; };
+		E9D1119424036B43006AE20C /* StoreVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D1119324036B43006AE20C /* StoreVC.swift */; };
+		E9D1119824037426006AE20C /* StoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D1119724037426006AE20C /* StoreCell.swift */; };
+		E9D1119A24038C27006AE20C /* CustomMenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D1119924038C27006AE20C /* CustomMenuBar.swift */; };
+		E9D1119C24038CFE006AE20C /* PageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D1119B24038CFE006AE20C /* PageCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +78,10 @@
 		E9D07A4C23E3FB980095AD05 /* SignupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupVC.swift; sourceTree = "<group>"; };
 		E9D07A4E23E4050D0095AD05 /* PhoneConfirmVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneConfirmVC.swift; sourceTree = "<group>"; };
 		E9D1119123FFACB1006AE20C /* AppleSDGothicNeo-Heavy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "AppleSDGothicNeo-Heavy"; sourceTree = SOURCE_ROOT; };
+		E9D1119324036B43006AE20C /* StoreVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreVC.swift; sourceTree = "<group>"; };
+		E9D1119724037426006AE20C /* StoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCell.swift; sourceTree = "<group>"; };
+		E9D1119924038C27006AE20C /* CustomMenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMenuBar.swift; sourceTree = "<group>"; };
+		E9D1119B24038CFE006AE20C /* PageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +164,10 @@
 				E968FF1323F513BB00B2B1D3 /* CartCell.swift */,
 				E968FF1523F51D4A00B2B1D3 /* CartHeaderCell.swift */,
 				E968FF1723F51D6C00B2B1D3 /* CartFooterCell.swift */,
+				E9D1119324036B43006AE20C /* StoreVC.swift */,
+				E9D1119724037426006AE20C /* StoreCell.swift */,
+				E9D1119924038C27006AE20C /* CustomMenuBar.swift */,
+				E9D1119B24038CFE006AE20C /* PageCell.swift */,
 			);
 			path = "PEPUP-iOS";
 			sourceTree = "<group>";
@@ -278,6 +290,7 @@
 				E932135523E1BA1000503CA8 /* BaseCollectionViewCell.swift in Sources */,
 				E9C8468923E1A89E00359A93 /* HomeVC.swift in Sources */,
 				E968FF1823F51D6C00B2B1D3 /* CartFooterCell.swift in Sources */,
+				E9D1119824037426006AE20C /* StoreCell.swift in Sources */,
 				E94D142A23E91EC40001F3A0 /* NickNameVC.swift in Sources */,
 				E9D07A4123E2B0930095AD05 /* DetailVC.swift in Sources */,
 				E9D07A4F23E4050D0095AD05 /* PhoneConfirmVC.swift in Sources */,
@@ -286,6 +299,7 @@
 				E9C8468723E1A77300359A93 /* TabBarController.swift in Sources */,
 				E932136723E29E2100503CA8 /* HomeHeaderCell.swift in Sources */,
 				E9D07A4723E2B6DE0095AD05 /* SearchVC.swift in Sources */,
+				E9D1119A24038C27006AE20C /* CustomMenuBar.swift in Sources */,
 				E94D142C23E9223F0001F3A0 /* ProfileVC.swift in Sources */,
 				E9C8467023E1A5D200359A93 /* AppDelegate.swift in Sources */,
 				E968FF1223F5139000B2B1D3 /* CartVC.swift in Sources */,
@@ -293,11 +307,13 @@
 				E9D07A4D23E3FB980095AD05 /* SignupVC.swift in Sources */,
 				E9D07A4323E2B1110095AD05 /* NotiVC.swift in Sources */,
 				E968FF0623F13FE600B2B1D3 /* MessageVC.swift in Sources */,
+				E9D1119424036B43006AE20C /* StoreVC.swift in Sources */,
 				E932135B23E26F7200503CA8 /* FollowVC.swift in Sources */,
 				E932135323E1B9D800503CA8 /* HomeCell.swift in Sources */,
 				E968FF0423EC478200B2B1D3 /* Config.swift in Sources */,
 				E968FF1423F513BB00B2B1D3 /* CartCell.swift in Sources */,
 				E932135D23E26FC400503CA8 /* FollowCell.swift in Sources */,
+				E9D1119C24038CFE006AE20C /* PageCell.swift in Sources */,
 				E94D142823E82A640001F3A0 /* FindPwdVC.swift in Sources */,
 				E9C8467A23E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld in Sources */,
 				E9D07A4923E2E4DD0095AD05 /* LoginVC.swift in Sources */,
