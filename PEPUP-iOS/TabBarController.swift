@@ -41,7 +41,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         home.tabBarItem.selectedImage = #imageLiteral(resourceName: "home_selected")
         // Follow
         let followFlow = UICollectionViewFlowLayout()
-        let follow = UINavigationController(rootViewController: FollowVC(collectionViewLayout: followFlow))
+        let follow = UINavigationController(rootViewController: FollowVC())
 //        let follow = UINavigationController(rootViewController: TagVC())
         follow.tabBarItem.image = #imageLiteral(resourceName: "home_unselected")
         follow.tabBarItem.selectedImage = #imageLiteral(resourceName: "home_selected")

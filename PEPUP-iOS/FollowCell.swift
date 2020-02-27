@@ -10,6 +10,6 @@ import UIKit
 
 class FollowCell: BaseCollectionViewCell {
     override func setup() {
-        backgroundColor = .blue
+        backgroundColor = .black
     }
 }

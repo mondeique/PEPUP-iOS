@@ -509,7 +509,7 @@ class DetailVC: UIViewController{
             print("I am seller~")
         }
         else {
-            let nextVC = StoreVC()
+            let nextVC = TestStoreVC()
             let nextCell = PageCell()
             nextVC.SellerID = sellerId
             nextCell.SellerID = sellerId

@@ -20,13 +20,13 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
     
     private let reuseIdentifier = "pagecell"
     
-    var pageCollectionView: UICollectionView = {
-        let collectionViewLayout = UICollectionViewFlowLayout()
-        collectionViewLayout.scrollDirection = .horizontal
-        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 100), collectionViewLayout: collectionViewLayout)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        return collectionView
-    }()
+//    var pageCollectionView: UICollectionView = {
+//        let collectionViewLayout = UICollectionViewFlowLayout()
+//        collectionViewLayout.scrollDirection = .horizontal
+//        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 100), collectionViewLayout: collectionViewLayout)
+//        collectionView.translatesAutoresizingMaskIntoConstraints = false
+//        return collectionView
+//    }()
     
     var customMenuBar = CustomMenuBar()
     
@@ -35,7 +35,7 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
         super.viewDidLoad()
         self.view.backgroundColor = .white
         setupCustomTabBar()
-        setupPageCollectionView()
+//        setupPageCollectionView()
         getData()
     }
     
@@ -53,22 +53,22 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
     
     func customMenuBar(scrollTo index: Int) {
         let indexPath = IndexPath(row: index, section: 0)
-        self.pageCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+//        self.pageCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
     
-    func setupPageCollectionView(){
-        pageCollectionView.delegate = self
-        pageCollectionView.dataSource = self
-        pageCollectionView.backgroundColor = .white
-        pageCollectionView.showsHorizontalScrollIndicator = false
-        pageCollectionView.isPagingEnabled = true
-        pageCollectionView.register(PageCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        self.view.addSubview(pageCollectionView)
-        pageCollectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        pageCollectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        pageCollectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        pageCollectionView.topAnchor.constraint(equalTo: self.customMenuBar.bottomAnchor).isActive = true
-    }
+//    func setupPageCollectionView(){
+//        pageCollectionView.delegate = self
+//        pageCollectionView.dataSource = self
+//        pageCollectionView.backgroundColor = .white
+//        pageCollectionView.showsHorizontalScrollIndicator = false
+//        pageCollectionView.isPagingEnabled = true
+//        pageCollectionView.register(PageCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+//        self.view.addSubview(pageCollectionView)
+//        pageCollectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+//        pageCollectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+//        pageCollectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+//        pageCollectionView.topAnchor.constraint(equalTo: self.customMenuBar.bottomAnchor).isActive = true
+//    }
     
     func getData() {
         Alamofire.AF.request("\(Config.baseURL)/api/store/shop/" + String(SellerID) + "/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
@@ -87,46 +87,46 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
 
 //MARK:- UICollectionViewDelegate, UICollectionViewDataSource
 
-extension StoreVC: UICollectionViewDelegate, UICollectionViewDataSource {
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PageCell
-        if indexPath.row == 0 {
-            cell.shopcollectionView.isHidden = false
-        }
-        else if indexPath.row == 1 {
-            cell.shopcollectionView.isHidden = true
-            print("ASD")
-        }
-        else if indexPath.row == 2 {
-            cell.shopcollectionView.isHidden = true
-            print("ASDF")
-        }
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        customMenuBar.indicatorViewLeadingConstraint.constant = UIScreen.main.bounds.width/375 * 8 + scrollView.contentOffset.x / 375 * 74
-    }
-    
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        let itemAt = Int(targetContentOffset.pointee.x / self.view.frame.width)
-        let indexPath = IndexPath(item: itemAt, section: 0)
-        customMenuBar.customTabBarCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
-    }
-}
-//MARK:- UICollectionViewDelegateFlowLayout
-extension StoreVC: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
-    }
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
-}
+//extension StoreVC: UICollectionViewDelegate, UICollectionViewDataSource {
+//    
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PageCell
+//        if indexPath.row == 0 {
+//            cell.shopcollectionView.isHidden = false
+//        }
+//        else if indexPath.row == 1 {
+//            cell.shopcollectionView.isHidden = true
+//            print("ASD")
+//        }
+//        else if indexPath.row == 2 {
+//            cell.shopcollectionView.isHidden = true
+//            print("ASDF")
+//        }
+//        return cell
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return 3
+//    }
+//    
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        customMenuBar.indicatorViewLeadingConstraint.constant = UIScreen.main.bounds.width/375 * 8 + scrollView.contentOffset.x / 375 * 74
+//    }
+//    
+//    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+//        let itemAt = Int(targetContentOffset.pointee.x / self.view.frame.width)
+//        let indexPath = IndexPath(item: itemAt, section: 0)
+//        customMenuBar.customTabBarCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
+//    }
+//}
+////MARK:- UICollectionViewDelegateFlowLayout
+//extension StoreVC: UICollectionViewDelegateFlowLayout {
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+//    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+//        return 0
+//    }
+//}
 
 
