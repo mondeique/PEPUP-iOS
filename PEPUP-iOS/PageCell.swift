@@ -9,24 +9,36 @@
 import UIKit
 import Alamofire
 
-class PageCell: BaseCollectionViewCell, UICollectionViewDelegate, UICollectionViewDataSource {
+class PageCell: BaseCollectionViewCell, UICollectionViewDelegate, UICollectionViewDataSource{
     
     private let shopcellId = "shopcell"
     private let shopheaderId = "shopheadercell"
+    private let likecellId = "likecell"
     
     var SellerID = UserDefaults.standard.object(forKey: "sellerId") as! Int
     var sellerInfoDatas = NSDictionary()
     var productDatas = Array<NSDictionary>()
     
-    var shopcollectionView: UICollectionView = {
+    let shopcollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: (UIScreen.main.bounds.width / 3) - 1, height: (UIScreen.main.bounds.width / 3) - 1)
+        layout.minimumInteritemSpacing = 1.0
+        layout.minimumLineSpacing = 1.0
+        layout.headerReferenceSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/667 * 204)
+        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height), collectionViewLayout: layout)
+        collectionView.backgroundColor = .white
+        collectionView.isHidden = false
+        return collectionView
+    }()
+    
+    let likecollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: (UIScreen.main.bounds.width / 3) - 1, height: (UIScreen.main.bounds.width / 3) - 1)
         layout.minimumInteritemSpacing = 1.0
         layout.minimumLineSpacing = 1.0
         let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height), collectionViewLayout: layout)
-        layout.headerReferenceSize = CGSize(width: collectionView.frame.width, height: UIScreen.main.bounds.height/667 * 204)
         collectionView.backgroundColor = .white
-        collectionView.isHidden = true
+        collectionView.isHidden = false
         return collectionView
     }()
     
@@ -39,17 +51,20 @@ class PageCell: BaseCollectionViewCell, UICollectionViewDelegate, UICollectionVi
         shopcollectionView.register(ShopHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: shopheaderId)
         self.addSubview(shopcollectionView)
         
-        getData()
+        likecollectionView.delegate = self
+        likecollectionView.dataSource = self
+        likecollectionView.register(LikeCell.self, forCellWithReuseIdentifier: likecellId)
+        
+        getShopData()
     }
     
-    func getData() {
+    func getShopData() {
         Alamofire.AF.request("\(Config.baseURL)/api/store/shop/" + String(SellerID) + "/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
             (response) in switch response.result {
             case .success(let JSON):
                 let response = JSON as! NSDictionary
                 self.sellerInfoDatas = response.object(forKey: "info") as! NSDictionary
                 self.productDatas = response.object(forKey: "results") as! Array<NSDictionary>
-                print(self.productDatas.count)
             case .failure(let error):
                 print("Request failed with error: \(error)")
             }
@@ -57,29 +72,35 @@ class PageCell: BaseCollectionViewCell, UICollectionViewDelegate, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.productDatas.count
+        return 100
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: shopcellId, for: indexPath) as! ShopCell
-        let productDictionary = self.productDatas[indexPath.row] as NSDictionary
-        let is_sold = productDictionary.object(forKey: "sold") as! Bool
-        if let productImgDic = productDictionary.object(forKey: "thumbnails") as? NSDictionary {
-            let imageUrlString = productImgDic.object(forKey: "thumbnail") as! String
-            let imageUrl:NSURL = NSURL(string: imageUrlString)!
-            let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
-            DispatchQueue.main.async {
-                let image = UIImage(data: imageData as Data)
-                cell.productImg.image = image
-                if is_sold == true {
-                    cell.soldLabel.isHidden = false
-                }
-                else {
-                    cell.soldLabel.isHidden = true
-                }
-            }
+        if indexPath.row == 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: shopcellId, for: indexPath) as! ShopCell
+    //        let productDictionary = self.productDatas[indexPath.row] as NSDictionary
+    //        let is_sold = productDictionary.object(forKey: "sold") as! Bool
+    //        if let productImgDic = productDictionary.object(forKey: "thumbnails") as? NSDictionary {
+    //            let imageUrlString = productImgDic.object(forKey: "thumbnail") as! String
+    //            let imageUrl:NSURL = NSURL(string: imageUrlString)!
+    //            let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
+    //            DispatchQueue.main.async {
+    //                let image = UIImage(data: imageData as Data)
+    //                cell.productImg.image = image
+    //                if is_sold == true {
+    //                    cell.soldLabel.isHidden = false
+    //                }
+    //                else {
+    //                    cell.soldLabel.isHidden = true
+    //                }
+    //            }
+    //        }
+            return cell
         }
-        return cell
+        else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: likecellId, for: indexPath) as! LikeCell
+            return cell 
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -145,7 +166,7 @@ class ShopCell: BaseCollectionViewCell {
     }()
     
     override func setup() {
-        backgroundColor = .black
+        backgroundColor = .white
         shopcellcontentView.addSubview(productImg)
         shopcellcontentView.addSubview(soldLabel)
         self.addSubview(shopcellcontentView)
@@ -172,6 +193,62 @@ class ShopCell: BaseCollectionViewCell {
     func soldLabelLayout() {
         soldLabel.leftAnchor.constraint(equalTo:shopcellcontentView.leftAnchor).isActive = true
         soldLabel.topAnchor.constraint(equalTo:shopcellcontentView.topAnchor).isActive = true
+        soldLabel.widthAnchor.constraint(equalToConstant:(UIScreen.main.bounds.width / 3) - 1).isActive = true
+        soldLabel.heightAnchor.constraint(equalToConstant:(UIScreen.main.bounds.width / 3) - 1).isActive = true
+    }
+}
+
+class LikeCell: BaseCollectionViewCell {
+    
+    let likecellcontentView: UIView = {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: (UIScreen.main.bounds.width / 3) - 1, height: (UIScreen.main.bounds.width / 3) - 1))
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    var productImg: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: (UIScreen.main.bounds.width / 3) - 1, height: (UIScreen.main.bounds.width / 3) - 1))
+    
+    let soldLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "S O L D"
+        label.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = UIFont(name: "AppleSDGothicNeo-Heavy", size: 17)
+        label.clipsToBounds = true
+        label.isHidden = true
+        return label
+    }()
+    
+    override func setup() {
+        backgroundColor = .white
+        likecellcontentView.addSubview(productImg)
+        likecellcontentView.addSubview(soldLabel)
+        self.addSubview(likecellcontentView)
+        
+        likecellcontentViewLayout()
+        productImgLayout()
+        soldLabelLayout()
+    }
+    
+    func likecellcontentViewLayout() {
+        likecellcontentView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        likecellcontentView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        likecellcontentView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        likecellcontentView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+    }
+    
+    func productImgLayout() {
+        productImg.leftAnchor.constraint(equalTo:likecellcontentView.leftAnchor).isActive = true
+        productImg.topAnchor.constraint(equalTo:likecellcontentView.topAnchor).isActive = true
+//        productImg.widthAnchor.constraint(equalToConstant:80).isActive = true
+//        productImg.heightAnchor.constraint(equalToConstant:80).isActive = true
+    }
+    
+    func soldLabelLayout() {
+        soldLabel.leftAnchor.constraint(equalTo:likecellcontentView.leftAnchor).isActive = true
+        soldLabel.topAnchor.constraint(equalTo:likecellcontentView.topAnchor).isActive = true
         soldLabel.widthAnchor.constraint(equalToConstant:(UIScreen.main.bounds.width / 3) - 1).isActive = true
         soldLabel.heightAnchor.constraint(equalToConstant:(UIScreen.main.bounds.width / 3) - 1).isActive = true
     }
@@ -284,8 +361,8 @@ class ShopHeaderCell: BaseCollectionViewCell {
 
         sellerName.leftAnchor.constraint(equalTo: sellerImage.rightAnchor, constant: UIScreen.main.bounds.width/375 * 16).isActive = true
         sellerName.topAnchor.constraint(equalTo: shopheadercontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 48).isActive = true
-        sellerName.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 64).isActive = true
-        sellerName.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 64).isActive = true
+//        sellerName.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 64).isActive = true
+//        sellerName.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 64).isActive = true
 
         sellerIntro.leadingAnchor.constraint(equalTo: shopheadercontentView.leadingAnchor, constant: UIScreen.main.bounds.width/375 * 18).isActive = true
         sellerIntro.topAnchor.constraint(equalTo: sellerImage.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 16).isActive = true

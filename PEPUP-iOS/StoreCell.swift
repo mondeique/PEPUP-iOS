@@ -35,6 +35,8 @@ class StoreCell: BaseCollectionViewCell {
         label.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         label.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: UIScreen.main.bounds.height/667 * -8).isActive = true
         label.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        label.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 34).isActive = true
+        label.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 16).isActive = true
     }
 }
 

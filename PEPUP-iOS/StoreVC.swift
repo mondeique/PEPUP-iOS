@@ -45,7 +45,7 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
         customMenuBar.delegate = self
         customMenuBar.translatesAutoresizingMaskIntoConstraints = false
         customMenuBar.indicatorViewWidthConstraint.constant = UIScreen.main.bounds.width/375 * 74
-        customMenuBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        customMenuBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: UIScreen.main.bounds.width/375 * 8).isActive = true
         customMenuBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: UIScreen.main.bounds.width/375 * -113).isActive = true
         customMenuBar.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
         customMenuBar.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 44).isActive = true
@@ -95,10 +95,12 @@ extension StoreVC: UICollectionViewDelegate, UICollectionViewDataSource {
             cell.shopcollectionView.isHidden = false
         }
         else if indexPath.row == 1 {
+            cell.shopcollectionView.isHidden = true
             print("ASD")
         }
         else if indexPath.row == 2 {
-            print("CSD")
+            cell.shopcollectionView.isHidden = true
+            print("ASDF")
         }
         return cell
     }
@@ -108,7 +110,7 @@ extension StoreVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        customMenuBar.indicatorViewLeadingConstraint.constant = scrollView.contentOffset.x / 5
+        customMenuBar.indicatorViewLeadingConstraint.constant = UIScreen.main.bounds.width/375 * 8 + scrollView.contentOffset.x / 375 * 74
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
