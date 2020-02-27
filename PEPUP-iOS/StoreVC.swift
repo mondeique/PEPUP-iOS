@@ -14,9 +14,11 @@ import UIKit
 
 class StoreVC: UIViewController, CustomMenuBarDelegate{
     
-    private let reuseIdentifier = "pagecell"
+    var SellerID : Int!
+    var sellerInfoDatas = NSDictionary()
+    var productDatas = Array<NSDictionary>()
     
-    //MARK: Outltes
+    private let reuseIdentifier = "pagecell"
     
     var pageCollectionView: UICollectionView = {
         let collectionViewLayout = UICollectionViewFlowLayout()
@@ -32,10 +34,9 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-//        navigationController?.navigationBar.isHidden = true
-        navigationController?.hidesBarsOnSwipe = true
         setupCustomTabBar()
         setupPageCollectionView()
+        getData()
     }
     
     //MARK: Setup view
@@ -58,7 +59,7 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
     func setupPageCollectionView(){
         pageCollectionView.delegate = self
         pageCollectionView.dataSource = self
-        pageCollectionView.backgroundColor = .lightGray
+        pageCollectionView.backgroundColor = .white
         pageCollectionView.showsHorizontalScrollIndicator = false
         pageCollectionView.isPagingEnabled = true
         pageCollectionView.register(PageCell.self, forCellWithReuseIdentifier: reuseIdentifier)
@@ -68,6 +69,20 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
         pageCollectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         pageCollectionView.topAnchor.constraint(equalTo: self.customMenuBar.bottomAnchor).isActive = true
     }
+    
+    func getData() {
+        Alamofire.AF.request("\(Config.baseURL)/api/store/shop/" + String(SellerID) + "/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+            (response) in switch response.result {
+            case .success(let JSON):
+                let response = JSON as! NSDictionary
+                self.sellerInfoDatas = response.object(forKey: "info") as! NSDictionary
+                self.productDatas = response.object(forKey: "results") as! Array<NSDictionary>
+
+            case .failure(let error):
+                print("Request failed with error: \(error)")
+            }
+        }
+    }
 }
 
 //MARK:- UICollectionViewDelegate, UICollectionViewDataSource
@@ -76,7 +91,15 @@ extension StoreVC: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PageCell
-        cell.label.text = "\(indexPath.row + 1)번째 뷰"
+        if indexPath.row == 0 {
+            cell.shopcollectionView.isHidden = false
+        }
+        else if indexPath.row == 1 {
+            print("ASD")
+        }
+        else if indexPath.row == 2 {
+            print("CSD")
+        }
         return cell
     }
     
@@ -97,7 +120,7 @@ extension StoreVC: UICollectionViewDelegate, UICollectionViewDataSource {
 //MARK:- UICollectionViewDelegateFlowLayout
 extension StoreVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: pageCollectionView.frame.width, height: pageCollectionView.frame.height)
+        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0

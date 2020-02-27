@@ -22,7 +22,6 @@ class StoreCell: BaseCollectionViewCell {
     
     override var isSelected: Bool {
         didSet{
-            print("Changed")
             self.label.textColor = isSelected ? .black : UIColor(rgb: 0xB7B7BF)
         }
     }

@@ -10,7 +10,6 @@ import UIKit
 import Alamofire
 
 private let reuseIdentifier = "homecell"
-private let headerId = "headercell"
 
 class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     
@@ -38,7 +37,6 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(HomeCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        collectionView.register(HomeHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         
         let searchImage = UIImage(named: "search_bar")
         let messageImage = UIImage(named: "btnDirect")

@@ -24,11 +24,11 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
         getData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        setup()
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
         self.navigationController?.navigationBar.isHidden = true
@@ -98,7 +98,7 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.itemSize = CGSize(width: screenWidth/defaultWidth * 375, height: 100)
         
-        cartCollectionView = UICollectionView(frame: CGRect(x: 0, y: statusBarHeight + navBarHeight, width: view.frame.width, height: screenHeight - statusBarHeight - navBarHeight - screenHeight/defaultHeight * 72), collectionViewLayout: layout)
+        cartCollectionView = UICollectionView(frame: CGRect(x: 0, y: statusBarHeight + navBarHeight, width: view.frame.width, height: screenHeight - statusBarHeight - navBarHeight - screenHeight/defaultHeight * 130), collectionViewLayout: layout)
         cartCollectionView.delegate = self
         cartCollectionView.dataSource = self
         cartCollectionView.register(CartCell.self, forCellWithReuseIdentifier: reuseIdentifier)
@@ -137,7 +137,6 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                 for i in 0..<response.count {
                     self.sellerDatas.append(response[i])
                 }
-                
                 DispatchQueue.main.async {
                     cartCollectionView.reloadData()
                 }

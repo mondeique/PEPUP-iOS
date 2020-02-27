@@ -502,7 +502,20 @@ class DetailVC: UIViewController{
     }
     
     @objc func store() {
-        print("GO STORE")
+        let sellerId = self.sellerDatas.object(forKey: "id") as! Int
+        UserDefaults.standard.set(sellerId, forKey: "sellerId")
+        let pk = UserDefaults.standard.object(forKey: "pk") as! Int
+        if sellerId == pk {
+            print("I am seller~")
+        }
+        else {
+            let nextVC = StoreVC()
+            let nextCell = PageCell()
+            nextVC.SellerID = sellerId
+            nextCell.SellerID = sellerId
+            navigationController?.pushViewController(nextVC, animated: true)
+            print("I am not me")
+        }
     }
     
     @objc func review() {

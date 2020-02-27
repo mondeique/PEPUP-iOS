@@ -6,6 +6,13 @@
 //  Copyright © 2020 Mondeique. All rights reserved.
 //
 
+//
+//  CartCell.swift
+//  PEPUP-iOS
+//
+//  Created by Eren-shin on 2020/02/13.
+//  Copyright © 2020 Mondeique. All rights reserved.
+//
 import UIKit
 
 class CartCell: BaseCollectionViewCell, UIGestureRecognizerDelegate {
@@ -149,7 +156,7 @@ class CartCell: BaseCollectionViewCell, UIGestureRecognizerDelegate {
     func productNameLabelLayout() {
         productNameLabel.leftAnchor.constraint(equalTo:productImage.rightAnchor, constant:UIScreen.main.bounds.width/375 * 16).isActive = true
         productNameLabel.topAnchor.constraint(equalTo:cartcellContentView.topAnchor, constant:10).isActive = true
-//        productNameLabel.widthAnchor.constraint(equalToConstant:80).isActive = true
+        productNameLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 150).isActive = true
 //        productNameLabel.heightAnchor.constraint(equalToConstant:80).isActive = true
     }
 

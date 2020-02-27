@@ -185,6 +185,8 @@ class LoginVC: UIViewController {
                         let token_name = "Token "
                         let token_ = response.object(forKey: "token") as! String
                         let token = token_name + token_
+                        let pk = response.object(forKey: "pk") as! Int
+                        self.setCurrentPK(pk)
                         self.setCurrentLoginToken(token)
                         self.successAlert()
                     }
@@ -196,6 +198,8 @@ class LoginVC: UIViewController {
                         let token_name = "Token "
                         let token_ = response.object(forKey: "token") as! String
                         let token = token_name + token_
+                        let pk = response.object(forKey: "pk") as! Int
+                        self.setCurrentPK(pk)
                         self.setCurrentLoginToken(token)
                         let controller = NickNameVC()
                         self.navigationController?.pushViewController(controller, animated: true)
@@ -263,6 +267,10 @@ class LoginVC: UIViewController {
     
     func setCurrentLoginToken(_ struserid: String) {
         UserDefaults.standard.set(struserid, forKey: "token")
+    }
+    
+    func setCurrentPK(_ pkid: Int) {
+        UserDefaults.standard.set(pkid, forKey: "pk")
     }
     
     func isValidEmailAddress(email: String) -> Bool {
