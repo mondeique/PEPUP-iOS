@@ -44,7 +44,7 @@
 		E9D111A02403C00E006AE20C /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D1119F2403C00E006AE20C /* TagCell.swift */; };
 		E9D111A624081725006AE20C /* TestStoreVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111A524081725006AE20C /* TestStoreVC.swift */; };
 		E9D111A824083D64006AE20C /* FollowHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111A724083D64006AE20C /* FollowHeaderCell.swift */; };
-		E9D111AA24083D7C006AE20C /* FollowFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111A924083D7C006AE20C /* FollowFooterCell.swift */; };
+		E9D111AC2408BE88006AE20C /* FollowFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111AB2408BE88006AE20C /* FollowFooterCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -89,7 +89,7 @@
 		E9D1119F2403C00E006AE20C /* TagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
 		E9D111A524081725006AE20C /* TestStoreVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestStoreVC.swift; sourceTree = "<group>"; };
 		E9D111A724083D64006AE20C /* FollowHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowHeaderCell.swift; sourceTree = "<group>"; };
-		E9D111A924083D7C006AE20C /* FollowFooterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowFooterCell.swift; sourceTree = "<group>"; };
+		E9D111AB2408BE88006AE20C /* FollowFooterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowFooterCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,7 +155,7 @@
 				E932135A23E26F7200503CA8 /* FollowVC.swift */,
 				E932135C23E26FC400503CA8 /* FollowCell.swift */,
 				E9D111A724083D64006AE20C /* FollowHeaderCell.swift */,
-				E9D111A924083D7C006AE20C /* FollowFooterCell.swift */,
+				E9D111AB2408BE88006AE20C /* FollowFooterCell.swift */,
 				E9D07A4023E2B0930095AD05 /* DetailVC.swift */,
 				E9D07A4223E2B1110095AD05 /* NotiVC.swift */,
 				E9D07A4623E2B6DE0095AD05 /* SearchVC.swift */,
@@ -330,7 +330,7 @@
 				E932135D23E26FC400503CA8 /* FollowCell.swift in Sources */,
 				E9D1119C24038CFE006AE20C /* PageCell.swift in Sources */,
 				E94D142823E82A640001F3A0 /* FindPwdVC.swift in Sources */,
-				E9D111AA24083D7C006AE20C /* FollowFooterCell.swift in Sources */,
+				E9D111AC2408BE88006AE20C /* FollowFooterCell.swift in Sources */,
 				E9C8467A23E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld in Sources */,
 				E9D07A4923E2E4DD0095AD05 /* LoginVC.swift in Sources */,
 			);
