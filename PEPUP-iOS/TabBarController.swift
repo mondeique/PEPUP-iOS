@@ -33,8 +33,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         delegate = self
         // Instantiate controllers
         // Home
-        let homeFlow = UICollectionViewFlowLayout()
-        let home = UINavigationController(rootViewController: HomeVC(collectionViewLayout: homeFlow))
+        let home = UINavigationController(rootViewController: HomeVC())
         home.tabBarItem.image = #imageLiteral(resourceName: "home_unselected")
         home.tabBarItem.selectedImage = #imageLiteral(resourceName: "home_selected")
         // Follow

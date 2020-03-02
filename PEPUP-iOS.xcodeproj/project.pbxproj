@@ -46,6 +46,7 @@
 		E9D111A824083D64006AE20C /* FollowHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111A724083D64006AE20C /* FollowHeaderCell.swift */; };
 		E9D111AC2408BE88006AE20C /* FollowFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111AB2408BE88006AE20C /* FollowFooterCell.swift */; };
 		E9D111AE240CC71F006AE20C /* TagHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111AD240CC71F006AE20C /* TagHeaderCell.swift */; };
+		E9D111B0240CEFC4006AE20C /* HomeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111AF240CEFC4006AE20C /* HomeHeaderCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,6 +93,7 @@
 		E9D111A724083D64006AE20C /* FollowHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowHeaderCell.swift; sourceTree = "<group>"; };
 		E9D111AB2408BE88006AE20C /* FollowFooterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowFooterCell.swift; sourceTree = "<group>"; };
 		E9D111AD240CC71F006AE20C /* TagHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagHeaderCell.swift; sourceTree = "<group>"; };
+		E9D111AF240CEFC4006AE20C /* HomeHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeaderCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,6 +155,7 @@
 				E9C8468623E1A77300359A93 /* TabBarController.swift */,
 				E9C8468823E1A89E00359A93 /* HomeVC.swift */,
 				E932135223E1B9D800503CA8 /* HomeCell.swift */,
+				E9D111AF240CEFC4006AE20C /* HomeHeaderCell.swift */,
 				E932135423E1BA1000503CA8 /* BaseCollectionViewCell.swift */,
 				E932135A23E26F7200503CA8 /* FollowVC.swift */,
 				E932135C23E26FC400503CA8 /* FollowCell.swift */,
@@ -327,6 +330,7 @@
 				E9D07A4323E2B1110095AD05 /* NotiVC.swift in Sources */,
 				E968FF0623F13FE600B2B1D3 /* MessageVC.swift in Sources */,
 				E9D1119424036B43006AE20C /* StoreVC.swift in Sources */,
+				E9D111B0240CEFC4006AE20C /* HomeHeaderCell.swift in Sources */,
 				E932135B23E26F7200503CA8 /* FollowVC.swift in Sources */,
 				E932135323E1B9D800503CA8 /* HomeCell.swift in Sources */,
 				E968FF0423EC478200B2B1D3 /* Config.swift in Sources */,

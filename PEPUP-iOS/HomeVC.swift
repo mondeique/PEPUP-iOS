@@ -10,11 +10,14 @@ import UIKit
 import Alamofire
 
 private let reuseIdentifier = "homecell"
+private let headerId = "homeheadercell"
 
-class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
+class HomeVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     
     var pagenum: Int = 1
     var productDatas = Array<Dictionary<String, Any>>()
+    
+    var homecollectionView : UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,55 +27,72 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.isHidden = true
     }
     
     // MARK: collectionView 전체 View setting
     
     fileprivate func setup() {
         self.view.backgroundColor = .white
-        collectionView.backgroundColor = .white
-        collectionView.alwaysBounceVertical = true
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.keyboardDismissMode = .onDrag
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.register(HomeCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        let screensize: CGRect = UIScreen.main.bounds
+        let screenWidth = screensize.width
+        let screenHeight = screensize.height
+        let defaultWidth: CGFloat = 375
+        let defaultHeight: CGFloat = 667
+        let statusBarHeight: CGFloat! = UIApplication.shared.statusBarFrame.height
+        let navBarHeight: CGFloat! = navigationController?.navigationBar.frame.height
         
-        let searchImage = UIImage(named: "search_bar")
-        let messageImage = UIImage(named: "btnDirect")
-        let cartImage = UIImage(named: "btnCart")
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.itemSize = CGSize(width: screenWidth/3 - 1, height: screenWidth/3 - 1)
         
-        let searchBtn: UIButton = UIButton(type: .custom)
-        searchBtn.setImage(searchImage, for: .normal)
-        searchBtn.addTarget(self, action: #selector(didTapSearchBar(sender:)), for: .touchUpInside)
-        searchBtn.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width/375 * 245, height: UIScreen.main.bounds.height/667 * 32)
-        let searchBarBtn = UIBarButtonItem(customView: searchBtn)
+        homecollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: screenHeight - statusBarHeight - screenHeight/defaultHeight * 49), collectionViewLayout: layout)
+        homecollectionView.backgroundColor = .white
+        homecollectionView.alwaysBounceVertical = true
+        homecollectionView.showsVerticalScrollIndicator = false
+        homecollectionView.keyboardDismissMode = .onDrag
+        homecollectionView.delegate = self
+        homecollectionView.dataSource = self
+        homecollectionView.register(HomeCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        homecollectionView.register(HomeHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         
-        let messageBtn: UIButton = UIButton(type: .custom)
-        messageBtn.setImage(messageImage, for: .normal)
-        messageBtn.addTarget(self, action: #selector(didTapMessageButton(sender:)), for: .touchUpInside)
-        messageBtn.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width/375 * 40, height: UIScreen.main.bounds.height/667 * 40)
-        let messageBarBtn = UIBarButtonItem(customView: messageBtn)
+        self.view.addSubview(homecontentView)
         
-        let cartBtn: UIButton = UIButton(type: .custom)
-        cartBtn.setImage(cartImage, for: .normal)
-        cartBtn.addTarget(self, action: #selector(didTapCartButton(sender:)), for: .touchUpInside)
-        cartBtn.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width/375 * 40, height: UIScreen.main.bounds.height/667 * 40)
-        let cartBarBtn = UIBarButtonItem(customView: cartBtn)
+        homecontentView.addSubview(homecollectionView)
+        homecontentView.addSubview(btnFilter)
         
-        // TODO: - stackView로 navigationBarItem setting
+        homecontentView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        homecontentView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: screenHeight/defaultHeight * statusBarHeight).isActive = true
+        homecontentView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         
-        navigationItem.leftBarButtonItem = searchBarBtn
-        navigationItem.rightBarButtonItems = [messageBarBtn, cartBarBtn]
+        homecollectionView.leftAnchor.constraint(equalTo: homecontentView.leftAnchor).isActive = true
+        homecollectionView.topAnchor.constraint(equalTo: homecontentView.topAnchor).isActive = true
+        homecollectionView.widthAnchor.constraint(equalTo: homecontentView.widthAnchor).isActive = true
+        homecollectionView.heightAnchor.constraint(equalTo: homecontentView.heightAnchor).isActive = true
         
-        let statusBarView = UIView(frame: UIApplication.shared.statusBarFrame)
-        statusBarView.backgroundColor = .white
-        navigationController?.navigationBar.barTintColor = .white
-        view.addSubview(statusBarView)
-        
-//        navigationController?.hidesBarsOnSwipe = true
+        btnFilter.rightAnchor.constraint(equalTo: homecontentView.rightAnchor, constant: screenWidth/defaultWidth * -16).isActive = true
+        btnFilter.bottomAnchor.constraint(equalTo: homecontentView.bottomAnchor, constant: screenWidth/defaultWidth * -16).isActive = true
+        btnFilter.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 48).isActive = true
+        btnFilter.heightAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 48).isActive = true
     }
+    
+    let homecontentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    let btnFilter: UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setImage(UIImage(named: "btnFilter"), for: .normal)
+        btn.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        btn.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
+        btn.layer.shadowOpacity = 5.0
+        btn.layer.shadowRadius = 6.0
+        btn.layer.masksToBounds = false
+        return btn
+    }()
     
     @objc func didTapSearchBar(sender: AnyObject) {
         self.navigationController?.pushViewController(SearchVC(), animated: true)
@@ -98,7 +118,7 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
                     self.productDatas.append(results[i])
                 }
                 DispatchQueue.main.async {
-                    self.collectionView.reloadData()
+                    self.homecollectionView.reloadData()
                 }
             case .failure(let error):
                 print("Request failed with error: \(error)")
@@ -108,15 +128,15 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     
     // MARK: UICollectionViewDataSource
 
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
 
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.productDatas.count
     }
 
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! HomeCell
         let productDictionary = self.productDatas[indexPath.row] as NSDictionary
         let is_sold = productDictionary.object(forKey: "sold") as! Bool
@@ -140,33 +160,30 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
         return cell
     }
     
-//    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//        if kind == UICollectionView.elementKindSectionHeader {
-//            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! HomeHeaderCell
-//
-//            headerView.tag = indexPath.section
-//
-//            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapDetected))
-//
-//            headerView.addGestureRecognizer(tapGestureRecognizer)
-//            return headerView
-//        }
-//        fatalError()
-//    }
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        switch kind {
+
+            case UICollectionView.elementKindSectionHeader:
+
+                let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! HomeHeaderCell
+                headerView.btnSearchBar.addTarget(self, action: #selector(didTapSearchBar(sender:)), for: .touchUpInside)
+                headerView.btnCart.addTarget(self, action: #selector(didTapCartButton(sender:)), for: .touchUpInside)
+                headerView.btnDirect.addTarget(self, action: #selector(didTapMessageButton(sender:)), for: .touchUpInside)
+                return headerView
+
+            default:
+                assert(false, "Unexpected element kind")
+        }
+    }
     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-//        return CGSize(width: collectionView.frame.width, height: 60)
-//    }
-    
-//    @objc func tapDetected(sender: UITapGestureRecognizer) {
-//        self.navigationController?.pushViewController(SearchVC(), animated: true)
-//    }
-    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 44)
+    }
     
     // MARK: UICollectionViewDelegate
     
     // 해당 cell 선택 시 DetailVC로 넘어감
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let productDictionary = self.productDatas[indexPath.row] as NSDictionary
         let productId = productDictionary.object(forKey: "id") as! Int
         let nextVC = DetailVC()
@@ -175,27 +192,21 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     }
     
     // cell size 설정
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: (UIScreen.main.bounds.width / 3) - 1, height: (UIScreen.main.bounds.width / 3) - 1)
     }
     
     // item = cell 마다 space 설정
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 1.0
     }
     
     // line 마다 space 설정
-    func collectionView(_ collectionView: UICollectionView, layout
-        collectionViewLayout: UICollectionViewLayout,
-                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 1.0
     }
     
-    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.row == self.productDatas.count - 1 {
             pagenum = pagenum + 1
             print(pagenum)
