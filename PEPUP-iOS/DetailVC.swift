@@ -262,7 +262,7 @@ class DetailVC: UIViewController{
 //        NSLayoutConstraint(item: brandInfoLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 19).isActive = true
         
         NSLayoutConstraint(item: contentLabel, attribute: .leading, relatedBy: .equal, toItem: scrollView, attribute: .leading, multiplier: 1, constant: screenWidth/defaultWidth * 18).isActive = true
-        NSLayoutConstraint(item: contentLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: screenWidth/defaultWidth * 266).isActive = true
+        NSLayoutConstraint(item: contentLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: screenWidth/defaultWidth * 339).isActive = true
         NSLayoutConstraint(item: contentLabel, attribute: .top, relatedBy: .equal, toItem: brandLabel, attribute: .bottom, multiplier: 1, constant: screenWidth/defaultWidth * 16).isActive = true
         NSLayoutConstraint(item: contentLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: screenHeight/defaultHeight * 59).isActive = true
         
@@ -451,8 +451,12 @@ class DetailVC: UIViewController{
         }
         if let tag = self.productDatas.object(forKey: "tag") as? Array<NSDictionary> {
             let tag_0 = tag[0]
+            let tagId = tag_0.object(forKey: "id") as! Int
             let tagName = tag_0.object(forKey: "tag") as! String
             tagButton.setTitle(tagName, for: .normal)
+            tagButton.tag = tagId
+            tagButton.addTarget(self, action: #selector(tag(_:)), for: .touchUpInside)
+            
         }
         if let nickname = self.sellerDatas.object(forKey: "nickname") as? String {
             sellerNameLabel.text = nickname
@@ -544,8 +548,11 @@ class DetailVC: UIViewController{
         print("TOUCH CART")
     }
     
-    @objc func tag() {
-        print("TOUCH TAG!!")
+    @objc func tag(_ sender: UIButton) {
+        let nextVC = TagVC()
+        nextVC.TagID = sender.tag
+        nextVC.TagName = sender.currentTitle
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     let navcontentView: UIView = {
@@ -746,6 +753,8 @@ class DetailVC: UIViewController{
         label.backgroundColor = .white
         label.textColor = .black
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.translatesAutoresizingMaskIntoConstraints = false
         label.sizeToFit()
         return label
@@ -768,10 +777,10 @@ class DetailVC: UIViewController{
         btn.clipsToBounds = true
         btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
         btn.titleLabel?.textColor = .black
+        btn.titleLabel?.textAlignment = .center
         btn.setTitleColor(.black, for: .normal)
         btn.layer.borderWidth = 1.5
         btn.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
-        btn.addTarget(self, action: #selector(tag), for: .touchUpInside)
         return btn
     }()
     

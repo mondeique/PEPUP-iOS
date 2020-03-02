@@ -37,7 +37,7 @@ class FollowHeaderCell: BaseCollectionViewCell {
         tagName.leftAnchor.constraint(equalTo: sellerImage.rightAnchor, constant: UIScreen.main.bounds.width/375 * 20).isActive = true
         tagName.topAnchor.constraint(equalTo: headercontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 31).isActive = true
 //        tagName.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 40).isActive = true
-//        tagName.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 40).isActive = true
+        tagName.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 16).isActive = true
         
     }
     

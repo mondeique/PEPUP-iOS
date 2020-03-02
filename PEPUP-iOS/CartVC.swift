@@ -31,6 +31,7 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         setup()
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
+        self.tabBarController?.tabBar.isTranslucent = true
         self.navigationController?.navigationBar.isHidden = true
     }
     

@@ -18,10 +18,14 @@ class FollowFooterCell: BaseCollectionViewCell {
         footercontentView.addSubview(btnLike)
         footercontentView.addSubview(btnMessage)
         footercontentView.addSubview(pepupImage)
-        footercontentView.addSubview(btnDetail)
+        footercontentView.addSubview(btnDetailContentView)
         footercontentView.addSubview(productName)
         footercontentView.addSubview(sizeInfoLabel)
         footercontentView.addSubview(brandInfoLabel)
+        footercontentView.addSubview(timeLabel)
+        
+        btnDetailContentView.addSubview(btnDetailLabel)
+        btnDetailContentView.addSubview(btnDetail)
         
         footercontentView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         footercontentView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
@@ -43,10 +47,10 @@ class FollowFooterCell: BaseCollectionViewCell {
         pepupImage.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 40).isActive = true
         pepupImage.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 40).isActive = true
         
-        btnDetail.leftAnchor.constraint(equalTo: pepupImage.rightAnchor, constant: UIScreen.main.bounds.width/375 * 90).isActive = true
-        btnDetail.topAnchor.constraint(equalTo: footercontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 8).isActive = true
-        btnDetail.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 119).isActive = true
-        btnDetail.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 32).isActive = true
+        btnDetailContentView.leftAnchor.constraint(equalTo: pepupImage.rightAnchor, constant: UIScreen.main.bounds.width/375 * 90).isActive = true
+        btnDetailContentView.topAnchor.constraint(equalTo: footercontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 8).isActive = true
+        btnDetailContentView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 119).isActive = true
+        btnDetailContentView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 32).isActive = true
         
         productName.leftAnchor.constraint(equalTo: footercontentView.leftAnchor, constant: UIScreen.main.bounds.width/375 * 18).isActive = true
         productName.topAnchor.constraint(equalTo: btnLike.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 4).isActive = true
@@ -63,6 +67,20 @@ class FollowFooterCell: BaseCollectionViewCell {
 //        brandInfoLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 40).isActive = true
         brandInfoLabel.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 19).isActive = true
         
+        timeLabel.rightAnchor.constraint(equalTo: footercontentView.rightAnchor, constant: UIScreen.main.bounds.width/375 * -18).isActive = true
+        timeLabel.topAnchor.constraint(equalTo: productName.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 10).isActive = true
+//        timeLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 40).isActive = true
+        timeLabel.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 13).isActive = true
+        
+        btnDetailLabel.leftAnchor.constraint(equalTo: btnDetailContentView.leftAnchor, constant: UIScreen.main.bounds.width/375 * 16).isActive = true
+        btnDetailLabel.topAnchor.constraint(equalTo: btnDetailContentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 7).isActive = true
+//        btnDetailLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 40).isActive = true
+        btnDetailLabel.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 20).isActive = true
+        
+        btnDetail.leftAnchor.constraint(equalTo: btnDetailLabel.rightAnchor, constant: UIScreen.main.bounds.width/375 * 32).isActive = true
+        btnDetail.topAnchor.constraint(equalTo: btnDetailContentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 11).isActive = true
+        btnDetail.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 6).isActive = true
+        btnDetail.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 10).isActive = true
     }
     
     let footercontentView: UIView = {
@@ -92,11 +110,36 @@ class FollowFooterCell: BaseCollectionViewCell {
         return img
     }()
     
+    let btnDetailContentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.borderWidth = 1.5
+        view.layer.borderColor = UIColor.black.cgColor
+        view.layer.cornerRadius = 18
+        view.backgroundColor = .black
+        return view
+    }()
+    
+    let btnDetailLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.backgroundColor = .clear
+        label.textColor = .white
+        label.textAlignment = .left
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
+        return label
+    }()
+    
     let btnDetail: UIButton = {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.backgroundColor = .black
-        btn.setTitleColor(.white, for: .normal)
+//        btn.backgroundColor = .black
+//        btn.setTitleColor(.white, for: .normal)
+//        btn.titleLabel?.textAlignment = .left
+//        btn.layer.borderColor = UIColor.black.cgColor
+//        btn.layer.borderWidth = 1.5
+//        btn.layer.cornerRadius = 18
+        btn.setImage(UIImage(named: "btnGO_notsold"), for: .normal)
         return btn
     }()
     
@@ -130,4 +173,12 @@ class FollowFooterCell: BaseCollectionViewCell {
         return label
     }()
     
+    let timeLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 11)
+        label.textColor = .black
+        label.text = "2 HOURS AGO"
+        return label
+    }()
 }

@@ -22,13 +22,14 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
-        getData(pagenum: 1)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
+        setup()
+        getData(pagenum: 1)
     }
     
     fileprivate func setup() {
@@ -55,6 +56,7 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
         
         navcontentView.addSubview(btnCart)
         navcontentView.addSubview(btnDirect)
+        navcontentView.addSubview(lineLabel)
         
         self.view.addSubview(navcontentView)
         self.view.addSubview(followcollectionView)
@@ -68,11 +70,18 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
         btnCart.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 2).isActive = true
         btnCart.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 40).isActive = true
         btnCart.heightAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 40).isActive = true
+        btnCart.addTarget(self, action: #selector(didTapCartButton(sender:)), for: .touchUpInside)
         
         btnDirect.leftAnchor.constraint(equalTo: btnCart.rightAnchor, constant: screenWidth/defaultWidth * 8).isActive = true
         btnDirect.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 2).isActive = true
         btnDirect.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 40).isActive = true
         btnDirect.heightAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 40).isActive = true
+        btnDirect.addTarget(self, action: #selector(didTapMessageButton(sender:)), for: .touchUpInside)
+        
+        lineLabel.leftAnchor.constraint(equalTo: navcontentView.leftAnchor).isActive = true
+        lineLabel.bottomAnchor.constraint(equalTo: navcontentView.bottomAnchor).isActive = true
+        lineLabel.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
+        lineLabel.heightAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 1).isActive = true
         
         followcollectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         followcollectionView.topAnchor.constraint(equalTo: navcontentView.bottomAnchor).isActive = true
@@ -98,6 +107,13 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setImage(UIImage(named: "btnDirect"), for: .normal)
         return btn
+    }()
+    
+    let lineLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.backgroundColor = UIColor(rgb: 0xEBEBF6)
+        return label
     }()
     
     
@@ -164,12 +180,15 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
                     let tagArray = productDic.object(forKey: "tag") as! Array<Dictionary<String, Any>>
                     let tagDic = tagArray[0] as NSDictionary
                     let tag = tagDic.object(forKey: "tag") as! String
+                    let sellerId = sellerInfoDic.object(forKey: "id") as! Int
                     DispatchQueue.main.async {
                         headerView.sellerImage.setImage(image, for: .normal)
                         headerView.sellerName.setTitle(nickname, for: .normal)
                         headerView.tagName.setTitle(tag, for: .normal)
-                        headerView.sellerImage.addTarget(self, action: #selector(self.sellerstore), for: .touchUpInside)
-                        headerView.sellerName.addTarget(self, action: #selector(self.sellerstore), for: .touchUpInside)
+                        headerView.sellerImage.tag = sellerId
+                        headerView.sellerName.tag = sellerId
+                        headerView.sellerImage.addTarget(self, action: #selector(self.sellerstore(_:)), for: .touchUpInside)
+                        headerView.sellerName.addTarget(self, action: #selector(self.sellerstore(_:)), for: .touchUpInside)
                         headerView.tagName.addTarget(self, action: #selector(self.tag), for: .touchUpInside)
                     }
                 }
@@ -181,15 +200,29 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
                 let productDic = self.productDatas[indexPath.section] as NSDictionary
                 let productName = productDic.object(forKey: "name") as! String
                 let productPrice = productDic.object(forKey: "price") as! Int
+                let is_sold = productDic.object(forKey: "sold") as! Bool
                 let productSize = productDic.object(forKey: "size") as! String
                 let productBrandDic = productDic.object(forKey: "brand") as! NSDictionary
                 let productBrand = productBrandDic.object(forKey: "name") as! String
+                let productId = productDic.object(forKey: "id") as! Int
                 DispatchQueue.main.async {
-                    footerView.btnLike.addTarget(self, action: #selector(self.like), for: .touchUpInside)
+                    footerView.btnLike.addTarget(self, action: #selector(self.like(_:)), for: .touchUpInside)
                     footerView.btnMessage.addTarget(self, action: #selector(self.message), for: .touchUpInside)
-                    footerView.btnDetail.addTarget(self, action: #selector(self.detail), for: .touchUpInside)
+                    footerView.btnDetail.tag = productId
+                    footerView.btnDetail.addTarget(self, action: #selector(self.detail(_:)), for: .touchUpInside)
                     footerView.productName.text = productName
-                    footerView.btnDetail.setTitle(String(productPrice), for: .normal)
+                    if is_sold == true {
+                        footerView.btnDetailLabel.text = "S O L D"
+                        footerView.btnDetailLabel.textColor = .black
+                        footerView.btnDetailContentView.backgroundColor = .white
+                        footerView.btnDetail.setTitleColor(.black, for: .normal)
+                        footerView.btnDetail.setImage(UIImage(named: "btnGO_sold"), for: .normal)
+                    }
+                    else {
+                        footerView.btnDetailLabel.text = String(productPrice)
+                        footerView.btnDetailContentView.backgroundColor = .black
+                        footerView.btnDetailLabel.textColor = .white
+                    }
                     footerView.sizeInfoLabel.text = productSize
                     footerView.brandInfoLabel.text = productBrand
                 }
@@ -200,18 +233,28 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
         }
     }
     
+    @objc func didTapMessageButton(sender: AnyObject){
+        self.navigationController?.pushViewController(MessageVC(), animated: true)
+    }
+    
+    @objc func didTapCartButton(sender: AnyObject){
+        self.navigationController?.pushViewController(CartVC(), animated: true)
+    }
+    
     @objc func tag() {
         print("TOUCH TAG")
     }
     
-    @objc func sellerstore() {
-        print("TOUCH SELLER STORE")
+    @objc func sellerstore(_ sender: UIButton) {
+        let nextVC = TestStoreVC()
+        nextVC.SellerID = sender.tag
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
-    @objc func like() {
+    @objc func like(_ sender: UIButton) {
         print("TOUCH LIKE")
-//        if btnLike.currentImage == UIImage(named: "btnLike") {
-//            btnLike.setImage(UIImage(named: "btnLike_fill"), for: .normal)
+        if sender.currentImage == UIImage(named: "btnLike") {
+            sender.setImage(UIImage(named: "btnLike_fill"), for: .normal)
 //            Alamofire.AF.request("\(Config.baseURL)/api/products/like/" + String(Myid) + "/", method: .post, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
 //                (response) in switch response.result {
 //                case .success(let JSON):
@@ -221,9 +264,9 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
 //                    print("Request failed with error: \(error)")
 //                }
 //            }
-//       }
-//        else if btnLike.currentImage == UIImage(named: "btnLike_fill") {
-//            btnLike.setImage(UIImage(named: "btnLike"), for: .normal)
+        }
+        else if sender.currentImage == UIImage(named: "btnLike_fill") {
+            sender.setImage(UIImage(named: "btnLike"), for: .normal)
 //            Alamofire.AF.request("\(Config.baseURL)/api/products/like/" + String(Myid) + "/", method: .post, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
 //                (response) in switch response.result {
 //                case .success(let JSON):
@@ -233,15 +276,17 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
 //                    print("Request failed with error: \(error)")
 //                }
 //            }
-//        }
+        }
     }
     
     @objc func message() {
         print("TOUCH MESSAGE")
     }
     
-    @objc func detail() {
-        print("TOUCH DETAIL")
+    @objc func detail(_ sender: UIButton) {
+        let nextVC = DetailVC()
+        nextVC.Myid = sender.tag
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     // cell size 설정

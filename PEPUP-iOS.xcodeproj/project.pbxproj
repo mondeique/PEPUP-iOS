@@ -45,6 +45,7 @@
 		E9D111A624081725006AE20C /* TestStoreVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111A524081725006AE20C /* TestStoreVC.swift */; };
 		E9D111A824083D64006AE20C /* FollowHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111A724083D64006AE20C /* FollowHeaderCell.swift */; };
 		E9D111AC2408BE88006AE20C /* FollowFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111AB2408BE88006AE20C /* FollowFooterCell.swift */; };
+		E9D111AE240CC71F006AE20C /* TagHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111AD240CC71F006AE20C /* TagHeaderCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -90,6 +91,7 @@
 		E9D111A524081725006AE20C /* TestStoreVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestStoreVC.swift; sourceTree = "<group>"; };
 		E9D111A724083D64006AE20C /* FollowHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowHeaderCell.swift; sourceTree = "<group>"; };
 		E9D111AB2408BE88006AE20C /* FollowFooterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowFooterCell.swift; sourceTree = "<group>"; };
+		E9D111AD240CC71F006AE20C /* TagHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagHeaderCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,6 +181,7 @@
 				E9D1119B24038CFE006AE20C /* PageCell.swift */,
 				E9D1119D2403BF77006AE20C /* TagVC.swift */,
 				E9D1119F2403C00E006AE20C /* TagCell.swift */,
+				E9D111AD240CC71F006AE20C /* TagHeaderCell.swift */,
 				E9D111A524081725006AE20C /* TestStoreVC.swift */,
 			);
 			path = "PEPUP-iOS";
@@ -317,6 +320,7 @@
 				E9D1119E2403BF77006AE20C /* TagVC.swift in Sources */,
 				E968FF1223F5139000B2B1D3 /* CartVC.swift in Sources */,
 				E968FF0223EB1D8A00B2B1D3 /* FindPwdResetVC.swift in Sources */,
+				E9D111AE240CC71F006AE20C /* TagHeaderCell.swift in Sources */,
 				E9D111A624081725006AE20C /* TestStoreVC.swift in Sources */,
 				E9D07A4D23E3FB980095AD05 /* SignupVC.swift in Sources */,
 				E9D111A824083D64006AE20C /* FollowHeaderCell.swift in Sources */,

@@ -21,11 +21,9 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         super.viewWillAppear(animated)
         // Login 에서 push 될 때 navigationBar가 생기는데 이를 없앰
         self.navigationController?.isNavigationBarHidden = true
-    }
-    
-    override func viewWillLayoutSubviews() {
-        var tabFrame = self.tabBar.frame
         
+        var tabFrame = self.tabBar.frame
+
         tabFrame.size.height = UIScreen.main.bounds.height/667 * 49
         tabFrame.origin.y = UIScreen.main.bounds.height/667 * -49
         self.tabBar.frame = tabFrame
@@ -40,13 +38,11 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         home.tabBarItem.image = #imageLiteral(resourceName: "home_unselected")
         home.tabBarItem.selectedImage = #imageLiteral(resourceName: "home_selected")
         // Follow
-        let followFlow = UICollectionViewFlowLayout()
         let follow = UINavigationController(rootViewController: FollowVC())
 //        let follow = UINavigationController(rootViewController: TagVC())
-        follow.tabBarItem.image = #imageLiteral(resourceName: "home_unselected")
-        follow.tabBarItem.selectedImage = #imageLiteral(resourceName: "home_selected")
+        follow.tabBarItem.image = #imageLiteral(resourceName: "follow_unselected")
+        follow.tabBarItem.selectedImage = #imageLiteral(resourceName: "follow_selected")
         // Store
-        let storeFlow = UICollectionViewFlowLayout()
         let store = UINavigationController(rootViewController: StoreVC())
         store.tabBarItem.image = #imageLiteral(resourceName: "store_unselected")
         store.tabBarItem.selectedImage = #imageLiteral(resourceName: "store_selected")
@@ -56,17 +52,5 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
                 item.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
             }
         }
-        
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

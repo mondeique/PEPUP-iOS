@@ -52,7 +52,7 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
     }
     
     func customMenuBar(scrollTo index: Int) {
-        let indexPath = IndexPath(row: index, section: 0)
+//        let indexPath = IndexPath(row: index, section: 0)
 //        self.pageCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
     
@@ -88,7 +88,7 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
 //MARK:- UICollectionViewDelegate, UICollectionViewDataSource
 
 //extension StoreVC: UICollectionViewDelegate, UICollectionViewDataSource {
-//    
+//
 //    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 //        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PageCell
 //        if indexPath.row == 0 {
@@ -104,15 +104,15 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
 //        }
 //        return cell
 //    }
-//    
+//
 //    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 //        return 3
 //    }
-//    
+//
 //    func scrollViewDidScroll(_ scrollView: UIScrollView) {
 //        customMenuBar.indicatorViewLeadingConstraint.constant = UIScreen.main.bounds.width/375 * 8 + scrollView.contentOffset.x / 375 * 74
 //    }
-//    
+//
 //    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
 //        let itemAt = Int(targetContentOffset.pointee.x / self.view.frame.width)
 //        let indexPath = IndexPath(item: itemAt, section: 0)

@@ -30,6 +30,7 @@ class HomeVC: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     // MARK: collectionView 전체 View setting
     
     fileprivate func setup() {
+        self.view.backgroundColor = .white
         collectionView.backgroundColor = .white
         collectionView.alwaysBounceVertical = true
         collectionView.showsVerticalScrollIndicator = false
