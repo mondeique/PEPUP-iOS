@@ -16,6 +16,7 @@ class TagVC: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
     
     var productDatas = Array<Dictionary<String, Any>>()
     var TagID : Int!
+    var pagenum : Int = 1
     var TagName : String!
     var tagCollectionView : UICollectionView!
     
@@ -190,13 +191,13 @@ class TagVC: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
         }
     }
     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-//        return CGSize(width: collectionView.frame.width, height: 60)
-//    }
-    
-//    @objc func tapDetected(sender: UITapGestureRecognizer) {
-//        self.navigationController?.pushViewController(SearchVC(), animated: true)
-//    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let productDictionary = self.productDatas[indexPath.row] as NSDictionary
+        let productId = productDictionary.object(forKey: "id") as! Int
+        let nextVC = DetailVC()
+        nextVC.Myid = productId
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
     
     
     // MARK: UICollectionViewDelegate
@@ -220,11 +221,11 @@ class TagVC: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
         return CGSize(width: collectionView.frame.width, height: UIScreen.main.bounds.height/667 * 72)
     }
     
-//    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        if indexPath.row == self.productDatas.count - 1 {
-//            pagenum = pagenum + 1
-//            print(pagenum)
-//            getData(pagenum: pagenum)
-//        }
-//    }
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == self.productDatas.count - 1 {
+            pagenum = pagenum + 1
+            print(pagenum)
+            getData(pagenum: pagenum)
+        }
+    }
 }

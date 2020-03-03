@@ -22,14 +22,14 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
-        setup()
+        productDatas = Array<Dictionary<String, Any>>()
         getData(pagenum: 1)
+        setup()
     }
     
     fileprivate func setup() {
@@ -153,12 +153,14 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! FollowCell
         let productDic = self.productDatas[indexPath.section] as NSDictionary
         let imageArray = productDic.object(forKey: "images") as! Array<Dictionary<String, Any>>
-        let imageDic = imageArray[0] as NSDictionary
-        let ImageUrlString = imageDic.object(forKey: "image") as! String
-        let imageUrl:NSURL = NSURL(string: ImageUrlString)!
-        let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
-        let image = UIImage(data: imageData as Data)
-        cell.productImage.image = image
+        for i in 0..<imageArray.count {
+            let imageDic = imageArray[i] as NSDictionary
+            let ImageUrlString = imageDic.object(forKey: "image") as! String
+            let imageUrl:NSURL = NSURL(string: ImageUrlString)!
+            let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
+            let image = UIImage(data: imageData as Data)
+            cell.productImage.image = image
+        }
         return cell
     }
     
@@ -180,22 +182,42 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
                     let tagArray = productDic.object(forKey: "tag") as! Array<Dictionary<String, Any>>
                     let tagDic = tagArray[0] as NSDictionary
                     let tag = tagDic.object(forKey: "tag") as! String
+                    let tagid = tagDic.object(forKey: "id") as! Int
                     let sellerId = sellerInfoDic.object(forKey: "id") as! Int
+                    let by = productDic.object(forKey: "by") as! Int
                     DispatchQueue.main.async {
-                        headerView.sellerImage.setImage(image, for: .normal)
-                        headerView.sellerName.setTitle(nickname, for: .normal)
-                        headerView.tagName.setTitle(tag, for: .normal)
-                        headerView.sellerImage.tag = sellerId
-                        headerView.sellerName.tag = sellerId
-                        headerView.sellerImage.addTarget(self, action: #selector(self.sellerstore(_:)), for: .touchUpInside)
-                        headerView.sellerName.addTarget(self, action: #selector(self.sellerstore(_:)), for: .touchUpInside)
-                        headerView.tagName.addTarget(self, action: #selector(self.tag), for: .touchUpInside)
+                        if by == 1 {
+                            headerView.sellerImage.setImage(image, for: .normal)
+                            headerView.sellerName.setTitle(nickname, for: .normal)
+                            headerView.sellerImage.setImage(image, for: .normal)
+                            headerView.sellerName.setTitle(nickname, for: .normal)
+                            headerView.sellerImage.layer.cornerRadius = headerView.sellerImage.frame.height / 2
+                            headerView.sellerImage.layer.borderColor = UIColor.clear.cgColor
+                            headerView.sellerImage.layer.borderWidth = 1
+                            headerView.sellerImage.layer.masksToBounds = false
+                            headerView.sellerImage.clipsToBounds = true
+                            headerView.tagName.setTitle(tag, for: .normal)
+                            headerView.sellerImage.tag = sellerId
+                            headerView.sellerName.tag = sellerId
+                            headerView.tagName.tag = tagid
+                            headerView.sellerImage.addTarget(self, action: #selector(self.sellerstore(_:)), for: .touchUpInside)
+                            headerView.sellerName.addTarget(self, action: #selector(self.sellerstore(_:)), for: .touchUpInside)
+                            headerView.tagName.addTarget(self, action: #selector(self.tag(_:)), for: .touchUpInside)
+                        }
+                        else if by == 2{
+                            headerView.sellerImage.setImage(UIImage(named: "TagImage"), for: .normal)
+                            headerView.sellerName.setTitle("#" + tag, for: .normal)
+                            headerView.tagName.setTitle(nickname, for: .normal)
+                            headerView.tagName.tag = sellerId
+                            headerView.sellerName.tag = tagid
+                            headerView.sellerName.addTarget(self, action: #selector(self.tag(_:)), for: .touchUpInside)
+                            headerView.tagName.addTarget(self, action: #selector(self.sellerstore(_:)), for: .touchUpInside)
+                        }
                     }
                 }
                 return headerView
             
         case UICollectionView.elementKindSectionFooter:
-            
                 let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: followfooterId, for: indexPath) as! FollowFooterCell
                 let productDic = self.productDatas[indexPath.section] as NSDictionary
                 let productName = productDic.object(forKey: "name") as! String
@@ -222,6 +244,7 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
                         footerView.btnDetailLabel.text = String(productPrice)
                         footerView.btnDetailContentView.backgroundColor = .black
                         footerView.btnDetailLabel.textColor = .white
+                        footerView.btnDetail.setImage(UIImage(named: "btnGO_notsold"), for: .normal)
                     }
                     footerView.sizeInfoLabel.text = productSize
                     footerView.brandInfoLabel.text = productBrand
@@ -241,8 +264,11 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
         self.navigationController?.pushViewController(CartVC(), animated: true)
     }
     
-    @objc func tag() {
-        print("TOUCH TAG")
+    @objc func tag(_ sender: UIButton) {
+        let nextVC = TagVC()
+        nextVC.TagID = sender.tag
+        nextVC.TagName = sender.currentTitle
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     @objc func sellerstore(_ sender: UIButton) {
@@ -305,5 +331,13 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: UIScreen.main.bounds.height/667 * 114)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == self.productDatas.count - 1 {
+            pagenum = pagenum + 1
+            print(pagenum)
+            getData(pagenum: pagenum)
+        }
     }
 }

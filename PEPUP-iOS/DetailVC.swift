@@ -9,14 +9,16 @@
 import UIKit
 import Alamofire
 
-class DetailVC: UIViewController{
+class DetailVC: UIViewController, UIScrollViewDelegate{
     
     var responseDatas = NSDictionary()
     var productDatas = NSDictionary()
     var deliveryDatas = NSDictionary()
     var sellerDatas = NSDictionary()
     var productimageArray = Array<String>()
-    var Myid:Int!
+    var Myid: Int!
+    
+    var pageSize : Int!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +29,6 @@ class DetailVC: UIViewController{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -96,16 +97,26 @@ class DetailVC: UIViewController{
         scrollView.contentInset = UIEdgeInsets.zero
         view.addSubview(scrollView)
         
-        scrollView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0.0).isActive = true
+        scrollView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: navBarHeight + statusBarHeight).isActive = true
-        scrollView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0.0).isActive = true
+        scrollView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: (screenHeight/defaultHeight) * -100.0).isActive = true
         
         scrollView.contentSize = CGSize(width: screenWidth, height: screenHeight/defaultHeight * 1300)
         scrollView.contentOffset = CGPoint(x: 0, y: 0)
         
+        productImageContentView.addSubview(productScrollView)
+        productImageContentView.addSubview(pageControl)
         
-        scrollView.addSubview(productImage)
+        productScrollView.leftAnchor.constraint(equalTo: productImageContentView.leftAnchor).isActive = true
+        productScrollView.topAnchor.constraint(equalTo: productImageContentView.topAnchor).isActive = true
+        
+        pageControl.leftAnchor.constraint(equalTo: productImageContentView.leftAnchor).isActive = true
+        pageControl.bottomAnchor.constraint(equalTo: productImageContentView.bottomAnchor).isActive = true
+        pageControl.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
+        pageControl.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 50).isActive = true
+        
+        scrollView.addSubview(productImageContentView)
         scrollView.addSubview(discountRate)
         scrollView.addSubview(productPrice)
         scrollView.addSubview(pricewonLabel)
@@ -142,43 +153,48 @@ class DetailVC: UIViewController{
         scrollView.addSubview(lineLabel4)
         
     
-        NSLayoutConstraint(item: productImage, attribute: .leading, relatedBy: .equal, toItem: scrollView, attribute: .leading, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: productImage, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: screenWidth).isActive = true
-        NSLayoutConstraint(item: productImage, attribute: .top, relatedBy: .equal, toItem: scrollView, attribute: .top, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: productImage, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: screenWidth).isActive = true
-        NSLayoutConstraint(item: productImage, attribute: .centerX, relatedBy: .equal, toItem: scrollView, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: productImageContentView, attribute: .leading, relatedBy: .equal, toItem: scrollView, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: productImageContentView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: screenWidth).isActive = true
+        NSLayoutConstraint(item: productImageContentView, attribute: .top, relatedBy: .equal, toItem: scrollView, attribute: .top, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: productImageContentView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: screenWidth).isActive = true
+        
+//        NSLayoutConstraint(item: productImage, attribute: .leading, relatedBy: .equal, toItem: productImageContentView, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+//        NSLayoutConstraint(item: productImage, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: screenWidth).isActive = true
+//        NSLayoutConstraint(item: productImage, attribute: .top, relatedBy: .equal, toItem: productImageContentView, attribute: .top, multiplier: 1, constant: 0).isActive = true
+//        NSLayoutConstraint(item: productImage, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: screenWidth).isActive = true
+//        NSLayoutConstraint(item: productImage, attribute: .centerX, relatedBy: .equal, toItem: productImageContentView, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         
         NSLayoutConstraint(item: btnLike, attribute: .leading, relatedBy: .equal, toItem: scrollView, attribute: .leading, multiplier: 1, constant: screenWidth/defaultWidth * 279).isActive = true
 //        NSLayoutConstraint(item: btnLike, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
-        NSLayoutConstraint(item: btnLike, attribute: .top, relatedBy: .equal, toItem: productImage, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 8).isActive = true
+        NSLayoutConstraint(item: btnLike, attribute: .top, relatedBy: .equal, toItem: productImageContentView, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 8).isActive = true
 //        NSLayoutConstraint(item: btnLike, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
         
         NSLayoutConstraint(item: btnMessage, attribute: .left, relatedBy: .equal, toItem: btnLike, attribute: .right, multiplier: 1, constant: screenWidth/defaultWidth * 8).isActive = true
 //        NSLayoutConstraint(item: btnMessage, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
-        NSLayoutConstraint(item: btnMessage, attribute: .top, relatedBy: .equal, toItem: productImage, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 8).isActive = true
+        NSLayoutConstraint(item: btnMessage, attribute: .top, relatedBy: .equal, toItem: productImageContentView, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 8).isActive = true
 //        NSLayoutConstraint(item: btnMessage, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
         
         NSLayoutConstraint(item: discountRate, attribute: .leading, relatedBy: .equal, toItem: scrollView, attribute: .leading, multiplier: 1, constant: screenWidth/defaultWidth * 18).isActive = true
 //        NSLayoutConstraint(item: discountRate, attribute: .width, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 50).isActive = true
-        NSLayoutConstraint(item: discountRate, attribute: .top, relatedBy: .equal, toItem: productImage, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 16).isActive = true
+        NSLayoutConstraint(item: discountRate, attribute: .top, relatedBy: .equal, toItem: productImageContentView, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 16).isActive = true
 //        NSLayoutConstraint(item: discountRate, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 28).isActive = true
         
         if discountRate.isHidden == false {
             NSLayoutConstraint(item: productPrice, attribute: .left, relatedBy: .equal, toItem: discountRate, attribute: .right, multiplier: 1, constant: screenWidth/defaultWidth * 6).isActive = true
             NSLayoutConstraint(item: productPrice, attribute: .width, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
-            NSLayoutConstraint(item: productPrice, attribute: .top, relatedBy: .equal, toItem: productImage, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 16).isActive = true
+            NSLayoutConstraint(item: productPrice, attribute: .top, relatedBy: .equal, toItem: productImageContentView, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 16).isActive = true
 //            NSLayoutConstraint(item: productPrice, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 28).isActive = true
         }
         else {
             NSLayoutConstraint(item: productPrice, attribute: .leading, relatedBy: .equal, toItem: scrollView, attribute: .leading, multiplier: 1, constant: screenWidth/defaultWidth * 18).isActive = true
             NSLayoutConstraint(item: productPrice, attribute: .width, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
-            NSLayoutConstraint(item: productPrice, attribute: .top, relatedBy: .equal, toItem: productImage, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 16).isActive = true
+            NSLayoutConstraint(item: productPrice, attribute: .top, relatedBy: .equal, toItem: productImageContentView, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 16).isActive = true
 //            NSLayoutConstraint(item: productPrice, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 28).isActive = true
         }
         
         // TODO: - 원 안뜸..
         NSLayoutConstraint(item: pricewonLabel, attribute: .left, relatedBy: .equal, toItem: productPrice, attribute: .right, multiplier: 1, constant: screenWidth/defaultWidth * 2).isActive = true
-        NSLayoutConstraint(item: pricewonLabel, attribute: .top, relatedBy: .equal, toItem: productImage, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 21).isActive = true
+        NSLayoutConstraint(item: pricewonLabel, attribute: .top, relatedBy: .equal, toItem: productImageContentView, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 21).isActive = true
         
         NSLayoutConstraint(item: productName, attribute: .leading, relatedBy: .equal, toItem: scrollView, attribute: .leading, multiplier: 1, constant: screenWidth/defaultWidth * 18).isActive = true
 //        NSLayoutConstraint(item: productName, attribute: .width, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20).isActive = true
@@ -346,6 +362,15 @@ class DetailVC: UIViewController{
         
     }
     
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        
+        // When the number of scrolls is one page worth.
+        if fmod(scrollView.contentOffset.x, scrollView.frame.maxX) == 0 {
+            // Switch the location of the page.
+            pageControl.currentPage = Int(scrollView.contentOffset.x / scrollView.frame.maxX)
+        }
+    }
+    
     func getData() {
         Alamofire.AF.request("\(Config.baseURL)/api/products/" + String(Myid) + "/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json",  "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
             (response) in switch response.result {
@@ -356,7 +381,23 @@ class DetailVC: UIViewController{
                 self.productDatas = response.object(forKey: "product") as! NSDictionary
                 self.deliveryDatas = response.object(forKey: "delivery_policy") as! NSDictionary
                 self.sellerDatas = self.productDatas.object(forKey: "seller") as! NSDictionary
+                let productImgArray = self.productDatas.object(forKey: "images") as! Array<NSDictionary>
+                for i in 0..<productImgArray.count {
+                    let productUrlDictionary = productImgArray[i] as NSDictionary
+                    let imageUrlString = productUrlDictionary.object(forKey: "image") as! String
+                    self.productimageArray.append(imageUrlString)
+                }
+                self.pageSize = self.productimageArray.count
+                // Set the number of pages to page control.
+                self.pageControl.numberOfPages = self.pageSize
+                
+                // Set the current page.
+                self.pageControl.currentPage = 0
+                self.pageControl.isUserInteractionEnabled = false
+                self.pageControl.translatesAutoresizingMaskIntoConstraints = false
 
+                // Specify the screen size of the scroll.
+                self.productScrollView.contentSize = CGSize(width: CGFloat(self.pageSize) * UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
                 self.setimage()
 //                self.setbutton()
                 self.setinfo()
@@ -367,16 +408,13 @@ class DetailVC: UIViewController{
     }
     
     func setimage() {
-        if let productImgArray = self.productDatas.object(forKey: "images") as? Array<NSDictionary> {
-            for i in 0..<productImgArray.count {
-                let productUrlDictionary = productImgArray[i] as NSDictionary
-                let imageUrlString = productUrlDictionary.object(forKey: "image") as! String
-                productimageArray.append(imageUrlString)
-            }
-            let imageUrl:NSURL = NSURL(string: productimageArray[0])!
+        for i in 0..<pageSize {
+            let productimage = UIImageView(frame: CGRect(x: CGFloat(i) * self.view.frame.width , y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
+            let imageUrl:NSURL = NSURL(string: productimageArray[i])!
             let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
             let image = UIImage(data: imageData as Data)
-            productImage.image = image
+            productimage.image = image
+            productScrollView.addSubview(productimage)
         }
         if let sellerImgDic = self.sellerDatas.object(forKey: "profile") as? NSDictionary {
             let sellerUrlString = sellerImgDic.object(forKey: "thumbnail_img") as! String
@@ -384,6 +422,11 @@ class DetailVC: UIViewController{
             let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
             let image = UIImage(data: imageData as Data)
             sellerProfile.image = image
+            sellerProfile.layer.cornerRadius = sellerProfile.frame.height / 2
+            sellerProfile.layer.borderColor = UIColor.clear.cgColor
+            sellerProfile.layer.borderWidth = 1
+            sellerProfile.layer.masksToBounds = false
+            sellerProfile.clipsToBounds = true
         }
         if let is_liked = self.responseDatas.object(forKey: "liked") as? Bool {
             if is_liked == true {
@@ -456,7 +499,6 @@ class DetailVC: UIViewController{
             tagButton.setTitle(tagName, for: .normal)
             tagButton.tag = tagId
             tagButton.addTarget(self, action: #selector(tag(_:)), for: .touchUpInside)
-            
         }
         if let nickname = self.sellerDatas.object(forKey: "nickname") as? String {
             sellerNameLabel.text = nickname
@@ -577,10 +619,33 @@ class DetailVC: UIViewController{
         return view
     }()
     
-    let productImage: UIImageView = {
-        let img = UIImageView()
-        img.translatesAutoresizingMaskIntoConstraints = false
-        return img
+    let productImageContentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        return view
+    }()
+    
+    lazy var productScrollView : UIScrollView = {
+        // Create a UIScrollView.
+        let scrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
+        // Hide the vertical and horizontal indicators.
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.showsVerticalScrollIndicator = false
+        // Allow paging.
+        scrollView.isPagingEnabled = true
+        // Set delegate of ScrollView.
+        scrollView.delegate = self
+        
+        return scrollView
+    }()
+    
+    lazy var pageControl: UIPageControl = {
+        // Create a UIPageControl.
+        let pageControl = UIPageControl(frame: CGRect(x: 0, y: UIScreen.main.bounds.width - 50, width: UIScreen.main.bounds.width, height: 50))
+        pageControl.backgroundColor = UIColor.clear
+        
+        return pageControl
     }()
     
     let discountRate: UILabel = {

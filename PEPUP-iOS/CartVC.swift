@@ -209,6 +209,11 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                 DispatchQueue.main.async {
                     let image = UIImage(data: imageData as Data)
                     headerView.btnsellerProfile.setImage(image, for: .normal)
+                    headerView.btnsellerProfile.layer.cornerRadius = headerView.btnsellerProfile.frame.height / 2
+                    headerView.btnsellerProfile.layer.borderColor = UIColor.clear.cgColor
+                    headerView.btnsellerProfile.layer.borderWidth = 1
+                    headerView.btnsellerProfile.layer.masksToBounds = false
+                    headerView.btnsellerProfile.clipsToBounds = true
                     headerView.btnsellerName.setTitle(sellerName, for: .normal)
                     headerView.btnsellerProfile.addTarget(self, action: #selector(self.sellerstore), for: .touchUpInside)
                     headerView.btnsellerName.addTarget(self, action: #selector(self.sellerstore), for: .touchUpInside)
