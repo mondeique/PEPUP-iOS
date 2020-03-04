@@ -555,8 +555,8 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
             print("I am seller~")
         }
         else {
-            let nextVC = TestStoreVC()
-            let nextCell = PageCell()
+            let nextVC = StoreVC()
+            let nextCell = StoreShopCell()
             nextVC.SellerID = sellerId
             nextCell.SellerID = sellerId
             navigationController?.pushViewController(nextVC, animated: true)

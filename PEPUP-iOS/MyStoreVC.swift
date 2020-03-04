@@ -1,20 +1,20 @@
 //
-//  StoreVC.swift
+//  MyStoreVC.swift
 //  PEPUP-iOS
 //
-//  Created by Eren-shin on 2020/02/24.
+//  Created by Eren-shin on 2020/03/04.
 //  Copyright © 2020 Mondeique. All rights reserved.
 //
 
 import UIKit
 import Alamofire
 
-private let storeshopIdentifier = "storeshopcell"
-private let storelikeIdentifier = "storelikecell"
+private let storeshopIdentifier = "mystoreshopcell"
+private let storelikeIdentifier = "mystorelikecell"
 
-class StoreVC: UIViewController, CustomMenuBarDelegate{
+class MyStoreVC: UIViewController, CustomMenuBarDelegate{
     
-    var SellerID : Int!
+    var SellerID : Int = UserDefaults.standard.object(forKey: "pk") as! Int
     var sellerInfoDatas = NSDictionary()
     var productDatas = Array<NSDictionary>()
     
@@ -41,8 +41,8 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
         let statusBarHeight: CGFloat! = UIApplication.shared.statusBarFrame.height
         let navBarHeight: CGFloat! = navigationController?.navigationBar.frame.height
         
-        navcontentView.addSubview(btnBack)
         navcontentView.addSubview(productNameLabel)
+        navcontentView.addSubview(btnSetting)
         
         self.view.addSubview(navcontentView)
         
@@ -51,13 +51,13 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
         navcontentView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
         navcontentView.heightAnchor.constraint(equalToConstant: navBarHeight).isActive = true
         
-        btnBack.leftAnchor.constraint(equalTo: navcontentView.leftAnchor, constant: screenWidth/defaultWidth * 18).isActive = true
-        btnBack.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 14).isActive = true
-        btnBack.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 10).isActive = true
-        btnBack.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 16).isActive = true
-        
         productNameLabel.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
         productNameLabel.centerXAnchor.constraint(equalTo: navcontentView.centerXAnchor).isActive = true
+        
+        btnSetting.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 2).isActive = true
+        btnSetting.rightAnchor.constraint(equalTo: navcontentView.rightAnchor, constant: screenWidth/defaultWidth * -8).isActive = true
+        btnSetting.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 40).isActive = true
+        btnSetting.heightAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 40).isActive = true
         
         setupCustomTabBar()
         setupPageCollectionView()
@@ -97,8 +97,8 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
         pageCollectionView.backgroundColor = .white
         pageCollectionView.showsHorizontalScrollIndicator = false
         pageCollectionView.isPagingEnabled = true
-        pageCollectionView.register(StoreShopCell.self, forCellWithReuseIdentifier: storeshopIdentifier)
-        pageCollectionView.register(StoreLikeCell.self, forCellWithReuseIdentifier: storelikeIdentifier)
+        pageCollectionView.register(MyStoreShopCell.self, forCellWithReuseIdentifier: storeshopIdentifier)
+        pageCollectionView.register(MyStoreLikeCell.self, forCellWithReuseIdentifier: storelikeIdentifier)
         self.view.addSubview(pageCollectionView)
         pageCollectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         pageCollectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
@@ -120,8 +120,9 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
         }
     }
     
-    @objc func back() {
-        navigationController?.popViewController(animated: true)
+    @objc func setting() {
+        let nextVC = SettingVC()
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     let navcontentView: UIView = {
@@ -131,11 +132,11 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
         return view
     }()
 
-    let btnBack: UIButton = {
+    let btnSetting: UIButton = {
         let btn = UIButton()
-        btn.setImage(UIImage(named: "btnBack"), for: .normal)
+        btn.setImage(UIImage(named: "btnSetting"), for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.addTarget(self, action: #selector(back), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(setting), for: .touchUpInside)
         return btn
     }()
     
@@ -144,7 +145,7 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-Heavy", size: 17)
         label.textColor = .black
-        label.text = "S T O R E"
+        label.text = "M Y S T O R E"
         label.textAlignment = .center
         return label
     }()
@@ -152,11 +153,11 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
 
 //MARK:- UICollectionViewDelegate, UICollectionViewDataSource
 
-extension StoreVC: UICollectionViewDelegate, UICollectionViewDataSource {
+extension MyStoreVC: UICollectionViewDelegate, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storeshopIdentifier, for: indexPath) as! StoreShopCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storeshopIdentifier, for: indexPath) as! MyStoreShopCell
             if indexPath.row == 0 {
                 cell.shopcollectionView.isHidden = false
             }
@@ -169,7 +170,7 @@ extension StoreVC: UICollectionViewDelegate, UICollectionViewDataSource {
             return cell
         }
         else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storelikeIdentifier, for: indexPath) as! StoreLikeCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storelikeIdentifier, for: indexPath) as! MyStoreLikeCell
             if indexPath.row == 0 {
                 cell.likecollectionView.isHidden = true
             }
@@ -179,7 +180,7 @@ extension StoreVC: UICollectionViewDelegate, UICollectionViewDataSource {
             else if indexPath.row == 2 {
                 cell.likecollectionView.isHidden = true
             }
-            return cell 
+            return cell
         }
     }
 
@@ -198,7 +199,7 @@ extension StoreVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
 }
 //MARK:- UICollectionViewDelegateFlowLayout
-extension StoreVC: UICollectionViewDelegateFlowLayout {
+extension MyStoreVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
     }
@@ -206,5 +207,3 @@ extension StoreVC: UICollectionViewDelegateFlowLayout {
         return 0
     }
 }
-
-

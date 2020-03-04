@@ -42,7 +42,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         follow.tabBarItem.image = #imageLiteral(resourceName: "follow_unselected")
         follow.tabBarItem.selectedImage = #imageLiteral(resourceName: "follow_selected")
         // Store
-        let store = UINavigationController(rootViewController: StoreVC())
+        let store = UINavigationController(rootViewController: MyStoreVC())
         store.tabBarItem.image = #imageLiteral(resourceName: "store_unselected")
         store.tabBarItem.selectedImage = #imageLiteral(resourceName: "store_selected")
         viewControllers = [home, follow, store]
