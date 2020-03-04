@@ -10,7 +10,6 @@ import UIKit
 import Alamofire
 
 private let reuseIdentifier = "resultcell"
-private let footerId = "searchresultfootercell"
 
 var resultCollectionView: UICollectionView!
 
@@ -25,8 +24,8 @@ class SearchResultVC: UIViewController, UICollectionViewDataSource, UICollection
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getData()
         setup()
+        getData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -113,16 +112,23 @@ class SearchResultVC: UIViewController, UICollectionViewDataSource, UICollection
         
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.itemSize = CGSize(width: screenWidth/defaultWidth * 170, height: screenWidth/defaultWidth * 170)
+        layout.itemSize = CGSize(width: screenWidth/defaultWidth * 170, height: screenWidth/defaultWidth * 226)
         
         resultCollectionView = UICollectionView(frame: CGRect(x: screenWidth/defaultWidth * 12, y: statusBarHeight + navBarHeight + screenWidth/defaultWidth * 40, width: view.frame.width - screenWidth/defaultWidth * 24, height: screenHeight - statusBarHeight - navBarHeight), collectionViewLayout: layout)
         resultCollectionView.delegate = self
         resultCollectionView.dataSource = self
+        resultCollectionView.showsVerticalScrollIndicator = false
+        resultCollectionView.keyboardDismissMode = .onDrag
+        resultCollectionView.alwaysBounceVertical = true
         resultCollectionView.register(SearchResultCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        resultCollectionView.register(SearchResultFooterCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerId)
         resultCollectionView.backgroundColor = UIColor.white
         
         self.view.addSubview(resultCollectionView)
+        
+        resultCollectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: screenWidth/defaultWidth * 12).isActive = true
+        resultCollectionView.topAnchor.constraint(equalTo: productCountLabel.bottomAnchor, constant: screenHeight/defaultHeight * 13).isActive = true
+        resultCollectionView.widthAnchor.constraint(equalToConstant: view.frame.width).isActive = true
+        resultCollectionView.heightAnchor.constraint(equalToConstant: view.frame.height).isActive = true
         
     }
     
@@ -152,16 +158,16 @@ class SearchResultVC: UIViewController, UICollectionViewDataSource, UICollection
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return productDatas.count
+        return 1
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        return productDatas.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! SearchResultCell
-        let productDic = self.productDatas[indexPath.section] as NSDictionary
+        let productDic = self.productDatas[indexPath.row] as NSDictionary
         let imageDic = productDic.object(forKey: "images") as! NSDictionary
         let ImageUrlString = imageDic.object(forKey: "image") as! String
         let imageUrl:NSURL = NSURL(string: ImageUrlString)!
@@ -175,30 +181,13 @@ class SearchResultVC: UIViewController, UICollectionViewDataSource, UICollection
             cell.pepupImage.isHidden = true
         }
         cell.productImage.image = image
+        let product_name = productDic.object(forKey: "name") as! String
+        let product_price = productDic.object(forKey: "price") as! Int
+        let product_size = productDic.object(forKey: "size") as! String
+        cell.productName.text = product_name
+        cell.productPrice.text = String(product_price)
+        cell.productSize.text = product_size
         return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-
-        switch kind {
-
-            case UICollectionView.elementKindSectionFooter:
-
-                let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: footerId, for: indexPath) as! SearchResultFooterCell
-                DispatchQueue.main.async {
-                    let productDic = self.productDatas[indexPath.section] as NSDictionary
-                    let product_name = productDic.object(forKey: "name") as! String
-                    let product_price = productDic.object(forKey: "price") as! Int
-                    let product_size = productDic.object(forKey: "size") as! String
-                    footerView.productName.text = product_name
-                    footerView.productPrice.text = String(product_price)
-                    footerView.productSize.text = product_size
-                }
-                return footerView
-
-            default:
-                assert(false, "Unexpected element kind")
-        }
     }
     
     @objc func back() {
@@ -215,7 +204,7 @@ class SearchResultVC: UIViewController, UICollectionViewDataSource, UICollection
     
     // cell size 설정
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width/375 * 170, height: UIScreen.main.bounds.width/375 * 170)
+        return CGSize(width: UIScreen.main.bounds.width/375 * 170, height: UIScreen.main.bounds.width/375 * 226)
     }
     
     // item = cell 마다 space 설정
@@ -228,7 +217,4 @@ class SearchResultVC: UIViewController, UICollectionViewDataSource, UICollection
         return 0.0
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: UIScreen.main.bounds.height/667 * 80.0)
-    }
 }

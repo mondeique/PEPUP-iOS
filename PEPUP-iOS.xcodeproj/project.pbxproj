@@ -50,7 +50,6 @@
 		E9D111B2240E15CF006AE20C /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111B1240E15CF006AE20C /* SearchCell.swift */; };
 		E9D111B4240E6278006AE20C /* SearchResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111B3240E6278006AE20C /* SearchResultVC.swift */; };
 		E9D111B6240E6590006AE20C /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111B5240E6590006AE20C /* SearchResultCell.swift */; };
-		E9D111BC240E6CD1006AE20C /* SearchResultFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111BB240E6CD1006AE20C /* SearchResultFooterCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -101,7 +100,6 @@
 		E9D111B1240E15CF006AE20C /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		E9D111B3240E6278006AE20C /* SearchResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultVC.swift; sourceTree = "<group>"; };
 		E9D111B5240E6590006AE20C /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
-		E9D111BB240E6CD1006AE20C /* SearchResultFooterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultFooterCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,7 +173,6 @@
 				E9D111B1240E15CF006AE20C /* SearchCell.swift */,
 				E9D111B3240E6278006AE20C /* SearchResultVC.swift */,
 				E9D111B5240E6590006AE20C /* SearchResultCell.swift */,
-				E9D111BB240E6CD1006AE20C /* SearchResultFooterCell.swift */,
 				E9D07A4823E2E4DD0095AD05 /* LoginVC.swift */,
 				E9D07A4C23E3FB980095AD05 /* SignupVC.swift */,
 				E9D07A4E23E4050D0095AD05 /* PhoneConfirmVC.swift */,
@@ -355,7 +352,6 @@
 				E94D142823E82A640001F3A0 /* FindPwdVC.swift in Sources */,
 				E9D111AC2408BE88006AE20C /* FollowFooterCell.swift in Sources */,
 				E9C8467A23E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld in Sources */,
-				E9D111BC240E6CD1006AE20C /* SearchResultFooterCell.swift in Sources */,
 				E9D07A4923E2E4DD0095AD05 /* LoginVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

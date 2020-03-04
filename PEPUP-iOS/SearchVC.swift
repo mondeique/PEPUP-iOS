@@ -121,15 +121,23 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     //MARK: - TableView
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        3
+        if self.seller_result.count == 0 || self.tag_result.count == 0 {
+            return 2
+        }
+        else {
+            return 3
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 1
         }
-        else if section == 1 {
+        else if section == 1 && self.seller_result.count == 0{
             return self.tag_result.count
+        }
+        else if section == 1 && self.tag_result.count == 0 {
+            return self.seller_result.count
         }
         else if section == 2 {
             return self.seller_result.count
@@ -153,7 +161,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             cell.btnGO.isHidden = false
             cell.lineLabel.isHidden = false
         }
-        else if indexPath.section == 1 {
+        else if indexPath.section == 1 && self.seller_result.count == 0 {
             let tagResultDic = self.tag_result[indexPath.row] as NSDictionary
             let tag = tagResultDic.object(forKey: "tag") as! String
             cell.cellcontentView.isHidden = false
@@ -162,6 +170,28 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             cell.storecontentView.isHidden = true
             cell.productcountLabel.isHidden = true
             cell.btnGO.isHidden = true
+        }
+        else if indexPath.section == 1 && self.tag_result.count == 0 {
+            cell.cellcontentView.isHidden = true
+            let sellerDic = self.seller_result[indexPath.row] as NSDictionary
+            let profileDic = sellerDic.object(forKey: "profile") as! NSDictionary
+            let ImageUrlString = profileDic.object(forKey: "thumbnail_img") as! String
+            let imageUrl:NSURL = NSURL(string: ImageUrlString)!
+            let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
+            let image = UIImage(data: imageData as Data)
+            cell.storecontentView.isHidden = false
+            cell.storeProfile.isHidden = false
+            cell.storeProfile.image = image
+            cell.storeProfile.layer.cornerRadius = cell.storeProfile.frame.height / 2
+            cell.storeProfile.layer.borderColor = UIColor.clear.cgColor
+            cell.storeProfile.layer.borderWidth = 1
+            cell.storeProfile.layer.masksToBounds = false
+            cell.storeProfile.clipsToBounds = true
+            let nickname = sellerDic.object(forKey: "nickname") as! String
+            cell.storeLabel.isHidden = false
+            cell.storeLabel.text = nickname
+            cell.btnGO.isHidden = true
+            cell.productcountLabel.isHidden = true
         }
         else if indexPath.section == 2{
             cell.cellcontentView.isHidden = true
@@ -228,8 +258,14 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         if section == 0 {
             label.text = "PRODUCTS"
         }
-        else if section == 1 {
+        else if self.seller_result.count == 0 && self.tag_result.count == 0 {
+            label.text = ""
+        }
+        else if section == 1 && self.seller_result.count == 0 {
             label.text = "TAG"
+        }
+        else if section == 1 && self.tag_result.count == 0 {
+            label.text = "STORE"
         }
         else if section == 2 {
             label.text = "STORE"
