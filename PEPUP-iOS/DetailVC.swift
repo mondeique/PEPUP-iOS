@@ -22,11 +22,11 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getData()
-        setup()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        getData()
+        setup()
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
     }
@@ -431,9 +431,11 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         if let is_liked = self.responseDatas.object(forKey: "liked") as? Bool {
             if is_liked == true {
                 btnLike.setImage(UIImage(named: "btnLike_fill"), for: .normal)
+                btnLike.addTarget(self, action: #selector(like(_:)), for: .touchUpInside)
             }
             else {
                 btnLike.setImage(UIImage(named: "btnLike"), for: .normal)
+                btnLike.addTarget(self, action: #selector(like(_:)), for: .touchUpInside)
             }
         }
         if let is_bagged = self.responseDatas.object(forKey: "isbagged") as? Bool {
@@ -516,7 +518,7 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         self.navigationController?.popViewController(animated: true)
     }
     
-    @objc func like() {
+    @objc func like(_ sender: UIButton) {
         if btnLike.currentImage == UIImage(named: "btnLike") {
             btnLike.setImage(UIImage(named: "btnLike_fill"), for: .normal)
             Alamofire.AF.request("\(Config.baseURL)/api/products/like/" + String(Myid) + "/", method: .post, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
@@ -682,7 +684,6 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         let btn = UIButton()
         btn.setImage(UIImage(named: "btnLike"), for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.addTarget(self, action: #selector(like), for: .touchUpInside)
         return btn
     }()
     

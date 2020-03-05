@@ -91,8 +91,13 @@ class HomeVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         btn.layer.shadowOpacity = 5.0
         btn.layer.shadowRadius = 6.0
         btn.layer.masksToBounds = false
+        btn.addTarget(self, action: #selector(didTapfilterButton), for: .touchUpInside)
         return btn
     }()
+    
+    @objc func didTapfilterButton() {
+        self.navigationController?.pushViewController(FilterVC(), animated: true)
+    }
     
     @objc func didTapSearchBar(sender: AnyObject) {
         self.navigationController?.pushViewController(SearchVC(), animated: true)

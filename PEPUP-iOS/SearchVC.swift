@@ -235,7 +235,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             navigationController?.pushViewController(nextVC, animated: true)
         }
         else if indexPath.section == 2 {
-            let nextVC = TestStoreVC()
+            let nextVC = StoreVC()
             let sellerDic = self.seller_result[indexPath.row] as NSDictionary
             let sellerID = sellerDic.object(forKey: "id") as! Int
             nextVC.SellerID = sellerID

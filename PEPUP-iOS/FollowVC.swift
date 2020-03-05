@@ -208,9 +208,9 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
                             headerView.sellerImage.setImage(UIImage(named: "TagImage"), for: .normal)
                             headerView.sellerName.setTitle("#" + tag, for: .normal)
                             headerView.tagName.setTitle(nickname, for: .normal)
-                            headerView.tagName.tag = sellerId
                             headerView.sellerName.tag = tagid
                             headerView.sellerName.addTarget(self, action: #selector(self.tag(_:)), for: .touchUpInside)
+                            headerView.tagName.tag = sellerId
                             headerView.tagName.addTarget(self, action: #selector(self.sellerstore(_:)), for: .touchUpInside)
                         }
                     }
@@ -223,12 +223,22 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
                 let productName = productDic.object(forKey: "name") as! String
                 let productPrice = productDic.object(forKey: "price") as! Int
                 let is_sold = productDic.object(forKey: "sold") as! Bool
+                let is_like = productDic.object(forKey: "liked") as! Bool
                 let productSize = productDic.object(forKey: "size") as! String
                 let productBrandDic = productDic.object(forKey: "brand") as! NSDictionary
                 let productBrand = productBrandDic.object(forKey: "name") as! String
                 let productId = productDic.object(forKey: "id") as! Int
                 DispatchQueue.main.async {
-                    footerView.btnLike.addTarget(self, action: #selector(self.like(_:)), for: .touchUpInside)
+                    if is_like == true {
+                        footerView.btnLike.setImage(UIImage(named: "btnLike_fill"), for: .normal)
+                        footerView.btnLike.tag = productId
+                        footerView.btnLike.addTarget(self, action: #selector(self.like(_:)), for: .touchUpInside)
+                    }
+                    else {
+                        footerView.btnLike.setImage(UIImage(named: "btnLike"), for: .normal)
+                        footerView.btnLike.tag = productId
+                        footerView.btnLike.addTarget(self, action: #selector(self.like(_:)), for: .touchUpInside)
+                    }
                     footerView.btnMessage.addTarget(self, action: #selector(self.message), for: .touchUpInside)
                     footerView.btnDetail.tag = productId
                     footerView.btnDetail.addTarget(self, action: #selector(self.detail(_:)), for: .touchUpInside)
@@ -278,30 +288,29 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
     }
     
     @objc func like(_ sender: UIButton) {
-        print("TOUCH LIKE")
         if sender.currentImage == UIImage(named: "btnLike") {
             sender.setImage(UIImage(named: "btnLike_fill"), for: .normal)
-//            Alamofire.AF.request("\(Config.baseURL)/api/products/like/" + String(Myid) + "/", method: .post, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-//                (response) in switch response.result {
-//                case .success(let JSON):
-//                    print("Success with JSON: \(JSON)")
-//
-//                case .failure(let error):
-//                    print("Request failed with error: \(error)")
-//                }
-//            }
+            Alamofire.AF.request("\(Config.baseURL)/api/products/like/" + String(sender.tag) + "/", method: .post, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+                (response) in switch response.result {
+                case .success(let JSON):
+                    print("Success with JSON: \(JSON)")
+
+                case .failure(let error):
+                    print("Request failed with error: \(error)")
+                }
+            }
         }
         else if sender.currentImage == UIImage(named: "btnLike_fill") {
             sender.setImage(UIImage(named: "btnLike"), for: .normal)
-//            Alamofire.AF.request("\(Config.baseURL)/api/products/like/" + String(Myid) + "/", method: .post, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-//                (response) in switch response.result {
-//                case .success(let JSON):
-//                    print("Success with JSON: \(JSON)")
-//
-//                case .failure(let error):
-//                    print("Request failed with error: \(error)")
-//                }
-//            }
+            Alamofire.AF.request("\(Config.baseURL)/api/products/like/" + String(sender.tag) + "/", method: .post, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+                (response) in switch response.result {
+                case .success(let JSON):
+                    print("Success with JSON: \(JSON)")
+
+                case .failure(let error):
+                    print("Request failed with error: \(error)")
+                }
+            }
         }
     }
     

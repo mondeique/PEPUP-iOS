@@ -55,6 +55,7 @@
 		E9D111CA240FF3CD006AE20C /* MyStoreLikeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111C9240FF3CD006AE20C /* MyStoreLikeCell.swift */; };
 		E9D111CC240FF83A006AE20C /* SettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111CB240FF83A006AE20C /* SettingVC.swift */; };
 		E9D111CE2410C316006AE20C /* PaymentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111CD2410C316006AE20C /* PaymentVC.swift */; };
+		E9D111D02410D64C006AE20C /* FilterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111CF2410D64C006AE20C /* FilterVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -110,6 +111,7 @@
 		E9D111C9240FF3CD006AE20C /* MyStoreLikeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyStoreLikeCell.swift; sourceTree = "<group>"; };
 		E9D111CB240FF83A006AE20C /* SettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingVC.swift; sourceTree = "<group>"; };
 		E9D111CD2410C316006AE20C /* PaymentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentVC.swift; sourceTree = "<group>"; };
+		E9D111CF2410D64C006AE20C /* FilterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,6 +212,7 @@
 				E9D111CD2410C316006AE20C /* PaymentVC.swift */,
 				E9D07A4223E2B1110095AD05 /* NotiVC.swift */,
 				E968FF0523F13FE600B2B1D3 /* MessageVC.swift */,
+				E9D111CF2410D64C006AE20C /* FilterVC.swift */,
 			);
 			path = "PEPUP-iOS";
 			sourceTree = "<group>";
@@ -359,6 +362,7 @@
 				E9D111A824083D64006AE20C /* FollowHeaderCell.swift in Sources */,
 				E9D07A4323E2B1110095AD05 /* NotiVC.swift in Sources */,
 				E9D111CC240FF83A006AE20C /* SettingVC.swift in Sources */,
+				E9D111D02410D64C006AE20C /* FilterVC.swift in Sources */,
 				E968FF0623F13FE600B2B1D3 /* MessageVC.swift in Sources */,
 				E9D1119424036B43006AE20C /* StoreVC.swift in Sources */,
 				E9D111B0240CEFC4006AE20C /* HomeHeaderCell.swift in Sources */,

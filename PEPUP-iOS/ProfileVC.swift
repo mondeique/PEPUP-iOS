@@ -177,6 +177,11 @@ extension ProfileVC : UIImagePickerControllerDelegate,UINavigationControllerDele
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             picker.dismiss(animated: false, completion: nil)
             btnProfileImage.setImage(image, for: .normal)
+            btnProfileImage.layer.cornerRadius = btnProfileImage.frame.height / 2
+            btnProfileImage.layer.borderColor = UIColor.clear.cgColor
+            btnProfileImage.layer.borderWidth = 1
+            btnProfileImage.layer.masksToBounds = false
+            btnProfileImage.clipsToBounds = true
             if self.btnProfileImage.currentImage == UIImage(named: "default_profile") {
                 btnCheck.setTitle("다음에 할래요", for: .normal)
             }
