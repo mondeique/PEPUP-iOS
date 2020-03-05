@@ -14,6 +14,8 @@ class MyStoreShopCell: BaseCollectionViewCell, UICollectionViewDelegate, UIColle
     private let myshopcellId = "myshopcell"
     private let myshopheaderId = "myshopheadercell"
     
+    var pagenum : Int = 1
+    
     var SellerID = UserDefaults.standard.object(forKey: "pk") as! Int
     var sellerInfoDatas = NSDictionary()
     var productDatas = Array<NSDictionary>()
@@ -25,7 +27,7 @@ class MyStoreShopCell: BaseCollectionViewCell, UICollectionViewDelegate, UIColle
         layout.minimumLineSpacing = 1.0
         layout.scrollDirection = .vertical
         layout.headerReferenceSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/667 * 204)
-        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - UIScreen.main.bounds.height/667 * 204), collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - UIScreen.main.bounds.height/667 * 150 - UIApplication.shared.statusBarFrame.height), collectionViewLayout: layout)
         collectionView.backgroundColor = .white
         collectionView.isHidden = false
         return collectionView
@@ -41,15 +43,16 @@ class MyStoreShopCell: BaseCollectionViewCell, UICollectionViewDelegate, UIColle
         shopcollectionView.register(MyShopCell.self, forCellWithReuseIdentifier: myshopcellId)
         shopcollectionView.register(MyShopHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: myshopheaderId)
         
-        getShopData()
+        getShopData(pagenum: 1)
     }
     
-    func getShopData() {
-        Alamofire.AF.request("\(Config.baseURL)/api/store/shop/" + String(SellerID) + "/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+    func getShopData(pagenum: Int) {
+        Alamofire.AF.request("\(Config.baseURL)/api/store/shop/" + String(SellerID) + "/?page=" + String(pagenum), method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
             (response) in switch response.result {
             case .success(let JSON):
                 let response = JSON as! NSDictionary
                 self.sellerInfoDatas = response.object(forKey: "info") as! NSDictionary
+                print(self.sellerInfoDatas)
                 self.productDatas = response.object(forKey: "results") as! Array<NSDictionary>
                 DispatchQueue.main.async {
                     self.shopcollectionView.reloadData()
@@ -103,6 +106,64 @@ class MyStoreShopCell: BaseCollectionViewCell, UICollectionViewDelegate, UIColle
                     headerView.sellerImage.layer.masksToBounds = false
                     headerView.sellerImage.clipsToBounds = true
                 }
+                if let reviewscore = sellerInfoDatas.object(forKey: "review_score") as? Int {
+                    if 0 <= Float(reviewscore) && Float(reviewscore) < 0.5 {
+                        headerView.star1.image = UIImage(named: "star_blank")
+                    }
+                    if 0.5 <= Float(reviewscore) && Float(reviewscore) < 1 {
+                        headerView.star1.image = UIImage(named: "star_half")
+                    }
+                    else if 1 <= Float(reviewscore) && Float(reviewscore) < 1.5 {
+                        headerView.star1.image = UIImage(named: "star")
+                    }
+                    else if 1.5 <= Float(reviewscore) && Float(reviewscore) < 2 {
+                        headerView.star1.image = UIImage(named: "star")
+                        headerView.star2.image = UIImage(named: "star_half")
+                    }
+                    else if 2 <= Float(reviewscore) && Float(reviewscore) < 2.5 {
+                        headerView.star1.image = UIImage(named: "star")
+                        headerView.star2.image = UIImage(named: "star")
+                    }
+                    else if 2.5 <= Float(reviewscore) && Float(reviewscore) < 3 {
+                        headerView.star1.image = UIImage(named: "star")
+                        headerView.star2.image = UIImage(named: "star")
+                        headerView.star3.image = UIImage(named: "star_half")
+                    }
+                    else if 3 <= Float(reviewscore) && Float(reviewscore) < 3.5 {
+                        headerView.star1.image = UIImage(named: "star")
+                        headerView.star2.image = UIImage(named: "star")
+                        headerView.star3.image = UIImage(named: "star")
+                    }
+                    else if 3.5 <= Float(reviewscore) && Float(reviewscore) < 4 {
+                        headerView.star1.image = UIImage(named: "star")
+                        headerView.star2.image = UIImage(named: "star")
+                        headerView.star3.image = UIImage(named: "star")
+                        headerView.star4.image = UIImage(named: "star_half")
+                    }
+                    else if 4 <= Float(reviewscore) && Float(reviewscore) < 4.5 {
+                        headerView.star1.image = UIImage(named: "star")
+                        headerView.star2.image = UIImage(named: "star")
+                        headerView.star3.image = UIImage(named: "star")
+                        headerView.star4.image = UIImage(named: "star")
+                    }
+                    else if 4.5 <= Float(reviewscore) && Float(reviewscore) < 5 {
+                        headerView.star1.image = UIImage(named: "star")
+                        headerView.star2.image = UIImage(named: "star")
+                        headerView.star3.image = UIImage(named: "star")
+                        headerView.star4.image = UIImage(named: "star")
+                        headerView.star5.image = UIImage(named: "star_half")
+                    }
+                    else if Float(reviewscore) == 5{
+                        headerView.star1.image = UIImage(named: "star")
+                        headerView.star2.image = UIImage(named: "star")
+                        headerView.star3.image = UIImage(named: "star")
+                        headerView.star4.image = UIImage(named: "star")
+                        headerView.star5.image = UIImage(named: "star")
+                    }
+                }
+                if let reviewcount = sellerInfoDatas.object(forKey: "review_count") as? Int {
+                    headerView.reviewCount.text = "(" + String(reviewcount) + ")"
+                }
                 if let sellerName = sellerInfoDatas.object(forKey: "nickname") as? String {
                     headerView.sellerName.text = sellerName
                 }
@@ -126,11 +187,19 @@ class MyStoreShopCell: BaseCollectionViewCell, UICollectionViewDelegate, UIColle
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("CLICK \(indexPath.row)")
-//        let productDictionary = self.productDatas[indexPath.row] as NSDictionary
-//        let productId = productDictionary.object(forKey: "id") as! Int
-//        let nextVC = DetailVC()
-//        nextVC.Myid = productId
-//        UINavigationController.pushViewController(nextVC)
+        let productDictionary = self.productDatas[indexPath.row] as NSDictionary
+        let productId = productDictionary.object(forKey: "id") as! Int
+        let nextVC = DetailVC()
+        nextVC.Myid = productId
+        let navigationController = UINavigationController()
+        navigationController.pushViewController(nextVC, animated: true)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == self.productDatas.count - 1 {
+            pagenum = pagenum + 1
+            getShopData(pagenum: pagenum)
+        }
     }
     
     @objc func editprofile() {
@@ -208,6 +277,49 @@ class MyShopHeaderCell: BaseCollectionViewCell {
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
+    
+    let star1: UIImageView = {
+        let img = UIImageView()
+        img.translatesAutoresizingMaskIntoConstraints = false
+        img.image = UIImage(named: "star_blank")
+        return img
+    }()
+    
+    let star2: UIImageView = {
+        let img = UIImageView()
+        img.translatesAutoresizingMaskIntoConstraints = false
+        img.image = UIImage(named: "star_blank")
+        return img
+    }()
+    
+    let star3: UIImageView = {
+        let img = UIImageView()
+        img.translatesAutoresizingMaskIntoConstraints = false
+        img.image = UIImage(named: "star_blank")
+        return img
+    }()
+    
+    let star4: UIImageView = {
+        let img = UIImageView()
+        img.translatesAutoresizingMaskIntoConstraints = false
+        img.image = UIImage(named: "star_blank")
+        return img
+    }()
+    
+    let star5: UIImageView = {
+        let img = UIImageView()
+        img.translatesAutoresizingMaskIntoConstraints = false
+        img.image = UIImage(named: "star_blank")
+        return img
+    }()
+    
+    let reviewCount: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
+        label.textAlignment = .left
+        return label
+    }()
 
     let sellerName: UILabel = {
         let label = UILabel()
@@ -278,6 +390,12 @@ class MyShopHeaderCell: BaseCollectionViewCell {
         self.addSubview(shopheadercontentView)
 
         shopheadercontentView.addSubview(sellerImage)
+        shopheadercontentView.addSubview(star1)
+        shopheadercontentView.addSubview(star2)
+        shopheadercontentView.addSubview(star3)
+        shopheadercontentView.addSubview(star4)
+        shopheadercontentView.addSubview(star5)
+        shopheadercontentView.addSubview(reviewCount)
         shopheadercontentView.addSubview(sellerName)
         shopheadercontentView.addSubview(sellerIntro)
         shopheadercontentView.addSubview(followerCountLabel)
@@ -295,6 +413,36 @@ class MyShopHeaderCell: BaseCollectionViewCell {
         sellerImage.topAnchor.constraint(equalTo: shopheadercontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 16).isActive = true
         sellerImage.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 64).isActive = true
         sellerImage.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 64).isActive = true
+        
+        star1.leftAnchor.constraint(equalTo: sellerImage.rightAnchor, constant: UIScreen.main.bounds.width/375 * 16).isActive = true
+        star1.topAnchor.constraint(equalTo: shopheadercontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 24).isActive = true
+        star1.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 16).isActive = true
+        star1.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 16).isActive = true
+        
+        star2.leftAnchor.constraint(equalTo: star1.rightAnchor).isActive = true
+        star2.topAnchor.constraint(equalTo: shopheadercontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 24).isActive = true
+        star2.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 16).isActive = true
+        star2.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 16).isActive = true
+        
+        star3.leftAnchor.constraint(equalTo: star2.rightAnchor).isActive = true
+        star3.topAnchor.constraint(equalTo: shopheadercontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 24).isActive = true
+        star3.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 16).isActive = true
+        star3.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 16).isActive = true
+        
+        star4.leftAnchor.constraint(equalTo: star3.rightAnchor).isActive = true
+        star4.topAnchor.constraint(equalTo: shopheadercontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 24).isActive = true
+        star4.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 16).isActive = true
+        star4.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 16).isActive = true
+        
+        star5.leftAnchor.constraint(equalTo: star4.rightAnchor).isActive = true
+        star5.topAnchor.constraint(equalTo: shopheadercontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 24).isActive = true
+        star5.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 16).isActive = true
+        star5.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 16).isActive = true
+        
+        reviewCount.leftAnchor.constraint(equalTo: sellerImage.rightAnchor, constant: UIScreen.main.bounds.width/375 * 100).isActive = true
+        reviewCount.topAnchor.constraint(equalTo: shopheadercontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 25).isActive = true
+//        reviewCount.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 64).isActive = true
+        reviewCount.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 16).isActive = true
 
         sellerName.leftAnchor.constraint(equalTo: sellerImage.rightAnchor, constant: UIScreen.main.bounds.width/375 * 16).isActive = true
         sellerName.topAnchor.constraint(equalTo: shopheadercontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 48).isActive = true

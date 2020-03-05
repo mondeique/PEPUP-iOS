@@ -272,7 +272,7 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
     }
     
     @objc func sellerstore(_ sender: UIButton) {
-        let nextVC = TestStoreVC()
+        let nextVC = StoreVC()
         nextVC.SellerID = sender.tag
         navigationController?.pushViewController(nextVC, animated: true)
     }
@@ -336,7 +336,6 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.row == self.productDatas.count - 1 {
             pagenum = pagenum + 1
-            print(pagenum)
             getData(pagenum: pagenum)
         }
     }

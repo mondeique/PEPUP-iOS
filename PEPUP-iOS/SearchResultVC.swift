@@ -25,7 +25,7 @@ class SearchResultVC: UIViewController, UICollectionViewDataSource, UICollection
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        getData()
+        getData(pagenum: 1)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -132,15 +132,14 @@ class SearchResultVC: UIViewController, UICollectionViewDataSource, UICollection
         
     }
     
-    func getData() {
+    func getData(pagenum : Int) {
         let parameters: [String: String] = [
             "keyword" : searchName
         ]
-        Alamofire.AF.request("\(Config.baseURL)/api/search/product_search/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+        Alamofire.AF.request("\(Config.baseURL)/api/search/product_search/?page=" + String(pagenum), method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
             (response) in switch response.result {
             case .success(let JSON):
                 let response = JSON as! NSDictionary
-                print(response)
                 let results = response.object(forKey: "results") as! Array<Dictionary<String, Any>>
                 for i in 0..<results.count {
                     self.productDatas.append(results[i] as NSDictionary)
@@ -198,6 +197,13 @@ class SearchResultVC: UIViewController, UICollectionViewDataSource, UICollection
         let nextVC = DetailVC()
         nextVC.Myid = sender.tag
         navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == self.productDatas.count - 1 {
+            pagenum = pagenum + 1
+            getData(pagenum: pagenum)
+        }
     }
     
     // MARK: UICollectionViewDelegate

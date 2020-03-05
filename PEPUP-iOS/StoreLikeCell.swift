@@ -14,6 +14,8 @@ class StoreLikeCell: BaseCollectionViewCell, UICollectionViewDelegate, UICollect
     private let likecellId = "likecell"
     private let likeheaderId = "likeheadercell"
     
+    var pagenum : Int = 1
+    
     var SellerID = UserDefaults.standard.object(forKey: "sellerId") as! Int
     var sellerInfoDatas = NSDictionary()
     var productDatas = Array<NSDictionary>()
@@ -38,11 +40,11 @@ class StoreLikeCell: BaseCollectionViewCell, UICollectionViewDelegate, UICollect
         likecollectionView.dataSource = self
         likecollectionView.register(LikeCell.self, forCellWithReuseIdentifier: likecellId)
         
-        getLikeData()
+        getLikeData(pagenum: 1)
     }
     
-    func getLikeData() {
-        Alamofire.AF.request("\(Config.baseURL)/api/store/like/" + String(SellerID) + "/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+    func getLikeData(pagenum: Int) {
+        Alamofire.AF.request("\(Config.baseURL)/api/store/like/" + String(SellerID) + "/?page=" + String(pagenum), method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
             (response) in switch response.result {
             case .success(let JSON):
                 let response = JSON as! NSDictionary
@@ -84,6 +86,13 @@ class StoreLikeCell: BaseCollectionViewCell, UICollectionViewDelegate, UICollect
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("CLICK \(indexPath.row)")
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == self.productDatas.count - 1 {
+            pagenum = pagenum + 1
+            getLikeData(pagenum: pagenum)
+        }
     }
 }
 

@@ -209,7 +209,6 @@ class HomeVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.row == self.productDatas.count - 1 {
             pagenum = pagenum + 1
-            print(pagenum)
             getData(pagenum: pagenum)
         }
     }

@@ -25,10 +25,10 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         getData()
+        setup()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        setup()
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
         self.tabBarController?.tabBar.isTranslucent = true
@@ -97,7 +97,7 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.itemSize = CGSize(width: screenWidth/defaultWidth * 375, height: 100)
+        layout.itemSize = CGSize(width: screenWidth/defaultWidth * 375, height: screenHeight/defaultHeight * 100)
         
         cartCollectionView = UICollectionView(frame: CGRect(x: 0, y: statusBarHeight + navBarHeight, width: view.frame.width, height: screenHeight - statusBarHeight - navBarHeight - screenHeight/defaultHeight * 130), collectionViewLayout: layout)
         cartCollectionView.delegate = self
@@ -202,6 +202,7 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                 let sellerInfoDic = sellerDictionary.object(forKey: "seller") as! NSDictionary
                 let sellerName = sellerInfoDic.object(forKey: "nickname") as! String
                 let sellerprofileDic = sellerInfoDic.object(forKey: "profile") as! NSDictionary
+                let sellerID = sellerInfoDic.object(forKey: "id") as! Int
                 let imageUrlString = sellerprofileDic.object(forKey: "thumbnail_img") as! String
                 let imageUrl:NSURL = NSURL(string: imageUrlString)!
                 let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
@@ -215,8 +216,10 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                     headerView.btnsellerProfile.layer.masksToBounds = false
                     headerView.btnsellerProfile.clipsToBounds = true
                     headerView.btnsellerName.setTitle(sellerName, for: .normal)
-                    headerView.btnsellerProfile.addTarget(self, action: #selector(self.sellerstore), for: .touchUpInside)
-                    headerView.btnsellerName.addTarget(self, action: #selector(self.sellerstore), for: .touchUpInside)
+                    headerView.btnsellerProfile.tag = sellerID
+                    headerView.btnsellerName.tag = sellerID
+                    headerView.btnsellerProfile.addTarget(self, action: #selector(self.sellerstore(_:)), for: .touchUpInside)
+                    headerView.btnsellerName.addTarget(self, action: #selector(self.sellerstore(_:)), for: .touchUpInside)
                 }
                 return headerView
 
@@ -259,12 +262,16 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
-    @objc func sellerstore() {
-        print("GO SELLER STORE!")
+    @objc func sellerstore(_ sender: UIButton) {
+        let nextVC = StoreVC()
+        nextVC.SellerID = sender.tag
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     @objc func payment() {
-        print("TOUCH ASDLSKD")
+        print("TOUCH PAYMENT")
+        let nextVC = PaymentVC()
+        self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
     @objc func totalpayment() {
@@ -321,7 +328,10 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     */
     func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
         productDatas.remove(at: indexPath.row)
-        cartCollectionView.deleteItems(at: [indexPath])
+        cartCollectionView.performBatchUpdates({
+        cartCollectionView.deleteItems(at: [indexPath]) }) { (finished) in
+            cartCollectionView.reloadData()
+        }
     }
 }
 

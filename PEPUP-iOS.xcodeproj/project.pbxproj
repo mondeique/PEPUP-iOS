@@ -40,7 +40,6 @@
 		E9D1119A24038C27006AE20C /* CustomMenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D1119924038C27006AE20C /* CustomMenuBar.swift */; };
 		E9D1119E2403BF77006AE20C /* TagVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D1119D2403BF77006AE20C /* TagVC.swift */; };
 		E9D111A02403C00E006AE20C /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D1119F2403C00E006AE20C /* TagCell.swift */; };
-		E9D111A624081725006AE20C /* TestStoreVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111A524081725006AE20C /* TestStoreVC.swift */; };
 		E9D111A824083D64006AE20C /* FollowHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111A724083D64006AE20C /* FollowHeaderCell.swift */; };
 		E9D111AC2408BE88006AE20C /* FollowFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111AB2408BE88006AE20C /* FollowFooterCell.swift */; };
 		E9D111AE240CC71F006AE20C /* TagHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111AD240CC71F006AE20C /* TagHeaderCell.swift */; };
@@ -55,6 +54,7 @@
 		E9D111C8240FF039006AE20C /* MyStoreShopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111C7240FF039006AE20C /* MyStoreShopCell.swift */; };
 		E9D111CA240FF3CD006AE20C /* MyStoreLikeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111C9240FF3CD006AE20C /* MyStoreLikeCell.swift */; };
 		E9D111CC240FF83A006AE20C /* SettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111CB240FF83A006AE20C /* SettingVC.swift */; };
+		E9D111CE2410C316006AE20C /* PaymentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111CD2410C316006AE20C /* PaymentVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -95,7 +95,6 @@
 		E9D1119924038C27006AE20C /* CustomMenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMenuBar.swift; sourceTree = "<group>"; };
 		E9D1119D2403BF77006AE20C /* TagVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagVC.swift; sourceTree = "<group>"; };
 		E9D1119F2403C00E006AE20C /* TagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
-		E9D111A524081725006AE20C /* TestStoreVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestStoreVC.swift; sourceTree = "<group>"; };
 		E9D111A724083D64006AE20C /* FollowHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowHeaderCell.swift; sourceTree = "<group>"; };
 		E9D111AB2408BE88006AE20C /* FollowFooterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowFooterCell.swift; sourceTree = "<group>"; };
 		E9D111AD240CC71F006AE20C /* TagHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagHeaderCell.swift; sourceTree = "<group>"; };
@@ -110,6 +109,7 @@
 		E9D111C7240FF039006AE20C /* MyStoreShopCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyStoreShopCell.swift; sourceTree = "<group>"; };
 		E9D111C9240FF3CD006AE20C /* MyStoreLikeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyStoreLikeCell.swift; sourceTree = "<group>"; };
 		E9D111CB240FF83A006AE20C /* SettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingVC.swift; sourceTree = "<group>"; };
+		E9D111CD2410C316006AE20C /* PaymentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,31 +168,32 @@
 				E9C8467B23E1A5D500359A93 /* Assets.xcassets */,
 				E9C8468023E1A5D600359A93 /* Info.plist */,
 				E9C8467823E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld */,
+				E932135423E1BA1000503CA8 /* BaseCollectionViewCell.swift */,
 				E9C8468623E1A77300359A93 /* TabBarController.swift */,
+				E968FF0323EC478200B2B1D3 /* Config.swift */,
+				E9D07A4823E2E4DD0095AD05 /* LoginVC.swift */,
+				E94D142523E82A570001F3A0 /* FindIdVC.swift */,
+				E94D142723E82A640001F3A0 /* FindPwdVC.swift */,
+				E968FF0123EB1D8A00B2B1D3 /* FindPwdResetVC.swift */,
+				E9D07A4E23E4050D0095AD05 /* PhoneConfirmVC.swift */,
+				E9D07A4C23E3FB980095AD05 /* SignupVC.swift */,
+				E94D142923E91EC40001F3A0 /* NickNameVC.swift */,
+				E94D142B23E9223F0001F3A0 /* ProfileVC.swift */,
 				E9C8468823E1A89E00359A93 /* HomeVC.swift */,
 				E932135223E1B9D800503CA8 /* HomeCell.swift */,
 				E9D111AF240CEFC4006AE20C /* HomeHeaderCell.swift */,
-				E932135423E1BA1000503CA8 /* BaseCollectionViewCell.swift */,
 				E932135A23E26F7200503CA8 /* FollowVC.swift */,
 				E932135C23E26FC400503CA8 /* FollowCell.swift */,
 				E9D111A724083D64006AE20C /* FollowHeaderCell.swift */,
 				E9D111AB2408BE88006AE20C /* FollowFooterCell.swift */,
 				E9D07A4023E2B0930095AD05 /* DetailVC.swift */,
-				E9D07A4223E2B1110095AD05 /* NotiVC.swift */,
+				E9D1119D2403BF77006AE20C /* TagVC.swift */,
+				E9D1119F2403C00E006AE20C /* TagCell.swift */,
+				E9D111AD240CC71F006AE20C /* TagHeaderCell.swift */,
 				E9D07A4623E2B6DE0095AD05 /* SearchVC.swift */,
 				E9D111B1240E15CF006AE20C /* SearchCell.swift */,
 				E9D111B3240E6278006AE20C /* SearchResultVC.swift */,
 				E9D111B5240E6590006AE20C /* SearchResultCell.swift */,
-				E9D07A4823E2E4DD0095AD05 /* LoginVC.swift */,
-				E9D07A4C23E3FB980095AD05 /* SignupVC.swift */,
-				E9D07A4E23E4050D0095AD05 /* PhoneConfirmVC.swift */,
-				E94D142523E82A570001F3A0 /* FindIdVC.swift */,
-				E94D142723E82A640001F3A0 /* FindPwdVC.swift */,
-				E94D142923E91EC40001F3A0 /* NickNameVC.swift */,
-				E94D142B23E9223F0001F3A0 /* ProfileVC.swift */,
-				E968FF0123EB1D8A00B2B1D3 /* FindPwdResetVC.swift */,
-				E968FF0323EC478200B2B1D3 /* Config.swift */,
-				E968FF0523F13FE600B2B1D3 /* MessageVC.swift */,
 				E968FF1123F5139000B2B1D3 /* CartVC.swift */,
 				E968FF1323F513BB00B2B1D3 /* CartCell.swift */,
 				E968FF1523F51D4A00B2B1D3 /* CartHeaderCell.swift */,
@@ -202,14 +203,13 @@
 				E9D111BE240F6F42006AE20C /* StoreShopCell.swift */,
 				E9D111C1240F89CE006AE20C /* StoreLikeCell.swift */,
 				E9D1119924038C27006AE20C /* CustomMenuBar.swift */,
-				E9D1119D2403BF77006AE20C /* TagVC.swift */,
-				E9D1119F2403C00E006AE20C /* TagCell.swift */,
-				E9D111AD240CC71F006AE20C /* TagHeaderCell.swift */,
-				E9D111A524081725006AE20C /* TestStoreVC.swift */,
 				E9D111C5240FEFED006AE20C /* MyStoreVC.swift */,
 				E9D111C7240FF039006AE20C /* MyStoreShopCell.swift */,
 				E9D111C9240FF3CD006AE20C /* MyStoreLikeCell.swift */,
 				E9D111CB240FF83A006AE20C /* SettingVC.swift */,
+				E9D111CD2410C316006AE20C /* PaymentVC.swift */,
+				E9D07A4223E2B1110095AD05 /* NotiVC.swift */,
+				E968FF0523F13FE600B2B1D3 /* MessageVC.swift */,
 			);
 			path = "PEPUP-iOS";
 			sourceTree = "<group>";
@@ -342,6 +342,7 @@
 				E9D111B2240E15CF006AE20C /* SearchCell.swift in Sources */,
 				E94D142623E82A570001F3A0 /* FindIdVC.swift in Sources */,
 				E968FF1623F51D4A00B2B1D3 /* CartHeaderCell.swift in Sources */,
+				E9D111CE2410C316006AE20C /* PaymentVC.swift in Sources */,
 				E9C8468723E1A77300359A93 /* TabBarController.swift in Sources */,
 				E9D07A4723E2B6DE0095AD05 /* SearchVC.swift in Sources */,
 				E9D1119A24038C27006AE20C /* CustomMenuBar.swift in Sources */,
@@ -354,7 +355,6 @@
 				E968FF1223F5139000B2B1D3 /* CartVC.swift in Sources */,
 				E968FF0223EB1D8A00B2B1D3 /* FindPwdResetVC.swift in Sources */,
 				E9D111AE240CC71F006AE20C /* TagHeaderCell.swift in Sources */,
-				E9D111A624081725006AE20C /* TestStoreVC.swift in Sources */,
 				E9D07A4D23E3FB980095AD05 /* SignupVC.swift in Sources */,
 				E9D111A824083D64006AE20C /* FollowHeaderCell.swift in Sources */,
 				E9D07A4323E2B1110095AD05 /* NotiVC.swift in Sources */,

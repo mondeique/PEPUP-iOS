@@ -496,7 +496,7 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
             let tag_0 = tag[0]
             let tagId = tag_0.object(forKey: "id") as! Int
             let tagName = tag_0.object(forKey: "tag") as! String
-            tagButton.setTitle(tagName, for: .normal)
+            tagButton.setTitle(" " + tagName + " ", for: .normal)
             tagButton.tag = tagId
             tagButton.addTarget(self, action: #selector(tag(_:)), for: .touchUpInside)
         }
@@ -708,6 +708,7 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         let img = UIImageView()
         img.image = UIImage(named: "pepup_img")
         img.translatesAutoresizingMaskIntoConstraints = false
+        img.isHidden = true
         return img
     }()
     
