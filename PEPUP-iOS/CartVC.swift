@@ -24,11 +24,11 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getData()
         setup()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        getData()
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
         self.tabBarController?.tabBar.isTranslucent = true
@@ -50,7 +50,6 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         let defaultHeight: CGFloat = 667
         let statusBarHeight: CGFloat! = UIApplication.shared.statusBarFrame.height
         let navBarHeight: CGFloat! = navigationController?.navigationBar.frame.height
-        
         
         let navcontentView: UIView = {
             let view = UIView()
@@ -99,7 +98,7 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.itemSize = CGSize(width: screenWidth/defaultWidth * 375, height: screenHeight/defaultHeight * 100)
         
-        cartCollectionView = UICollectionView(frame: CGRect(x: 0, y: statusBarHeight + navBarHeight, width: view.frame.width, height: screenHeight - statusBarHeight - navBarHeight - screenHeight/defaultHeight * 130), collectionViewLayout: layout)
+        cartCollectionView = UICollectionView(frame: CGRect(x: 0, y: statusBarHeight + navBarHeight, width: view.frame.width, height: screenHeight - statusBarHeight - navBarHeight - screenHeight/defaultHeight * 72), collectionViewLayout: layout)
         cartCollectionView.delegate = self
         cartCollectionView.dataSource = self
         cartCollectionView.register(CartCell.self, forCellWithReuseIdentifier: reuseIdentifier)
@@ -157,16 +156,17 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let sellerDic = self.sellerDatas[section] as NSDictionary
         let productArray = sellerDic.object(forKey: "products") as! Array<Dictionary<String, Any>>
+        for i in 0..<productArray.count {
+            self.productDatas.append(productArray[i] as NSDictionary)
+        }
         return productArray.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CartCell
         let sellerDictionary = self.sellerDatas[indexPath.section] as NSDictionary
-        productDatas = sellerDictionary.object(forKey: "products") as! Array<NSDictionary>
-        let productDic = productDatas[indexPath.row] as NSDictionary
-        productDatas.append(productDic)
-        if let productInfoDic = productDatas[indexPath.row].object(forKey: "product") as? NSDictionary {
+        let TotalproductDatas = sellerDictionary.object(forKey: "products") as! Array<NSDictionary>
+        if let productInfoDic = TotalproductDatas[indexPath.row].object(forKey: "product") as? NSDictionary {
             let productName = productInfoDic.object(forKey: "name") as! String
             let productId = productInfoDic.object(forKey: "id") as! Int
             let productPrice = productInfoDic.object(forKey: "price") as! Int
@@ -302,36 +302,12 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             return CGSize(width: collectionView.frame.width, height: UIScreen.main.bounds.height/667 * 164.0)
     }
     
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-    */
     func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-        productDatas.remove(at: indexPath.row)
-        cartCollectionView.performBatchUpdates({
-        cartCollectionView.deleteItems(at: [indexPath]) }) { (finished) in
-            cartCollectionView.reloadData()
-        }
+        let sellerDic = self.sellerDatas[indexPath.section] as NSDictionary
+        let productArray = sellerDic.object(forKey: "products") as! Array<Dictionary<String, Any>>
+        productDatas.remove(at: indexPath.section * productArray.count + indexPath.row)
+        collectionView.deleteItems(at: [indexPath])
+        collectionView.reloadData()
     }
 }
 

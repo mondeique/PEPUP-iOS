@@ -13,6 +13,7 @@
 //  Created by Eren-shin on 2020/02/13.
 //  Copyright © 2020 Mondeique. All rights reserved.
 //
+
 import UIKit
 
 class CartCell: BaseCollectionViewCell, UIGestureRecognizerDelegate {
@@ -26,7 +27,6 @@ class CartCell: BaseCollectionViewCell, UIGestureRecognizerDelegate {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setup()
     }
     
     override func setup() {

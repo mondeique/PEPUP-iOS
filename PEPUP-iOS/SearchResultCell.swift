@@ -13,8 +13,13 @@ class SearchResultCell: BaseCollectionViewCell {
     override func setup() {
         backgroundColor = .white
         
-        self.addSubview(cellcontentView)
-        self.addSubview(footercontentView)
+        // TODO : - SearchResult cellcontentView + footercontentView 합친 btn & contentView 생성
+        
+        self.addSubview(srtotalcontentView)
+        
+//        srtotalcontentView.addSubview(btnDetail)
+        srtotalcontentView.addSubview(cellcontentView)
+        srtotalcontentView.addSubview(footercontentView)
 
         cellcontentView.addSubview(productImage)
         cellcontentView.addSubview(pepupImage)
@@ -23,9 +28,19 @@ class SearchResultCell: BaseCollectionViewCell {
         footercontentView.addSubview(productPrice)
         footercontentView.addSubview(productSize)
         
-        cellcontentView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        cellcontentView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        cellcontentView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        srtotalcontentView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        srtotalcontentView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        srtotalcontentView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        srtotalcontentView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+//
+//        btnDetail.leftAnchor.constraint(equalTo: srtotalcontentView.leftAnchor).isActive = true
+//        btnDetail.topAnchor.constraint(equalTo: srtotalcontentView.topAnchor).isActive = true
+//        btnDetail.widthAnchor.constraint(equalTo: srtotalcontentView.widthAnchor).isActive = true
+//        btnDetail.heightAnchor.constraint(equalTo: srtotalcontentView.heightAnchor).isActive = true
+
+        cellcontentView.leftAnchor.constraint(equalTo: srtotalcontentView.leftAnchor).isActive = true
+        cellcontentView.topAnchor.constraint(equalTo: srtotalcontentView.topAnchor).isActive = true
+        cellcontentView.widthAnchor.constraint(equalTo: srtotalcontentView.widthAnchor).isActive = true
         cellcontentView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 170).isActive = true
         
         productImage.leftAnchor.constraint(equalTo: cellcontentView.leftAnchor).isActive = true
@@ -38,9 +53,9 @@ class SearchResultCell: BaseCollectionViewCell {
         pepupImage.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 40).isActive = true
         pepupImage.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 40).isActive = true
         
-        footercontentView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        footercontentView.leftAnchor.constraint(equalTo: srtotalcontentView.leftAnchor).isActive = true
         footercontentView.topAnchor.constraint(equalTo: cellcontentView.bottomAnchor).isActive = true
-        footercontentView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        footercontentView.widthAnchor.constraint(equalTo: srtotalcontentView.widthAnchor).isActive = true
         footercontentView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 56).isActive = true
         
         productName.leftAnchor.constraint(equalTo: self.leftAnchor, constant: UIScreen.main.bounds.width/375 * 2).isActive = true
@@ -58,6 +73,19 @@ class SearchResultCell: BaseCollectionViewCell {
 //        productSize.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 131).isActive = true
         productSize.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 16).isActive = true
     }
+    
+    let srtotalcontentView : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+//    let btnDetail: UIButton = {
+//        let btn = UIButton()
+//        btn.translatesAutoresizingMaskIntoConstraints = false
+//        btn.backgroundColor = .white
+//        return btn
+//    }()
     
     let cellcontentView : UIView = {
         let view = UIView()

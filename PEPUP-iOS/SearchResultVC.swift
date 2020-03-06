@@ -168,6 +168,7 @@ class SearchResultVC: UIViewController, UICollectionViewDataSource, UICollection
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! SearchResultCell
         let productDic = self.productDatas[indexPath.row] as NSDictionary
         let imageDic = productDic.object(forKey: "images") as! NSDictionary
+        let imageID = productDic.object(forKey: "id") as! Int
         let ImageUrlString = imageDic.object(forKey: "image") as! String
         let imageUrl:NSURL = NSURL(string: ImageUrlString)!
         let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
@@ -186,6 +187,8 @@ class SearchResultVC: UIViewController, UICollectionViewDataSource, UICollection
         cell.productName.text = product_name
         cell.productPrice.text = String(product_price)
         cell.productSize.text = product_size
+//        cell.btnDetail.tag = imageID
+//        cell.btnDetail.addTarget(self, action: #selector(detail(_:)), for: .touchUpInside)
         return cell
     }
     
@@ -193,17 +196,25 @@ class SearchResultVC: UIViewController, UICollectionViewDataSource, UICollection
         navigationController?.popViewController(animated: true)
     }
     
-    @objc func detail(_ sender: UIButton) {
-        let nextVC = DetailVC()
-        nextVC.Myid = sender.tag
-        navigationController?.pushViewController(nextVC, animated: true)
-    }
+//    @objc func detail(_ sender: UIButton) {
+//        let nextVC = DetailVC()
+//        nextVC.Myid = sender.tag
+//        navigationController?.pushViewController(nextVC, animated: true)
+//    }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.row == self.productDatas.count - 1 {
             pagenum = pagenum + 1
             getData(pagenum: pagenum)
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let productDictionary = self.productDatas[indexPath.row] as NSDictionary
+        let productId = productDictionary.object(forKey: "id") as! Int
+        let nextVC = DetailVC()
+        nextVC.Myid = productId
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     // MARK: UICollectionViewDelegate

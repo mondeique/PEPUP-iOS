@@ -101,10 +101,6 @@ class CartFooterCell: BaseCollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    @objc func payment() {
-        print("PASDDASD")
-    }
 
     func cartfootercellContentViewLayout() {
         cartfootercellContentView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true

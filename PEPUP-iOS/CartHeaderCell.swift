@@ -46,10 +46,6 @@ class CartHeaderCell: BaseCollectionViewCell {
         return btn
     }()
 
-    @objc func sellerstore() {
-        print("TOUCH SELLER STORE!")
-    }
-    
     func cartheadercellContentViewLayout() {
         cartheadercellContentView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         cartheadercellContentView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
