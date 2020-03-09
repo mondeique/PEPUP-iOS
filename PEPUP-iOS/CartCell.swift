@@ -16,18 +16,7 @@
 
 import UIKit
 
-class CartCell: BaseCollectionViewCell, UIGestureRecognizerDelegate {
-    
-    var pan: UIPanGestureRecognizer!
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setup()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
+class CartCell: BaseCollectionViewCell{
     
     override func setup() {
         backgroundColor = .red
@@ -36,7 +25,6 @@ class CartCell: BaseCollectionViewCell, UIGestureRecognizerDelegate {
         cartcellContentView.addSubview(productSizeLabel)
         cartcellContentView.addSubview(productPriceLabel)
         self.addSubview(cartcellContentView)
-        self.insertSubview(deleteLabel1, belowSubview: cartcellContentView)
 
         cartcellContentViewLayout()
         productImageLayout()
@@ -44,59 +32,7 @@ class CartCell: BaseCollectionViewCell, UIGestureRecognizerDelegate {
         productSizeLabelLayout()
         productPriceLabelLayout()
         
-        pan = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
-        pan.delegate = self
-        self.addGestureRecognizer(pan)
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        if (pan.state == UIGestureRecognizer.State.changed) {
-            let p: CGPoint = pan.translation(in: self)
-            let width = self.cartcellContentView.frame.width
-            let height = self.cartcellContentView.frame.height
-            self.cartcellContentView.frame = CGRect(x: p.x, y: 0, width: width, height: height)
-            self.deleteLabel1.frame = CGRect(x: p.x + width + deleteLabel1.frame.size.width, y: 0, width: 100, height: height)
-        }
-    }
-    
-    @objc func onPan(_ pan: UIPanGestureRecognizer) {
-        if pan.state == UIGestureRecognizer.State.began {
-            
-        }
-        else if pan.state == UIGestureRecognizer.State.changed {
-            self.setNeedsLayout()
-        }
-        else {
-            if abs(pan.velocity(in: self).x) > 500 {
-                let collectionView: UICollectionView = self.superview as! UICollectionView
-                let indexPath: IndexPath = collectionView.indexPathForItem(at: self.center)!
-                collectionView.delegate?.collectionView!(collectionView, performAction: #selector(onPan(_:)), forItemAt: indexPath, withSender: nil)
-            }
-            else {
-                UIView.animate(withDuration: 0.2, animations: {
-                    self.setNeedsLayout()
-                    self.layoutIfNeeded()
-                })
-            }
-        }
-    }
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-
-    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return abs((pan.velocity(in: pan.view)).x) > abs((pan.velocity(in: pan.view)).y)
-    }
-
-    let deleteLabel1: UILabel = {
-        let label = UILabel()
-        label.text = "delete"
-        label.textColor = UIColor.white
-        return label
-    }()
     
     let cartcellContentView: UIView = {
         let view = UIView()

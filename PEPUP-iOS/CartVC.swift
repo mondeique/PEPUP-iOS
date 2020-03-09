@@ -18,17 +18,17 @@ var cartCollectionView: UICollectionView!
 class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     var sellerDatas = Array<NSDictionary>()
-    var productDatas = Array<NSDictionary>()
+    var productDatas = Array<Array<NSDictionary>>()
     var productpriceArray: Array<Array<Int>> = []
-    var totalprice: Array<Int> = [0]
+    var totalPrice: Int = 10000
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        getData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        getData()
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
         self.tabBarController?.tabBar.isTranslucent = true
@@ -105,15 +105,15 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         cartCollectionView.register(CartHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         cartCollectionView.register(CartFooterCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerId)
         cartCollectionView.backgroundColor = UIColor.white
-        
+    
         let btnPayment : UIButton = {
             let btn = UIButton()
             btn.backgroundColor = .black
             btn.layer.cornerRadius = 3
             btn.clipsToBounds = true
-            btn.setTitle("총 " + String(totalprice[0]) + "원 구매하기", for: .normal)
             btn.translatesAutoresizingMaskIntoConstraints = false
             btn.layer.cornerRadius = 3
+            btn.setTitle("총 \(String(totalPrice))원 구매하기", for: .normal)
             btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
             btn.setTitleColor(.white, for: .normal)
             btn.addTarget(self, action: #selector(totalpayment), for: .touchUpInside)
@@ -124,10 +124,11 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         self.view.addSubview(cartCollectionView)
         
         btnPayment.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant:screenWidth/defaultWidth * 18).isActive = true
-        btnPayment.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant:screenHeight/defaultHeight * -5).isActive = true
+        btnPayment.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant:screenHeight/defaultHeight * -8).isActive = true
         btnPayment.widthAnchor.constraint(equalToConstant:screenWidth/defaultWidth * 339).isActive = true
         btnPayment.heightAnchor.constraint(equalToConstant:screenWidth/defaultWidth * 56).isActive = true
     }
+    
     
     func getData() {
         Alamofire.AF.request("\(Config.baseURL)/api/trades/cart/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
@@ -149,7 +150,8 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     // MARK: UICollectionViewDataSource
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
+        productpriceArray.append([])
+        productDatas.append([])
         return self.sellerDatas.count
     }
 
@@ -157,7 +159,8 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         let sellerDic = self.sellerDatas[section] as NSDictionary
         let productArray = sellerDic.object(forKey: "products") as! Array<Dictionary<String, Any>>
         for i in 0..<productArray.count {
-            self.productDatas.append(productArray[i] as NSDictionary)
+            self.productDatas[section].append(productArray[i] as NSDictionary)
+            productpriceArray[section].append(0)
         }
         return productArray.count
     }
@@ -165,14 +168,12 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CartCell
         let sellerDictionary = self.sellerDatas[indexPath.section] as NSDictionary
-        let TotalproductDatas = sellerDictionary.object(forKey: "products") as! Array<NSDictionary>
-        if let productInfoDic = TotalproductDatas[indexPath.row].object(forKey: "product") as? NSDictionary {
+        let totalproductDatas = sellerDictionary.object(forKey: "products") as! Array<NSDictionary>
+        if let productInfoDic = totalproductDatas[indexPath.row].object(forKey: "product") as? NSDictionary {
             let productName = productInfoDic.object(forKey: "name") as! String
             let productId = productInfoDic.object(forKey: "id") as! Int
             let productPrice = productInfoDic.object(forKey: "price") as! Int
-            productpriceArray.append([])
-            productpriceArray[indexPath.section].append(productPrice)
-            totalprice.append(productPrice)
+            productpriceArray[indexPath.section][indexPath.row] = productPrice
             let productSize = productInfoDic.object(forKey: "size") as! String
             let productImgDic = productInfoDic.object(forKey: "thumbnails") as! NSDictionary
             let imageUrlString = productImgDic.object(forKey: "thumbnail") as! String
@@ -226,20 +227,15 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             case UICollectionView.elementKindSectionFooter:
                 let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: footerId, for: indexPath) as! CartFooterCell
                 let sellerDictionary = self.sellerDatas[indexPath.section] as NSDictionary
-                var productDatas = Array<NSDictionary>()
-                productDatas = sellerDictionary.object(forKey: "products") as! Array<NSDictionary>
                 let payinfoDic = sellerDictionary.object(forKey: "payinfo") as! NSDictionary
-                let productDic = productDatas[indexPath.row] as NSDictionary
-                let productInfoDic = productDic.object(forKey: "product") as! NSDictionary
-                let productPrice = productInfoDic.object(forKey: "price") as! Int
                 var totalproductPrice: Int = 0
                 for i in 0..<productpriceArray[indexPath.section].count {
                     totalproductPrice = totalproductPrice + productpriceArray[indexPath.section][i]
                 }
+                let productPrice = totalproductPrice
                 let delivery_charge = payinfoDic.object(forKey: "delivery_charge") as! Int
-
                 DispatchQueue.main.async {
-                    footerView.productpriceInfoLabel.text = String(totalproductPrice) + "원"
+                    footerView.productpriceInfoLabel.text = String(productPrice) + "원"
                     footerView.productdeliveryInfoLabel.text = String(delivery_charge) + "원"
                     footerView.btnPayment.setTitle("총 " + String(totalproductPrice + delivery_charge)+"원 구매하기", for: .normal)
                     footerView.btnPayment.addTarget(self, action: #selector(self.payment), for: .touchUpInside)
@@ -302,12 +298,5 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             return CGSize(width: collectionView.frame.width, height: UIScreen.main.bounds.height/667 * 164.0)
     }
     
-    func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-        let sellerDic = self.sellerDatas[indexPath.section] as NSDictionary
-        let productArray = sellerDic.object(forKey: "products") as! Array<Dictionary<String, Any>>
-        productDatas.remove(at: indexPath.section * productArray.count + indexPath.row)
-        collectionView.deleteItems(at: [indexPath])
-        collectionView.reloadData()
-    }
 }
 
