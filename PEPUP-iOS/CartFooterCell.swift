@@ -155,8 +155,8 @@ class CartFooterCell: BaseCollectionViewCell {
     
     func spaceLabelLayout() {
         spaceLabel.leftAnchor.constraint(equalTo:cartfootercellContentView.leftAnchor).isActive = true
-        spaceLabel.topAnchor.constraint(equalTo:btnPayment.bottomAnchor, constant:16).isActive = true
+        spaceLabel.topAnchor.constraint(equalTo:btnPayment.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 16).isActive = true
         spaceLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width).isActive = true
-        spaceLabel.heightAnchor.constraint(equalToConstant:48).isActive = true
+        spaceLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 8).isActive = true
     }
 }

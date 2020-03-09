@@ -24,11 +24,11 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
-        getData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        setup()
+        getData()
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
         self.tabBarController?.tabBar.isTranslucent = true
@@ -131,12 +131,32 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     
     
     func getData() {
+        sellerDatas = Array<NSDictionary>()
+        productDatas = Array<Array<NSDictionary>>()
+        productpriceArray = []
         Alamofire.AF.request("\(Config.baseURL)/api/trades/cart/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
             (response) in switch response.result {
             case .success(let JSON):
                 let response = JSON as! Array<NSDictionary>
                 for i in 0..<response.count {
                     self.sellerDatas.append(response[i])
+                }
+                print(self.sellerDatas)
+                for i in 0..<self.sellerDatas.count {
+                    self.productDatas.append([])
+                    let sellerDic = self.sellerDatas[i] as NSDictionary
+                    let productArray = sellerDic.object(forKey: "products") as! Array<Dictionary<String, Any>>
+                    for j in 0..<productArray.count {
+                        self.productDatas[i].append(NSDictionary())
+                    }
+                }
+                for i in 0..<self.sellerDatas.count {
+                    self.productpriceArray.append([])
+                    let sellerDic = self.sellerDatas[i] as NSDictionary
+                    let productArray = sellerDic.object(forKey: "products") as! Array<Dictionary<String, Any>>
+                    for j in 0..<productArray.count {
+                        self.productpriceArray[i].append(0)
+                    }
                 }
                 DispatchQueue.main.async {
                     cartCollectionView.reloadData()
@@ -150,30 +170,30 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     // MARK: UICollectionViewDataSource
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        productpriceArray.append([])
-        productDatas.append([])
         return self.sellerDatas.count
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let sellerDic = self.sellerDatas[section] as NSDictionary
         let productArray = sellerDic.object(forKey: "products") as! Array<Dictionary<String, Any>>
-        for i in 0..<productArray.count {
-            self.productDatas[section].append(productArray[i] as NSDictionary)
-            productpriceArray[section].append(0)
-        }
         return productArray.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        var count = productDatas[indexPath.section].count
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CartCell
         let sellerDictionary = self.sellerDatas[indexPath.section] as NSDictionary
         let totalproductDatas = sellerDictionary.object(forKey: "products") as! Array<NSDictionary>
         if let productInfoDic = totalproductDatas[indexPath.row].object(forKey: "product") as? NSDictionary {
+            if count > indexPath.row {
+                productDatas[indexPath.section][indexPath.row] = productInfoDic
+            }
             let productName = productInfoDic.object(forKey: "name") as! String
             let productId = productInfoDic.object(forKey: "id") as! Int
-            let productPrice = productInfoDic.object(forKey: "price") as! Int
-            productpriceArray[indexPath.section][indexPath.row] = productPrice
+            let productPrice = productInfoDic.object(forKey: "discounted_price") as! Int
+            if count > indexPath.row {
+                productpriceArray[indexPath.section][indexPath.row] = productPrice
+            }
             let productSize = productInfoDic.object(forKey: "size") as! String
             let productImgDic = productInfoDic.object(forKey: "thumbnails") as! NSDictionary
             let imageUrlString = productImgDic.object(forKey: "thumbnail") as! String
@@ -228,16 +248,12 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                 let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: footerId, for: indexPath) as! CartFooterCell
                 let sellerDictionary = self.sellerDatas[indexPath.section] as NSDictionary
                 let payinfoDic = sellerDictionary.object(forKey: "payinfo") as! NSDictionary
-                var totalproductPrice: Int = 0
-                for i in 0..<productpriceArray[indexPath.section].count {
-                    totalproductPrice = totalproductPrice + productpriceArray[indexPath.section][i]
-                }
-                let productPrice = totalproductPrice
+                let productPrice = payinfoDic.object(forKey: "total") as! Int
                 let delivery_charge = payinfoDic.object(forKey: "delivery_charge") as! Int
                 DispatchQueue.main.async {
                     footerView.productpriceInfoLabel.text = String(productPrice) + "원"
                     footerView.productdeliveryInfoLabel.text = String(delivery_charge) + "원"
-                    footerView.btnPayment.setTitle("총 " + String(totalproductPrice + delivery_charge)+"원 구매하기", for: .normal)
+                    footerView.btnPayment.setTitle("총 " + String(productPrice + delivery_charge)+"원 구매하기", for: .normal)
                     footerView.btnPayment.addTarget(self, action: #selector(self.payment), for: .touchUpInside)
                 }
                 
@@ -298,5 +314,27 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             return CGSize(width: collectionView.frame.width, height: UIScreen.main.bounds.height/667 * 164.0)
     }
     
+    func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
+        let removeBaseDic = sellerDatas[indexPath.section]
+        let removeproductDatas = removeBaseDic.object(forKey: "products") as! Array<NSDictionary>
+        let removeDic = removeproductDatas[indexPath.row]
+        let removeid = removeDic.object(forKey: "trade_id") as! Int
+        productDatas[indexPath.section].remove(at: indexPath.row)
+        productpriceArray[indexPath.section].remove(at: indexPath.row)
+        collectionView.deleteItems(at: [IndexPath(row: indexPath.row, section: indexPath.section)])
+        let parameters = [
+            "trades" : [removeid]
+        ]
+        Alamofire.AF.request("\(Config.baseURL)/api/trades/cancel/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+            (response) in switch response.result {
+            case .success(let JSON):
+                print(JSON)
+                
+            case .failure(let error):
+                print("Request failed with error: \(error)")
+            }
+        }
+        getData()
+    }
 }
 

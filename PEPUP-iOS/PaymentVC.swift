@@ -9,7 +9,9 @@
 import UIKit
 
 class PaymentVC: UIViewController {
-
+    
+    var trades : Array<Int>?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
