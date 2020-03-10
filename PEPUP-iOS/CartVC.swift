@@ -21,6 +21,7 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     var productDatas = Array<Array<NSDictionary>>()
     var productpriceArray: Array<Array<Int>> = []
     var totalPrice: Int = 10000
+    var trades : Array<Array<Int>> = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -134,6 +135,7 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         sellerDatas = Array<NSDictionary>()
         productDatas = Array<Array<NSDictionary>>()
         productpriceArray = []
+        trades = []
         Alamofire.AF.request("\(Config.baseURL)/api/trades/cart/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
             (response) in switch response.result {
             case .success(let JSON):
@@ -143,19 +145,15 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                 }
                 print(self.sellerDatas)
                 for i in 0..<self.sellerDatas.count {
+                    self.productpriceArray.append([])
                     self.productDatas.append([])
+                    self.trades.append([])
                     let sellerDic = self.sellerDatas[i] as NSDictionary
                     let productArray = sellerDic.object(forKey: "products") as! Array<Dictionary<String, Any>>
                     for j in 0..<productArray.count {
                         self.productDatas[i].append(NSDictionary())
-                    }
-                }
-                for i in 0..<self.sellerDatas.count {
-                    self.productpriceArray.append([])
-                    let sellerDic = self.sellerDatas[i] as NSDictionary
-                    let productArray = sellerDic.object(forKey: "products") as! Array<Dictionary<String, Any>>
-                    for j in 0..<productArray.count {
                         self.productpriceArray[i].append(0)
+                        self.trades[i].append(0)
                     }
                 }
                 DispatchQueue.main.async {
@@ -184,6 +182,10 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CartCell
         let sellerDictionary = self.sellerDatas[indexPath.section] as NSDictionary
         let totalproductDatas = sellerDictionary.object(forKey: "products") as! Array<NSDictionary>
+        let trade_id = totalproductDatas[indexPath.row].object(forKey: "trade_id") as! Int
+        if count > indexPath.row {
+            trades[indexPath.section][indexPath.row] = trade_id
+        }
         if let productInfoDic = totalproductDatas[indexPath.row].object(forKey: "product") as? NSDictionary {
             if count > indexPath.row {
                 productDatas[indexPath.section][indexPath.row] = productInfoDic
@@ -254,9 +256,9 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                     footerView.productpriceInfoLabel.text = String(productPrice) + "원"
                     footerView.productdeliveryInfoLabel.text = String(delivery_charge) + "원"
                     footerView.btnPayment.setTitle("총 " + String(productPrice + delivery_charge)+"원 구매하기", for: .normal)
-                    footerView.btnPayment.addTarget(self, action: #selector(self.payment), for: .touchUpInside)
+                    footerView.btnPayment.tag = indexPath.section
+                    footerView.btnPayment.addTarget(self, action: #selector(self.payment(_:)), for: .touchUpInside)
                 }
-                
                 return footerView
 
             default:
@@ -280,9 +282,9 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
-    @objc func payment() {
-        print("TOUCH PAYMENT")
+    @objc func payment(_ sender: UIButton) {
         let nextVC = PaymentVC()
+        nextVC.trades = trades[sender.tag]
         self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
@@ -319,21 +321,21 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         let removeproductDatas = removeBaseDic.object(forKey: "products") as! Array<NSDictionary>
         let removeDic = removeproductDatas[indexPath.row]
         let removeid = removeDic.object(forKey: "trade_id") as! Int
-        productDatas[indexPath.section].remove(at: indexPath.row)
-        productpriceArray[indexPath.section].remove(at: indexPath.row)
-        collectionView.deleteItems(at: [IndexPath(row: indexPath.row, section: indexPath.section)])
         let parameters = [
             "trades" : [removeid]
         ]
         Alamofire.AF.request("\(Config.baseURL)/api/trades/cancel/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
             (response) in switch response.result {
             case .success(let JSON):
-                print(JSON)
+                print("SUCCESS")
                 
             case .failure(let error):
                 print("Request failed with error: \(error)")
             }
         }
+        productDatas[indexPath.section].remove(at: indexPath.row)
+        productpriceArray[indexPath.section].remove(at: indexPath.row)
+        collectionView.deleteItems(at: [IndexPath(row: indexPath.row, section: indexPath.section)])
         getData()
     }
 }

@@ -155,7 +155,7 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
         let imageArray = productDic.object(forKey: "images") as! Array<Dictionary<String, Any>>
         for i in 0..<imageArray.count {
             let imageDic = imageArray[i] as NSDictionary
-            let ImageUrlString = imageDic.object(forKey: "image") as! String
+            let ImageUrlString = imageDic.object(forKey: "image_url") as! String
             let imageUrl:NSURL = NSURL(string: ImageUrlString)!
             let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
             let image = UIImage(data: imageData as Data)
@@ -224,10 +224,12 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
                 let productPrice = productDic.object(forKey: "price") as! Int
                 let is_sold = productDic.object(forKey: "sold") as! Bool
                 let is_like = productDic.object(forKey: "liked") as! Bool
+                let is_pepup = productDic.object(forKey: "is_refundable") as! Bool
                 let productSize = productDic.object(forKey: "size") as! String
                 let productBrandDic = productDic.object(forKey: "brand") as! NSDictionary
                 let productBrand = productBrandDic.object(forKey: "name") as! String
                 let productId = productDic.object(forKey: "id") as! Int
+                let age = productDic.object(forKey: "age") as! String
                 DispatchQueue.main.async {
                     if is_like == true {
                         footerView.btnLike.setImage(UIImage(named: "btnLike_fill"), for: .normal)
@@ -243,21 +245,44 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
                     footerView.btnDetail.tag = productId
                     footerView.btnDetail.addTarget(self, action: #selector(self.detail(_:)), for: .touchUpInside)
                     footerView.productName.text = productName
-                    if is_sold == true {
-                        footerView.btnDetailLabel.text = "S O L D"
-                        footerView.btnDetailLabel.textColor = .black
-                        footerView.btnDetailContentView.backgroundColor = .white
-                        footerView.btnDetail.setTitleColor(.black, for: .normal)
-                        footerView.btnDetail.setImage(UIImage(named: "btnGO_sold"), for: .normal)
+                    if is_pepup == true {
+                        if is_sold == true {
+                            footerView.pepupImage.isHidden = false
+                            footerView.btnDetailLabel.text = "S O L D"
+                            footerView.btnDetailLabel.textColor = .black
+                            footerView.btnDetailContentView.backgroundColor = .white
+                            footerView.btnDetail.setTitleColor(.black, for: .normal)
+                            footerView.btnDetail.setImage(UIImage(named: "btnGO_sold"), for: .normal)
+                        }
+                        else {
+                            footerView.pepupImage.isHidden = false
+                            footerView.btnDetailLabel.text = String(productPrice)
+                            footerView.btnDetailContentView.backgroundColor = UIColor(rgb: 0xD8FF00)
+                            footerView.btnDetailLabel.textColor = .black
+                            footerView.btnDetailContentView.layer.borderWidth = 0
+                            footerView.btnDetail.setImage(UIImage(named: "btnGO_sold"), for: .normal)
+                        }
                     }
                     else {
-                        footerView.btnDetailLabel.text = String(productPrice)
-                        footerView.btnDetailContentView.backgroundColor = .black
-                        footerView.btnDetailLabel.textColor = .white
-                        footerView.btnDetail.setImage(UIImage(named: "btnGO_notsold"), for: .normal)
+                        if is_sold == true {
+                            footerView.pepupImage.isHidden = true
+                            footerView.btnDetailLabel.text = "S O L D"
+                            footerView.btnDetailLabel.textColor = .black
+                            footerView.btnDetailContentView.backgroundColor = .white
+                            footerView.btnDetail.setTitleColor(.black, for: .normal)
+                        footerView.btnDetail.setImage(UIImage(named: "btnGO_sold"), for: .normal)
+                        }
+                        else {
+                            footerView.pepupImage.isHidden = true
+                            footerView.btnDetailLabel.text = String(productPrice)
+                            footerView.btnDetailContentView.backgroundColor = .black
+                            footerView.btnDetailLabel.textColor = .white
+                            footerView.btnDetail.setImage(UIImage(named: "btnGO_notsold"), for: .normal)
+                        }
                     }
                     footerView.sizeInfoLabel.text = productSize
                     footerView.brandInfoLabel.text = productBrand
+                    footerView.timeLabel.text = age
                 }
                 return footerView
 
@@ -347,5 +372,32 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
             pagenum = pagenum + 1
             getData(pagenum: pagenum)
         }
+    }
+}
+
+extension Date {
+    func timeAgoDisplay() -> String {
+
+        let calendar = Calendar.current
+        let minuteAgo = calendar.date(byAdding: .minute, value: -1, to: Date())!
+        let hourAgo = calendar.date(byAdding: .hour, value: -1, to: Date())!
+        let dayAgo = calendar.date(byAdding: .day, value: -1, to: Date())!
+        let weekAgo = calendar.date(byAdding: .day, value: -7, to: Date())!
+
+        if minuteAgo < self {
+            let diff = Calendar.current.dateComponents([.second], from: self, to: Date()).second ?? 0
+            return "\(diff) sec ago"
+        } else if hourAgo < self {
+            let diff = Calendar.current.dateComponents([.minute], from: self, to: Date()).minute ?? 0
+            return "\(diff) min ago"
+        } else if dayAgo < self {
+            let diff = Calendar.current.dateComponents([.hour], from: self, to: Date()).hour ?? 0
+            return "\(diff) hrs ago"
+        } else if weekAgo < self {
+            let diff = Calendar.current.dateComponents([.day], from: self, to: Date()).day ?? 0
+            return "\(diff) days ago"
+        }
+        let diff = Calendar.current.dateComponents([.weekOfYear], from: self, to: Date()).weekOfYear ?? 0
+        return "\(diff) weeks ago"
     }
 }

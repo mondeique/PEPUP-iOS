@@ -22,7 +22,7 @@ class CartCell: BaseCollectionViewCell, UIGestureRecognizerDelegate {
     
     
     override func setup() {
-        backgroundColor = .red
+        backgroundColor = .white
         cartcellContentView.addSubview(productImage)
         cartcellContentView.addSubview(productNameLabel)
         cartcellContentView.addSubview(productSizeLabel)
@@ -140,28 +140,28 @@ class CartCell: BaseCollectionViewCell, UIGestureRecognizerDelegate {
 
     func productImageLayout() {
         productImage.leftAnchor.constraint(equalTo:cartcellContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 18).isActive = true
-        productImage.topAnchor.constraint(equalTo:cartcellContentView.topAnchor, constant:10).isActive = true
+        productImage.topAnchor.constraint(equalTo:cartcellContentView.topAnchor, constant:UIScreen.main.bounds.height/667 * 10).isActive = true
         productImage.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 80).isActive = true
         productImage.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 80).isActive = true
     }
 
     func productNameLabelLayout() {
         productNameLabel.leftAnchor.constraint(equalTo:productImage.rightAnchor, constant:UIScreen.main.bounds.width/375 * 16).isActive = true
-        productNameLabel.topAnchor.constraint(equalTo:cartcellContentView.topAnchor, constant:10).isActive = true
+        productNameLabel.topAnchor.constraint(equalTo:cartcellContentView.topAnchor, constant:UIScreen.main.bounds.height/667 * 10).isActive = true
         productNameLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 150).isActive = true
 //        productNameLabel.heightAnchor.constraint(equalToConstant:80).isActive = true
     }
 
     func productSizeLabelLayout() {
         productSizeLabel.leftAnchor.constraint(equalTo:productImage.rightAnchor, constant:UIScreen.main.bounds.width/375 * 16).isActive = true
-        productSizeLabel.topAnchor.constraint(equalTo:productNameLabel.bottomAnchor, constant:4).isActive = true
+        productSizeLabel.topAnchor.constraint(equalTo:productNameLabel.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 4).isActive = true
 //        productSizeLabel.widthAnchor.constraint(equalToConstant:80).isActive = true
 //        productSizeLabel.heightAnchor.constraint(equalToConstant:80).isActive = true
     }
 
     func productPriceLabelLayout() {
         productPriceLabel.rightAnchor.constraint(equalTo:cartcellContentView.rightAnchor, constant:UIScreen.main.bounds.width/375 * -18).isActive = true
-        productPriceLabel.topAnchor.constraint(equalTo:cartcellContentView.topAnchor, constant:10).isActive = true
+        productPriceLabel.topAnchor.constraint(equalTo:cartcellContentView.topAnchor, constant:UIScreen.main.bounds.height/667 * 10).isActive = true
 //        productPriceLabel.widthAnchor.constraint(equalToConstant:80).isActive = true
 //        productPriceLabel.heightAnchor.constraint(equalToConstant:80).isActive = true
     }

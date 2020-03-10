@@ -107,6 +107,7 @@ class FollowFooterCell: BaseCollectionViewCell {
         let img = UIImageView()
         img.image = UIImage(named: "pepup_img")
         img.translatesAutoresizingMaskIntoConstraints = false
+        img.isHidden = true
         return img
     }()
     
@@ -118,6 +119,16 @@ class FollowFooterCell: BaseCollectionViewCell {
         view.layer.cornerRadius = 18
         view.backgroundColor = .black
         return view
+    }()
+    
+    let btnDetailDiscountLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 13)
+        label.textAlignment = .left
+        label.backgroundColor = .clear
+        label.textColor = .black
+        return label
     }()
     
     let btnDetailLabel: UILabel = {

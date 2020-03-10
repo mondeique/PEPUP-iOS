@@ -72,19 +72,19 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         contentView.topAnchor.constraint(equalTo: view.topAnchor, constant: screenHeight/defaultHeight * 567).isActive = true
         contentView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         contentView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
-        contentView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        contentView.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 100).isActive = true
         
-        btnCart.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 20).isActive = true
-        btnCart.widthAnchor.constraint(equalToConstant: 337).isActive = true
-        btnCart.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        btnCart.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: screenHeight/defaultHeight * 20).isActive = true
+        btnCart.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 337).isActive = true
+        btnCart.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 50).isActive = true
         btnCart.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         btnCart.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 0).isActive = true
         
-        btnCartBag.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 20).isActive = true
-        btnCartBag.widthAnchor.constraint(equalToConstant: 337).isActive = true
-        btnCartBag.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        btnCartBag.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: screenHeight/defaultHeight * 20).isActive = true
+        btnCartBag.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 337).isActive = true
+        btnCartBag.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 50).isActive = true
         btnCartBag.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        btnCartBag.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 0).isActive = true
+        btnCartBag.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         
         scrollView = UIScrollView(frame: CGRect(origin: CGPoint(x: 0, y: navBarHeight+statusBarHeight), size: CGSize(width: screenWidth, height: screenHeight-100)))
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -384,7 +384,7 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
                 let productImgArray = self.productDatas.object(forKey: "images") as! Array<NSDictionary>
                 for i in 0..<productImgArray.count {
                     let productUrlDictionary = productImgArray[i] as NSDictionary
-                    let imageUrlString = productUrlDictionary.object(forKey: "image") as! String
+                    let imageUrlString = productUrlDictionary.object(forKey: "image_url") as! String
                     self.productimageArray.append(imageUrlString)
                 }
                 self.pageSize = self.productimageArray.count
@@ -473,7 +473,7 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         }
         
         if let price = self.productDatas.object(forKey: "discounted_price") as? Int {
-            productPrice.text = String(price)
+            productPrice.text = String(price) + "원"
         }
         if let name = self.productDatas.object(forKey: "name") as? String {
             productName.text = name

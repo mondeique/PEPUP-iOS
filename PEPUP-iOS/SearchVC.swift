@@ -97,7 +97,6 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
                 self.name_result = 0
                 self.seller_result = Array<Dictionary<String, Any>>()
                 self.tag_result = Array<Dictionary<String, Any>>()
-                print(JSON)
                 let response =  JSON as! NSDictionary
                 let namecount = response.object(forKey: "name_result") as! Int
                 self.name_result = namecount

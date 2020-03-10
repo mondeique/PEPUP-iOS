@@ -31,14 +31,28 @@ class HomeCell: BaseCollectionViewCell {
         return label
     }()
     
+    let pepuptag: UIImageView = {
+        let image = UIImageView()
+        image.image = UIImage(named: "pepupTag")
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        image.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        image.layer.shadowOpacity = 5.0
+        image.layer.shadowRadius = 6.0
+        image.isHidden = true
+        return image
+    }()
+    
     override func setup() {
         backgroundColor = .white
         homecellcontentView.addSubview(productImg)
+        homecellcontentView.addSubview(pepuptag)
         homecellcontentView.addSubview(soldLabel)
         self.addSubview(homecellcontentView)
         
         homecellcontentViewLayout()
         productImgLayout()
+        pepuptagLayout()
         soldLabelLayout()
     }
     
@@ -54,6 +68,13 @@ class HomeCell: BaseCollectionViewCell {
         productImg.topAnchor.constraint(equalTo:homecellcontentView.topAnchor).isActive = true
 //        productImg.widthAnchor.constraint(equalToConstant:80).isActive = true
 //        productImg.heightAnchor.constraint(equalToConstant:80).isActive = true
+    }
+    
+    func pepuptagLayout() {
+        pepuptag.rightAnchor.constraint(equalTo:homecellcontentView.rightAnchor, constant: UIScreen.main.bounds.width/375 * -8).isActive = true
+        pepuptag.topAnchor.constraint(equalTo:homecellcontentView.topAnchor).isActive = true
+        pepuptag.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 12).isActive = true
+        pepuptag.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 26).isActive = true
     }
     
     func soldLabelLayout() {

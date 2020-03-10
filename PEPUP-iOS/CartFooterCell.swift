@@ -11,7 +11,7 @@ import UIKit
 class CartFooterCell: BaseCollectionViewCell {
     
     override func setup() {
-        backgroundColor = .orange
+        backgroundColor = .white
         cartfootercellContentView.addSubview(lineLabel)
         cartfootercellContentView.addSubview(productpriceLabel)
         cartfootercellContentView.addSubview(productpriceInfoLabel)
@@ -111,7 +111,7 @@ class CartFooterCell: BaseCollectionViewCell {
     
     func lineLabelLayout() {
         lineLabel.leftAnchor.constraint(equalTo:cartfootercellContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 18).isActive = true
-        lineLabel.topAnchor.constraint(equalTo:cartfootercellContentView.topAnchor, constant:0).isActive = true
+        lineLabel.topAnchor.constraint(equalTo:cartfootercellContentView.topAnchor).isActive = true
         lineLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 339).isActive = true
         lineLabel.heightAnchor.constraint(equalToConstant:1).isActive = true
         lineLabel.centerXAnchor.constraint(equalTo:cartfootercellContentView.centerXAnchor).isActive = true
@@ -119,28 +119,28 @@ class CartFooterCell: BaseCollectionViewCell {
 
     func productpriceLabelLayout() {
         productpriceLabel.leftAnchor.constraint(equalTo:cartfootercellContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 18).isActive = true
-        productpriceLabel.topAnchor.constraint(equalTo:cartfootercellContentView.topAnchor, constant:20).isActive = true
+        productpriceLabel.topAnchor.constraint(equalTo:cartfootercellContentView.topAnchor, constant:UIScreen.main.bounds.height/667 * 20).isActive = true
 //        productpriceLabel.widthAnchor.constraint(equalToConstant:80).isActive = true
 //        productpriceLabel.heightAnchor.constraint(equalToConstant:80).isActive = true
     }
 
     func productpriceInfoLabelLayout() {
         productpriceInfoLabel.rightAnchor.constraint(equalTo:cartfootercellContentView.rightAnchor, constant:UIScreen.main.bounds.width/375 * -18).isActive = true
-        productpriceInfoLabel.topAnchor.constraint(equalTo:cartfootercellContentView.topAnchor, constant:20).isActive = true
+        productpriceInfoLabel.topAnchor.constraint(equalTo:cartfootercellContentView.topAnchor, constant:UIScreen.main.bounds.height/667 * 20).isActive = true
 //        productpriceInfoLabel.widthAnchor.constraint(equalToConstant:80).isActive = true
 //        productpriceInfoLabel.heightAnchor.constraint(equalToConstant:80).isActive = true
     }
 
     func productdeliveryLabelLayout() {
         productdeliveryLabel.leftAnchor.constraint(equalTo:cartfootercellContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 18).isActive = true
-        productdeliveryLabel.topAnchor.constraint(equalTo:productpriceLabel.bottomAnchor, constant:10).isActive = true
+        productdeliveryLabel.topAnchor.constraint(equalTo:productpriceLabel.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 10).isActive = true
 //        productdeliveryLabel.widthAnchor.constraint(equalToConstant:80).isActive = true
 //        productdeliveryLabel.heightAnchor.constraint(equalToConstant:80).isActive = true
     }
 
     func productdeliveryInfoLabelLayout() {
         productdeliveryInfoLabel.rightAnchor.constraint(equalTo:cartfootercellContentView.rightAnchor, constant:UIScreen.main.bounds.width/375 * -18).isActive = true
-        productdeliveryInfoLabel.topAnchor.constraint(equalTo:productpriceInfoLabel.bottomAnchor, constant:10).isActive = true
+        productdeliveryInfoLabel.topAnchor.constraint(equalTo:productpriceInfoLabel.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 10).isActive = true
 //        productdeliveryInfoLabel.widthAnchor.constraint(equalToConstant:80).isActive = true
 //        productdeliveryInfoLabel.heightAnchor.constraint(equalToConstant:80).isActive = true
     }
@@ -149,7 +149,7 @@ class CartFooterCell: BaseCollectionViewCell {
         btnPayment.leftAnchor.constraint(equalTo:cartfootercellContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 18).isActive = true
         btnPayment.topAnchor.constraint(equalTo:productdeliveryLabel.bottomAnchor, constant:24).isActive = true
         btnPayment.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 339).isActive = true
-        btnPayment.heightAnchor.constraint(equalToConstant:48).isActive = true
+        btnPayment.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 48).isActive = true
         btnPayment.centerXAnchor.constraint(equalTo:cartfootercellContentView.centerXAnchor).isActive = true
     }
     

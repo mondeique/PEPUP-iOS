@@ -163,8 +163,8 @@ class TagVC: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TagCell
         let productDictionary = self.productDatas[indexPath.row] as NSDictionary
-        if let productImgDic = productDictionary.object(forKey: "images") as? NSDictionary {
-            let imageUrlString = productImgDic.object(forKey: "image") as! String
+        if let productImgDic = productDictionary.object(forKey: "thumbnails") as? NSDictionary {
+            let imageUrlString = productImgDic.object(forKey: "thumbnail") as! String
             let imageUrl:NSURL = NSURL(string: imageUrlString)!
             DispatchQueue.global(qos: .userInitiated).async {
                 let imageData:NSData = NSData(contentsOf: imageUrl as URL)!

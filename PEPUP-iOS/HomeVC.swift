@@ -162,6 +162,13 @@ class HomeVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                 }
             }
         }
+        let is_refundable = productDictionary.object(forKey: "is_refundable") as! Bool
+        if is_refundable == true {
+            cell.pepuptag.isHidden = false
+        }
+        else {
+            cell.pepuptag.isHidden = true
+        }
         return cell
     }
     

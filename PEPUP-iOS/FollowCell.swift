@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class FollowCell: BaseCollectionViewCell, UIScrollViewDelegate {
     
@@ -46,6 +47,8 @@ class FollowCell: BaseCollectionViewCell, UIScrollViewDelegate {
             pageControl.currentPage = Int(scrollView.contentOffset.x / scrollView.frame.maxX)
         }
     }
+    
+    // TODO: - pagecontrol in uicollectionviewcell 
     
     lazy var productScrollView : UIScrollView = {
         // Create a UIScrollView.
