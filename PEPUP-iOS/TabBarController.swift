@@ -38,12 +38,13 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         home.tabBarItem.selectedImage = #imageLiteral(resourceName: "home_selected")
         // Follow
         let follow = UINavigationController(rootViewController: FollowVC())
-//        let follow = UINavigationController(rootViewController: TagVC())
         follow.tabBarItem.image = #imageLiteral(resourceName: "follow_unselected")
         follow.tabBarItem.selectedImage = #imageLiteral(resourceName: "follow_selected")
-        let sell = UINavigationController(rootViewController: SellVC())
+        // Sell
+        let sell = UINavigationController(rootViewController: SellSelectVC())
         sell.tabBarItem.image = #imageLiteral(resourceName: "sell_unselected")
         sell.tabBarItem.selectedImage = #imageLiteral(resourceName: "sell_selected")
+        // Store
         let store = UINavigationController(rootViewController: MyStoreVC())
         store.tabBarItem.image = #imageLiteral(resourceName: "store_unselected")
         store.tabBarItem.selectedImage = #imageLiteral(resourceName: "store_selected")

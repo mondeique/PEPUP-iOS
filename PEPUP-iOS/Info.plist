@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>Privacy - Photo Library Usage DescriptionKey</key>
+	<string>사진앱 사용하겠습니다?</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AppleSDGothicNeo-Heavy</string>
@@ -34,8 +36,6 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>test</string>
-	<key>NSPhotoLibraryUsageDescription</key>
 	<string>test</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>

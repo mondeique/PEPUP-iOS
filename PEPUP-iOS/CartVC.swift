@@ -20,7 +20,7 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     var sellerDatas = Array<NSDictionary>()
     var productDatas = Array<Array<NSDictionary>>()
     var productpriceArray: Array<Array<Int>> = []
-    var totalPrice: Int = 10000
+    var totalPrice: Int = 0
     var trades : Array<Array<Int>> = []
     
     override func viewDidLoad() {
@@ -106,20 +106,6 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         cartCollectionView.register(CartHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         cartCollectionView.register(CartFooterCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerId)
         cartCollectionView.backgroundColor = UIColor.white
-    
-        let btnPayment : UIButton = {
-            let btn = UIButton()
-            btn.backgroundColor = .black
-            btn.layer.cornerRadius = 3
-            btn.clipsToBounds = true
-            btn.translatesAutoresizingMaskIntoConstraints = false
-            btn.layer.cornerRadius = 3
-            btn.setTitle("총 \(String(totalPrice))원 구매하기", for: .normal)
-            btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
-            btn.setTitleColor(.white, for: .normal)
-            btn.addTarget(self, action: #selector(totalpayment), for: .touchUpInside)
-            return btn
-        }()
         
         self.view.addSubview(btnPayment)
         self.view.addSubview(cartCollectionView)
@@ -129,6 +115,20 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         btnPayment.widthAnchor.constraint(equalToConstant:screenWidth/defaultWidth * 339).isActive = true
         btnPayment.heightAnchor.constraint(equalToConstant:screenWidth/defaultWidth * 56).isActive = true
     }
+    
+    let btnPayment : UIButton = {
+        let btn = UIButton()
+        btn.backgroundColor = .black
+        btn.layer.cornerRadius = 3
+        btn.clipsToBounds = true
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.layer.cornerRadius = 3
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
+        btn.setTitleColor(.white, for: .normal)
+        btn.addTarget(self, action: #selector(totalpayment), for: .touchUpInside)
+        btn.setTitle("총 0원 구매하기", for: .normal)
+        return btn
+    }()
     
     
     func getData() {
@@ -195,6 +195,7 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             let productPrice = productInfoDic.object(forKey: "discounted_price") as! Int
             if count > indexPath.row {
                 productpriceArray[indexPath.section][indexPath.row] = productPrice
+                totalPrice = totalPrice + productPrice
             }
             let productSize = productInfoDic.object(forKey: "size") as! String
             let productImgDic = productInfoDic.object(forKey: "thumbnails") as! NSDictionary
@@ -256,6 +257,9 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                     footerView.productpriceInfoLabel.text = String(productPrice) + "원"
                     footerView.productdeliveryInfoLabel.text = String(delivery_charge) + "원"
                     footerView.btnPayment.setTitle("총 " + String(productPrice + delivery_charge)+"원 구매하기", for: .normal)
+                    // TODO :- 배송비 더하기~
+                    self.totalPrice = self.totalPrice + delivery_charge
+                    self.btnPayment.setTitle("총 \(String(self.totalPrice))원 구매하기", for: .normal)
                     footerView.btnPayment.tag = indexPath.section
                     footerView.btnPayment.addTarget(self, action: #selector(self.payment(_:)), for: .touchUpInside)
                 }

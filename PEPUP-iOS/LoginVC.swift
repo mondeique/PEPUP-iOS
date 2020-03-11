@@ -186,6 +186,7 @@ class LoginVC: UIViewController {
                         let token_ = response.object(forKey: "token") as! String
                         let token = token_name + token_
                         let pk = response.object(forKey: "pk") as! Int
+                        // TODO: - registerd field 받아서 저장
                         self.setCurrentPK(pk)
                         self.setCurrentLoginToken(token)
                         self.successAlert()

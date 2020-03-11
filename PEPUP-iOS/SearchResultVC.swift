@@ -169,7 +169,7 @@ class SearchResultVC: UIViewController, UICollectionViewDataSource, UICollection
         let productDic = self.productDatas[indexPath.row] as NSDictionary
         let imageDic = productDic.object(forKey: "images") as! NSDictionary
         let imageID = productDic.object(forKey: "id") as! Int
-        let ImageUrlString = imageDic.object(forKey: "image") as! String
+        let ImageUrlString = imageDic.object(forKey: "image_url") as! String
         let imageUrl:NSURL = NSURL(string: ImageUrlString)!
         let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
         let image = UIImage(data: imageData as Data)

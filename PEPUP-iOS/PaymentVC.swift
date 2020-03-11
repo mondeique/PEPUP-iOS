@@ -22,6 +22,8 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
     var ordertotalDatas : NSDictionary!
     var orderproductDic = Array<NSDictionary>()
     
+    var is_mountain : Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
@@ -95,11 +97,12 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         paymentLabel.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
         paymentLabel.centerXAnchor.constraint(equalTo: navcontentView.centerXAnchor).isActive = true
         
-        
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.itemSize = CGSize(width: screenWidth/defaultWidth * 375, height: screenWidth/defaultWidth * 80)
         layout.scrollDirection = .vertical
+        layout.headerReferenceSize = CGSize(width: screenWidth, height: UIScreen.main.bounds.height/667 * 60)
+        layout.footerReferenceSize = CGSize(width: screenWidth, height: UIScreen.main.bounds.height/667 * 62)
         
         paymentcollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight), collectionViewLayout: layout)
         paymentcollectionView.delegate = self
@@ -129,26 +132,6 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         
         scrollView.contentSize = CGSize(width: screenWidth, height: screenHeight/defaultHeight * 1300)
         scrollView.contentOffset = CGPoint(x: 0, y: 0)
-        
-        let contentView: UIView = {
-            let view = UIView()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.backgroundColor = .white
-            return view
-        }()
-        
-        let btnPayment: UIButton = {
-            let btn = UIButton()
-            btn.setTitle("결제하기", for: .normal)
-            btn.backgroundColor = .black
-            btn.setTitleColor(.white, for: .normal)
-            btn.translatesAutoresizingMaskIntoConstraints = false
-            btn.clipsToBounds = true
-            btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
-            btn.addTarget(self, action: #selector(payment), for: .touchUpInside)
-            btn.isHidden = false
-            return btn
-        }()
         
         self.view.addSubview(contentView)
         
@@ -457,7 +440,6 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
                 print("Request failed with error: \(error)")
             }
         }
-        
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -524,11 +506,12 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
             
         case UICollectionView.elementKindSectionFooter:
                 let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: footerId, for: indexPath) as! PaymentFooterCell
-//                let sellerDictionary = self.sellerDatas[indexPath.section] as NSDictionary
-//                let delivery_charge = payinfoDic.object(forKey: "delivery_charge") as! Int
-//                DispatchQueue.main.async {
-//                    footerView.productdeliveryInfoLabel.text = String(delivery_charge) + "원"
-//                }
+                let sellerDictionary = orderproductDic[indexPath.section] as! NSDictionary
+                let payinfoDic = sellerDictionary.object(forKey: "payinfo") as! NSDictionary
+                let delivery_charge = payinfoDic.object(forKey: "delivery_charge") as! Int
+                DispatchQueue.main.async {
+                    footerView.productdeliveryInfoLabel.text = String(delivery_charge) + "원"
+                }
                 return footerView
 
             default:
@@ -538,7 +521,7 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
     
     // cell size 설정
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: UIScreen.main.bounds.height/667 * 100)
+        return CGSize(width: collectionView.frame.width, height: UIScreen.main.bounds.height/667 * 80)
     }
     
     // item = cell 마다 space 설정
@@ -546,13 +529,6 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         return 0.0
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: UIScreen.main.bounds.height/667 * 60)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: UIScreen.main.bounds.height/667 * 62)
-    }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let currentText = textView.text ?? ""
@@ -573,6 +549,34 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
     }
     
     @objc func payment() {
+        guard let price = totalpaymentmoneyLabel.text else {
+            return
+        }
+        guard let memo = memoTextView.text else {
+            return
+        }
+        guard let address = deliveryaddressLabel.text else {
+            return
+        }
+        let parameters = [
+            "trades" : trades!,
+            "price" : Int(price)!,
+            "memo" : memo,
+            "address" : address,
+            "mountain" : is_mountain,
+            "application_id" : 3
+            ] as [String : Any]
+        print(parameters)
+        Alamofire.AF.request("\(Config.baseURL)/api/payment/get_payform/" , method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+            (response) in switch response.result {
+            case .success(let JSON):
+                let response = JSON as! NSDictionary
+                print(response)
+            case .failure(let error):
+                print("Request failed with error: \(error)")
+            }
+        }
+        
         print("TOUCH PAYMENT")
     }
     
@@ -582,20 +586,28 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         }
         else if sender.tag == 1 {
             sender.tag = 0
+            paymentcollectionView.isHidden = true
         }
         setup()
     }
     
     @objc func switchonoff() {
-        print("SWITCH ON!!")
+        if btnMountain.isOn == true {
+            is_mountain = true
+        }
+        else {
+            is_mountain = false
+        }
     }
     
     @objc func checkbox() {
         if btnAgree.currentImage == UIImage(named: "un_checkbox") {
             btnAgree.setImage(UIImage(named: "checkbox"), for: .normal)
+            btnPayment.isEnabled = true
         }
         else if btnAgree.currentImage == UIImage(named: "checkbox") {
             btnAgree.setImage(UIImage(named: "un_checkbox"), for: .normal)
+            btnPayment.isEnabled = false
         }
     }
     
@@ -608,6 +620,27 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         }
         setup()
     }
+    
+    let contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        return view
+    }()
+    
+    let btnPayment: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("결제하기", for: .normal)
+        btn.backgroundColor = .black
+        btn.setTitleColor(.white, for: .normal)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.clipsToBounds = true
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
+        btn.addTarget(self, action: #selector(payment), for: .touchUpInside)
+        btn.isHidden = false
+        btn.isEnabled = false
+        return btn
+    }()
     
     let orderproductcontentView : UIView = {
         let view = UIView()
@@ -703,25 +736,27 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         return label
     }()
     
-    let deliveryusernameLabel : UITextView = {
-        let txtView = UITextView()
+    let deliveryusernameLabel : TextField = {
+        let txtView = TextField()
         txtView.translatesAutoresizingMaskIntoConstraints = false
-        txtView.isEditable = true
+        txtView.placeholder = "이름"
         txtView.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
         txtView.textAlignment = .left
         txtView.backgroundColor = .white
         txtView.textColor = .black
+        txtView.borderStyle = .none
         return txtView
     }()
     
-    let deliveryphonenumLabel : UITextView = {
-        let txtView = UITextView()
+    let deliveryphonenumLabel : TextField = {
+        let txtView = TextField()
         txtView.translatesAutoresizingMaskIntoConstraints = false
-        txtView.isEditable = true
+        txtView.placeholder = "전화번호"
         txtView.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
         txtView.textAlignment = .left
         txtView.backgroundColor = .white
         txtView.textColor = .black
+        txtView.borderStyle = .none
         return txtView
     }()
     
@@ -733,6 +768,8 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         txtView.textAlignment = .left
         txtView.backgroundColor = .white
         txtView.textColor = .black
+        txtView.layer.borderWidth = 1.0
+        txtView.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         return txtView
     }()
     
@@ -783,8 +820,9 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
     let btnMemo : UIButton = {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("MEMODLALSDKALDKJ", for: .normal)
-        btn.backgroundColor = .red
+        btn.setTitle("배송메모입니다 고쳐주세요", for: .normal)
+        btn.backgroundColor = .white
+        btn.setTitleColor(.black, for: .normal)
         return btn
     }()
     
