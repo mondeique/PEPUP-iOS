@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyBootpay
 import Alamofire
 
 private let reuseIdentifier = "paymentcell"
@@ -14,6 +15,81 @@ private let headerId = "paymentheadercell"
 private let footerId = "paymentfootercell"
 
 class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextViewDelegate{
+    
+    var vc: BootpayController!
+    var payformData: NSDictionary!
+
+    func goBuy() {
+        // 통계정보를 위해 사용되는 정보
+        // 주문 정보에 담길 상품정보로 배열 형태로 add가 가능함
+//        let item1 = BootpayItem().params {
+//            $0.item_name = "B사 마스카라" // 주문정보에 담길 상품명
+//            $0.qty = 1 // 해당 상품의 주문 수량
+//            $0.unique = "123" // 해당 상품의 고유 키
+//            $0.price = 1000 // 상품의 가격
+//        }
+//        let item2 = BootpayItem().params {
+//            $0.item_name = "C사 셔츠" // 주문정보에 담길 상품명
+//            $0.qty = 1 // 해당 상품의 주문 수량
+//            $0.unique = "1234" // 해당 상품의 고유 키
+//            $0.price = 10000 // 상품의 가격
+//            $0.cat1 = "패션"
+//            $0.cat2 = "여성상의"
+//            $0.cat3 = "블라우스"
+//        }
+
+//        // 커스텀 변수로, 서버에서 해당 값을 그대로 리턴 받음
+//        let customParams: [String: String] = [
+//            "callbackParam1": "value12",
+//            "callbackParam2": "value34",
+//            "callbackParam3": "value56",
+//            "callbackParam4": "value78",
+//            ]
+        let payformDic = payformData.object(forKey: "payform") as! NSDictionary
+        let userInfoDic = payformDic.object(forKey: "user_info") as! NSDictionary
+        let order_id = payformDic.object(forKey: "order_id") as! Int
+        // 구매자 정보
+        let userInfo: [String: String] = [
+            "username": userInfoDic.object(forKey: "username") as! String,
+            "email": userInfoDic.object(forKey: "email") as! String,
+            "addr": userInfoDic.object(forKey: "addr") as! String,
+            "phone": userInfoDic.object(forKey: "phone") as! String
+        ]
+
+        // 구매자 정보
+        let bootUser = BootpayUser()
+        bootUser.params {
+            $0.username = userInfoDic.object(forKey: "username") as! String
+            $0.email = userInfoDic.object(forKey: "email") as! String
+            $0.area = userInfoDic.object(forKey: "addr") as! String // 사용자 주소
+            $0.phone = userInfoDic.object(forKey: "phone") as! String
+        }
+        
+        let payload = BootpayPayload()
+        payload.params {
+            $0.price = payformDic.object(forKey: "price") as! Double // 결제할 금액
+            $0.name = payformDic.object(forKey: "name") as! String // 결제할 상품명
+            $0.order_id = String(order_id) // 결제 고유번호
+//           $0.params = customParams // 커스텀 변수
+    //         $0.user_info = bootUser
+            $0.pg = BootpayPG.INICIS // 결제할 PG사
+            $0.method = BootpayMethod.CARD
+//           $0.ux = UX.PG_DIALOG
+           //            $0.account_expire_at = "2019-09-25" // 가상계좌 입금기간 제한 ( yyyy-mm-dd 포멧으로 입력해주세요. 가상계좌만 적용됩니다. 오늘 날짜보다 더 뒤(미래)여야 합니다 )
+           //            $0.method = "card" // 결제수단
+//           $0.show_agree_window = false
+        }
+
+//        let extra = BootpayExtra()
+//        extra.quotas = [0, 2, 3] // 5만원 이상일 경우 할부 허용범위 설정 가능, (예제는 일시불, 2개월 할부, 3개월 할부 허용)
+        
+//        var items = [BootpayItem]()
+//        items.append(item1)
+//        items.append(item2)
+
+//        Bootpay.request(self, sendable: self, payload: payload, user: bootUser, items: items, extra: extra, addView: true)
+        Bootpay.request(self, sendable: self, payload: payload, user: bootUser, addView: true)
+    }
     
     var paymentcollectionView : UICollectionView!
     var scrollView: UIScrollView!
@@ -571,13 +647,12 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
             (response) in switch response.result {
             case .success(let JSON):
                 let response = JSON as! NSDictionary
-                print(response)
+                self.payformData = response.object(forKey: "results") as! NSDictionary
+                self.goBuy()
             case .failure(let error):
                 print("Request failed with error: \(error)")
             }
         }
-        
-        print("TOUCH PAYMENT")
     }
     
     @objc func cellopen(_ sender: UIButton) {
@@ -989,4 +1064,70 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         return label
     }()
 
+}
+
+//MARK: Bootpay Callback Protocol
+extension PaymentVC: BootpayRequestProtocol {
+    // 에러가 났을때 호출되는 부분
+    func onError(data: [String: Any]) {
+        print(data)
+    }
+
+    // 가상계좌 입금 계좌번호가 발급되면 호출되는 함수입니다.
+    func onReady(data: [String: Any]) {
+        print("ready")
+        print(data)
+    }
+
+    // 결제가 진행되기 바로 직전 호출되는 함수로, 주로 재고처리 등의 로직이 수행
+    func onConfirm(data: [String: Any]) {
+        print(data)
+        let parameters = [
+        "receipt_id" : data["receipt_id"],
+        "order_id" : data["order_id"]
+        ] as [String : Any]
+        Alamofire.AF.request("\(Config.baseURL)/api/payment/confirm/" , method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+            (response) in switch response.result {
+            case .success(let JSON):
+                let response = JSON as! NSDictionary
+            case .failure(let error):
+                print("Request failed with error: \(error)")
+            }
+        }
+        var iWantPay = true
+        if iWantPay == true {  // 재고가 있을 경우.
+            Bootpay.transactionConfirm(data: data) // 결제 승인
+        } else { // 재고가 없어 중간에 결제창을 닫고 싶을 경우
+            Bootpay.dismiss() // 결제창 종료
+        }
+    }
+
+    // 결제 취소시 호출
+    func onCancel(data: [String: Any]) {
+        print(data)
+    }
+
+    // 결제완료시 호출
+    // 아이템 지급 등 데이터 동기화 로직을 수행합니다
+    func onDone(data: [String: Any]) {
+        print(data)
+        let parameters = [
+        "receipt_id" : data["receipt_id"],
+        "order_id" : data["order_id"]
+        ] as [String : Any]
+        Alamofire.AF.request("\(Config.baseURL)/api/payment/done/" , method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+            (response) in switch response.result {
+            case .success(let JSON):
+                print(JSON)
+            case .failure(let error):
+                print("Request failed with error: \(error)")
+            }
+        }
+    }
+
+    //결제창이 닫힐때 실행되는 부분
+    func onClose() {
+        print("close")
+        Bootpay.dismiss() // 결제창 종료
+    }
 }

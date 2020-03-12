@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import CoreData
+import SwiftyBootpay
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,7 +17,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
         sleep(3)
         
         if let token = UserDefaults.standard.object(forKey: "token") as? String {
@@ -61,7 +61,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Invalid TOKEN")
             self.loadLogin()
         }
+        Bootpay.sharedInstance.appLaunch(application_id: "5e05af1302f57e00219c40dc") // production sample
+        
         return true
+        
+    }
+    
+    func applicationWillResignActive(_ application: UIApplication) {
+        Bootpay.sharedInstance.sessionActive(active: false)
+    }
+
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        Bootpay.sharedInstance.sessionActive(active: true)
     }
     
     // MARK: Load RootViewController

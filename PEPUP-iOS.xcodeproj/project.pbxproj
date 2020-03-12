@@ -60,8 +60,8 @@
 		E9D111D424177E48006AE20C /* PaymentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111D324177E48006AE20C /* PaymentCell.swift */; };
 		E9D111D624177E74006AE20C /* PaymentHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111D524177E74006AE20C /* PaymentHeaderCell.swift */; };
 		E9D111D824177E91006AE20C /* PaymentFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111D724177E91006AE20C /* PaymentFooterCell.swift */; };
-		E9D111DC2418CE3C006AE20C /* SellSelectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111DB2418CE3C006AE20C /* SellSelectCell.swift */; };
 		E9D111DE2419409B006AE20C /* SellSelectVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111DD2419409B006AE20C /* SellSelectVC.swift */; };
+		E9D111E0241A65D6006AE20C /* BootPayVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111DF241A65D6006AE20C /* BootPayVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -122,8 +122,8 @@
 		E9D111D324177E48006AE20C /* PaymentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCell.swift; sourceTree = "<group>"; };
 		E9D111D524177E74006AE20C /* PaymentHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentHeaderCell.swift; sourceTree = "<group>"; };
 		E9D111D724177E91006AE20C /* PaymentFooterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentFooterCell.swift; sourceTree = "<group>"; };
-		E9D111DB2418CE3C006AE20C /* SellSelectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellSelectCell.swift; sourceTree = "<group>"; };
 		E9D111DD2419409B006AE20C /* SellSelectVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellSelectVC.swift; sourceTree = "<group>"; };
+		E9D111DF241A65D6006AE20C /* BootPayVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BootPayVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,12 +225,12 @@
 				E9D111D324177E48006AE20C /* PaymentCell.swift */,
 				E9D111D524177E74006AE20C /* PaymentHeaderCell.swift */,
 				E9D111D724177E91006AE20C /* PaymentFooterCell.swift */,
-				E9D111D12416A7CC006AE20C /* SellVC.swift */,
 				E9D111DD2419409B006AE20C /* SellSelectVC.swift */,
-				E9D111DB2418CE3C006AE20C /* SellSelectCell.swift */,
+				E9D111D12416A7CC006AE20C /* SellVC.swift */,
 				E9D07A4223E2B1110095AD05 /* NotiVC.swift */,
 				E968FF0523F13FE600B2B1D3 /* MessageVC.swift */,
 				E9D111CF2410D64C006AE20C /* FilterVC.swift */,
+				E9D111DF241A65D6006AE20C /* BootPayVC.swift */,
 			);
 			path = "PEPUP-iOS";
 			sourceTree = "<group>";
@@ -364,7 +364,6 @@
 				E9D111D424177E48006AE20C /* PaymentCell.swift in Sources */,
 				E9D111B2240E15CF006AE20C /* SearchCell.swift in Sources */,
 				E94D142623E82A570001F3A0 /* FindIdVC.swift in Sources */,
-				E9D111DC2418CE3C006AE20C /* SellSelectCell.swift in Sources */,
 				E968FF1623F51D4A00B2B1D3 /* CartHeaderCell.swift in Sources */,
 				E9D111CE2410C316006AE20C /* PaymentVC.swift in Sources */,
 				E9C8468723E1A77300359A93 /* TabBarController.swift in Sources */,
@@ -385,6 +384,7 @@
 				E9D111A824083D64006AE20C /* FollowHeaderCell.swift in Sources */,
 				E9D07A4323E2B1110095AD05 /* NotiVC.swift in Sources */,
 				E9D111CC240FF83A006AE20C /* SettingVC.swift in Sources */,
+				E9D111E0241A65D6006AE20C /* BootPayVC.swift in Sources */,
 				E9D111D02410D64C006AE20C /* FilterVC.swift in Sources */,
 				E968FF0623F13FE600B2B1D3 /* MessageVC.swift in Sources */,
 				E9D1119424036B43006AE20C /* StoreVC.swift in Sources */,
