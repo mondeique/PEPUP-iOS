@@ -16,17 +16,19 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     var imageData: Array<UIImage?> = []
     var sellproductcollectionView : UICollectionView!
     var scrollView: UIScrollView!
+    var brand: String!
+    var category: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        setup()
+        setinfo()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
         self.tabBarController?.tabBar.isHidden = true
-        setup()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -34,7 +36,6 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         self.navigationController?.navigationBar.isHidden = false
         self.tabBarController?.tabBar.isHidden = true
         self.tabBarController?.tabBar.isTranslucent = true
-        imageData = []
     }
     
     func setup() {
@@ -162,10 +163,11 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
 //        categoryLabel.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 339).isActive = true
         categoryLabel.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 20).isActive = true
         
-        categoryRealLabel.rightAnchor.constraint(equalTo: scrollView.rightAnchor, constant: screenWidth/defaultWidth * -44).isActive = true
+        categoryRealLabel.rightAnchor.constraint(equalTo: categoryLabel.leftAnchor, constant: screenWidth/defaultWidth * 313).isActive = true
         categoryRealLabel.topAnchor.constraint(equalTo: productDetailtxtView.bottomAnchor, constant: screenHeight/defaultHeight * 34).isActive = true
 //        categoryRealLabel.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 339).isActive = true
         categoryRealLabel.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 20).isActive = true
+        
         
         btnCategoryGO.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: screenWidth/defaultWidth * 347).isActive = true
         btnCategoryGO.topAnchor.constraint(equalTo: productDetailtxtView.bottomAnchor, constant: screenHeight/defaultHeight * 36).isActive = true
@@ -182,7 +184,7 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
 //        sizeLabel.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 339).isActive = true
         sizeLabel.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 20).isActive = true
         
-        sizeRealLabel.rightAnchor.constraint(equalTo: scrollView.rightAnchor, constant: screenWidth/defaultWidth * -44).isActive = true
+        sizeRealLabel.rightAnchor.constraint(equalTo: sizeLabel.leftAnchor, constant: screenWidth/defaultWidth * 313).isActive = true
         sizeRealLabel.topAnchor.constraint(equalTo: lineLabel1.bottomAnchor, constant: screenHeight/defaultHeight * 17).isActive = true
 //        sizeRealLabel.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 339).isActive = true
         sizeRealLabel.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 20).isActive = true
@@ -202,7 +204,7 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
 //        brandLabel.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 339).isActive = true
         brandLabel.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 20).isActive = true
         
-        brandRealLabel.rightAnchor.constraint(equalTo: scrollView.rightAnchor, constant: screenWidth/defaultWidth * -44).isActive = true
+        brandRealLabel.rightAnchor.constraint(equalTo: brandLabel.leftAnchor, constant: screenWidth/defaultWidth * 313).isActive = true
         brandRealLabel.topAnchor.constraint(equalTo: lineLabel2.bottomAnchor, constant: screenHeight/defaultHeight * 17).isActive = true
 //        brandRealLabel.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 339).isActive = true
         brandRealLabel.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 20).isActive = true
@@ -242,20 +244,31 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         btnUpload.centerYAnchor.constraint(equalTo: bottomcontentView.centerYAnchor).isActive = true
     }
     
+    func setinfo() {
+        categoryRealLabel.text = category
+        brandRealLabel.text = brand
+    }
+    
     @objc func back() {
-        self.navigationController?.popViewController(animated: true)
+        imageData = []
+        sellproductcollectionView.reloadData()
+        let nextVC = SellSelectVC()
+        self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
     @objc func categorygo() {
-        print("CATEGORY")
+        let nextVC = SellCategoryGenderVC()
+        self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
     @objc func sizego() {
-        print("SIZE")
+        let nextVC = SellCategorySizeVC()
+        self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
     @objc func brandgo() {
-        print("BRAND")
+        let nextVC = SellCategoryBrandVC()
+        self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -264,7 +277,7 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! SellCell
-        cell.productImageView.image = imageData[indexPath.row] as! UIImage
+        cell.productImageView.image = imageData[indexPath.row]!
         return cell
     }
     
@@ -593,6 +606,10 @@ class SellCell: BaseCollectionViewCell {
         productImageView.widthAnchor.constraint(equalTo: cellcontentView.widthAnchor).isActive = true
         productImageView.heightAnchor.constraint(equalTo: cellcontentView.heightAnchor).isActive = true
         
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
     }
     
     let cellcontentView: UIView = {

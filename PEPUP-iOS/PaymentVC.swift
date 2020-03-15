@@ -45,9 +45,8 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
 //            "callbackParam3": "value56",
 //            "callbackParam4": "value78",
 //            ]
-        let payformDic = payformData.object(forKey: "payform") as! NSDictionary
-        let userInfoDic = payformDic.object(forKey: "user_info") as! NSDictionary
-        let order_id = payformDic.object(forKey: "order_id") as! Int
+        let userInfoDic = payformData.object(forKey: "user_info") as! NSDictionary
+        let order_id = payformData.object(forKey: "order_id") as! Int
         // 구매자 정보
         let userInfo: [String: String] = [
             "username": userInfoDic.object(forKey: "username") as! String,
@@ -67,8 +66,8 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         
         let payload = BootpayPayload()
         payload.params {
-            $0.price = payformDic.object(forKey: "price") as! Double // 결제할 금액
-            $0.name = payformDic.object(forKey: "name") as! String // 결제할 상품명
+            $0.price = payformData.object(forKey: "price") as! Double // 결제할 금액
+            $0.name = payformData.object(forKey: "name") as! String // 결제할 상품명
             $0.order_id = String(order_id) // 결제 고유번호
 //           $0.params = customParams // 커스텀 변수
     //         $0.user_info = bootUser

@@ -300,7 +300,7 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     
     // cell size 설정
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 100)
+        return CGSize(width: collectionView.frame.width, height: UIScreen.main.bounds.height/667 * 100)
     }
     
     // item = cell 마다 space 설정
