@@ -16,16 +16,14 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     var imageData: Array<UIImage?> = []
     var sellproductcollectionView : UICollectionView!
     var scrollView: UIScrollView!
-    var brand: String!
-    var category: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        setinfo()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        setinfo()
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
         self.tabBarController?.tabBar.isHidden = true
@@ -168,7 +166,6 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
 //        categoryRealLabel.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 339).isActive = true
         categoryRealLabel.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 20).isActive = true
         
-        
         btnCategoryGO.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: screenWidth/defaultWidth * 347).isActive = true
         btnCategoryGO.topAnchor.constraint(equalTo: productDetailtxtView.bottomAnchor, constant: screenHeight/defaultHeight * 36).isActive = true
         btnCategoryGO.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 10).isActive = true
@@ -245,8 +242,13 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     }
     
     func setinfo() {
-        categoryRealLabel.text = category
-        brandRealLabel.text = brand
+        if UserDefaults.standard.object(forKey: "second_category") != nil {
+            categoryRealLabel.text = UserDefaults.standard.object(forKey: "second_category") as? String
+        }
+        
+        if UserDefaults.standard.object(forKey: "brand") != nil {
+            brandRealLabel.text = UserDefaults.standard.object(forKey: "brand") as? String
+        }
     }
     
     @objc func back() {

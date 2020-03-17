@@ -30,6 +30,8 @@ class SellSelectVC: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        UserDefaults.standard.set("", forKey: "second_category")
+        UserDefaults.standard.set("", forKey: "brand")
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
         self.tabBarController?.tabBar.isHidden = true

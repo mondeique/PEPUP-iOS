@@ -115,6 +115,7 @@ class SellCategoryFirstVC: UIViewController, UICollectionViewDelegateFlowLayout,
         let nextVC = SellCategorySecondVC()
         nextVC.Myid = sender.tag
         navigationController?.pushViewController(nextVC, animated: true)
+        UserDefaults.standard.set(Myid, forKey: "first_category")
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {

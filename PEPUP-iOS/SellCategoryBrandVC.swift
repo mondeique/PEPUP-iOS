@@ -144,7 +144,7 @@ class SellCategoryBrandVC: UIViewController, UITableViewDelegate, UITableViewDat
         let nextVC = SellVC()
         let brandDic = brand_result[indexPath.row]
         let name = brandDic.object(forKey: "name") as! String
-        nextVC.brand = name
+        UserDefaults.standard.set(name, forKey: "brand")
         navigationController?.pushViewController(nextVC, animated: true)
     }
     

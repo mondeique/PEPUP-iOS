@@ -131,7 +131,7 @@ class SellCategorySecondVC: UIViewController, UICollectionViewDelegateFlowLayout
         let secondDictionary = self.secondcategoryArray[indexPath.row] as NSDictionary
         let name = secondDictionary.object(forKey: "name") as! String
         let nextVC = SellVC()
-        nextVC.category = name
+        UserDefaults.standard.set(name, forKey: "second_category")
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
