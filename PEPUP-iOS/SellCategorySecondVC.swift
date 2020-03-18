@@ -1,5 +1,5 @@
 //
-//  SellCategoryGenderVC.swift
+//  SellCategorySecondVC.swift
 //  PEPUP-iOS
 //
 //  Created by Eren-shin on 2020/03/15.
@@ -130,9 +130,11 @@ class SellCategorySecondVC: UIViewController, UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let secondDictionary = self.secondcategoryArray[indexPath.row] as NSDictionary
         let name = secondDictionary.object(forKey: "name") as! String
-        let nextVC = SellVC()
+        let id  = secondDictionary.object(forKey: "id") as! Int
         UserDefaults.standard.set(name, forKey: "second_category")
-        navigationController?.pushViewController(nextVC, animated: true)
+        UserDefaults.standard.set(id, forKey: "second_category_id")
+        let controller = self.navigationController?.viewControllers[(self.navigationController?.viewControllers.count)! - 4]
+        self.navigationController?.popToViewController(controller!, animated: true)
     }
     
     // cell size 설정

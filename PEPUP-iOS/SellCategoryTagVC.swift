@@ -1,8 +1,8 @@
 //
-//  SellCategoryBrand.swift
+//  SellCategoryTagVC.swift
 //  PEPUP-iOS
 //
-//  Created by Eren-shin on 2020/01/30.
+//  Created by Eren-shin on 2020/03/17.
 //  Copyright © 2020 Mondeique. All rights reserved.
 //
 
@@ -11,15 +11,14 @@ import Alamofire
 
 private let cellID = "tablecell"
 
-class SellCategoryBrandVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+class SellCategoryTagVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
     var searchTableView : UITableView!
-    var brand_result = Array<NSDictionary>()
+    var tag_result = Array<NSDictionary>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        getData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -46,14 +45,14 @@ class SellCategoryBrandVC: UIViewController, UITableViewDelegate, UITableViewDat
         let navBarHeight: CGFloat! = navigationController?.navigationBar.frame.height
 
         navcontentView.addSubview(btnBack)
-        navcontentView.addSubview(BrandLabel)
+        navcontentView.addSubview(tagLabel)
+        navcontentView.addSubview(btnNext)
         
-        
-        searchBar.delegate = self
-
         self.view.addSubview(navcontentView)
         
+        searchBar.delegate = self
         self.view.addSubview(searchBar)
+        self.view.addSubview(tagView)
 
         navcontentView.topAnchor.constraint(equalTo: view.topAnchor, constant: screenHeight/defaultHeight * statusBarHeight).isActive = true
         navcontentView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
@@ -65,14 +64,24 @@ class SellCategoryBrandVC: UIViewController, UITableViewDelegate, UITableViewDat
         btnBack.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 10).isActive = true
         btnBack.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 16).isActive = true
         
-        BrandLabel.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
-        BrandLabel.centerXAnchor.constraint(equalTo: navcontentView.centerXAnchor).isActive = true
+        tagLabel.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
+        tagLabel.centerXAnchor.constraint(equalTo: navcontentView.centerXAnchor).isActive = true
+        
+        btnNext.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
+        btnNext.rightAnchor.constraint(equalTo: navcontentView.rightAnchor, constant: screenWidth/defaultWidth * -18).isActive = true
+        btnNext.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 20).isActive = true
+        btnNext.heightAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 20).isActive = true
         
         searchBar.topAnchor.constraint(equalTo: navcontentView.bottomAnchor, constant: screenHeight/defaultHeight * 2).isActive = true
         searchBar.leftAnchor.constraint(equalTo: view.leftAnchor, constant: screenWidth/defaultWidth * 18).isActive = true
         searchBar.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 339).isActive = true
         searchBar.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 40).isActive = true
         searchBar.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
+        tagView.topAnchor.constraint(equalTo: searchBar.bottomAnchor).isActive = true
+        tagView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        tagView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
+        tagView.heightAnchor.constraint(equalToConstant: 0).isActive = true
         
         searchTableView = UITableView(frame: CGRect(x: 0, y: statusBarHeight + navBarHeight, width: screenWidth, height: screenHeight - statusBarHeight - navBarHeight), style: .plain)
         
@@ -83,42 +92,25 @@ class SellCategoryBrandVC: UIViewController, UITableViewDelegate, UITableViewDat
         searchTableView.dataSource = self
         searchTableView.separatorStyle = .none
 
-        searchTableView.register(SearchBrandCell.self, forCellReuseIdentifier: cellID)
+        searchTableView.register(SearchTagCell.self, forCellReuseIdentifier: cellID)
         
         searchTableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        searchTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor).isActive = true
+        searchTableView.topAnchor.constraint(equalTo: tagView.bottomAnchor).isActive = true
         searchTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         searchTableView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
-    }
-    
-    func getData() {
-        Alamofire.AF.request("\(Config.baseURL)/api/brand/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-            (response) in switch response.result {
-            case .success(let JSON):
-                let response = JSON as! Array<NSDictionary>
-                for i in 0..<response.count {
-                    self.brand_result.append(response[i])
-                }
-                DispatchQueue.main.async {
-                    self.searchTableView.reloadData()
-                }
-            case .failure(let error):
-                print("Request failed with error: \(error)")
-            }
-        }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         let parameters = [
             "keyword": searchText
         ]
-        Alamofire.AF.request("\(Config.baseURL)/api/brand/searching/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+        Alamofire.AF.request("\(Config.baseURL)/api/tag/searching/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
             (response) in switch response.result {
             case .success(let JSON):
                 let response = JSON as! Array<NSDictionary>
-                self.brand_result = []
+                self.tag_result = []
                  for i in 0..<response.count {
-                    self.brand_result.append(response[i])
+                    self.tag_result.append(response[i])
                 }
                 DispatchQueue.main.async {
                     self.searchTableView.reloadData()
@@ -127,6 +119,9 @@ class SellCategoryBrandVC: UIViewController, UITableViewDelegate, UITableViewDat
                 print("Request failed with error: \(error)")
             }
         }
+    }
+    
+    func addTagLabel() {
     }
     
     //MARK: - TableView
@@ -136,23 +131,22 @@ class SellCategoryBrandVC: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.brand_result.count
+        return self.tag_result.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! SearchBrandCell
-        let brandDic = brand_result[indexPath.row]
-        let name = brandDic.object(forKey: "name") as! String
-        cell.brandLabel.text = name
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! SearchTagCell
+        let brandDic = tag_result[indexPath.row]
+        let tag = brandDic.object(forKey: "tag") as! String
+        cell.tagLabel.text = tag
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let brandDic = brand_result[indexPath.row]
-        let name = brandDic.object(forKey: "name") as! String
-        let id = brandDic.object(forKey: "id") as! Int
-        UserDefaults.standard.set(name, forKey: "brand")
-        UserDefaults.standard.set(id, forKey: "brand_id")
+//        self.addTagLabel()
+        let tagDic = tag_result[indexPath.row]
+        let name = tagDic.object(forKey: "tag") as! String
+        UserDefaults.standard.set(name, forKey: "tag")
         let controller = self.navigationController?.viewControllers[(self.navigationController?.viewControllers.count)! - 2]
         self.navigationController?.popToViewController(controller!, animated: true)
     }
@@ -165,6 +159,11 @@ class SellCategoryBrandVC: UIViewController, UITableViewDelegate, UITableViewDat
     
     @objc func back() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func ok() {
+        let controller = self.navigationController?.viewControllers[(self.navigationController?.viewControllers.count)! - 2]
+        self.navigationController?.popToViewController(controller!, animated: true)
     }
     
     //MARK: - Outlets
@@ -184,14 +183,22 @@ class SellCategoryBrandVC: UIViewController, UITableViewDelegate, UITableViewDat
         return btn
     }()
     
-    let BrandLabel: UILabel = {
+    let tagLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-Heavy", size: 17)
         label.textColor = .black
-        label.text = "B R A N D"
+        label.text = "T A G"
         label.textAlignment = .center
         return label
+    }()
+    
+    let btnNext: UIButton = {
+        let btn = UIButton()
+        btn.setImage(UIImage(named: "OK"), for: .normal)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(ok), for: .touchUpInside)
+        return btn
     }()
     
     let searchBar: UISearchBar = {
@@ -205,13 +212,19 @@ class SellCategoryBrandVC: UIViewController, UITableViewDelegate, UITableViewDat
         searchBar.clipsToBounds = true
         return searchBar
     }()
+    
+    let tagView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        return view
+    }()
 }
 
-class SearchBrandCell: UITableViewCell {
+class SearchTagCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -223,23 +236,23 @@ class SearchBrandCell: UITableViewCell {
         backgroundColor = .white
         addSubview(cellcontentView)
         
-        cellcontentView.addSubview(brandLabel)
-        cellcontentView.addSubview(lineLabel)
+        cellcontentView.addSubview(tagLabel)
+//        cellcontentView.addSubview(lineLabel)
         
         cellcontentView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         cellcontentView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         cellcontentView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         cellcontentView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
         
-        brandLabel.leftAnchor.constraint(equalTo: cellcontentView.leftAnchor, constant: UIScreen.main.bounds.width/375 * 18).isActive = true
-        brandLabel.topAnchor.constraint(equalTo: cellcontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 18).isActive = true
-//        brandLabel.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-        brandLabel.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 20).isActive = true
+        tagLabel.leftAnchor.constraint(equalTo: cellcontentView.leftAnchor, constant: UIScreen.main.bounds.width/375 * 18).isActive = true
+        tagLabel.topAnchor.constraint(equalTo: cellcontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 18).isActive = true
+//        tagLabel.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        tagLabel.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 20).isActive = true
         
-        lineLabel.leftAnchor.constraint(equalTo: cellcontentView.leftAnchor, constant: UIScreen.main.bounds.width/375 * 18).isActive = true
-        lineLabel.bottomAnchor.constraint(equalTo: cellcontentView.bottomAnchor).isActive = true
-        lineLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 339).isActive = true
-        lineLabel.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 1).isActive = true
+//        lineLabel.leftAnchor.constraint(equalTo: cellcontentView.leftAnchor, constant: UIScreen.main.bounds.width/375 * 18).isActive = true
+//        lineLabel.bottomAnchor.constraint(equalTo: cellcontentView.bottomAnchor).isActive = true
+//        lineLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 339).isActive = true
+//        lineLabel.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 1).isActive = true
         
     }
     
@@ -254,7 +267,7 @@ class SearchBrandCell: UITableViewCell {
         return view
     }()
     
-    let brandLabel : UILabel = {
+    let tagLabel : UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
@@ -262,11 +275,10 @@ class SearchBrandCell: UITableViewCell {
         return label
     }()
     
-    let lineLabel : UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = UIColor(rgb: 0xEBEBF6)
-        return label
-    }()
+//    let lineLabel : UILabel = {
+//        let label = UILabel()
+//        label.translatesAutoresizingMaskIntoConstraints = false
+//        label.backgroundColor = UIColor(rgb: 0xEBEBF6)
+//        return label
+//    }()
 }
-    

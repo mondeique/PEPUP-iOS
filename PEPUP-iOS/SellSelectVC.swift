@@ -31,6 +31,7 @@ class SellSelectVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         UserDefaults.standard.set("", forKey: "second_category")
+        UserDefaults.standard.set("", forKey: "size")
         UserDefaults.standard.set("", forKey: "brand")
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
@@ -182,7 +183,7 @@ class SellSelectVC: UIViewController {
 extension SellSelectVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.allPhotos.count ?? 0
+        return self.allPhotos.count 
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

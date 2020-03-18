@@ -1,5 +1,5 @@
 //
-//  SellCategoryGenderVC.swift
+//  SellCategorySizeVC.swift
 //  PEPUP-iOS
 //
 //  Created by Eren-shin on 2020/03/15.
@@ -15,7 +15,7 @@ class SellCategorySizeVC: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     var sellsizecollectionView: UICollectionView!
     var sizeArray: Array<NSDictionary>! = []
-    var Myid : Int!
+    var Myid : Int! = UserDefaults.standard.object(forKey: "first_category") as? Int
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,7 +77,7 @@ class SellCategorySizeVC: UIViewController, UICollectionViewDelegateFlowLayout, 
         sellsizecollectionView = UICollectionView(frame: CGRect(x: 0, y: statusBarHeight + navBarHeight, width: view.frame.width, height: screenHeight), collectionViewLayout: layout)
         sellsizecollectionView.delegate = self
         sellsizecollectionView.dataSource = self
-        sellsizecollectionView.register(SellCategorySecondCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        sellsizecollectionView.register(SellSizeCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         sellsizecollectionView.backgroundColor = UIColor.white
         sellsizecollectionView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -123,16 +123,18 @@ class SellCategorySizeVC: UIViewController, UICollectionViewDelegateFlowLayout, 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! SellSizeCell
         let sizeDic = self.sizeArray[indexPath.row] as NSDictionary
         let name = sizeDic.object(forKey: "name") as! String
-        cell.categoryLabel.text = name
+        cell.sizeLabel.text = name
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let sizeDictionary = self.sizeArray[indexPath.row] as NSDictionary
         let name = sizeDictionary.object(forKey: "name") as! String
-        let nextVC = SellVC()
-//        nextVC.size = name
-        navigationController?.pushViewController(nextVC, animated: true)
+        let id = sizeDictionary.object(forKey: "id") as! Int
+        UserDefaults.standard.set(name, forKey: "size")
+        UserDefaults.standard.set(id, forKey: "size_id")
+        let controller = self.navigationController?.viewControllers[(self.navigationController?.viewControllers.count)! - 2]
+        self.navigationController?.popToViewController(controller!, animated: true)
     }
     
     // cell size 설정
@@ -170,7 +172,7 @@ class SellCategorySizeVC: UIViewController, UICollectionViewDelegateFlowLayout, 
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-Heavy", size: 17)
         label.textColor = .black
-        label.text = "C A T E G O R Y"
+        label.text = "S I Z E"
         label.textAlignment = .center
         return label
     }()
@@ -186,12 +188,12 @@ class SellCategorySizeVC: UIViewController, UICollectionViewDelegateFlowLayout, 
 class SellSizeCell : BaseCollectionViewCell {
     override func setup() {
         backgroundColor = .white
-        sellsizecontentView.addSubview(categoryLabel)
+        sellsizecontentView.addSubview(sizeLabel)
         sellsizecontentView.addSubview(lineLabel)
         self.addSubview(sellsizecontentView)
 
         sellsizecontentViewLayout()
-        categoryLabelLayout()
+        sizeLabelLayout()
         lineLabelLayout()
     }
     
@@ -202,7 +204,7 @@ class SellSizeCell : BaseCollectionViewCell {
         return view
     }()
 
-    let categoryLabel: UILabel = {
+    let sizeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -224,11 +226,11 @@ class SellSizeCell : BaseCollectionViewCell {
         sellsizecontentView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
     }
 
-    func categoryLabelLayout() {
-        categoryLabel.leftAnchor.constraint(equalTo:sellsizecontentView.leftAnchor, constant: UIScreen.main.bounds.width/375 * 18).isActive = true
-        categoryLabel.topAnchor.constraint(equalTo:sellsizecontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 18).isActive = true
-        categoryLabel.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 20).isActive = true
-        categoryLabel.centerYAnchor.constraint(equalTo:sellsizecontentView.centerYAnchor).isActive = true
+    func sizeLabelLayout() {
+        sizeLabel.leftAnchor.constraint(equalTo:sellsizecontentView.leftAnchor, constant: UIScreen.main.bounds.width/375 * 18).isActive = true
+        sizeLabel.topAnchor.constraint(equalTo:sellsizecontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 18).isActive = true
+        sizeLabel.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 20).isActive = true
+        sizeLabel.centerYAnchor.constraint(equalTo:sellsizecontentView.centerYAnchor).isActive = true
     }
     
     func lineLabelLayout() {

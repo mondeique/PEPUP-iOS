@@ -66,6 +66,7 @@
 		E9D111E6241E25AC006AE20C /* SellCategorySecondVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111E5241E25AC006AE20C /* SellCategorySecondVC.swift */; };
 		E9D111E8241E2B04006AE20C /* SellCategorySizeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111E7241E2B04006AE20C /* SellCategorySizeVC.swift */; };
 		E9D111EA241E2F53006AE20C /* SellCategoryBrandVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111E9241E2F53006AE20C /* SellCategoryBrandVC.swift */; };
+		E9D111EE24207C79006AE20C /* SellCategoryTagVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D111ED24207C78006AE20C /* SellCategoryTagVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -132,6 +133,7 @@
 		E9D111E5241E25AC006AE20C /* SellCategorySecondVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellCategorySecondVC.swift; sourceTree = "<group>"; };
 		E9D111E7241E2B04006AE20C /* SellCategorySizeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellCategorySizeVC.swift; sourceTree = "<group>"; };
 		E9D111E9241E2F53006AE20C /* SellCategoryBrandVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellCategoryBrandVC.swift; sourceTree = "<group>"; };
+		E9D111ED24207C78006AE20C /* SellCategoryTagVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellCategoryTagVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -239,6 +241,7 @@
 				E9D111E5241E25AC006AE20C /* SellCategorySecondVC.swift */,
 				E9D111E7241E2B04006AE20C /* SellCategorySizeVC.swift */,
 				E9D111E9241E2F53006AE20C /* SellCategoryBrandVC.swift */,
+				E9D111ED24207C78006AE20C /* SellCategoryTagVC.swift */,
 				E968FF0523F13FE600B2B1D3 /* MessageVC.swift */,
 				E9D111CB240FF83A006AE20C /* SettingVC.swift */,
 				E9D07A4223E2B1110095AD05 /* NotiVC.swift */,
@@ -407,6 +410,7 @@
 				E932135323E1B9D800503CA8 /* HomeCell.swift in Sources */,
 				E968FF0423EC478200B2B1D3 /* Config.swift in Sources */,
 				E968FF1423F513BB00B2B1D3 /* CartCell.swift in Sources */,
+				E9D111EE24207C79006AE20C /* SellCategoryTagVC.swift in Sources */,
 				E9D111E6241E25AC006AE20C /* SellCategorySecondVC.swift in Sources */,
 				E932135D23E26FC400503CA8 /* FollowCell.swift in Sources */,
 				E9D111C6240FEFED006AE20C /* MyStoreVC.swift in Sources */,

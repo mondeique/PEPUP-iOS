@@ -226,6 +226,10 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         tagtxtView.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 339).isActive = true
         tagtxtView.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 84).isActive = true
         
+        let tapOutTextField: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(taggo))
+        
+        tagtxtView.addGestureRecognizer(tapOutTextField)
+        
         self.view.addSubview(bottomcontentView)
         
         bottomcontentView.addSubview(btnUpload)
@@ -246,8 +250,15 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             categoryRealLabel.text = UserDefaults.standard.object(forKey: "second_category") as? String
         }
         
+        if UserDefaults.standard.object(forKey: "size") != nil {
+            sizeRealLabel.text = UserDefaults.standard.object(forKey: "size") as? String
+        }
+        
         if UserDefaults.standard.object(forKey: "brand") != nil {
             brandRealLabel.text = UserDefaults.standard.object(forKey: "brand") as? String
+        }
+        if UserDefaults.standard.object(forKey: "tag") != nil {
+            tagtxtView.text = UserDefaults.standard.object(forKey: "tag") as? String
         }
     }
     
@@ -271,6 +282,92 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     @objc func brandgo() {
         let nextVC = SellCategoryBrandVC()
         self.navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    @objc func taggo() {
+        let nextVC = SellCategoryTagVC()
+        self.navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    @objc func upload() {
+        var keyArray: Array<String> = []
+        for i in 0..<imageData.count {
+            Alamofire.AF.request("\(Config.baseURL)/api/s3/temp_key/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+                (response) in switch response.result {
+                case .success(let JSON):
+                    print("SUCESS TEMP KEY! \(JSON)")
+                    let response = JSON as! NSDictionary
+                    let url = response.object(forKey: "url") as! String
+                    let image_key = response.object(forKey: "image_key") as! String
+                    let key = response.object(forKey: "key") as! String
+                    if let imageData = (self.imageData[i]!).jpegData(compressionQuality: 0.30)
+                    {
+                        let strBase64:String = imageData.base64EncodedString(options: .lineLength64Characters)
+                        let parameters = [
+                            "key" : image_key,
+                            "file" : strBase64
+                        ]
+                        Alamofire.AF.request("\(url)", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+                            (response) in switch response.result {
+                            case .success(let JSON):
+                                print("SUCESS TEMP KEY! \(JSON)")
+                                keyArray.append(key)
+                                
+                            case .failure(let error):
+                                print("Request failed with error: \(error)")
+                            }
+                        }
+                    }
+                    
+                case .failure(let error):
+                    print("Request failed with error: \(error)")
+                }
+            }
+        }
+        guard let name = productNameLabel.text else {
+            return
+        }
+        guard let price = productPriceLabel.text else {
+            return
+        }
+        guard let content = productDetailLabel.text else {
+            return
+        }
+        guard let first_category = UserDefaults.standard.object(forKey: "first_category") else {
+            return
+        }
+        guard let second_category = UserDefaults.standard.object(forKey: "second_category_id") else {
+            return
+        }
+        guard let size = UserDefaults.standard.object(forKey: "size_id") else {
+            return
+        }
+        guard let brand = UserDefaults.standard.object(forKey: "brand_id") else {
+            return
+        }
+        guard let tag = UserDefaults.standard.object(forKey: "tag") else {
+            return
+        }
+        let parameters = [
+            "image_key" : keyArray,
+            "name" : name,
+            "price" : Int(price) ?? 0,
+            "content" : content,
+            "first_category" : first_category,
+            "second_category" : second_category,
+            "size" : size,
+            "brand" : brand,
+            "tag" : [tag]
+        ]
+        Alamofire.AF.request("\(Config.baseURL)/api/products/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+            (response) in switch response.result {
+            case .success(let JSON):
+                print("SUCESS UPLOAD! \(JSON)")
+                
+            case .failure(let error):
+                print("Request failed with error: \(error)")
+            }
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -335,10 +432,11 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         txtView.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
         txtView.textAlignment = .left
         txtView.backgroundColor = .white
-        txtView.textColor = .black
         txtView.layer.borderWidth = 1
         txtView.layer.cornerRadius = 3
         txtView.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
+        txtView.textColor = UIColor(rgb: 0xEBEBF6)
+        txtView.text = "상품명을 입력해주세요"
         return txtView
     }()
     
@@ -359,10 +457,11 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         txtView.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
         txtView.textAlignment = .left
         txtView.backgroundColor = .white
-        txtView.textColor = .black
         txtView.layer.borderWidth = 1
         txtView.layer.cornerRadius = 3
         txtView.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
+        txtView.textColor = UIColor(rgb: 0xEBEBF6)
+        txtView.text = "가격을 입력해주세요(원 단위)"
         return txtView
     }()
     
@@ -383,10 +482,11 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         txtView.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
         txtView.textAlignment = .left
         txtView.backgroundColor = .white
-        txtView.textColor = .black
         txtView.layer.borderWidth = 1
         txtView.layer.cornerRadius = 3
         txtView.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
+        txtView.textColor = UIColor(rgb: 0xEBEBF6)
+        txtView.text = "상세설명을 입력해주세요"
         return txtView
     }()
     
@@ -536,6 +636,7 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         btn.setTitle("업로드 하기", for: .normal)
         btn.backgroundColor = .black
         btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
+        btn.addTarget(self, action: #selector(upload), for: .touchUpInside)
         return btn
     }()
 }
@@ -578,12 +679,12 @@ extension SellVC: UITextViewDelegate {
             productPricetxtView.text = "가격을 입력해주세요(원 단위)"
             productPricetxtView.textColor = UIColor(rgb: 0xEBEBF6)
         }
-        if productDetailtxtView.text == "상세설명을 입력해 주세요" {
+        if productDetailtxtView.text == "상세설명을 입력해주세요" {
             productDetailtxtView.text = ""
             productDetailtxtView.textColor = UIColor.black
         }
         else if productDetailtxtView.text == "" {
-            productDetailtxtView.text = "상세설명을 입력해 주세요"
+            productDetailtxtView.text = "상세설명을 입력해주세요"
             productDetailtxtView.textColor = UIColor(rgb: 0xEBEBF6)
         }
     }

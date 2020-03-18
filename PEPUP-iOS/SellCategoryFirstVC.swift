@@ -1,5 +1,5 @@
 //
-//  SellCategoryGenderVC.swift
+//  SellCategoryFirstVC.swift
 //  PEPUP-iOS
 //
 //  Created by Eren-shin on 2020/03/15.
