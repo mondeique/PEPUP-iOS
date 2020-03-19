@@ -122,6 +122,7 @@ extension NotiVC: UICollectionViewDelegate, UICollectionViewDataSource {
         }
         else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: notipurchasedIdentifier, for: indexPath) as! NotiPurchasedCell
+            cell.delegate = self
             if indexPath.row == 0 {
                 cell.purchasedcollectionView.isHidden = true
             }

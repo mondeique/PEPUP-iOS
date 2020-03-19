@@ -160,6 +160,7 @@ extension MyStoreVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storeshopIdentifier, for: indexPath) as! MyStoreShopCell
+            cell.delegate = self
             if indexPath.row == 0 {
                 cell.shopcollectionView.isHidden = false
             }
@@ -173,6 +174,7 @@ extension MyStoreVC: UICollectionViewDelegate, UICollectionViewDataSource {
         }
         else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storelikeIdentifier, for: indexPath) as! MyStoreLikeCell
+            cell.delegate = self
             if indexPath.row == 0 {
                 cell.likecollectionView.isHidden = true
             }

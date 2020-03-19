@@ -14,6 +14,7 @@ class NotiPurchasedCell: BaseCollectionViewCell, UICollectionViewDataSource, UIC
     private let notipurchasecellId = "notipurchasecell"
     private let notipurhcaseheaderId = "notipurchaseheadercell"
     
+    weak var delegate: NotiVC?
     
     var productDatas = Array<NSDictionary>()
     
@@ -134,7 +135,9 @@ class NotiPurchasedCell: BaseCollectionViewCell, UICollectionViewDataSource, UIC
         let resultArray = resultDic.object(forKey: "result") as! Array<NSDictionary>
         let itemDic = resultArray[indexPath.row]
         let id = itemDic.object(forKey: "id") as! Int
-        print(id)
+        let nextVC = PurchasedVC()
+        nextVC.purchaseUid = id
+        delegate?.navigationController?.pushViewController(nextVC, animated: true)
     }
 
 }

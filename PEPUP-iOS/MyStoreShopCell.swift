@@ -14,6 +14,8 @@ class MyStoreShopCell: BaseCollectionViewCell, UICollectionViewDelegate, UIColle
     private let myshopcellId = "myshopcell"
     private let myshopheaderId = "myshopheadercell"
     
+    weak var delegate : MyStoreVC?
+    
     var pagenum : Int = 1
     
     var SellerID = UserDefaults.standard.object(forKey: "pk") as! Int
@@ -191,8 +193,7 @@ class MyStoreShopCell: BaseCollectionViewCell, UICollectionViewDelegate, UIColle
         let productId = productDictionary.object(forKey: "id") as! Int
         let nextVC = DetailVC()
         nextVC.Myid = productId
-        let navigationController = UINavigationController()
-        navigationController.pushViewController(nextVC, animated: true)
+        delegate?.navigationController?.pushViewController(nextVC, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
