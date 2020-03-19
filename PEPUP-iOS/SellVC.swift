@@ -16,10 +16,12 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     var imageData: Array<UIImage?> = []
     var sellproductcollectionView : UICollectionView!
     var scrollView: UIScrollView!
+    var keyArray: Array<String>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        keyArray = []
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -290,7 +292,6 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     }
     
     @objc func upload() {
-        var keyArray: Array<String> = []
         for i in 0..<imageData.count {
             Alamofire.AF.request("\(Config.baseURL)/api/s3/temp_key/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
                 (response) in switch response.result {
@@ -300,72 +301,96 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                     let url = response.object(forKey: "url") as! String
                     let image_key = response.object(forKey: "image_key") as! String
                     let key = response.object(forKey: "key") as! String
-                    if let imageData = (self.imageData[i]!).jpegData(compressionQuality: 0.30)
-                    {
-                        let strBase64:String = imageData.base64EncodedString(options: .lineLength64Characters)
+                    print("KEY IS \(key)")
+                    self.keyArray.append(key)
+                    print(self.keyArray)
+                    let content_type = response.object(forKey: "content_type") as! String
+                    if let upload_image = self.imageData[i]?.jpegData(compressionQuality: 1){
                         let parameters = [
-                            "key" : image_key,
-                            "file" : strBase64
+                            "key": image_key,
+                            "content_type" : content_type
                         ]
-                        Alamofire.AF.request("\(url)", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-                            (response) in switch response.result {
-                            case .success(let JSON):
-                                print("SUCESS TEMP KEY! \(JSON)")
-                                keyArray.append(key)
-                                
-                            case .failure(let error):
-                                print("Request failed with error: \(error)")
+                        AF.upload(multipartFormData: { (multipartFormData) in
+                            for(key,value) in parameters{
+                                multipartFormData.append(value.data(using: String.Encoding.utf8)!, withName: key)
                             }
+                            multipartFormData.append(upload_image, withName: "file", fileName: "image.jpeg", mimeType: "image/jpeg")
+                        }, to: url, method: .post).responseString { (response) in
+                            debugPrint("RESPONSE: \(response)")
                         }
                     }
-                    
+
                 case .failure(let error):
+                    print("HERE!")
                     print("Request failed with error: \(error)")
                 }
             }
         }
-        guard let name = productNameLabel.text else {
-            return
-        }
-        guard let price = productPriceLabel.text else {
-            return
-        }
-        guard let content = productDetailLabel.text else {
-            return
-        }
-        guard let first_category = UserDefaults.standard.object(forKey: "first_category") else {
-            return
-        }
-        guard let second_category = UserDefaults.standard.object(forKey: "second_category_id") else {
-            return
-        }
-        guard let size = UserDefaults.standard.object(forKey: "size_id") else {
-            return
-        }
-        guard let brand = UserDefaults.standard.object(forKey: "brand_id") else {
-            return
-        }
-        guard let tag = UserDefaults.standard.object(forKey: "tag") else {
-            return
-        }
-        let parameters = [
-            "image_key" : keyArray,
-            "name" : name,
-            "price" : Int(price) ?? 0,
-            "content" : content,
-            "first_category" : first_category,
-            "second_category" : second_category,
-            "size" : size,
-            "brand" : brand,
-            "tag" : [tag]
-        ]
-        Alamofire.AF.request("\(Config.baseURL)/api/products/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-            (response) in switch response.result {
-            case .success(let JSON):
-                print("SUCESS UPLOAD! \(JSON)")
-                
-            case .failure(let error):
-                print("Request failed with error: \(error)")
+        print("KEYARRAY \(self.keyArray)")
+        let seconds = 4.0
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            guard let key_Array = self.keyArray else {
+                return
+            }
+            guard let name = self.productNametxtView.text else {
+                return
+            }
+            guard let price = self.productPricetxtView.text else {
+                return
+            }
+            guard let content = self.productDetailtxtView.text else {
+                return
+            }
+            guard let first_category = UserDefaults.standard.object(forKey: "first_category") else {
+                return
+            }
+            guard let second_category = UserDefaults.standard.object(forKey: "second_category_id") else {
+                return
+            }
+            guard let size = UserDefaults.standard.object(forKey: "size_id") else {
+                return
+            }
+            guard let brand = UserDefaults.standard.object(forKey: "brand_id") else {
+                return
+            }
+            guard let tag = UserDefaults.standard.object(forKey: "tag") else {
+                return
+            }
+            print("ALSKDALSDKASLDK")
+            print(key_Array)
+            print(name)
+            print(price)
+            print(content)
+            print(first_category)
+            print(second_category)
+            print(size)
+            print(brand)
+            print(tag)
+            print("EIXT")
+            if key_Array.count == self.imageData.count {
+                let parameters = [
+                    "image_key" : key_Array,
+                    "name" : name,
+                    "price" : Int(price),
+                    "content" : content,
+                    "first_category" : first_category,
+                    "second_category" : second_category,
+                    "size" : size,
+                    "brand" : brand,
+                    "tag" : [tag]
+                ]
+                Alamofire.AF.request("\(Config.baseURL)/api/products/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+                    (response) in switch response.result {
+                    case .success(let JSON):
+                        print("SUCESS UPLOAD! \(JSON)")
+                        let nextVC = TabBarController()
+                        self.navigationController?.pushViewController(nextVC, animated: true)
+                    case .failure(let error):
+                        print("THERE!")
+                        print("Request failed with error: \(error)")
+                        
+                    }
+                }
             }
         }
     }

@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		7AEBDB01025068B1478B1DBE /* Pods_PEPUP_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B58BC0CA3A889CCCEFFECCEA /* Pods_PEPUP_iOS.framework */; };
+		E90E84EC2422011600C215CB /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E84EB2422011600C215CB /* UserModel.swift */; };
+		E90E84EE242215C100C215CB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E90E84ED242215C100C215CB /* GoogleService-Info.plist */; };
+		E90E84F024226E7900C215CB /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E84EF24226E7900C215CB /* ChatModel.swift */; };
 		E932135323E1B9D800503CA8 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135223E1B9D800503CA8 /* HomeCell.swift */; };
 		E932135523E1BA1000503CA8 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135423E1BA1000503CA8 /* BaseCollectionViewCell.swift */; };
 		E932135B23E26F7200503CA8 /* FollowVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135A23E26F7200503CA8 /* FollowVC.swift */; };
@@ -73,6 +76,9 @@
 		1363A93A8BEF1668743D9C6F /* Pods-PEPUP-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PEPUP-iOS.release.xcconfig"; path = "Target Support Files/Pods-PEPUP-iOS/Pods-PEPUP-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		B58BC0CA3A889CCCEFFECCEA /* Pods_PEPUP_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PEPUP_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3A9220E366E031B61452603 /* Pods-PEPUP-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PEPUP-iOS.debug.xcconfig"; path = "Target Support Files/Pods-PEPUP-iOS/Pods-PEPUP-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		E90E84EB2422011600C215CB /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		E90E84ED242215C100C215CB /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		E90E84EF24226E7900C215CB /* ChatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
 		E932135223E1B9D800503CA8 /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
 		E932135423E1BA1000503CA8 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		E932135A23E26F7200503CA8 /* FollowVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowVC.swift; sourceTree = "<group>"; };
@@ -191,6 +197,7 @@
 				E9C8467523E1A5D200359A93 /* Main.storyboard */,
 				E9C8467B23E1A5D500359A93 /* Assets.xcassets */,
 				E9C8468023E1A5D600359A93 /* Info.plist */,
+				E90E84ED242215C100C215CB /* GoogleService-Info.plist */,
 				E9C8467823E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld */,
 				E932135423E1BA1000503CA8 /* BaseCollectionViewCell.swift */,
 				E9C8468623E1A77300359A93 /* TabBarController.swift */,
@@ -243,6 +250,8 @@
 				E9D111E9241E2F53006AE20C /* SellCategoryBrandVC.swift */,
 				E9D111ED24207C78006AE20C /* SellCategoryTagVC.swift */,
 				E968FF0523F13FE600B2B1D3 /* MessageVC.swift */,
+				E90E84EB2422011600C215CB /* UserModel.swift */,
+				E90E84EF24226E7900C215CB /* ChatModel.swift */,
 				E9D111CB240FF83A006AE20C /* SettingVC.swift */,
 				E9D07A4223E2B1110095AD05 /* NotiVC.swift */,
 				E9D111CF2410D64C006AE20C /* FilterVC.swift */,
@@ -311,6 +320,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E9D1119223FFACB1006AE20C /* AppleSDGothicNeo-Heavy in Resources */,
+				E90E84EE242215C100C215CB /* GoogleService-Info.plist in Resources */,
 				E9C8467C23E1A5D500359A93 /* Assets.xcassets in Resources */,
 				E9C8467723E1A5D200359A93 /* Main.storyboard in Resources */,
 			);
@@ -386,6 +396,7 @@
 				E9C8468723E1A77300359A93 /* TabBarController.swift in Sources */,
 				E9D07A4723E2B6DE0095AD05 /* SearchVC.swift in Sources */,
 				E9D1119A24038C27006AE20C /* CustomMenuBar.swift in Sources */,
+				E90E84F024226E7900C215CB /* ChatModel.swift in Sources */,
 				E9D111DE2419409B006AE20C /* SellSelectVC.swift in Sources */,
 				E94D142C23E9223F0001F3A0 /* ProfileVC.swift in Sources */,
 				E9D111D22416A7CC006AE20C /* SellVC.swift in Sources */,
@@ -399,6 +410,7 @@
 				E9D111AE240CC71F006AE20C /* TagHeaderCell.swift in Sources */,
 				E9D111E4241E248C006AE20C /* SellCategoryFirstVC.swift in Sources */,
 				E9D07A4D23E3FB980095AD05 /* SignupVC.swift in Sources */,
+				E90E84EC2422011600C215CB /* UserModel.swift in Sources */,
 				E9D111A824083D64006AE20C /* FollowHeaderCell.swift in Sources */,
 				E9D07A4323E2B1110095AD05 /* NotiVC.swift in Sources */,
 				E9D111CC240FF83A006AE20C /* SettingVC.swift in Sources */,

@@ -546,7 +546,9 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
     }
     
     @objc func message() {
-        print("TOUCH MESSAGE")
+        let nextVC = MessageVC()
+//        nextVC.destinationUid = Myid
+        self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
     @objc func store() {
@@ -555,6 +557,8 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         let pk = UserDefaults.standard.object(forKey: "pk") as! Int
         if sellerId == pk {
             print("I am seller~")
+            let nextVC = MyStoreVC()
+            navigationController?.pushViewController(nextVC, animated: true)
         }
         else {
             let nextVC = StoreVC()

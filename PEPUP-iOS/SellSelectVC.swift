@@ -33,6 +33,7 @@ class SellSelectVC: UIViewController {
         UserDefaults.standard.set("", forKey: "second_category")
         UserDefaults.standard.set("", forKey: "size")
         UserDefaults.standard.set("", forKey: "brand")
+        UserDefaults.standard.set("", forKey: "tag")
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
         self.tabBarController?.tabBar.isHidden = true

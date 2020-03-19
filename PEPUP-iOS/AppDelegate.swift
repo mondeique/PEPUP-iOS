@@ -10,6 +10,7 @@ import UIKit
 import Alamofire
 import CoreData
 import SwiftyBootpay
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -62,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.loadLogin()
         }
         Bootpay.sharedInstance.appLaunch(application_id: "5e05af1302f57e00219c40dc") // production sample
-        
+        FirebaseApp.configure()
         return true
         
     }
