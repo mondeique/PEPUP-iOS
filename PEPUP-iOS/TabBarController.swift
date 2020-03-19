@@ -44,11 +44,15 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         let sell = UINavigationController(rootViewController: SellSelectVC())
         sell.tabBarItem.image = #imageLiteral(resourceName: "sell_unselected")
         sell.tabBarItem.selectedImage = #imageLiteral(resourceName: "sell_selected")
+        // Noti
+        let noti = UINavigationController(rootViewController: NotiVC())
+        noti.tabBarItem.image = UIImage(named: "noti_unselected")
+        noti.tabBarItem.selectedImage = UIImage(named: "noti_selected")
         // Store
         let store = UINavigationController(rootViewController: MyStoreVC())
         store.tabBarItem.image = #imageLiteral(resourceName: "store_unselected")
         store.tabBarItem.selectedImage = #imageLiteral(resourceName: "store_selected")
-        viewControllers = [home, follow, sell, store]
+        viewControllers = [home, follow, sell, noti, store]
         if let items = tabBar.items {
             for item in items{
                 item.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)

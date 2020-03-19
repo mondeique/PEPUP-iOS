@@ -22,7 +22,7 @@ class MessageVC: UIViewController {
 //
     override func viewDidLoad() {
         super.viewDidLoad()
-//        setup()
+        setup()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -38,8 +38,8 @@ class MessageVC: UIViewController {
         self.tabBarController?.tabBar.isHidden = false
     }
     
-//    func setup() {
-//        self.view.backgroundColor = .white
+    func setup() {
+        self.view.backgroundColor = .white
 //        let screensize: CGRect = UIScreen.main.bounds
 //        let screenWidth = screensize.width
 //        let screenHeight = screensize.height
@@ -72,7 +72,7 @@ class MessageVC: UIViewController {
 //        sendBtn.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
 ////        sendBtn.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
 //        sendBtn.heightAnchor.constraint(equalToConstant: navBarHeight).isActive = true
-//    }
+    }
 //
 //    @objc func back() {
 //        self.navigationController?.popViewController(animated: true)

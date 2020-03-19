@@ -73,7 +73,7 @@ class MyStoreVC: UIViewController, CustomMenuBarDelegate{
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.navigationBar.isHidden = false
-        tabBarController?.tabBar.isHidden = true
+//        tabBarController?.tabBar.isHidden = true
     }
     
     //MARK: Setup view

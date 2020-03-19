@@ -585,15 +585,25 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
             btnCart.isEnabled = false
             btnCartBag.isEnabled = false
         }
-        Alamofire.AF.request("\(Config.baseURL)/api/trades/bagging/" + String(Myid) + "/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-            (response) in switch response.result {
-            case .success(let JSON):
-                print("Success with JSON: \(JSON)")
-            case .failure(let error):
-                print("Request failed with error: \(error)")
-            }
+        let seller_id = self.sellerDatas.object(forKey: "id") as! Int
+        let pk = UserDefaults.standard.object(forKey: "pk") as! Int
+        if seller_id == pk {
+            btnCartBag.isHidden = true
+            btnCart.isHidden = false
+            btnCart.isEnabled = true
+            self.cartAlert()
         }
-        print("TOUCH CART")
+        else {
+            Alamofire.AF.request("\(Config.baseURL)/api/trades/bagging/" + String(Myid) + "/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+                (response) in switch response.result {
+                case .success(let JSON):
+                    print("Success with JSON: \(JSON)")
+                case .failure(let error):
+                    print("Request failed with error: \(error)")
+                }
+            }
+            print("TOUCH CART")
+        }
     }
     
     @objc func tag(_ sender: UIButton) {
@@ -601,6 +611,12 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         nextVC.TagID = sender.tag
         nextVC.TagName = sender.currentTitle
         navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    func cartAlert() {
+        let alertController = UIAlertController(title: nil, message: "본인 상품은 담을 수 없습니다.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
     
     let navcontentView: UIView = {

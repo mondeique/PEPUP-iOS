@@ -94,6 +94,7 @@ class CartCell: BaseCollectionViewCell, UIGestureRecognizerDelegate {
         let label = UILabel()
         label.text = "delete"
         label.textColor = .black
+        label.backgroundColor = .red
         return label
     }()
 

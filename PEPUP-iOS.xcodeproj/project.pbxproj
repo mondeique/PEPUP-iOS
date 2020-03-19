@@ -11,6 +11,10 @@
 		E90E84EC2422011600C215CB /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E84EB2422011600C215CB /* UserModel.swift */; };
 		E90E84EE242215C100C215CB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E90E84ED242215C100C215CB /* GoogleService-Info.plist */; };
 		E90E84F024226E7900C215CB /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E84EF24226E7900C215CB /* ChatModel.swift */; };
+		E90E84F2242334DD00C215CB /* NotiActivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E84F1242334DD00C215CB /* NotiActivityCell.swift */; };
+		E90E84F42423351E00C215CB /* NotiPurchasedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E84F32423351E00C215CB /* NotiPurchasedCell.swift */; };
+		E90E84F62423378400C215CB /* NotiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E84F52423378400C215CB /* NotiCell.swift */; };
+		E90E84F8242337CC00C215CB /* CustomNotiBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E84F7242337CC00C215CB /* CustomNotiBar.swift */; };
 		E932135323E1B9D800503CA8 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135223E1B9D800503CA8 /* HomeCell.swift */; };
 		E932135523E1BA1000503CA8 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135423E1BA1000503CA8 /* BaseCollectionViewCell.swift */; };
 		E932135B23E26F7200503CA8 /* FollowVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135A23E26F7200503CA8 /* FollowVC.swift */; };
@@ -79,6 +83,10 @@
 		E90E84EB2422011600C215CB /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		E90E84ED242215C100C215CB /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		E90E84EF24226E7900C215CB /* ChatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
+		E90E84F1242334DD00C215CB /* NotiActivityCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiActivityCell.swift; sourceTree = "<group>"; };
+		E90E84F32423351E00C215CB /* NotiPurchasedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiPurchasedCell.swift; sourceTree = "<group>"; };
+		E90E84F52423378400C215CB /* NotiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiCell.swift; sourceTree = "<group>"; };
+		E90E84F7242337CC00C215CB /* CustomNotiBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNotiBar.swift; sourceTree = "<group>"; };
 		E932135223E1B9D800503CA8 /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
 		E932135423E1BA1000503CA8 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		E932135A23E26F7200503CA8 /* FollowVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowVC.swift; sourceTree = "<group>"; };
@@ -252,8 +260,12 @@
 				E968FF0523F13FE600B2B1D3 /* MessageVC.swift */,
 				E90E84EB2422011600C215CB /* UserModel.swift */,
 				E90E84EF24226E7900C215CB /* ChatModel.swift */,
-				E9D111CB240FF83A006AE20C /* SettingVC.swift */,
 				E9D07A4223E2B1110095AD05 /* NotiVC.swift */,
+				E90E84F7242337CC00C215CB /* CustomNotiBar.swift */,
+				E90E84F52423378400C215CB /* NotiCell.swift */,
+				E90E84F1242334DD00C215CB /* NotiActivityCell.swift */,
+				E90E84F32423351E00C215CB /* NotiPurchasedCell.swift */,
+				E9D111CB240FF83A006AE20C /* SettingVC.swift */,
 				E9D111CF2410D64C006AE20C /* FilterVC.swift */,
 			);
 			path = "PEPUP-iOS";
@@ -378,6 +390,7 @@
 				E932135523E1BA1000503CA8 /* BaseCollectionViewCell.swift in Sources */,
 				E9D111E8241E2B04006AE20C /* SellCategorySizeVC.swift in Sources */,
 				E9C8468923E1A89E00359A93 /* HomeVC.swift in Sources */,
+				E90E84F42423351E00C215CB /* NotiPurchasedCell.swift in Sources */,
 				E968FF1823F51D6C00B2B1D3 /* CartFooterCell.swift in Sources */,
 				E9D111E2241E16C0006AE20C /* SellCategoryGenderVC.swift in Sources */,
 				E9D111C8240FF039006AE20C /* MyStoreShopCell.swift in Sources */,
@@ -425,13 +438,16 @@
 				E9D111EE24207C79006AE20C /* SellCategoryTagVC.swift in Sources */,
 				E9D111E6241E25AC006AE20C /* SellCategorySecondVC.swift in Sources */,
 				E932135D23E26FC400503CA8 /* FollowCell.swift in Sources */,
+				E90E84F2242334DD00C215CB /* NotiActivityCell.swift in Sources */,
 				E9D111C6240FEFED006AE20C /* MyStoreVC.swift in Sources */,
 				E9D111EA241E2F53006AE20C /* SellCategoryBrandVC.swift in Sources */,
 				E9D111D824177E91006AE20C /* PaymentFooterCell.swift in Sources */,
 				E94D142823E82A640001F3A0 /* FindPwdVC.swift in Sources */,
+				E90E84F8242337CC00C215CB /* CustomNotiBar.swift in Sources */,
 				E9D111AC2408BE88006AE20C /* FollowFooterCell.swift in Sources */,
 				E9C8467A23E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld in Sources */,
 				E9D07A4923E2E4DD0095AD05 /* LoginVC.swift in Sources */,
+				E90E84F62423378400C215CB /* NotiCell.swift in Sources */,
 				E9D111CA240FF3CD006AE20C /* MyStoreLikeCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

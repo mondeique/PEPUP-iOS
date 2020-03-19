@@ -326,7 +326,6 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                 }
             }
         }
-        print("KEYARRAY \(self.keyArray)")
         let seconds = 4.0
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
             guard let key_Array = self.keyArray else {
