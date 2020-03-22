@@ -11,6 +11,7 @@ import Alamofire
 
 private let notiactivityIdentifier = "notiactivitycell"
 private let notipurchasedIdentifier = "notipurchasedcell"
+private let notisoldIdentifier = "notisoldcell"
 
 class NotiVC: UIViewController, CustomNotiBarDelegate{
     
@@ -79,6 +80,7 @@ class NotiVC: UIViewController, CustomNotiBarDelegate{
         pageCollectionView.isPagingEnabled = true
         pageCollectionView.register(NotiActivityCell.self, forCellWithReuseIdentifier: notiactivityIdentifier)
         pageCollectionView.register(NotiPurchasedCell.self, forCellWithReuseIdentifier: notipurchasedIdentifier)
+        pageCollectionView.register(NotiSoldCell.self, forCellWithReuseIdentifier: notisoldIdentifier)
         self.view.addSubview(pageCollectionView)
         pageCollectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         pageCollectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
@@ -120,7 +122,7 @@ extension NotiVC: UICollectionViewDelegate, UICollectionViewDataSource {
 //            }
             return cell
         }
-        else {
+        else if indexPath.row == 1{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: notipurchasedIdentifier, for: indexPath) as! NotiPurchasedCell
             cell.delegate = self
             if indexPath.row == 0 {
@@ -131,6 +133,20 @@ extension NotiVC: UICollectionViewDelegate, UICollectionViewDataSource {
             }
             else if indexPath.row == 2 {
                 cell.purchasedcollectionView.isHidden = true
+            }
+            return cell
+        }
+        else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: notisoldIdentifier, for: indexPath) as! NotiSoldCell
+            cell.delegate = self
+            if indexPath.row == 0 {
+                cell.soldcollectionView.isHidden = true
+            }
+            else if indexPath.row == 1 {
+                cell.soldcollectionView.isHidden = true
+            }
+            else if indexPath.row == 2 {
+                cell.soldcollectionView.isHidden = false
             }
             return cell
         }

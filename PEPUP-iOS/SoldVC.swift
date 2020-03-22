@@ -1,24 +1,24 @@
 //
-//  PurchasedVC.swift
+//  SoldVC.swift
 //  PEPUP-iOS
 //
-//  Created by Eren-shin on 2020/03/20.
+//  Created by Eren-shin on 2020/03/22.
 //  Copyright © 2020 Mondeique. All rights reserved.
 //
 
 import UIKit
 import Alamofire
 
-private let reuseIdentifier = "purchasecell"
-private let headerId = "purchaseheadercell"
+private let reuseIdentifier = "soldcell"
+private let headerId = "soldheadercell"
 
-class PurchasedVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class SoldVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    var purchaseUid : Int!
-    var purchasecollectionView : UICollectionView!
+    var soldUid : Int!
+    var soldcollectionView : UICollectionView!
     var scrollView: UIScrollView!
     
-    var purchasedtotalDatas : NSDictionary!
+    var soldtotalDatas : NSDictionary!
     var orderingproductDic : NSDictionary!
     
     override func viewDidLoad() {
@@ -53,7 +53,7 @@ class PurchasedVC: UIViewController, UICollectionViewDataSource, UICollectionVie
         
         self.view.addSubview(navcontentView)
         navcontentView.addSubview(btnBack)
-        navcontentView.addSubview(purchasedLabel)
+        navcontentView.addSubview(soldLabel)
         
         navcontentView.topAnchor.constraint(equalTo: view.topAnchor, constant: screenHeight/defaultHeight * statusBarHeight).isActive = true
         navcontentView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
@@ -65,8 +65,8 @@ class PurchasedVC: UIViewController, UICollectionViewDataSource, UICollectionVie
         btnBack.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 10).isActive = true
         btnBack.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 16).isActive = true
         
-        purchasedLabel.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
-        purchasedLabel.centerXAnchor.constraint(equalTo: navcontentView.centerXAnchor).isActive = true
+        soldLabel.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
+        soldLabel.centerXAnchor.constraint(equalTo: navcontentView.centerXAnchor).isActive = true
         
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
@@ -74,13 +74,13 @@ class PurchasedVC: UIViewController, UICollectionViewDataSource, UICollectionVie
         layout.scrollDirection = .vertical
         layout.headerReferenceSize = CGSize(width: screenWidth, height: UIScreen.main.bounds.height/667 * 60)
         
-        purchasecollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight), collectionViewLayout: layout)
-        purchasecollectionView.delegate = self
-        purchasecollectionView.dataSource = self
-        purchasecollectionView.register(PurchasedMainCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        purchasecollectionView.register(PurchasedMainHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
-        purchasecollectionView.backgroundColor = UIColor.white
-        purchasecollectionView.translatesAutoresizingMaskIntoConstraints = false
+        soldcollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight), collectionViewLayout: layout)
+        soldcollectionView.delegate = self
+        soldcollectionView.dataSource = self
+        soldcollectionView.register(SoldMainCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        soldcollectionView.register(SoldMainHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
+        soldcollectionView.backgroundColor = UIColor.white
+        soldcollectionView.translatesAutoresizingMaskIntoConstraints = false
         
         scrollView = UIScrollView(frame: CGRect(origin: CGPoint(x: 0, y: navBarHeight + statusBarHeight), size: CGSize(width: screenWidth, height: screenHeight)))
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -101,15 +101,15 @@ class PurchasedVC: UIViewController, UICollectionViewDataSource, UICollectionVie
         scrollView.contentSize = CGSize(width: screenWidth, height: screenHeight/defaultHeight * 1000)
         scrollView.contentOffset = CGPoint(x: 0, y: 0)
         
-        scrollView.addSubview(purchasecollectionView)
+        scrollView.addSubview(soldcollectionView)
         scrollView.addSubview(userinfocontentView)
         scrollView.addSubview(totalpaymentcontentView)
         scrollView.addSubview(deliveryinfocontentView)
         
-        purchasecollectionView.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
-        purchasecollectionView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        purchasecollectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        purchasecollectionView.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 250).isActive = true
+        soldcollectionView.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
+        soldcollectionView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        soldcollectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        soldcollectionView.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 250).isActive = true
         
         userinfocontentView.addSubview(lineLabel1)
         userinfocontentView.addSubview(userinfoLabel)
@@ -118,7 +118,7 @@ class PurchasedVC: UIViewController, UICollectionViewDataSource, UICollectionVie
         userinfocontentView.addSubview(lineLabel2)
         
         userinfocontentView.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
-        userinfocontentView.topAnchor.constraint(equalTo: purchasecollectionView.bottomAnchor).isActive = true
+        userinfocontentView.topAnchor.constraint(equalTo: soldcollectionView.bottomAnchor).isActive = true
         userinfocontentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
         userinfocontentView.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 158).isActive = true
         
@@ -247,13 +247,13 @@ class PurchasedVC: UIViewController, UICollectionViewDataSource, UICollectionVie
     }
     
     func setinfo() {
-        let userinfoDic = self.purchasedtotalDatas.object(forKey: "user_info") as! NSDictionary
+        let userinfoDic = self.soldtotalDatas.object(forKey: "user_info") as! NSDictionary
         let nickname = userinfoDic.object(forKey: "nickname") as! String
         let phone = userinfoDic.object(forKey: "phone") as! String
         usernameLabel.text = nickname
         userphonenumLabel.text = phone
         
-        let payinfoDic = self.purchasedtotalDatas.object(forKey: "pay_info") as! NSDictionary
+        let payinfoDic = self.soldtotalDatas.object(forKey: "pay_info") as! NSDictionary
         let price = payinfoDic.object(forKey: "price") as! Int
         let delivery_charge = payinfoDic.object(forKey: "delivery_charge") as! Int
         let total = payinfoDic.object(forKey: "total") as! Int
@@ -261,7 +261,7 @@ class PurchasedVC: UIViewController, UICollectionViewDataSource, UICollectionVie
         totaldeliverymoneyLabel.text = String(delivery_charge) + "원"
         totalpaymentmoneyLabel.text = String(total) + "원"
         
-        let addressDic = self.purchasedtotalDatas.object(forKey: "address") as! NSDictionary
+        let addressDic = self.soldtotalDatas.object(forKey: "address") as! NSDictionary
         let addressname = addressDic.object(forKey: "name") as! String
         let addressphone = addressDic.object(forKey: "phone") as! String
         let address = addressDic.object(forKey: "Addr") as! String
@@ -271,12 +271,12 @@ class PurchasedVC: UIViewController, UICollectionViewDataSource, UICollectionVie
     }
     
     func getData() {
-        Alamofire.AF.request("\(Config.baseURL)/api/purchased/" + String(purchaseUid) + "/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+        Alamofire.AF.request("\(Config.baseURL)/api/sold/" + String(soldUid) + "/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
             (response) in switch response.result {
             case .success(let JSON):
                 let response = JSON as! NSDictionary
-                self.purchasedtotalDatas = response
-                if let ordering = self.purchasedtotalDatas.object(forKey: "ordering_product") as? NSDictionary {
+                self.soldtotalDatas = response
+                if let ordering = self.soldtotalDatas.object(forKey: "ordering_product") as? NSDictionary {
                     self.orderingproductDic = ordering
                 }
                 self.setup()
@@ -292,7 +292,7 @@ class PurchasedVC: UIViewController, UICollectionViewDataSource, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PurchasedMainCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! SoldMainCell
         let productArray = self.orderingproductDic.object(forKey: "products") as! Array<NSDictionary>
         let productInfoDic = productArray[indexPath.row]
         let productDic = productInfoDic.object(forKey: "product") as! NSDictionary
@@ -321,9 +321,9 @@ class PurchasedVC: UIViewController, UICollectionViewDataSource, UICollectionVie
 
             case UICollectionView.elementKindSectionHeader:
 
-                let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! PurchasedMainHeaderCell
-                let orderingproductDic = self.purchasedtotalDatas.object(forKey: "ordering_product") as! NSDictionary
-                let condition = self.purchasedtotalDatas.object(forKey: "condition") as! Int
+                let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! SoldMainHeaderCell
+                let orderingproductDic = self.soldtotalDatas.object(forKey: "ordering_product") as! NSDictionary
+                let condition = self.soldtotalDatas.object(forKey: "condition") as! Int
                 let sellerInfoDic = orderingproductDic.object(forKey: "seller") as! NSDictionary
                 let sellerName = sellerInfoDic.object(forKey: "nickname") as! String
                 let sellerprofileDic = sellerInfoDic.object(forKey: "profile") as! NSDictionary
@@ -341,16 +341,16 @@ class PurchasedVC: UIViewController, UICollectionViewDataSource, UICollectionVie
                     headerView.sellerProfileImg.clipsToBounds = true
                     headerView.sellerNameLabel.text = sellerName
                     if condition == 0 {
-                        headerView.btnConfirm.isHidden = false
-                        headerView.btnReview.isHidden = true
+                        headerView.btnDelivery.isHidden = false
+                        headerView.btnComplete.isHidden = true
                     }
                     else if condition == 1 {
-                        headerView.btnConfirm.isHidden = true
-                        headerView.btnReview.isHidden = false
+                        headerView.btnDelivery.isHidden = true
+                        headerView.btnComplete.isHidden = false
                     }
                     else {
-                        headerView.btnConfirm.isHidden = true
-                        headerView.btnReview.isHidden = true
+                        headerView.btnDelivery.isHidden = true
+                        headerView.btnComplete.isHidden = true
                     }
                 }
                 
@@ -390,12 +390,12 @@ class PurchasedVC: UIViewController, UICollectionViewDataSource, UICollectionVie
        return btn
     }()
     
-    let purchasedLabel: UILabel = {
+    let soldLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-Heavy", size: 17)
         label.textColor = .black
-        label.text = "P U R C H A S E D"
+        label.text = "S O L D"
         label.textAlignment = .center
         return label
     }()
@@ -608,6 +608,3 @@ class PurchasedVC: UIViewController, UICollectionViewDataSource, UICollectionVie
         return label
     }()
 }
-
-
-

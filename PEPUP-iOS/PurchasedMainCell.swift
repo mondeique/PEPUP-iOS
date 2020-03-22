@@ -110,7 +110,7 @@ class PurchasedMainHeaderCell: BaseCollectionViewCell {
         purchaseheadercellContentView.addSubview(btnReview)
         self.addSubview(purchaseheadercellContentView)
 
-        paymentheadercellContentViewLayout()
+        purchaseheadercellContentViewLayout()
         sellerProfileImgLayout()
         sellerNameLabelLayout()
         btnConfirmLayout()
@@ -168,7 +168,7 @@ class PurchasedMainHeaderCell: BaseCollectionViewCell {
         return btn
     }()
 
-    func paymentheadercellContentViewLayout() {
+    func purchaseheadercellContentViewLayout() {
         purchaseheadercellContentView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         purchaseheadercellContentView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         purchaseheadercellContentView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
@@ -192,12 +192,16 @@ class PurchasedMainHeaderCell: BaseCollectionViewCell {
     func btnConfirmLayout() {
         btnConfirm.rightAnchor.constraint(equalTo:purchaseheadercellContentView.rightAnchor, constant: UIScreen.main.bounds.width/375 * -18).isActive = true
         btnConfirm.topAnchor.constraint(equalTo:purchaseheadercellContentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 14).isActive = true
+        btnConfirm.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 96).isActive = true
+        btnConfirm.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 32).isActive = true
         btnConfirm.centerYAnchor.constraint(equalTo:purchaseheadercellContentView.centerYAnchor).isActive = true
     }
     
     func btnReviewLayout() {
         btnReview.rightAnchor.constraint(equalTo:purchaseheadercellContentView.rightAnchor, constant: UIScreen.main.bounds.width/375 * -18).isActive = true
         btnReview.topAnchor.constraint(equalTo:purchaseheadercellContentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 14).isActive = true
+        btnReview.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 96).isActive = true
+        btnReview.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 32).isActive = true
         btnReview.centerYAnchor.constraint(equalTo:purchaseheadercellContentView.centerYAnchor).isActive = true
     }
 }
