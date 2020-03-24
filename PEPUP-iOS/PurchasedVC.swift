@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import MaterialComponents.MaterialBottomSheet
 
 private let reuseIdentifier = "purchasecell"
 private let headerId = "purchaseheadercell"
@@ -286,6 +287,19 @@ class PurchasedVC: UIViewController, UICollectionViewDataSource, UICollectionVie
         }
     }
     
+    @objc func rating() {
+        // View controller the bottom sheet will hold
+        let viewController: UIViewController = RatingBottomSheetVC()
+        
+        // Initialize the bottom sheet with the view controller just created
+        let bottomSheet: MDCBottomSheetController = MDCBottomSheetController(contentViewController: viewController)
+        bottomSheet.dismissOnDraggingDownSheet = true
+        bottomSheet.dismissOnBackgroundTap = true
+        bottomSheet.preferredContentSize = CGSize(width: UIScreen.main.bounds.width, height: 277)
+        // Present the bottom sheet
+        present(bottomSheet, animated: true, completion: nil)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let productArray = self.orderingproductDic.object(forKey: "products") as! Array<NSDictionary>
         return productArray.count
@@ -342,6 +356,7 @@ class PurchasedVC: UIViewController, UICollectionViewDataSource, UICollectionVie
                     headerView.sellerNameLabel.text = sellerName
                     if condition == 0 {
                         headerView.btnConfirm.isHidden = false
+                        headerView.btnConfirm.addTarget(self, action: #selector(self.rating), for: .touchUpInside)
                         headerView.btnReview.isHidden = true
                     }
                     else if condition == 1 {

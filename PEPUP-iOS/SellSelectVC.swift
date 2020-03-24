@@ -11,9 +11,6 @@ import Photos
 
 private let reuseIdentifier = "sellselectcell"
 
-import UIKit
-import Photos
-
 class SellSelectVC: UIViewController {
     
     var collectionView: UICollectionView!

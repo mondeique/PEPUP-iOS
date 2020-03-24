@@ -14,8 +14,28 @@ class SettingVC: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         navigationController?.navigationBar.isHidden = false
+        tabBarController?.tabBar.isHidden = true
+        tabBarController?.tabBar.isTranslucent = true
         // Do any additional setup after loading the view.
+        view.addSubview(btnLogout)
+        btnLogout.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        btnLogout.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
+    
+    @objc func logout() {
+        let nextVC = LoginVC()
+        self.navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    let btnLogout : UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setTitle("LOGOUT", for: .normal)
+        btn.setTitleColor(.white, for: .normal)
+        btn.backgroundColor = .red
+        btn.addTarget(self, action: #selector(logout), for: .touchUpInside)
+        return btn
+    }()
     
 
     /*

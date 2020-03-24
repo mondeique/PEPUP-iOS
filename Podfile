@@ -9,6 +9,8 @@ target 'PEPUP-iOS' do
   pod 'Firebase/Analytics'
   pod 'Firebase/Core'
   pod 'Firebase/Database'
+  pod 'MaterialComponents/BottomSheet'
+  pod 'Cosmos', '~> 21.0'
 
   # Pods for PEPUP-iOS
 

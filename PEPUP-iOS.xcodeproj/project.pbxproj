@@ -20,6 +20,8 @@
 		E90E84FE2427773700C215CB /* SoldVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E84FD2427773700C215CB /* SoldVC.swift */; };
 		E90E85002427776800C215CB /* NotiSoldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E84FF2427776800C215CB /* NotiSoldCell.swift */; };
 		E90E85022427781B00C215CB /* SoldMainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E85012427781B00C215CB /* SoldMainCell.swift */; };
+		E90E850424278CA100C215CB /* DeliveryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E850324278CA100C215CB /* DeliveryVC.swift */; };
+		E90E850A2428B52F00C215CB /* ReviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E85092428B52F00C215CB /* ReviewVC.swift */; };
 		E932135323E1B9D800503CA8 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135223E1B9D800503CA8 /* HomeCell.swift */; };
 		E932135523E1BA1000503CA8 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135423E1BA1000503CA8 /* BaseCollectionViewCell.swift */; };
 		E932135B23E26F7200503CA8 /* FollowVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135A23E26F7200503CA8 /* FollowVC.swift */; };
@@ -89,6 +91,8 @@
 		E90E84FD2427773700C215CB /* SoldVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoldVC.swift; sourceTree = "<group>"; };
 		E90E84FF2427776800C215CB /* NotiSoldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiSoldCell.swift; sourceTree = "<group>"; };
 		E90E85012427781B00C215CB /* SoldMainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoldMainCell.swift; sourceTree = "<group>"; };
+		E90E850324278CA100C215CB /* DeliveryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryVC.swift; sourceTree = "<group>"; };
+		E90E85092428B52F00C215CB /* ReviewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewVC.swift; sourceTree = "<group>"; };
 		E932135223E1B9D800503CA8 /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
 		E932135423E1BA1000503CA8 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		E932135A23E26F7200503CA8 /* FollowVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowVC.swift; sourceTree = "<group>"; };
@@ -253,9 +257,11 @@
 				E90E84F32423351E00C215CB /* NotiPurchasedCell.swift */,
 				E90E84F92423D64100C215CB /* PurchasedVC.swift */,
 				E90E84FB2423E89800C215CB /* PurchasedMainCell.swift */,
+				E90E85092428B52F00C215CB /* ReviewVC.swift */,
 				E90E84FF2427776800C215CB /* NotiSoldCell.swift */,
 				E90E84FD2427773700C215CB /* SoldVC.swift */,
 				E90E85012427781B00C215CB /* SoldMainCell.swift */,
+				E90E850324278CA100C215CB /* DeliveryVC.swift */,
 				E9D111CB240FF83A006AE20C /* SettingVC.swift */,
 				E9D111CF2410D64C006AE20C /* FilterVC.swift */,
 			);
@@ -403,9 +409,11 @@
 				E9D111DE2419409B006AE20C /* SellSelectVC.swift in Sources */,
 				E90E84FA2423D64100C215CB /* PurchasedVC.swift in Sources */,
 				E94D142C23E9223F0001F3A0 /* ProfileVC.swift in Sources */,
+				E90E850A2428B52F00C215CB /* ReviewVC.swift in Sources */,
 				E9D111D22416A7CC006AE20C /* SellVC.swift in Sources */,
 				E9D111B4240E6278006AE20C /* SearchResultVC.swift in Sources */,
 				E9C8467023E1A5D200359A93 /* AppDelegate.swift in Sources */,
+				E90E850424278CA100C215CB /* DeliveryVC.swift in Sources */,
 				E9D111BF240F6F42006AE20C /* StoreCell.swift in Sources */,
 				E9D1119E2403BF77006AE20C /* TagVC.swift in Sources */,
 				E9D111C2240F89CE006AE20C /* StoreLikeCell.swift in Sources */,

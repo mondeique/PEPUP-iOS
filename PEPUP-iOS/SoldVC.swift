@@ -342,14 +342,19 @@ class SoldVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                     headerView.sellerNameLabel.text = sellerName
                     if condition == 0 {
                         headerView.btnDelivery.isHidden = false
+                        headerView.btnDelivery.tag = self.soldUid
+                        headerView.btnDelivery.addTarget(self, action: #selector(self.delivery(_:)), for: .touchUpInside)
+                        headerView.btnDelivery.isEnabled = true
                         headerView.btnComplete.isHidden = true
                     }
                     else if condition == 1 {
                         headerView.btnDelivery.isHidden = true
+                        headerView.btnDelivery.isEnabled = false
                         headerView.btnComplete.isHidden = false
                     }
                     else {
                         headerView.btnDelivery.isHidden = true
+                        headerView.btnDelivery.isEnabled = false
                         headerView.btnComplete.isHidden = true
                     }
                 }
@@ -373,6 +378,12 @@ class SoldVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     
     @objc func back() {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func delivery(_ sender: UIButton) {
+        let nextVC = DeliveryVC()
+        nextVC.Myid = sender.tag
+        self.navigationController?.pushViewController(nextVC, animated: true)
     }
         
     let navcontentView: UIView = {

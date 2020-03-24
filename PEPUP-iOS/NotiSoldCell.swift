@@ -33,6 +33,7 @@ class NotiSoldCell: BaseCollectionViewCell, UICollectionViewDataSource, UICollec
     }()
     
     override func setup() {
+        
         backgroundColor = .white
         
         self.addSubview(soldcollectionView)
@@ -90,6 +91,7 @@ class NotiSoldCell: BaseCollectionViewCell, UICollectionViewDataSource, UICollec
         let imageUrl:NSURL = NSURL(string: imageUrlString)!
         let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
         let condition = itemDic.object(forKey: "condition") as! Int
+        let purchasedId = itemDic.object(forKey: "id") as! Int
 
         DispatchQueue.main.async {
             let image = UIImage(data: imageData as Data)
@@ -99,6 +101,8 @@ class NotiSoldCell: BaseCollectionViewCell, UICollectionViewDataSource, UICollec
             cell.productPriceLabel.text = String(total) + "원"
             if condition == 0 {
                 cell.btnDelivery.isHidden = false
+                cell.btnDelivery.tag = purchasedId
+                cell.btnDelivery.addTarget(self, action: #selector(self.delivery(_:)), for: .touchUpInside)
                 cell.btnComplete.isHidden = true
             }
             else if condition == 1 {
@@ -137,6 +141,12 @@ class NotiSoldCell: BaseCollectionViewCell, UICollectionViewDataSource, UICollec
         let id = itemDic.object(forKey: "id") as! Int
         let nextVC = SoldVC()
         nextVC.soldUid = id
+        delegate?.navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    @objc func delivery(_ sender: UIButton) {
+        let nextVC = DeliveryVC()
+        nextVC.Myid = sender.tag
         delegate?.navigationController?.pushViewController(nextVC, animated: true)
     }
 

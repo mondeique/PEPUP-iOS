@@ -8,6 +8,8 @@
 
 import UIKit
 import Alamofire
+import MaterialComponents.MaterialBottomSheet
+import Cosmos
 
 class NotiPurchasedCell: BaseCollectionViewCell, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     
@@ -68,6 +70,19 @@ class NotiPurchasedCell: BaseCollectionViewCell, UICollectionViewDataSource, UIC
         }
     }
     
+    @objc func rating() {
+        // View controller the bottom sheet will hold
+        let viewController: UIViewController = RatingBottomSheetVC()
+        
+        // Initialize the bottom sheet with the view controller just created
+        let bottomSheet: MDCBottomSheetController = MDCBottomSheetController(contentViewController: viewController)
+        bottomSheet.dismissOnDraggingDownSheet = true
+        bottomSheet.dismissOnBackgroundTap = true
+        bottomSheet.preferredContentSize = CGSize(width: UIScreen.main.bounds.width, height: 277)
+        // Present the bottom sheet
+        delegate?.navigationController?.present(bottomSheet, animated: true, completion: nil)
+    }
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return self.productDatas.count
     }
@@ -90,6 +105,8 @@ class NotiPurchasedCell: BaseCollectionViewCell, UICollectionViewDataSource, UIC
         let imageUrl:NSURL = NSURL(string: imageUrlString)!
         let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
         let condition = itemDic.object(forKey: "condition") as! Int
+        let id = itemDic.object(forKey: "id") as! Int
+        UserDefaults.standard.set(id, forKey: "purchasedUid")
 
         DispatchQueue.main.async {
             let image = UIImage(data: imageData as Data)
@@ -99,6 +116,8 @@ class NotiPurchasedCell: BaseCollectionViewCell, UICollectionViewDataSource, UIC
             cell.productPriceLabel.text = String(total) + "원"
             if condition == 0 {
                 cell.btnConfirm.isHidden = false
+                cell.btnConfirm.addTarget(self, action: #selector(self.rating), for: .touchUpInside)
+                cell.btnConfirm.tag = id
                 cell.btnReview.isHidden = true
             }
             else if condition == 1 {
@@ -321,3 +340,139 @@ class PurchasedHeaderCell: BaseCollectionViewCell {
         dateLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 23).isActive = true
     }
 }
+
+class RatingBottomSheetVC : UIViewController {
+    
+    var MyId = UserDefaults.standard.object(forKey: "purchasedUid") as! Int
+    
+    override func viewDidLoad() {
+        super .viewDidLoad()
+        setup()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        
+    }
+    
+    func setup() {
+        view.backgroundColor = .white
+        let screensize: CGRect = UIScreen.main.bounds
+        let screenWidth = screensize.width
+        let screenHeight = screensize.height
+        let defaultWidth: CGFloat = 375
+        let defaultHeight: CGFloat = 667
+//        let statusBarHeight: CGFloat! = UIApplication.shared.statusBarFrame.height
+//        let navBarHeight: CGFloat! = navigationController?.navigationBar.frame.height
+        
+        self.view.addSubview(text1)
+        self.view.addSubview(text2)
+        self.view.addSubview(cosmosView)
+        self.view.addSubview(btnReview)
+        self.view.addSubview(btnRating)
+        
+        text1.topAnchor.constraint(equalTo: view.topAnchor, constant: screenHeight/defaultHeight * 40).isActive = true
+        text1.leftAnchor.constraint(equalTo: view.leftAnchor, constant: screenWidth/defaultWidth * 30).isActive = true
+        text1.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 250).isActive = true
+        text1.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 20).isActive = true
+        
+        text2.topAnchor.constraint(equalTo: text1.bottomAnchor, constant: screenHeight/defaultHeight * 8).isActive = true
+        text2.leftAnchor.constraint(equalTo: view.leftAnchor, constant: screenWidth/defaultWidth * 30).isActive = true
+        text2.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 277).isActive = true
+        text2.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 25).isActive = true
+        
+        cosmosView.topAnchor.constraint(equalTo: text2.bottomAnchor, constant: screenHeight/defaultHeight * 30).isActive = true
+        cosmosView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: screenWidth/defaultWidth * 80).isActive = true
+        cosmosView.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 277).isActive = true
+        cosmosView.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 40).isActive = true
+        cosmosView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
+        btnReview.topAnchor.constraint(equalTo: text2.bottomAnchor, constant: screenHeight/defaultHeight * 120).isActive = true
+        btnReview.leftAnchor.constraint(equalTo: view.leftAnchor, constant: screenWidth/defaultWidth * 30).isActive = true
+        btnReview.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 152).isActive = true
+        btnReview.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 48).isActive = true
+        
+        btnRating.topAnchor.constraint(equalTo: text2.bottomAnchor, constant: screenHeight/defaultHeight * 120).isActive = true
+        btnRating.rightAnchor.constraint(equalTo: view.rightAnchor, constant: screenWidth/defaultWidth * -31).isActive = true
+        btnRating.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 152).isActive = true
+        btnRating.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 48).isActive = true
+        
+    }
+    
+    @objc func review() {
+        print("REVIEW")
+    }
+    
+    @objc func rating() {
+        let rate = cosmosView.rating
+        let paramters = [
+            "satisfactions" : rate
+        ]
+        Alamofire.AF.request("\(Config.baseURL)/api/purchased/leave_review/" + String(MyId), method: .post, parameters: paramters, encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+            (response) in switch response.result {
+            case .success(let JSON):
+                print(JSON)
+            case .failure(let error):
+                print("Request failed with error: \(error)")
+            }
+        }
+        print("RATING")
+    }
+    
+    let text1 : UILabel = {
+        let label = UILabel()
+        label.text = "구매하신 상품은 어떠셨나요?"
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
+        label.textColor = .black
+        label.backgroundColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let text2 : UILabel = {
+        let label = UILabel()
+        label.text = "스토어에 대한 별점을 남겨주세요!"
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 21)
+        label.textColor = .black
+        label.backgroundColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let cosmosView : CosmosView = {
+        let view = CosmosView()
+        view.settings.fillMode = StarFillMode(rawValue: 1)!
+        view.settings.updateOnTouch = true
+        view.settings.starSize = 40
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    let btnReview : UIButton = {
+        let btn = UIButton()
+        btn.setTitle("리뷰 쓰기", for: .normal)
+        btn.setTitleColor(.black, for: .normal)
+        btn.layer.cornerRadius = 3
+        btn.layer.borderColor = UIColor.black.cgColor
+        btn.layer.borderWidth = 1.5
+        btn.backgroundColor = .white
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
+        btn.titleLabel?.textAlignment = .center
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(review), for: .touchUpInside)
+        return btn
+    }()
+    
+    let btnRating : UIButton = {
+        let btn = UIButton()
+        btn.setTitle("별점 남기기", for: .normal)
+        btn.setTitleColor(.white, for: .normal)
+        btn.layer.cornerRadius = 3
+        btn.backgroundColor = .black
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
+        btn.titleLabel?.textAlignment = .center
+        btn.addTarget(self, action: #selector(rating), for: .touchUpInside)
+        return btn
+    }()
+}
+
