@@ -32,6 +32,8 @@
 		E90E851A242B34EC00C215CB /* PolicyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E8519242B34EC00C215CB /* PolicyVC.swift */; };
 		E90E851C242B350900C215CB /* AccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E851B242B350900C215CB /* AccountVC.swift */; };
 		E90E851E242B363C00C215CB /* AlertSettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E851D242B363C00C215CB /* AlertSettingVC.swift */; };
+		E90E8520242BAFE000C215CB /* NoticeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E851F242BAFE000C215CB /* NoticeCell.swift */; };
+		E90E8522242BB21C00C215CB /* NoticeMainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E8521242BB21C00C215CB /* NoticeMainVC.swift */; };
 		E932135323E1B9D800503CA8 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135223E1B9D800503CA8 /* HomeCell.swift */; };
 		E932135523E1BA1000503CA8 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135423E1BA1000503CA8 /* BaseCollectionViewCell.swift */; };
 		E932135B23E26F7200503CA8 /* FollowVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135A23E26F7200503CA8 /* FollowVC.swift */; };
@@ -113,6 +115,8 @@
 		E90E8519242B34EC00C215CB /* PolicyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyVC.swift; sourceTree = "<group>"; };
 		E90E851B242B350900C215CB /* AccountVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountVC.swift; sourceTree = "<group>"; };
 		E90E851D242B363C00C215CB /* AlertSettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertSettingVC.swift; sourceTree = "<group>"; };
+		E90E851F242BAFE000C215CB /* NoticeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeCell.swift; sourceTree = "<group>"; };
+		E90E8521242BB21C00C215CB /* NoticeMainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeMainVC.swift; sourceTree = "<group>"; };
 		E932135223E1B9D800503CA8 /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
 		E932135423E1BA1000503CA8 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		E932135A23E26F7200503CA8 /* FollowVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowVC.swift; sourceTree = "<group>"; };
@@ -288,6 +292,8 @@
 				E9D111CB240FF83A006AE20C /* SettingVC.swift */,
 				E90E8511242B1FF600C215CB /* SettingCell.swift */,
 				E90E8513242B33A000C215CB /* NoticeVC.swift */,
+				E90E851F242BAFE000C215CB /* NoticeCell.swift */,
+				E90E8521242BB21C00C215CB /* NoticeMainVC.swift */,
 				E90E8515242B348D00C215CB /* StoreSettingVC.swift */,
 				E90E8517242B34DC00C215CB /* SupportVC.swift */,
 				E90E8519242B34EC00C215CB /* PolicyVC.swift */,
@@ -457,6 +463,7 @@
 				E968FF0223EB1D8A00B2B1D3 /* FindPwdResetVC.swift in Sources */,
 				E9D111E4241E248C006AE20C /* SellCategoryFirstVC.swift in Sources */,
 				E90E851E242B363C00C215CB /* AlertSettingVC.swift in Sources */,
+				E90E8522242BB21C00C215CB /* NoticeMainVC.swift in Sources */,
 				E9D07A4D23E3FB980095AD05 /* SignupVC.swift in Sources */,
 				E90E84EC2422011600C215CB /* UserModel.swift in Sources */,
 				E9D07A4323E2B1110095AD05 /* NotiVC.swift in Sources */,
@@ -483,6 +490,7 @@
 				E9C8467A23E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld in Sources */,
 				E90E851C242B350900C215CB /* AccountVC.swift in Sources */,
 				E9D07A4923E2E4DD0095AD05 /* LoginVC.swift in Sources */,
+				E90E8520242BAFE000C215CB /* NoticeCell.swift in Sources */,
 				E90E84F62423378400C215CB /* NotiCell.swift in Sources */,
 				E9D111CA240FF3CD006AE20C /* MyStoreLikeCell.swift in Sources */,
 			);
