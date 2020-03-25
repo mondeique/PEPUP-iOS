@@ -96,6 +96,36 @@ class SettingVC: UIViewController, UICollectionViewDataSource, UICollectionViewD
         print("GOGO")
     }
     
+    @objc func notice() {
+        let nextVC = NoticeVC()
+        self.navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    @objc func storesetting() {
+        let nextVC = StoreSettingVC()
+        self.navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    @objc func support() {
+        let nextVC = SupportVC()
+        self.navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    @objc func policy() {
+        let nextVC = PolicyVC()
+        self.navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    @objc func account() {
+        let nextVC = AccountVC()
+        self.navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    @objc func alertsetting() {
+        let nextVC = AlertSettingVC()
+        self.navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
     @objc func logout() {
         let nextVC = LoginVC()
         self.navigationController?.pushViewController(nextVC, animated: true)
@@ -120,16 +150,34 @@ class SettingVC: UIViewController, UICollectionViewDataSource, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! SettingCell
         if indexPath.section == 0 {
+            if indexPath.row == 0 {
+                cell.btnGO.addTarget(self, action: #selector(notice), for: .touchUpInside)
+            }
+            else {
+                cell.btnGO.addTarget(self, action: #selector(storesetting), for: .touchUpInside)
+            }
             cell.settingLabel.text = serviceArray[indexPath.row]
         }
         else if indexPath.section == 1 {
+            if indexPath.row == 0 {
+                cell.btnGO.addTarget(self, action: #selector(support), for: .touchUpInside)
+            }
+            else {
+                cell.btnGO.addTarget(self, action: #selector(policy), for: .touchUpInside)
+            }
             cell.settingLabel.text = supportArray[indexPath.row]
         }
         else {
-            if indexPath.row == 2 {
+            if indexPath.row == 0 {
+                cell.btnGO.addTarget(self, action: #selector(account), for: .touchUpInside)
+            }
+            else if indexPath.row == 1 {
+                cell.btnGO.addTarget(self, action: #selector(alertsetting), for: .touchUpInside)
+            }
+            else if indexPath.row == 2 {
                 cell.btnGO.addTarget(self, action: #selector(logout), for: .touchUpInside)
             }
-            if indexPath.row == 3 {
+            else {
                 cell.btnGO.isHidden = true
             }
             cell.settingLabel.text = accountArray[indexPath.row]
