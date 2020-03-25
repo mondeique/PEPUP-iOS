@@ -562,9 +562,7 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         }
         else {
             let nextVC = StoreVC()
-            let nextCell = StoreShopCell()
             nextVC.SellerID = sellerId
-            nextCell.SellerID = sellerId
             navigationController?.pushViewController(nextVC, animated: true)
             print("I am not me")
         }

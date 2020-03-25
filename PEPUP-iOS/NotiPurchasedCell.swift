@@ -70,17 +70,23 @@ class NotiPurchasedCell: BaseCollectionViewCell, UICollectionViewDataSource, UIC
         }
     }
     
-    @objc func rating() {
+    @objc func rating(_ sender: UIButton) {
         // View controller the bottom sheet will hold
-        let viewController: UIViewController = RatingBottomSheetVC()
-        
+        let nextVC = RatingBottomSheetVC()
+        nextVC.MyId = sender.tag
         // Initialize the bottom sheet with the view controller just created
-        let bottomSheet: MDCBottomSheetController = MDCBottomSheetController(contentViewController: viewController)
+        let bottomSheet: MDCBottomSheetController = MDCBottomSheetController(contentViewController: nextVC)
         bottomSheet.dismissOnDraggingDownSheet = true
         bottomSheet.dismissOnBackgroundTap = true
         bottomSheet.preferredContentSize = CGSize(width: UIScreen.main.bounds.width, height: 277)
         // Present the bottom sheet
         delegate?.navigationController?.present(bottomSheet, animated: true, completion: nil)
+    }
+    
+    @objc func review(_ sender: UIButton) {
+        let nextVC = ReviewVC()
+        UserDefaults.standard.set(sender.tag, forKey: "purchaseUid")
+        delegate?.navigationController?.pushViewController(nextVC, animated: true)
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -106,7 +112,6 @@ class NotiPurchasedCell: BaseCollectionViewCell, UICollectionViewDataSource, UIC
         let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
         let condition = itemDic.object(forKey: "condition") as! Int
         let id = itemDic.object(forKey: "id") as! Int
-        UserDefaults.standard.set(id, forKey: "purchasedUid")
 
         DispatchQueue.main.async {
             let image = UIImage(data: imageData as Data)
@@ -116,13 +121,15 @@ class NotiPurchasedCell: BaseCollectionViewCell, UICollectionViewDataSource, UIC
             cell.productPriceLabel.text = String(total) + "원"
             if condition == 0 {
                 cell.btnConfirm.isHidden = false
-                cell.btnConfirm.addTarget(self, action: #selector(self.rating), for: .touchUpInside)
+                cell.btnConfirm.addTarget(self, action: #selector(self.rating(_:)), for: .touchUpInside)
                 cell.btnConfirm.tag = id
                 cell.btnReview.isHidden = true
             }
             else if condition == 1 {
                 cell.btnConfirm.isHidden = true
                 cell.btnReview.isHidden = false
+                cell.btnReview.tag = id
+                cell.btnReview.addTarget(self, action: #selector(self.review(_:)), for: .touchUpInside)
             }
             else {
                 cell.btnConfirm.isHidden = true
@@ -343,15 +350,11 @@ class PurchasedHeaderCell: BaseCollectionViewCell {
 
 class RatingBottomSheetVC : UIViewController {
     
-    var MyId = UserDefaults.standard.object(forKey: "purchasedUid") as! Int
+    var MyId : Int!
     
     override func viewDidLoad() {
         super .viewDidLoad()
         setup()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        
     }
     
     func setup() {
@@ -405,9 +408,9 @@ class RatingBottomSheetVC : UIViewController {
     @objc func rating() {
         let rate = cosmosView.rating
         let paramters = [
-            "satisfactions" : rate
+            "satisfaction" : Float(rate)
         ]
-        Alamofire.AF.request("\(Config.baseURL)/api/purchased/leave_review/" + String(MyId), method: .post, parameters: paramters, encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+        Alamofire.AF.request("\(Config.baseURL)/api/purchased/leave_review/" + String(MyId) + "/", method: .post, parameters: paramters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
             (response) in switch response.result {
             case .success(let JSON):
                 print(JSON)

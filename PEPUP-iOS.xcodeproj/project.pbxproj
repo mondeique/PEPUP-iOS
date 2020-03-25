@@ -22,6 +22,10 @@
 		E90E85022427781B00C215CB /* SoldMainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E85012427781B00C215CB /* SoldMainCell.swift */; };
 		E90E850424278CA100C215CB /* DeliveryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E850324278CA100C215CB /* DeliveryVC.swift */; };
 		E90E850A2428B52F00C215CB /* ReviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E85092428B52F00C215CB /* ReviewVC.swift */; };
+		E90E850C2429F74700C215CB /* MyStoreReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E850B2429F74700C215CB /* MyStoreReviewCell.swift */; };
+		E90E850E242A088400C215CB /* StoreReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E850D242A088400C215CB /* StoreReviewCell.swift */; };
+		E90E8510242A3A4400C215CB /* ReviewSelectVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E850F242A3A4400C215CB /* ReviewSelectVC.swift */; };
+		E90E8512242B1FF700C215CB /* SettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E8511242B1FF600C215CB /* SettingCell.swift */; };
 		E932135323E1B9D800503CA8 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135223E1B9D800503CA8 /* HomeCell.swift */; };
 		E932135523E1BA1000503CA8 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135423E1BA1000503CA8 /* BaseCollectionViewCell.swift */; };
 		E932135B23E26F7200503CA8 /* FollowVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932135A23E26F7200503CA8 /* FollowVC.swift */; };
@@ -93,6 +97,10 @@
 		E90E85012427781B00C215CB /* SoldMainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoldMainCell.swift; sourceTree = "<group>"; };
 		E90E850324278CA100C215CB /* DeliveryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryVC.swift; sourceTree = "<group>"; };
 		E90E85092428B52F00C215CB /* ReviewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewVC.swift; sourceTree = "<group>"; };
+		E90E850B2429F74700C215CB /* MyStoreReviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyStoreReviewCell.swift; sourceTree = "<group>"; };
+		E90E850D242A088400C215CB /* StoreReviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreReviewCell.swift; sourceTree = "<group>"; };
+		E90E850F242A3A4400C215CB /* ReviewSelectVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewSelectVC.swift; sourceTree = "<group>"; };
+		E90E8511242B1FF600C215CB /* SettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCell.swift; sourceTree = "<group>"; };
 		E932135223E1B9D800503CA8 /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
 		E932135423E1BA1000503CA8 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		E932135A23E26F7200503CA8 /* FollowVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowVC.swift; sourceTree = "<group>"; };
@@ -233,10 +241,12 @@
 				E9D111BD240F6F41006AE20C /* StoreCell.swift */,
 				E9D111BE240F6F42006AE20C /* StoreShopCell.swift */,
 				E9D111C1240F89CE006AE20C /* StoreLikeCell.swift */,
+				E90E850D242A088400C215CB /* StoreReviewCell.swift */,
 				E9D1119924038C27006AE20C /* CustomMenuBar.swift */,
 				E9D111C5240FEFED006AE20C /* MyStoreVC.swift */,
 				E9D111C7240FF039006AE20C /* MyStoreShopCell.swift */,
 				E9D111C9240FF3CD006AE20C /* MyStoreLikeCell.swift */,
+				E90E850B2429F74700C215CB /* MyStoreReviewCell.swift */,
 				E9D111CD2410C316006AE20C /* PaymentVC.swift */,
 				E9D111D324177E48006AE20C /* PaymentCell.swift */,
 				E9D111DD2419409B006AE20C /* SellSelectVC.swift */,
@@ -257,12 +267,14 @@
 				E90E84F32423351E00C215CB /* NotiPurchasedCell.swift */,
 				E90E84F92423D64100C215CB /* PurchasedVC.swift */,
 				E90E84FB2423E89800C215CB /* PurchasedMainCell.swift */,
+				E90E850F242A3A4400C215CB /* ReviewSelectVC.swift */,
 				E90E85092428B52F00C215CB /* ReviewVC.swift */,
 				E90E84FF2427776800C215CB /* NotiSoldCell.swift */,
 				E90E84FD2427773700C215CB /* SoldVC.swift */,
 				E90E85012427781B00C215CB /* SoldMainCell.swift */,
 				E90E850324278CA100C215CB /* DeliveryVC.swift */,
 				E9D111CB240FF83A006AE20C /* SettingVC.swift */,
+				E90E8511242B1FF600C215CB /* SettingCell.swift */,
 				E9D111CF2410D64C006AE20C /* FilterVC.swift */,
 			);
 			path = "PEPUP-iOS";
@@ -410,12 +422,14 @@
 				E90E84FA2423D64100C215CB /* PurchasedVC.swift in Sources */,
 				E94D142C23E9223F0001F3A0 /* ProfileVC.swift in Sources */,
 				E90E850A2428B52F00C215CB /* ReviewVC.swift in Sources */,
+				E90E8510242A3A4400C215CB /* ReviewSelectVC.swift in Sources */,
 				E9D111D22416A7CC006AE20C /* SellVC.swift in Sources */,
 				E9D111B4240E6278006AE20C /* SearchResultVC.swift in Sources */,
 				E9C8467023E1A5D200359A93 /* AppDelegate.swift in Sources */,
 				E90E850424278CA100C215CB /* DeliveryVC.swift in Sources */,
 				E9D111BF240F6F42006AE20C /* StoreCell.swift in Sources */,
 				E9D1119E2403BF77006AE20C /* TagVC.swift in Sources */,
+				E90E8512242B1FF700C215CB /* SettingCell.swift in Sources */,
 				E9D111C2240F89CE006AE20C /* StoreLikeCell.swift in Sources */,
 				E968FF1223F5139000B2B1D3 /* CartVC.swift in Sources */,
 				E968FF0223EB1D8A00B2B1D3 /* FindPwdResetVC.swift in Sources */,
@@ -430,9 +444,11 @@
 				E932135B23E26F7200503CA8 /* FollowVC.swift in Sources */,
 				E932135323E1B9D800503CA8 /* HomeCell.swift in Sources */,
 				E968FF0423EC478200B2B1D3 /* Config.swift in Sources */,
+				E90E850E242A088400C215CB /* StoreReviewCell.swift in Sources */,
 				E968FF1423F513BB00B2B1D3 /* CartCell.swift in Sources */,
 				E9D111EE24207C79006AE20C /* SellCategoryTagVC.swift in Sources */,
 				E9D111E6241E25AC006AE20C /* SellCategorySecondVC.swift in Sources */,
+				E90E850C2429F74700C215CB /* MyStoreReviewCell.swift in Sources */,
 				E932135D23E26FC400503CA8 /* FollowCell.swift in Sources */,
 				E90E84F2242334DD00C215CB /* NotiActivityCell.swift in Sources */,
 				E9D111C6240FEFED006AE20C /* MyStoreVC.swift in Sources */,

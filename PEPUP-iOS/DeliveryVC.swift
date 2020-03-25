@@ -47,7 +47,7 @@ class DeliveryVC: UIViewController {
         
         self.view.addSubview(navcontentView)
         navcontentView.addSubview(btnBack)
-        navcontentView.addSubview(sellLabel)
+        navcontentView.addSubview(deliveryLabel)
         navcontentView.addSubview(btnNext)
         
         self.view.addSubview(maincontentView)
@@ -67,8 +67,8 @@ class DeliveryVC: UIViewController {
         btnBack.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 10).isActive = true
         btnBack.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 16).isActive = true
         
-        sellLabel.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
-        sellLabel.centerXAnchor.constraint(equalTo: navcontentView.centerXAnchor).isActive = true
+        deliveryLabel.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
+        deliveryLabel.centerXAnchor.constraint(equalTo: navcontentView.centerXAnchor).isActive = true
         
         btnNext.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
         btnNext.rightAnchor.constraint(equalTo: navcontentView.rightAnchor, constant: screenWidth/defaultWidth * -18).isActive = true
@@ -159,7 +159,7 @@ class DeliveryVC: UIViewController {
        return btn
     }()
     
-    let sellLabel: UILabel = {
+    let deliveryLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)

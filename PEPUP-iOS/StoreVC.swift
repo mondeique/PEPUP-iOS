@@ -11,6 +11,7 @@ import Alamofire
 
 private let storeshopIdentifier = "storeshopcell"
 private let storelikeIdentifier = "storelikecell"
+private let storereviewIdentifier = "storereviewcell"
 
 class StoreVC: UIViewController, CustomMenuBarDelegate{
     
@@ -99,6 +100,7 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
         pageCollectionView.isPagingEnabled = true
         pageCollectionView.register(StoreShopCell.self, forCellWithReuseIdentifier: storeshopIdentifier)
         pageCollectionView.register(StoreLikeCell.self, forCellWithReuseIdentifier: storelikeIdentifier)
+        pageCollectionView.register(StoreReviewCell.self, forCellWithReuseIdentifier: storereviewIdentifier)
         self.view.addSubview(pageCollectionView)
         pageCollectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         pageCollectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
@@ -168,7 +170,7 @@ extension StoreVC: UICollectionViewDelegate, UICollectionViewDataSource {
             }
             return cell
         }
-        else {
+        else if indexPath.row == 1 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storelikeIdentifier, for: indexPath) as! StoreLikeCell
             if indexPath.row == 0 {
                 cell.likecollectionView.isHidden = true
@@ -180,6 +182,19 @@ extension StoreVC: UICollectionViewDelegate, UICollectionViewDataSource {
                 cell.likecollectionView.isHidden = true
             }
             return cell 
+        }
+        else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storereviewIdentifier, for: indexPath) as! StoreReviewCell
+            if indexPath.row == 0 {
+                cell.reviewcollectionView.isHidden = true
+            }
+            else if indexPath.row == 1 {
+                cell.reviewcollectionView.isHidden = true
+            }
+            else if indexPath.row == 2 {
+                cell.reviewcollectionView.isHidden = false
+            }
+            return cell
         }
     }
 

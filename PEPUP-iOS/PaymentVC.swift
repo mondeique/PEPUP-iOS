@@ -604,13 +604,12 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         return 0.0
     }
     
-    
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let currentText = textView.text ?? ""
         guard let stringRange = Range(range, in: currentText) else { return false }
-     
+
         let changedText = currentText.replacingCharacters(in: stringRange, with: text)
-     
+
         return changedText.count <= 50
     }
     

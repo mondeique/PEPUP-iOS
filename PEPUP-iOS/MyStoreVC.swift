@@ -11,6 +11,7 @@ import Alamofire
 
 private let storeshopIdentifier = "mystoreshopcell"
 private let storelikeIdentifier = "mystorelikecell"
+private let storereviewIdentifier = "mystorereviewcell"
 
 class MyStoreVC: UIViewController, CustomMenuBarDelegate{
     
@@ -101,6 +102,7 @@ class MyStoreVC: UIViewController, CustomMenuBarDelegate{
         pageCollectionView.isPagingEnabled = true
         pageCollectionView.register(MyStoreShopCell.self, forCellWithReuseIdentifier: storeshopIdentifier)
         pageCollectionView.register(MyStoreLikeCell.self, forCellWithReuseIdentifier: storelikeIdentifier)
+        pageCollectionView.register(MyStoreReviewCell.self, forCellWithReuseIdentifier: storereviewIdentifier)
         self.view.addSubview(pageCollectionView)
         pageCollectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         pageCollectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
@@ -172,7 +174,7 @@ extension MyStoreVC: UICollectionViewDelegate, UICollectionViewDataSource {
             }
             return cell
         }
-        else {
+        else if indexPath.row == 1{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storelikeIdentifier, for: indexPath) as! MyStoreLikeCell
             cell.delegate = self
             if indexPath.row == 0 {
@@ -183,6 +185,20 @@ extension MyStoreVC: UICollectionViewDelegate, UICollectionViewDataSource {
             }
             else if indexPath.row == 2 {
                 cell.likecollectionView.isHidden = true
+            }
+            return cell
+        }
+        else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storereviewIdentifier, for: indexPath) as! MyStoreReviewCell
+            cell.delegate = self
+            if indexPath.row == 0 {
+                cell.reviewcollectionView.isHidden = true
+            }
+            else if indexPath.row == 1 {
+                cell.reviewcollectionView.isHidden = true
+            }
+            else if indexPath.row == 2 {
+                cell.reviewcollectionView.isHidden = false
             }
             return cell
         }
