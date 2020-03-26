@@ -16,8 +16,8 @@ class SettingVC: UIViewController, UICollectionViewDataSource, UICollectionViewD
     var settingcollectionView: UICollectionView!
     let settingheaderArray = ["SERVICE", "SUPPORT", "ACCOUNT"]
     let serviceArray = ["공지사항", "스토어 설정"]
-    let supportArray = ["고객문의", "정책"]
-    let accountArray = ["개인정보변경", "알림설정", "로그아웃", "버전정보"]
+    let supportArray = ["고객문의", "이용약관", "개인정보처리방침"]
+    let accountArray = ["알림설정", "로그아웃", "버전정보"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -111,18 +111,13 @@ class SettingVC: UIViewController, UICollectionViewDataSource, UICollectionViewD
         self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
-    @objc func policy() {
-        let nextVC = PolicyVC()
+    @objc func use_terms() {
+        let nextVC = UseTermsVC()
         self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
-    @objc func account() {
-        let nextVC = AccountVC()
-        self.navigationController?.pushViewController(nextVC, animated: true)
-    }
-    
-    @objc func alertsetting() {
-        let nextVC = AlertSettingVC()
+    @objc func private_policy() {
+        let nextVC = PrivacyPolicyVC()
         self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
@@ -162,19 +157,20 @@ class SettingVC: UIViewController, UICollectionViewDataSource, UICollectionViewD
             if indexPath.row == 0 {
                 cell.btnGO.addTarget(self, action: #selector(support), for: .touchUpInside)
             }
+            else if indexPath.row == 1{
+                cell.btnGO.addTarget(self, action: #selector(use_terms), for: .touchUpInside)
+            }
             else {
-                cell.btnGO.addTarget(self, action: #selector(policy), for: .touchUpInside)
+                cell.btnGO.addTarget(self, action: #selector(private_policy), for: .touchUpInside)
             }
             cell.settingLabel.text = supportArray[indexPath.row]
         }
         else {
             if indexPath.row == 0 {
-                cell.btnGO.addTarget(self, action: #selector(account), for: .touchUpInside)
+                cell.btnGO.isHidden = true
+                cell.btnAlert.isHidden = false
             }
             else if indexPath.row == 1 {
-                cell.btnGO.addTarget(self, action: #selector(alertsetting), for: .touchUpInside)
-            }
-            else if indexPath.row == 2 {
                 cell.btnGO.addTarget(self, action: #selector(logout), for: .touchUpInside)
             }
             else {

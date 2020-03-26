@@ -17,6 +17,7 @@ class NoticeVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     var noticeDatas : NSDictionary!
 
     override func viewDidLoad() {
+        self.view.backgroundColor = .white
         super.viewDidLoad()
         getData()
     }

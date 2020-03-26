@@ -8,11 +8,27 @@
 
 import UIKit
 
-class SupportVC: UIViewController {
+private let supporttotalIdentifier = "supporttotalcell"
+private let supportdeliveryIdentifier = "supportdeliverycell"
+private let supportrefundIdentifier = "supportrefundcell"
+
+class SupportVC: UIViewController, CustomSupportBarDelegate {
+    
+    var pageCollectionView: UICollectionView = {
+        let collectionViewLayout = UICollectionViewFlowLayout()
+        collectionViewLayout.scrollDirection = .horizontal
+        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height), collectionViewLayout: collectionViewLayout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
+    }()
+    
+    var customSupportBar = CustomSupportBar()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        setupCustomTabBar()
+        setupPageCollectionView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -27,6 +43,39 @@ class SupportVC: UIViewController {
         self.navigationController?.navigationBar.isHidden = false
         self.tabBarController?.tabBar.isHidden = true
         self.tabBarController?.tabBar.isTranslucent = true
+    }
+    
+    //MARK: Setup view
+    func setupCustomTabBar(){
+        self.view.addSubview(customSupportBar)
+        customSupportBar.delegate = self
+        customSupportBar.translatesAutoresizingMaskIntoConstraints = false
+        customSupportBar.indicatorViewWidthConstraint.constant = UIScreen.main.bounds.width/375 * 48
+        customSupportBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: UIScreen.main.bounds.width/375 * 8).isActive = true
+        customSupportBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        customSupportBar.topAnchor.constraint(equalTo: faqlabel.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 16).isActive = true
+        customSupportBar.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 39).isActive = true
+    }
+    
+    func customSupportBar(scrollTo index: Int) {
+        let indexPath = IndexPath(row: index, section: 0)
+        self.pageCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+    }
+    
+    func setupPageCollectionView() {
+        pageCollectionView.delegate = self
+        pageCollectionView.dataSource = self
+        pageCollectionView.backgroundColor = .white
+        pageCollectionView.showsHorizontalScrollIndicator = false
+        pageCollectionView.isPagingEnabled = true
+        pageCollectionView.register(SupportTotalCell.self, forCellWithReuseIdentifier: supporttotalIdentifier)
+//        pageCollectionView.register(NotiPurchasedCell.self, forCellWithReuseIdentifier: notipurchasedIdentifier)
+//        pageCollectionView.register(NotiSoldCell.self, forCellWithReuseIdentifier: notisoldIdentifier)
+        self.view.addSubview(pageCollectionView)
+        pageCollectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        pageCollectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        pageCollectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        pageCollectionView.topAnchor.constraint(equalTo: self.customSupportBar.bottomAnchor).isActive = true
     }
     
     func setup() {
@@ -55,6 +104,12 @@ class SupportVC: UIViewController {
         
         supportLabel.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
         supportLabel.centerXAnchor.constraint(equalTo: navcontentView.centerXAnchor).isActive = true
+        
+        self.view.addSubview(faqlabel)
+        
+        faqlabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: screenWidth/defaultWidth * 18).isActive = true
+        faqlabel.topAnchor.constraint(equalTo: navcontentView.bottomAnchor, constant: screenHeight/defaultHeight * 40).isActive = true
+        faqlabel.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 25).isActive = true
     }
     
     @objc func back() {
@@ -85,5 +140,93 @@ class SupportVC: UIViewController {
         label.textAlignment = .center
         return label
     }()
+    
+    let faqlabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 21)
+        label.textColor = .black
+        label.textAlignment = .left
+        label.backgroundColor = .white
+        label.text = "자주 묻는 FAQ"
+        return label
+    }()
 
 }
+
+//MARK:- UICollectionViewDelegate, UICollectionViewDataSource
+
+extension SupportVC: UICollectionViewDelegate, UICollectionViewDataSource {
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if indexPath.row == 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: supporttotalIdentifier, for: indexPath) as! SupportTotalCell
+//            if indexPath.row == 0 {
+//                cell.shopcollectionView.isHidden = false
+//            }
+//            else if indexPath.row == 1 {
+//                cell.shopcollectionView.isHidden = true
+//            }
+//            else if indexPath.row == 2 {
+//                cell.shopcollectionView.isHidden = true
+//            }
+            return cell
+        }
+        else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: supporttotalIdentifier, for: indexPath) as! SupportTotalCell
+            return cell
+        }
+//        else if indexPath.row == 1{
+//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: supportdeliveryIdentifier, for: indexPath) as! NotiPurchasedCell
+//            cell.delegate = self
+//            if indexPath.row == 0 {
+//                cell.purchasedcollectionView.isHidden = true
+//            }
+//            else if indexPath.row == 1 {
+//                cell.purchasedcollectionView.isHidden = false
+//            }
+//            else if indexPath.row == 2 {
+//                cell.purchasedcollectionView.isHidden = true
+//            }
+//            return cell
+//        }
+//        else {
+//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: supportrefundIdentifier, for: indexPath) as! NotiSoldCell
+//            cell.delegate = self
+//            if indexPath.row == 0 {
+//                cell.soldcollectionView.isHidden = true
+//            }
+//            else if indexPath.row == 1 {
+//                cell.soldcollectionView.isHidden = true
+//            }
+//            else if indexPath.row == 2 {
+//                cell.soldcollectionView.isHidden = false
+//            }
+//            return cell
+//        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 6
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        customSupportBar.indicatorViewLeadingConstraint.constant = UIScreen.main.bounds.width/375 * 16 + scrollView.contentOffset.x / 375 * 50
+    }
+
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let itemAt = Int(targetContentOffset.pointee.x / self.view.frame.width)
+        let indexPath = IndexPath(item: itemAt, section: 0)
+        customSupportBar.customTabBarCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
+    }
+}
+//MARK:- UICollectionViewDelegateFlowLayout
+extension SupportVC: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+}
+

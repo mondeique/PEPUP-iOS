@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class TabBarController: UITabBarController, UITabBarControllerDelegate {
 
@@ -41,7 +42,25 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         follow.tabBarItem.image = #imageLiteral(resourceName: "follow_unselected")
         follow.tabBarItem.selectedImage = #imageLiteral(resourceName: "follow_selected")
         // Sell
-        let sell = UINavigationController(rootViewController: SellSelectVC())
+        var is_store = false
+        Alamofire.AF.request("\(Config.baseURL)/accounts/check_store/" , method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+            (response) in switch response.result {
+            case .success(let JSON):
+                print(JSON)
+                is_store = true
+                
+            case .failure(let error):
+                print("Request failed with error: \(error)")
+                is_store = false
+            }
+        }
+        var sell = UINavigationController(rootViewController: StoreInfoSettingVC())
+        if is_store == true {
+            sell = UINavigationController(rootViewController: SellSelectVC())
+        }
+        else  {
+            sell = UINavigationController(rootViewController: StoreInfoSettingVC())
+        }
         sell.tabBarItem.image = #imageLiteral(resourceName: "sell_unselected")
         sell.tabBarItem.selectedImage = #imageLiteral(resourceName: "sell_selected")
         // Noti
@@ -59,4 +78,5 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
             }
         }
     }
+    
 }

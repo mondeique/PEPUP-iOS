@@ -14,13 +14,25 @@ class SettingCell: BaseCollectionViewCell {
         backgroundColor = .white
         settingcellcontentView.addSubview(settingLabel)
         settingcellcontentView.addSubview(btnGO)
+        settingcellcontentView.addSubview(btnAlert)
         settingcellcontentView.addSubview(lineLabel)
         self.addSubview(settingcellcontentView)
 
         settingcellcontentViewLayout()
         settingLabelLayout()
         btnGOLayout()
+        btnAlertLayout()
         lineLabelLayout()
+        
+    }
+    
+    @objc func switchonoff() {
+        if btnAlert.isOn == true {
+            print("true")
+        }
+        else {
+            print("false")
+        }
     }
     
     let settingcellcontentView: UIView = {
@@ -51,6 +63,16 @@ class SettingCell: BaseCollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    let btnAlert : UISwitch = {
+        let btn = UISwitch()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.isOn = false
+        btn.isHidden = true
+        btn.isEnabled = true
+        btn.addTarget(self, action: #selector(switchonoff), for: .touchUpInside)
+        return btn
+    }()
 
     func settingcellcontentViewLayout() {
         settingcellcontentView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
@@ -72,6 +94,14 @@ class SettingCell: BaseCollectionViewCell {
         btnGO.centerYAnchor.constraint(equalTo:settingcellcontentView.centerYAnchor).isActive = true
         btnGO.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 10).isActive = true
         btnGO.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 16).isActive = true
+    }
+    
+    func btnAlertLayout() {
+        btnAlert.rightAnchor.constraint(equalTo:settingcellcontentView.rightAnchor, constant: UIScreen.main.bounds.width/375 * -18).isActive = true
+//        btnAlert.topAnchor.constraint(equalTo:settingcellcontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 20).isActive = true
+        btnAlert.centerYAnchor.constraint(equalTo:settingcellcontentView.centerYAnchor).isActive = true
+//        btnAlert.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 10).isActive = true
+//        btnAlert.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 16).isActive = true
     }
     
     func lineLabelLayout() {
