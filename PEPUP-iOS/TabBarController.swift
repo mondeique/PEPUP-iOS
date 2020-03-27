@@ -30,6 +30,25 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         self.tabBar.frame = tabFrame
     }
     
+    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        if tabBar.selectedItem?.image == #imageLiteral(resourceName: "sell_unselected") {
+            Alamofire.AF.request("\(Config.baseURL)/accounts/check_store/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .response { response in
+                if response.response?.statusCode == 200 {
+                    print("SUCESS!")
+                    UserDefaults.standard.set(true, forKey: "exist_store")
+                }
+                else if response.response?.statusCode == 404 {
+                    print("NOT FOUND!")
+                    UserDefaults.standard.set(false, forKey: "exist_store")
+                }
+                else {
+                    print("OTHER ERROR!")
+                    UserDefaults.standard.set(false, forKey: "exist_store")
+                }
+            }
+        }
+    }
+    
     fileprivate func setup() {
         delegate = self
         // Instantiate controllers
@@ -42,19 +61,19 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         follow.tabBarItem.image = #imageLiteral(resourceName: "follow_unselected")
         follow.tabBarItem.selectedImage = #imageLiteral(resourceName: "follow_selected")
         // Sell
-        var is_store = false
-        Alamofire.AF.request("\(Config.baseURL)/accounts/check_store/" , method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-            (response) in switch response.result {
-            case .success(let JSON):
-                print(JSON)
-                is_store = true
-                
-            case .failure(let error):
-                print("Request failed with error: \(error)")
-                is_store = false
-            }
-        }
-        var sell = UINavigationController(rootViewController: StoreInfoSettingVC())
+        let is_store = UserDefaults.standard.object(forKey: "exist_store") as! Bool
+//        Alamofire.AF.request("\(Config.baseURL)/accounts/check_store/" , method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+//            (response) in switch response.result {
+//            case .success(let JSON):
+//                print(JSON)
+//                is_store = true
+//
+//            case .failure(let error):
+//                print("Request failed with error: \(error)")
+//                is_store = false
+//            }
+//        }
+        var sell = UINavigationController(rootViewController: SellSelectVC())
         if is_store == true {
             sell = UINavigationController(rootViewController: SellSelectVC())
         }

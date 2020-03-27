@@ -91,7 +91,6 @@ class SupportErrorCell: BaseCollectionViewCell, UICollectionViewDataSource, UICo
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("TOUCH")
     }
-    
 //    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
 //
 //        switch kind {
@@ -105,7 +104,6 @@ class SupportErrorCell: BaseCollectionViewCell, UICollectionViewDataSource, UICo
 //                assert(false, "Unexpected element kind")
 //        }
 //    }
-
 }
 
 class SupportErrorMainCell: BaseCollectionViewCell {

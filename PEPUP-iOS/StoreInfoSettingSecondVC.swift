@@ -123,15 +123,28 @@ class StoreInfoSettingSecondVC: UIViewController {
             "general" : origindeliverytxtView.text!,
             "mountain" : mountaindeliverytxtView.text!
             ] as [String : Any]
-        Alamofire.AF.request("\(Config.baseURL)/api/delivery-policy/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-            (response) in switch response.result {
-            case .success(let JSON):
-                print("SUCESS Setting! \(JSON)")
+//        Alamofire.AF.request("\(Config.baseURL)/api/delivery-policy/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+//            (response) in switch response.result {
+//            case .success(let JSON):
+//                print("SUCESS Setting! \(JSON)")
+//                let nextVC = SellSelectVC()
+//                self.navigationController?.pushViewController(nextVC, animated: true)
+//            case .failure(let error):
+//                print("Request failed with error: \(error)")
+//
+//            }
+//        }
+        Alamofire.AF.request("\(Config.baseURL)/api/delivery-policy/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .response { response in
+            if response.response?.statusCode == 201 {
+                print("SUCESS!")
                 let nextVC = SellSelectVC()
                 self.navigationController?.pushViewController(nextVC, animated: true)
-            case .failure(let error):
-                print("Request failed with error: \(error)")
-                
+            }
+            else if response.response?.statusCode == 400 {
+                print("BAD REQUEST!")
+            }
+            else {
+                print("OTHER ERROR!")
             }
         }
     }
