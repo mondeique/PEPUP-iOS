@@ -9,8 +9,9 @@
 import UIKit
 
 private let supporttotalIdentifier = "supporttotalcell"
+private let supportotherIdentifier = "supportothercell"
+private let supporterrorIdentifier = "supporterrorcell"
 private let supportdeliveryIdentifier = "supportdeliverycell"
-private let supportrefundIdentifier = "supportrefundcell"
 
 class SupportVC: UIViewController, CustomSupportBarDelegate {
     
@@ -69,8 +70,9 @@ class SupportVC: UIViewController, CustomSupportBarDelegate {
         pageCollectionView.showsHorizontalScrollIndicator = false
         pageCollectionView.isPagingEnabled = true
         pageCollectionView.register(SupportTotalCell.self, forCellWithReuseIdentifier: supporttotalIdentifier)
-//        pageCollectionView.register(NotiPurchasedCell.self, forCellWithReuseIdentifier: notipurchasedIdentifier)
-//        pageCollectionView.register(NotiSoldCell.self, forCellWithReuseIdentifier: notisoldIdentifier)
+        pageCollectionView.register(SupportOtherCell.self, forCellWithReuseIdentifier: supportotherIdentifier)
+        pageCollectionView.register(SupportErrorCell.self, forCellWithReuseIdentifier: supporterrorIdentifier)
+        pageCollectionView.register(SupportDeliveryCell.self, forCellWithReuseIdentifier: supportdeliveryIdentifier)
         self.view.addSubview(pageCollectionView)
         pageCollectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         pageCollectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
@@ -161,53 +163,52 @@ extension SupportVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: supporttotalIdentifier, for: indexPath) as! SupportTotalCell
-//            if indexPath.row == 0 {
-//                cell.shopcollectionView.isHidden = false
-//            }
-//            else if indexPath.row == 1 {
-//                cell.shopcollectionView.isHidden = true
-//            }
-//            else if indexPath.row == 2 {
-//                cell.shopcollectionView.isHidden = true
-//            }
+            cell.delegate = self
+            if indexPath.row == 0 {
+                cell.supportotalcollectionView.isHidden = false
+            }
+            else {
+                cell.supportotalcollectionView.isHidden = true
+            }
+            return cell
+        }
+        else if indexPath.row == 1 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: supporterrorIdentifier, for: indexPath) as! SupportErrorCell
+            cell.delegate = self
+            if indexPath.row == 1 {
+                cell.supporterrorcollectionView.isHidden = false
+            }
+            else {
+                cell.supporterrorcollectionView.isHidden = true
+            }
+            return cell
+        }
+        else if indexPath.row == 2 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: supportdeliveryIdentifier, for: indexPath) as! SupportDeliveryCell
+            cell.delegate = self
+            if indexPath.row == 0 {
+                cell.supportdeliverycollectionView.isHidden = false
+            }
+            else {
+                cell.supportdeliverycollectionView.isHidden = true
+            }
             return cell
         }
         else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: supporttotalIdentifier, for: indexPath) as! SupportTotalCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: supportotherIdentifier, for: indexPath) as! SupportOtherCell
+            cell.delegate = self
+            if indexPath.row == 3 {
+                cell.supportothercollectionView.isHidden = false
+            }
+            else {
+                cell.supportothercollectionView.isHidden = true
+            }
             return cell
         }
-//        else if indexPath.row == 1{
-//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: supportdeliveryIdentifier, for: indexPath) as! NotiPurchasedCell
-//            cell.delegate = self
-//            if indexPath.row == 0 {
-//                cell.purchasedcollectionView.isHidden = true
-//            }
-//            else if indexPath.row == 1 {
-//                cell.purchasedcollectionView.isHidden = false
-//            }
-//            else if indexPath.row == 2 {
-//                cell.purchasedcollectionView.isHidden = true
-//            }
-//            return cell
-//        }
-//        else {
-//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: supportrefundIdentifier, for: indexPath) as! NotiSoldCell
-//            cell.delegate = self
-//            if indexPath.row == 0 {
-//                cell.soldcollectionView.isHidden = true
-//            }
-//            else if indexPath.row == 1 {
-//                cell.soldcollectionView.isHidden = true
-//            }
-//            else if indexPath.row == 2 {
-//                cell.soldcollectionView.isHidden = false
-//            }
-//            return cell
-//        }
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 6
+        return 4
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
