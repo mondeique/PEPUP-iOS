@@ -16,6 +16,8 @@ class StoreLikeCell: BaseCollectionViewCell, UICollectionViewDelegate, UICollect
     
     var pagenum : Int = 1
     
+    weak var delegate : StoreVC?
+    
     var SellerID = UserDefaults.standard.object(forKey: "sellerId") as! Int
     var sellerInfoDatas = NSDictionary()
     var productDatas = Array<NSDictionary>()
@@ -85,7 +87,11 @@ class StoreLikeCell: BaseCollectionViewCell, UICollectionViewDelegate, UICollect
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("CLICK \(indexPath.row)")
+        let productDictionary = self.productDatas[indexPath.row] as NSDictionary
+        let productId = productDictionary.object(forKey: "id") as! Int
+        let nextVC = DetailVC()
+        nextVC.Myid = productId
+        delegate?.navigationController?.pushViewController(nextVC, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

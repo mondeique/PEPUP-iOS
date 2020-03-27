@@ -116,8 +116,24 @@ class StoreInfoSettingSecondVC: UIViewController {
     }
     
     @objc func complete() {
-        let nextVC = SellSelectVC()
-        self.navigationController?.pushViewController(nextVC, animated: true)
+        let parameters = [
+            "bank" : bankId!,
+            "account" : Int(accountnum)!,
+            "account_holder" : accountname!,
+            "general" : origindeliverytxtView.text!,
+            "mountain" : mountaindeliverytxtView.text!
+            ] as [String : Any]
+        Alamofire.AF.request("\(Config.baseURL)/api/delivery-policy/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+            (response) in switch response.result {
+            case .success(let JSON):
+                print("SUCESS Setting! \(JSON)")
+                let nextVC = SellSelectVC()
+                self.navigationController?.pushViewController(nextVC, animated: true)
+            case .failure(let error):
+                print("Request failed with error: \(error)")
+                
+            }
+        }
     }
     
     let navcontentView: UIView = {
