@@ -111,15 +111,15 @@ extension NotiVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: notiactivityIdentifier, for: indexPath) as! NotiActivityCell
-//            if indexPath.row == 0 {
-//                cell.shopcollectionView.isHidden = false
-//            }
-//            else if indexPath.row == 1 {
-//                cell.shopcollectionView.isHidden = true
-//            }
-//            else if indexPath.row == 2 {
-//                cell.shopcollectionView.isHidden = true
-//            }
+            if indexPath.row == 0 {
+                cell.activitycollectionView.isHidden = false
+            }
+            else if indexPath.row == 1 {
+                cell.activitycollectionView.isHidden = true
+            }
+            else if indexPath.row == 2 {
+                cell.activitycollectionView.isHidden = true
+            }
             return cell
         }
         else if indexPath.row == 1{

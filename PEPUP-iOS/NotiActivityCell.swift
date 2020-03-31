@@ -9,476 +9,434 @@
 import UIKit
 import Alamofire
 
-class NotiActivityCell: BaseCollectionViewCell{
+class NotiActivityCell: BaseCollectionViewCell, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     
-    private let myshopcellId = "myshopcell"
-    private let myshopheaderId = "myshopheadercell"
+    private let notiactivitycellId = "notipurchasecell"
     
     var pagenum : Int = 1
     
-    var SellerID = UserDefaults.standard.object(forKey: "pk") as! Int
-    var sellerInfoDatas = NSDictionary()
+    weak var delegate: NotiVC?
+    
     var productDatas = Array<NSDictionary>()
     
-    let shopcollectionView: UICollectionView = {
+    let activitycollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: (UIScreen.main.bounds.width / 3) - 1, height: (UIScreen.main.bounds.width / 3) - 1)
-        layout.minimumInteritemSpacing = 1.0
-        layout.minimumLineSpacing = 1.0
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/667 * 72)
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
         layout.scrollDirection = .vertical
-        layout.headerReferenceSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/667 * 204)
-        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - UIScreen.main.bounds.height/667 * 150 - UIApplication.shared.statusBarFrame.height), collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height), collectionViewLayout: layout)
         collectionView.backgroundColor = .white
         collectionView.isHidden = false
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
     
     override func setup() {
         backgroundColor = .white
         
-//        self.addSubview(shopcollectionView)
-//
-//        shopcollectionView.delegate = self
-//        shopcollectionView.dataSource = self
-//        shopcollectionView.register(MyShopCell.self, forCellWithReuseIdentifier: myshopcellId)
-//        shopcollectionView.register(MyShopHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: myshopheaderId)
-//
-//        getShopData(pagenum: 1)
+        self.addSubview(activitycollectionView)
+
+        activitycollectionView.delegate = self
+        activitycollectionView.dataSource = self
+        activitycollectionView.register(ActivityCell.self, forCellWithReuseIdentifier: notiactivitycellId)
+        
+        activitycollectionView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        activitycollectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        activitycollectionView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        activitycollectionView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+
+        getActivityData(pagenum: pagenum)
     }
     
-//    func getShopData(pagenum: Int) {
-//        Alamofire.AF.request("\(Config.baseURL)/api/store/shop/" + String(SellerID) + "/?page=" + String(pagenum), method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-//            (response) in switch response.result {
-//            case .success(let JSON):
-//                let response = JSON as! NSDictionary
-//                self.sellerInfoDatas = response.object(forKey: "info") as! NSDictionary
-//                print(self.sellerInfoDatas)
-//                self.productDatas = response.object(forKey: "results") as! Array<NSDictionary>
-//                DispatchQueue.main.async {
-//                    self.shopcollectionView.reloadData()
-//                }
-//            case .failure(let error):
-//                print("Request failed with error: \(error)")
-//            }
-//        }
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return self.productDatas.count
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: myshopcellId, for: indexPath) as! MyShopCell
-//        let productDictionary = self.productDatas[indexPath.row] as NSDictionary
-//        let is_sold = productDictionary.object(forKey: "sold") as! Bool
-//        if let productImgDic = productDictionary.object(forKey: "thumbnails") as? NSDictionary {
-//            let imageUrlString = productImgDic.object(forKey: "thumbnail") as! String
-//            let imageUrl:NSURL = NSURL(string: imageUrlString)!
-//            let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
-//            DispatchQueue.main.async {
-//                let image = UIImage(data: imageData as Data)
-//                cell.productImg.image = image
-//                if is_sold == true {
-//                    cell.soldLabel.isHidden = false
-//                }
-//                else {
-//                    cell.soldLabel.isHidden = true
-//                }
-//            }
-//        }
-//        return cell
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//        switch kind {
-//
-//            case UICollectionView.elementKindSectionHeader:
-//                let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: myshopheaderId, for: indexPath) as! MyShopHeaderCell
-//                if let sellerImgDic = sellerInfoDatas.object(forKey: "profile") as? NSDictionary {
-//                    let imageUrlString = sellerImgDic.object(forKey: "thumbnail_img") as! String
-//                    let imageUrl:NSURL = NSURL(string: imageUrlString)!
-//                    let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
-//                    let image = UIImage(data: imageData as Data)
-//                    headerView.sellerImage.image = image
-//                    headerView.sellerImage.layer.cornerRadius = headerView.sellerImage.frame.height / 2
-//                    headerView.sellerImage.layer.borderColor = UIColor.clear.cgColor
-//                    headerView.sellerImage.layer.borderWidth = 1
-//                    headerView.sellerImage.layer.masksToBounds = false
-//                    headerView.sellerImage.clipsToBounds = true
-//                }
-//                if let reviewscore = sellerInfoDatas.object(forKey: "review_score") as? Int {
-//                    if 0 <= Float(reviewscore) && Float(reviewscore) < 0.5 {
-//                        headerView.star1.image = UIImage(named: "star_blank")
-//                    }
-//                    if 0.5 <= Float(reviewscore) && Float(reviewscore) < 1 {
-//                        headerView.star1.image = UIImage(named: "star_half")
-//                    }
-//                    else if 1 <= Float(reviewscore) && Float(reviewscore) < 1.5 {
-//                        headerView.star1.image = UIImage(named: "star")
-//                    }
-//                    else if 1.5 <= Float(reviewscore) && Float(reviewscore) < 2 {
-//                        headerView.star1.image = UIImage(named: "star")
-//                        headerView.star2.image = UIImage(named: "star_half")
-//                    }
-//                    else if 2 <= Float(reviewscore) && Float(reviewscore) < 2.5 {
-//                        headerView.star1.image = UIImage(named: "star")
-//                        headerView.star2.image = UIImage(named: "star")
-//                    }
-//                    else if 2.5 <= Float(reviewscore) && Float(reviewscore) < 3 {
-//                        headerView.star1.image = UIImage(named: "star")
-//                        headerView.star2.image = UIImage(named: "star")
-//                        headerView.star3.image = UIImage(named: "star_half")
-//                    }
-//                    else if 3 <= Float(reviewscore) && Float(reviewscore) < 3.5 {
-//                        headerView.star1.image = UIImage(named: "star")
-//                        headerView.star2.image = UIImage(named: "star")
-//                        headerView.star3.image = UIImage(named: "star")
-//                    }
-//                    else if 3.5 <= Float(reviewscore) && Float(reviewscore) < 4 {
-//                        headerView.star1.image = UIImage(named: "star")
-//                        headerView.star2.image = UIImage(named: "star")
-//                        headerView.star3.image = UIImage(named: "star")
-//                        headerView.star4.image = UIImage(named: "star_half")
-//                    }
-//                    else if 4 <= Float(reviewscore) && Float(reviewscore) < 4.5 {
-//                        headerView.star1.image = UIImage(named: "star")
-//                        headerView.star2.image = UIImage(named: "star")
-//                        headerView.star3.image = UIImage(named: "star")
-//                        headerView.star4.image = UIImage(named: "star")
-//                    }
-//                    else if 4.5 <= Float(reviewscore) && Float(reviewscore) < 5 {
-//                        headerView.star1.image = UIImage(named: "star")
-//                        headerView.star2.image = UIImage(named: "star")
-//                        headerView.star3.image = UIImage(named: "star")
-//                        headerView.star4.image = UIImage(named: "star")
-//                        headerView.star5.image = UIImage(named: "star_half")
-//                    }
-//                    else if Float(reviewscore) == 5{
-//                        headerView.star1.image = UIImage(named: "star")
-//                        headerView.star2.image = UIImage(named: "star")
-//                        headerView.star3.image = UIImage(named: "star")
-//                        headerView.star4.image = UIImage(named: "star")
-//                        headerView.star5.image = UIImage(named: "star")
-//                    }
-//                }
-//                if let reviewcount = sellerInfoDatas.object(forKey: "review_count") as? Int {
-//                    headerView.reviewCount.text = "(" + String(reviewcount) + ")"
-//                }
-//                if let sellerName = sellerInfoDatas.object(forKey: "nickname") as? String {
-//                    headerView.sellerName.text = sellerName
-//                }
-//                if let sellerintro = sellerInfoDatas.object(forKey: "profile_introduce") as? String {
-//                    headerView.sellerIntro.text = sellerintro
-//                }
-//                if let followercount = sellerInfoDatas.object(forKey: "followers") as? Int {
-//                    headerView.followerCountLabel.text = String(followercount)
-//                }
-//                if let followingcount = sellerInfoDatas.object(forKey: "followings") as? Int {
-//                    headerView.followingCountLabel.text = String(followingcount)
-//                }
-//
-//                headerView.btnEdit.addTarget(self, action: #selector(editprofile), for: .touchUpInside)
-//                return headerView
-//
-//            default:
-//                assert(false, "Unexpected element kind")
-//        }
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        print("CLICK \(indexPath.row)")
-//        let productDictionary = self.productDatas[indexPath.row] as NSDictionary
-//        let productId = productDictionary.object(forKey: "id") as! Int
-//        let nextVC = DetailVC()
-//        nextVC.Myid = productId
-//        let navigationController = UINavigationController()
-//        navigationController.pushViewController(nextVC, animated: true)
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        if indexPath.row == self.productDatas.count - 1 {
-//            pagenum = pagenum + 1
-//            getShopData(pagenum: pagenum)
-//        }
-//    }
-//
-//    @objc func editprofile() {
-//        print("TOUCH EDIT")
-//    }
+    func getActivityData(pagenum: Int) {
+        Alamofire.AF.request("\(Config.baseURL)/api/activity/?page=" + String(pagenum), method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+            (response) in switch response.result {
+            case .success(let JSON):
+                let response = JSON as! NSDictionary
+                print(response)
+                let results = response.object(forKey: "results") as! Array<NSDictionary>
+                for i in 0..<results.count {
+                    self.productDatas.append(results[i])
+                }
+                DispatchQueue.main.async {
+                    self.activitycollectionView.reloadData()
+                }
+            case .failure(let error):
+                print("Request failed with error: \(error)")
+            }
+        }
+    }
+    
+    @objc func review(_ sender: UIButton) {
+        let nextVC = ReviewVC()
+        UserDefaults.standard.set(sender.tag, forKey: "purchaseUid")
+        delegate?.navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    @objc func confirm(_ sender: UIButton) {
+        print("CONFIRM")
+    }
+    
+    @objc func delivery(_ sender: UIButton) {
+        let nextVC = DeliveryVC()
+        nextVC.Myid = sender.tag
+        delegate?.navigationController?.pushViewController(nextVC, animated: true)
+    }
 
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.productDatas.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: notiactivitycellId, for: indexPath) as! ActivityCell
+        let resultDic = self.productDatas[indexPath.row]
+        let content = resultDic.object(forKey: "content") as! String
+        let timestamp = resultDic.object(forKey: "age") as! String
+        if let imageUrlString = resultDic.object(forKey: "big_image_url") as? String {
+            let imageUrl:NSURL = NSURL(string: imageUrlString)!
+            let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
+            let image = UIImage(data: imageData as Data)
+            cell.activityImg.image = image
+            // TODO: - circle image 안바뀜..
+            cell.activityImg.layer.cornerRadius = cell.activityImg.frame.height / 2
+            cell.activityImg.layer.borderColor = UIColor.clear.cgColor
+            cell.activityImg.layer.borderWidth = 1
+            cell.activityImg.layer.masksToBounds = false
+            cell.activityImg.clipsToBounds = true
+        }
+        if let productImgArray = resultDic.object(forKey: "product_image_url") as? Array<NSDictionary> {
+            if productImgArray.count == 1 {
+                let productDic = productImgArray[0]
+                let productUrl = productDic.object(forKey: "image_url") as! String
+                let imageUrl:NSURL = NSURL(string: productUrl)!
+                let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
+                let image = UIImage(data: imageData as Data)
+                cell.productImg1.image = image
+            }
+            else if productImgArray.count == 2 {
+                let productDic = productImgArray[0]
+                let productUrl = productDic.object(forKey: "image_url") as! String
+                let imageUrl:NSURL = NSURL(string: productUrl)!
+                let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
+                let image = UIImage(data: imageData as Data)
+                cell.productImg1.image = image
+                let productDic2 = productImgArray[1]
+                let productUrl2 = productDic2.object(forKey: "image_url") as! String
+                let imageUrl2:NSURL = NSURL(string: productUrl2)!
+                let imageData2:NSData = NSData(contentsOf: imageUrl2 as URL)!
+                let image2 = UIImage(data: imageData2 as Data)
+                cell.productImg2.image = image2
+            }
+            else if productImgArray.count == 3{
+                let productDic = productImgArray[0]
+                let productUrl = productDic.object(forKey: "image_url") as! String
+                let imageUrl:NSURL = NSURL(string: productUrl)!
+                let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
+                let image = UIImage(data: imageData as Data)
+                cell.productImg1.image = image
+                let productDic2 = productImgArray[1]
+                let productUrl2 = productDic2.object(forKey: "image_url") as! String
+                let imageUrl2:NSURL = NSURL(string: productUrl2)!
+                let imageData2:NSData = NSData(contentsOf: imageUrl2 as URL)!
+                let image2 = UIImage(data: imageData2 as Data)
+                cell.productImg2.image = image2
+                let productDic3 = productImgArray[2]
+                let productUrl3 = productDic2.object(forKey: "image_url") as! String
+                let imageUrl3:NSURL = NSURL(string: productUrl3)!
+                let imageData3:NSData = NSData(contentsOf: imageUrl3 as URL)!
+                let image3 = UIImage(data: imageData3 as Data)
+                cell.productImg3.image = image3
+            }
+        }
+        let condition = resultDic.object(forKey: "condition") as! Int
+        let redirectable = resultDic.object(forKey: "redirectable") as! Bool
+        if let redirect_id = resultDic.object(forKey: "redirect_id") as? Int {
+            print("YES!")
+        }
+        if let obj_id = resultDic.object(forKey: "obj_id") as? Int {
+            cell.btnConfirm.tag = obj_id
+            cell.btnDelivery.tag = obj_id
+            cell.btnReview.tag = obj_id
+        }
+        DispatchQueue.main.async {
+            cell.timestampLabel.text = timestamp
+            cell.contentLabel.text = content
+            if condition == 0 {
+                cell.btnDelivery.isHidden = true
+                cell.btnReview.isHidden = true
+                cell.btnConfirm.isHidden = true
+            }
+            else if condition == 1 {
+                cell.btnDelivery.isHidden = true
+                cell.btnReview.isHidden = false
+                cell.btnReview.setTitleColor(UIColor(rgb: 0xb7b7bf), for: .normal)
+                cell.btnReview.isEnabled = false
+                cell.btnConfirm.isHidden = true
+            }
+            else if condition == 2 {
+                cell.btnDelivery.isHidden = false
+                cell.btnDelivery.setTitleColor(.white, for: .normal)
+                cell.btnDelivery.setTitle("운송장 완료", for: .normal)
+                cell.btnDelivery.isEnabled = false
+                cell.btnReview.isHidden = true
+                cell.btnConfirm.isHidden = true
+            }
+            else if condition == 3 {
+                cell.btnDelivery.isHidden = false
+                cell.btnDelivery.isEnabled = true
+                cell.btnDelivery.addTarget(self, action: #selector(self.delivery(_:)), for: .touchUpInside)
+                cell.btnReview.isHidden = true
+                cell.btnConfirm.isHidden = true
+            }
+            else if condition == 10 {
+                cell.btnDelivery.isHidden = true
+                cell.btnReview.isHidden = true
+                cell.btnConfirm.isHidden = false
+                cell.btnConfirm.addTarget(self, action: #selector(self.confirm(_:)), for: .touchUpInside)
+            }
+            else if condition == 11 {
+                cell.btnDelivery.isHidden = true
+                cell.btnReview.isHidden = false
+                cell.btnReview.setTitleColor(.black, for: .normal)
+                cell.btnReview.addTarget(self, action: #selector(self.review(_:)), for: .touchUpInside)
+                cell.btnConfirm.isHidden = true
+            }
+            if redirectable == true {
+                cell.btnDelivery.isEnabled = true
+                cell.btnReview.isEnabled = true
+                cell.btnConfirm.isEnabled = true
+            }
+            else {
+                cell.btnDelivery.isEnabled = false
+                cell.btnReview.isEnabled = false
+                cell.btnConfirm.isEnabled = false
+            }
+        }
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        // product_image_url count 에 따라서 height 바뀌도록 해야함!
+        let resultDic = self.productDatas[indexPath.row]
+        if let productImgArray = resultDic.object(forKey: "product_image_url") as? Array<NSDictionary> {
+            return CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/667 * 183)
+        }
+        return CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/667 * 72)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == self.productDatas.count - 1 {
+            pagenum = pagenum + 1
+            getActivityData(pagenum: pagenum)
+        }
+    }
+    
 }
 
-//class MyShopCell: BaseCollectionViewCell {
-//    
-//    let shopcellcontentView: UIView = {
-//        let view = UIView(frame: CGRect(x: 0, y: 0, width: (UIScreen.main.bounds.width / 3) - 1, height: (UIScreen.main.bounds.width / 3) - 1))
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        return view
-//    }()
-//
-//    var productImg: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: (UIScreen.main.bounds.width / 3) - 1, height: (UIScreen.main.bounds.width / 3) - 1))
-//
-//    let soldLabel: UILabel = {
-//        let label = UILabel()
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.text = "S O L D"
-//        label.backgroundColor = UIColor.black.withAlphaComponent(0.2)
-//        label.textColor = .white
-//        label.textAlignment = .center
-//        label.font = UIFont(name: "AppleSDGothicNeo-Heavy", size: 17)
-//        label.clipsToBounds = true
-//        label.isHidden = true
-//        return label
-//    }()
-//
-//    override func setup() {
-//        backgroundColor = .white
-//        shopcellcontentView.addSubview(productImg)
-//        shopcellcontentView.addSubview(soldLabel)
-//        self.addSubview(shopcellcontentView)
-//
-//        shopcellcontentViewLayout()
-//        productImgLayout()
-//        soldLabelLayout()
-//    }
-//
-//    func shopcellcontentViewLayout() {
-//        shopcellcontentView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-//        shopcellcontentView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-//        shopcellcontentView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-//        shopcellcontentView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
-//    }
-//
-//    func productImgLayout() {
-//        productImg.leftAnchor.constraint(equalTo:shopcellcontentView.leftAnchor).isActive = true
-//        productImg.topAnchor.constraint(equalTo:shopcellcontentView.topAnchor).isActive = true
-////        productImg.widthAnchor.constraint(equalToConstant:80).isActive = true
-////        productImg.heightAnchor.constraint(equalToConstant:80).isActive = true
-//    }
-//
-//    func soldLabelLayout() {
-//        soldLabel.leftAnchor.constraint(equalTo:shopcellcontentView.leftAnchor).isActive = true
-//        soldLabel.topAnchor.constraint(equalTo:shopcellcontentView.topAnchor).isActive = true
-//        soldLabel.widthAnchor.constraint(equalToConstant:(UIScreen.main.bounds.width / 3) - 1).isActive = true
-//        soldLabel.heightAnchor.constraint(equalToConstant:(UIScreen.main.bounds.width / 3) - 1).isActive = true
-//    }
-//}
-//
-//class MyShopHeaderCell: BaseCollectionViewCell {
-//    
-//    let shopheadercontentView: UIView = {
-//        let view = UIView()
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        return view
-//    }()
-//
-//    let sellerImage: UIImageView = {
-//        let image = UIImageView()
-//        image.translatesAutoresizingMaskIntoConstraints = false
-//        return image
-//    }()
-//    
-//    let star1: UIImageView = {
-//        let img = UIImageView()
-//        img.translatesAutoresizingMaskIntoConstraints = false
-//        img.image = UIImage(named: "star_blank")
-//        return img
-//    }()
-//    
-//    let star2: UIImageView = {
-//        let img = UIImageView()
-//        img.translatesAutoresizingMaskIntoConstraints = false
-//        img.image = UIImage(named: "star_blank")
-//        return img
-//    }()
-//    
-//    let star3: UIImageView = {
-//        let img = UIImageView()
-//        img.translatesAutoresizingMaskIntoConstraints = false
-//        img.image = UIImage(named: "star_blank")
-//        return img
-//    }()
-//    
-//    let star4: UIImageView = {
-//        let img = UIImageView()
-//        img.translatesAutoresizingMaskIntoConstraints = false
-//        img.image = UIImage(named: "star_blank")
-//        return img
-//    }()
-//    
-//    let star5: UIImageView = {
-//        let img = UIImageView()
-//        img.translatesAutoresizingMaskIntoConstraints = false
-//        img.image = UIImage(named: "star_blank")
-//        return img
-//    }()
-//    
-//    let reviewCount: UILabel = {
-//        let label = UILabel()
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
-//        label.textAlignment = .left
-//        return label
-//    }()
-//
-//    let sellerName: UILabel = {
-//        let label = UILabel()
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
-//        label.textAlignment = .left
-//        return label
-//    }()
-//
-//    let sellerIntro: UILabel = {
-//        let label = UILabel()
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
-//        label.textAlignment = .left
-//        return label
-//    }()
-//
-//    let followerCountLabel: UILabel = {
-//        let label = UILabel()
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
-//        label.textAlignment = .center
-//        return label
-//    }()
-//
-//    let followerLabel: UILabel = {
-//        let label = UILabel()
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
-//        label.text = "Follower"
-//        label.textAlignment = .center
-//        return label
-//    }()
-//
-//    let followingCountLabel: UILabel = {
-//        let label = UILabel()
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
-//        label.textAlignment = .center
-//        return label
-//    }()
-//
-//    let followingLabel: UILabel = {
-//        let label = UILabel()
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
-//        label.textAlignment = .center
-//        label.text = "Following"
-//        return label
-//    }()
-//
-//    let btnEdit: UIButton = {
-//        let btn = UIButton()
-//        btn.translatesAutoresizingMaskIntoConstraints = false
-//        btn.setTitle("Edit profile", for: .normal)
-//        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
-//        btn.titleLabel?.textColor = .black
-//        btn.setTitleColor(.black, for: .normal)
-//        btn.layer.cornerRadius = 16
-//        btn.layer.borderWidth = 1.5
-//        btn.layer.borderColor = UIColor.black.cgColor
-//        btn.backgroundColor = .white
-//        return btn
-//    }()
-//
-//    override func setup() {
-//        backgroundColor = .white
-//        self.addSubview(shopheadercontentView)
-//
-//        shopheadercontentView.addSubview(sellerImage)
-//        shopheadercontentView.addSubview(star1)
-//        shopheadercontentView.addSubview(star2)
-//        shopheadercontentView.addSubview(star3)
-//        shopheadercontentView.addSubview(star4)
-//        shopheadercontentView.addSubview(star5)
-//        shopheadercontentView.addSubview(reviewCount)
-//        shopheadercontentView.addSubview(sellerName)
-//        shopheadercontentView.addSubview(sellerIntro)
-//        shopheadercontentView.addSubview(followerCountLabel)
-//        shopheadercontentView.addSubview(followerLabel)
-//        shopheadercontentView.addSubview(followingCountLabel)
-//        shopheadercontentView.addSubview(followingLabel)
-//        shopheadercontentView.addSubview(btnEdit)
-//
-//        shopheadercontentView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-//        shopheadercontentView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-//        shopheadercontentView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-//        shopheadercontentView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
-//
-//        sellerImage.leadingAnchor.constraint(equalTo: shopheadercontentView.leadingAnchor, constant: UIScreen.main.bounds.width/375 * 18).isActive = true
-//        sellerImage.topAnchor.constraint(equalTo: shopheadercontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 16).isActive = true
-//        sellerImage.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 64).isActive = true
-//        sellerImage.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 64).isActive = true
-//        
-//        star1.leftAnchor.constraint(equalTo: sellerImage.rightAnchor, constant: UIScreen.main.bounds.width/375 * 16).isActive = true
-//        star1.topAnchor.constraint(equalTo: shopheadercontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 24).isActive = true
-//        star1.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 16).isActive = true
-//        star1.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 16).isActive = true
-//        
-//        star2.leftAnchor.constraint(equalTo: star1.rightAnchor).isActive = true
-//        star2.topAnchor.constraint(equalTo: shopheadercontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 24).isActive = true
-//        star2.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 16).isActive = true
-//        star2.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 16).isActive = true
-//        
-//        star3.leftAnchor.constraint(equalTo: star2.rightAnchor).isActive = true
-//        star3.topAnchor.constraint(equalTo: shopheadercontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 24).isActive = true
-//        star3.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 16).isActive = true
-//        star3.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 16).isActive = true
-//        
-//        star4.leftAnchor.constraint(equalTo: star3.rightAnchor).isActive = true
-//        star4.topAnchor.constraint(equalTo: shopheadercontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 24).isActive = true
-//        star4.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 16).isActive = true
-//        star4.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 16).isActive = true
-//        
-//        star5.leftAnchor.constraint(equalTo: star4.rightAnchor).isActive = true
-//        star5.topAnchor.constraint(equalTo: shopheadercontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 24).isActive = true
-//        star5.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 16).isActive = true
-//        star5.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 16).isActive = true
-//        
-//        reviewCount.leftAnchor.constraint(equalTo: sellerImage.rightAnchor, constant: UIScreen.main.bounds.width/375 * 100).isActive = true
-//        reviewCount.topAnchor.constraint(equalTo: shopheadercontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 25).isActive = true
-////        reviewCount.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 64).isActive = true
-//        reviewCount.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 16).isActive = true
-//
-//        sellerName.leftAnchor.constraint(equalTo: sellerImage.rightAnchor, constant: UIScreen.main.bounds.width/375 * 16).isActive = true
-//        sellerName.topAnchor.constraint(equalTo: shopheadercontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 48).isActive = true
-////        sellerName.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 64).isActive = true
-////        sellerName.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 64).isActive = true
-//
-//        sellerIntro.leadingAnchor.constraint(equalTo: shopheadercontentView.leadingAnchor, constant: UIScreen.main.bounds.width/375 * 18).isActive = true
-//        sellerIntro.topAnchor.constraint(equalTo: sellerImage.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 16).isActive = true
-//        sellerIntro.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 337).isActive = true
-//    //        sellerIntro.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 64).isActive = true
-//
-//        followerCountLabel.leadingAnchor.constraint(equalTo: shopheadercontentView.leadingAnchor, constant: UIScreen.main.bounds.width/375 * 19).isActive = true
-//        followerCountLabel.topAnchor.constraint(equalTo: sellerIntro.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 24).isActive = true
-//    //        followerCountLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 64).isActive = true
-//    //        followerCountLabel.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 64).isActive = true
-//
-//        followerLabel.leadingAnchor.constraint(equalTo: shopheadercontentView.leadingAnchor, constant: UIScreen.main.bounds.width/375 * 18).isActive = true
-//        followerLabel.topAnchor.constraint(equalTo: followerCountLabel.bottomAnchor).isActive = true
-//    //        followerLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 64).isActive = true
-//    //        followerLabel.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 64).isActive = true
-//
-//        followingCountLabel.leadingAnchor.constraint(equalTo: shopheadercontentView.leadingAnchor, constant: UIScreen.main.bounds.width/375 * 98).isActive = true
-//        followingCountLabel.topAnchor.constraint(equalTo: sellerIntro.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 24).isActive = true
-//    //        followingCountLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 64).isActive = true
-//    //        followingCountLabel.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 64).isActive = true
-//
-//        followingLabel.leftAnchor.constraint(equalTo: followerLabel.rightAnchor, constant: UIScreen.main.bounds.width/375 * 27).isActive = true
-//        followingLabel.topAnchor.constraint(equalTo: followingCountLabel.bottomAnchor).isActive = true
-//    //        followingLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 64).isActive = true
-//    //        followingLabel.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 64).isActive = true
-//
-//        btnEdit.leadingAnchor.constraint(equalTo: shopheadercontentView.leadingAnchor, constant: UIScreen.main.bounds.width/375 * 209).isActive = true
-//        btnEdit.topAnchor.constraint(equalTo: sellerIntro.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 27).isActive = true
-//        btnEdit.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 148).isActive = true
-//        btnEdit.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 32).isActive = true
-//
-//    }
-//}
+class ActivityCell: BaseCollectionViewCell {
 
+    let noticellcontentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    let activityImg: UIImageView = {
+        let image = UIImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
+        return image
+    }()
+
+    let timestampLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = UIColor(rgb: 0xB7B7BF)
+        label.textAlignment = .left
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 11)
+        return label
+    }()
+    
+    let contentLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .black
+        label.textAlignment = .left
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        return label
+    }()
+    
+    let productImg1: UIImageView = {
+        let image = UIImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
+        return image
+    }()
+    
+    let productImg2: UIImageView = {
+       let image = UIImageView()
+       image.translatesAutoresizingMaskIntoConstraints = false
+       return image
+   }()
+    
+    let productImg3: UIImageView = {
+       let image = UIImageView()
+       image.translatesAutoresizingMaskIntoConstraints = false
+       return image
+   }()
+    
+    let btnConfirm: UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setTitleColor(.white, for: .normal)
+        btn.backgroundColor = .black
+        btn.setTitle("수령 확인", for: .normal)
+        btn.layer.cornerRadius = 3
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
+        btn.titleLabel?.textAlignment = .center
+        btn.isHidden = true
+        return btn
+    }()
+    
+    let btnReview: UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setTitleColor(.black, for: .normal)
+        btn.backgroundColor = .white
+        btn.setTitle("리뷰 작성", for: .normal)
+        btn.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
+        btn.layer.borderWidth = 1
+        btn.layer.cornerRadius = 3
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
+        btn.titleLabel?.textAlignment = .center
+        btn.isHidden = true
+        return btn
+    }()
+    
+    let btnDelivery: UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setTitleColor(.white, for: .normal)
+        btn.backgroundColor = .black
+        btn.setTitle("운송장 입력", for: .normal)
+        btn.layer.cornerRadius = 3
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
+        btn.titleLabel?.textAlignment = .center
+        btn.isHidden = true
+        return btn
+    }()
+    
+    let lineLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = UIColor(rgb: 0xEBEBF6)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    override func setup() {
+        backgroundColor = .white
+        noticellcontentView.addSubview(activityImg)
+        noticellcontentView.addSubview(timestampLabel)
+        noticellcontentView.addSubview(contentLabel)
+        noticellcontentView.addSubview(productImg1)
+        noticellcontentView.addSubview(productImg2)
+        noticellcontentView.addSubview(productImg3)
+        noticellcontentView.addSubview(btnReview)
+        noticellcontentView.addSubview(btnConfirm)
+        noticellcontentView.addSubview(btnDelivery)
+        noticellcontentView.addSubview(lineLabel)
+        
+        self.addSubview(noticellcontentView)
+
+        noticellcontentViewLayout()
+        activityImgLayout()
+        timestampLabelLayout()
+        contentLabelLayout()
+        productImg1Layout()
+        productImg2Layout()
+        productImg3Layout()
+        btnReviewLayout()
+        btnConfirmLayout()
+        btnDeliveryLayout()
+        lineLabelLayout()
+        
+    }
+
+    func noticellcontentViewLayout() {
+        noticellcontentView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        noticellcontentView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        noticellcontentView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        noticellcontentView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+    }
+
+    func activityImgLayout() {
+        activityImg.leftAnchor.constraint(equalTo:noticellcontentView.leftAnchor, constant: UIScreen.main.bounds.width/375 * 18).isActive = true
+        activityImg.topAnchor.constraint(equalTo:noticellcontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 16).isActive = true
+        activityImg.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 40).isActive = true
+        activityImg.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 40).isActive = true
+    }
+
+    func timestampLabelLayout() {
+        timestampLabel.leftAnchor.constraint(equalTo:activityImg.rightAnchor, constant: UIScreen.main.bounds.width/375 * 8).isActive = true
+        timestampLabel.topAnchor.constraint(equalTo:noticellcontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 16).isActive = true
+//        statusLabel.widthAnchor.constraint(equalToConstant:(UIScreen.main.bounds.width / 3) - 1).isActive = true
+        timestampLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 13).isActive = true
+    }
+    
+    func contentLabelLayout() {
+        contentLabel.leftAnchor.constraint(equalTo:activityImg.rightAnchor, constant: UIScreen.main.bounds.width/375 * 8).isActive = true
+        contentLabel.topAnchor.constraint(equalTo:timestampLabel.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 4).isActive = true
+        contentLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 232).isActive = true
+//        contentLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 19).isActive = true
+    }
+    
+    func productImg1Layout() {
+        productImg1.leftAnchor.constraint(equalTo:activityImg.rightAnchor, constant: UIScreen.main.bounds.width/375 * 8).isActive = true
+        productImg1.topAnchor.constraint(equalTo:contentLabel.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 8).isActive = true
+        productImg1.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 48).isActive = true
+        productImg1.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 48).isActive = true
+    }
+    
+    func productImg2Layout() {
+        productImg2.leftAnchor.constraint(equalTo:productImg1.rightAnchor, constant: UIScreen.main.bounds.width/375 * 4).isActive = true
+        productImg2.topAnchor.constraint(equalTo:contentLabel.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 8).isActive = true
+        productImg2.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 48).isActive = true
+        productImg2.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 48).isActive = true
+    }
+    
+    func productImg3Layout() {
+        productImg3.leftAnchor.constraint(equalTo:productImg2.rightAnchor, constant: UIScreen.main.bounds.width/375 * 4).isActive = true
+        productImg3.topAnchor.constraint(equalTo:contentLabel.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 8).isActive = true
+        productImg3.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 48).isActive = true
+        productImg3.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 48).isActive = true
+    }
+    
+    func btnReviewLayout() {
+        btnReview.leftAnchor.constraint(equalTo:activityImg.rightAnchor, constant: UIScreen.main.bounds.width/375 * 8).isActive = true
+        btnReview.topAnchor.constraint(equalTo:productImg1.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 8).isActive = true
+        btnReview.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 96).isActive = true
+        btnReview.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 32).isActive = true
+    }
+    
+    func btnConfirmLayout() {
+        btnConfirm.leftAnchor.constraint(equalTo:activityImg.rightAnchor, constant: UIScreen.main.bounds.width/375 * 8).isActive = true
+        btnConfirm.topAnchor.constraint(equalTo:productImg1.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 8).isActive = true
+        btnConfirm.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 96).isActive = true
+        btnConfirm.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 32).isActive = true
+    }
+    
+    func btnDeliveryLayout() {
+        btnDelivery.leftAnchor.constraint(equalTo:activityImg.rightAnchor, constant: UIScreen.main.bounds.width/375 * 8).isActive = true
+        btnDelivery.topAnchor.constraint(equalTo:productImg1.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 8).isActive = true
+        btnDelivery.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 96).isActive = true
+        btnDelivery.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 32).isActive = true
+    }
+    
+    func lineLabelLayout() {
+        lineLabel.bottomAnchor.constraint(equalTo: noticellcontentView.bottomAnchor).isActive = true
+        lineLabel.centerXAnchor.constraint(equalTo: noticellcontentView.centerXAnchor).isActive = true
+        lineLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 339).isActive = true
+        lineLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 1).isActive = true
+    }
+}
