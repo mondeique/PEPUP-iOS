@@ -24,27 +24,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Alamofire.AF.request("\(Config.baseURL)/accounts/check_userinfo/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": token]) .validate(statusCode: 200..<300) .responseJSON {
                 (response) in switch response.result {
                 case .success(let JSON):
-                    print("Success with JSON: \(JSON)")
-                    Alamofire.AF.request("\(Config.baseURL)/accounts/check_store/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .response { response in
-                        if response.response?.statusCode == 200 {
-                            print("SUCESS!")
-                            UserDefaults.standard.set(true, forKey: "exist_store")
-                        }
-                        else if response.response?.statusCode == 404 {
-                            print("NOT FOUND!")
-                            UserDefaults.standard.set(false, forKey: "exist_store")
-                        }
-                        else {
-                            print("OTHER ERROR!")
-                            UserDefaults.standard.set(false, forKey: "exist_store")
-                        }
-                    }
                     // 만료되지 않은 token이 저장되어 있을 경우
                     let response = JSON as! NSDictionary
                     let code = response.object(forKey: "code") as! Int
                     // user.email, user.nickname 모두 존재할 경우
                     if code == 1 {
                         self.loadHome()
+                        print("Success with JSON: \(JSON)")
+                        Alamofire.AF.request("\(Config.baseURL)/accounts/check_store/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .response { response in
+                            if response.response?.statusCode == 200 {
+                                print("SUCESS!")
+                                UserDefaults.standard.set(true, forKey: "exist_store")
+                            }
+                            else if response.response?.statusCode == 404 {
+                                print("NOT FOUND!")
+                                UserDefaults.standard.set(false, forKey: "exist_store")
+                            }
+                            else {
+                                print("OTHER ERROR!")
+                                UserDefaults.standard.set(false, forKey: "exist_store")
+                            }
+                        }
                     }
                     // token이 없는 경우
                     else if code == -1 {

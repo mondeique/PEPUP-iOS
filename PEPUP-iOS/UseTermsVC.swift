@@ -84,6 +84,7 @@ class UseTermsVC: UIViewController {
         
         usetermscontentLabel.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
         usetermscontentLabel.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        usetermscontentLabel.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
         usetermscontentLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
     }
     
@@ -103,7 +104,13 @@ class UseTermsVC: UIViewController {
     func setinfo() {
         let content = self.usetermsDatas.object(forKey: "content") as! String
         print(content)
-        usetermscontentLabel.attributedText = content.htmlToAttributedString
+        let htmlData = NSString(string: content).data(using: String.Encoding.unicode.rawValue)
+        let options = [NSAttributedString.DocumentReadingOptionKey.documentType:
+                NSAttributedString.DocumentType.html]
+        let attributedString = try? NSMutableAttributedString(data: htmlData ?? Data(),
+                                                                  options: options,
+                                                                  documentAttributes: nil)
+        usetermscontentLabel.attributedText = attributedString
     }
     
     @objc func back() {

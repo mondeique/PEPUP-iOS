@@ -6,16 +6,32 @@
 //  Copyright © 2020 Mondeique. All rights reserved.
 //
 
-import UIKit
+import ObjectMapper
 
-class ChatModel: NSObject {
+class ChatModel: Mappable {
     
     public var users: Dictionary<String,Bool> = [:]
     public var comments: Dictionary<String, Comment> = [:]
     
-    public class Comment {
+    required init?(map: Map) {
+        
+    }
+    
+    func mapping(map: Map) {
+        users <- map["users"]
+        comments <- map["comments"]
+    }
+    
+    public class Comment : Mappable {
         public var uid: String?
         public var message: String?
+        public required init?(map: Map) {
+            
+        }
+        public func mapping(map: Map) {
+            uid <- map["uid"]
+            message <- map["message"]
+        }
     }
 
 }

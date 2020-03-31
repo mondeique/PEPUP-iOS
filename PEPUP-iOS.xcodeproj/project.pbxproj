@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		7AEBDB01025068B1478B1DBE /* Pods_PEPUP_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B58BC0CA3A889CCCEFFECCEA /* Pods_PEPUP_iOS.framework */; };
-		E90E84EC2422011600C215CB /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E84EB2422011600C215CB /* UserModel.swift */; };
 		E90E84EE242215C100C215CB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E90E84ED242215C100C215CB /* GoogleService-Info.plist */; };
 		E90E84F024226E7900C215CB /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E84EF24226E7900C215CB /* ChatModel.swift */; };
 		E90E84F2242334DD00C215CB /* NotiActivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E84F1242334DD00C215CB /* NotiActivityCell.swift */; };
@@ -55,6 +54,9 @@
 		E9CBF56F242D9F4400A058F7 /* SupportOtherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBF56E242D9F4400A058F7 /* SupportOtherCell.swift */; };
 		E9CBF571242DA0BA00A058F7 /* SupportErrorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBF570242DA0BA00A058F7 /* SupportErrorCell.swift */; };
 		E9CBF573242DA0C700A058F7 /* SupportDeliveryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBF572242DA0C700A058F7 /* SupportDeliveryCell.swift */; };
+		E9CBF5752431A8B000A058F7 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBF5742431A8B000A058F7 /* MessageCell.swift */; };
+		E9CBF5772431BED800A058F7 /* MessageChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBF5762431BED800A058F7 /* MessageChatVC.swift */; };
+		E9CBF5792431D18A00A058F7 /* MessageChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBF5782431D18A00A058F7 /* MessageChatCell.swift */; };
 		E9D07A4123E2B0930095AD05 /* DetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4023E2B0930095AD05 /* DetailVC.swift */; };
 		E9D07A4323E2B1110095AD05 /* NotiVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4223E2B1110095AD05 /* NotiVC.swift */; };
 		E9D07A4723E2B6DE0095AD05 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4623E2B6DE0095AD05 /* SearchVC.swift */; };
@@ -98,7 +100,6 @@
 		1363A93A8BEF1668743D9C6F /* Pods-PEPUP-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PEPUP-iOS.release.xcconfig"; path = "Target Support Files/Pods-PEPUP-iOS/Pods-PEPUP-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		B58BC0CA3A889CCCEFFECCEA /* Pods_PEPUP_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PEPUP_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3A9220E366E031B61452603 /* Pods-PEPUP-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PEPUP-iOS.debug.xcconfig"; path = "Target Support Files/Pods-PEPUP-iOS/Pods-PEPUP-iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		E90E84EB2422011600C215CB /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		E90E84ED242215C100C215CB /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		E90E84EF24226E7900C215CB /* ChatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
 		E90E84F1242334DD00C215CB /* NotiActivityCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiActivityCell.swift; sourceTree = "<group>"; };
@@ -147,6 +148,9 @@
 		E9CBF56E242D9F4400A058F7 /* SupportOtherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportOtherCell.swift; sourceTree = "<group>"; };
 		E9CBF570242DA0BA00A058F7 /* SupportErrorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportErrorCell.swift; sourceTree = "<group>"; };
 		E9CBF572242DA0C700A058F7 /* SupportDeliveryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportDeliveryCell.swift; sourceTree = "<group>"; };
+		E9CBF5742431A8B000A058F7 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		E9CBF5762431BED800A058F7 /* MessageChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageChatVC.swift; sourceTree = "<group>"; };
+		E9CBF5782431D18A00A058F7 /* MessageChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageChatCell.swift; sourceTree = "<group>"; };
 		E9D07A4023E2B0930095AD05 /* DetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC.swift; sourceTree = "<group>"; };
 		E9D07A4223E2B1110095AD05 /* NotiVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiVC.swift; sourceTree = "<group>"; };
 		E9D07A4623E2B6DE0095AD05 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
@@ -290,7 +294,9 @@
 				E9D111E9241E2F53006AE20C /* SellCategoryBrandVC.swift */,
 				E9D111ED24207C78006AE20C /* SellCategoryTagVC.swift */,
 				E968FF0523F13FE600B2B1D3 /* MessageVC.swift */,
-				E90E84EB2422011600C215CB /* UserModel.swift */,
+				E9CBF5742431A8B000A058F7 /* MessageCell.swift */,
+				E9CBF5762431BED800A058F7 /* MessageChatVC.swift */,
+				E9CBF5782431D18A00A058F7 /* MessageChatCell.swift */,
 				E90E84EF24226E7900C215CB /* ChatModel.swift */,
 				E9D07A4223E2B1110095AD05 /* NotiVC.swift */,
 				E90E84F7242337CC00C215CB /* CustomNotiBar.swift */,
@@ -443,6 +449,7 @@
 			files = (
 				E90E8526242C459100C215CB /* PrivacyPolicyVC.swift in Sources */,
 				E932135523E1BA1000503CA8 /* BaseCollectionViewCell.swift in Sources */,
+				E9CBF5772431BED800A058F7 /* MessageChatVC.swift in Sources */,
 				E9D111E8241E2B04006AE20C /* SellCategorySizeVC.swift in Sources */,
 				E90E8516242B348D00C215CB /* StoreSettingVC.swift in Sources */,
 				E9C8468923E1A89E00359A93 /* HomeVC.swift in Sources */,
@@ -488,12 +495,12 @@
 				E9D111E4241E248C006AE20C /* SellCategoryFirstVC.swift in Sources */,
 				E90E8522242BB21C00C215CB /* NoticeMainVC.swift in Sources */,
 				E9D07A4D23E3FB980095AD05 /* SignupVC.swift in Sources */,
-				E90E84EC2422011600C215CB /* UserModel.swift in Sources */,
 				E9D07A4323E2B1110095AD05 /* NotiVC.swift in Sources */,
 				E9EE6B62242C715C00844023 /* StoreInfoSettingVC.swift in Sources */,
 				E9D111CC240FF83A006AE20C /* SettingVC.swift in Sources */,
 				E9D111D02410D64C006AE20C /* FilterVC.swift in Sources */,
 				E968FF0623F13FE600B2B1D3 /* MessageVC.swift in Sources */,
+				E9CBF5752431A8B000A058F7 /* MessageCell.swift in Sources */,
 				E9CBF573242DA0C700A058F7 /* SupportDeliveryCell.swift in Sources */,
 				E9D1119424036B43006AE20C /* StoreVC.swift in Sources */,
 				E932135B23E26F7200503CA8 /* FollowVC.swift in Sources */,
@@ -511,6 +518,7 @@
 				E90E84F2242334DD00C215CB /* NotiActivityCell.swift in Sources */,
 				E9EE6B60242C60C900844023 /* SupportTotalCell.swift in Sources */,
 				E9D111C6240FEFED006AE20C /* MyStoreVC.swift in Sources */,
+				E9CBF5792431D18A00A058F7 /* MessageChatCell.swift in Sources */,
 				E9D111EA241E2F53006AE20C /* SellCategoryBrandVC.swift in Sources */,
 				E94D142823E82A640001F3A0 /* FindPwdVC.swift in Sources */,
 				E90E85022427781B00C215CB /* SoldMainCell.swift in Sources */,

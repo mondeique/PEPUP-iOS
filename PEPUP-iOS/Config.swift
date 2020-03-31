@@ -9,5 +9,5 @@
 import Foundation
 
 struct Config {
-    static let baseURL = "http://13.125.84.188:8000"
+    static let baseURL = "http://pepup.world"
 }

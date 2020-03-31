@@ -12,6 +12,7 @@ import Alamofire
 class NoticeVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     private let reuseIdentifier = "noticecell"
+    var pagenum: Int = 1
     
     var noticollectionView: UICollectionView!
     var noticeDatas : NSDictionary!
@@ -19,7 +20,7 @@ class NoticeVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     override func viewDidLoad() {
         self.view.backgroundColor = .white
         super.viewDidLoad()
-        getData()
+        getData(pagenum: 1)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -84,8 +85,8 @@ class NoticeVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         noticollectionView.heightAnchor.constraint(equalToConstant: screenHeight).isActive = true
     }
     
-    func getData() {
-        Alamofire.AF.request("\(Config.baseURL)/api/notice/" , method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+    func getData(pagenum: Int) {
+        Alamofire.AF.request("\(Config.baseURL)/api/notice/?page=" + String(pagenum) , method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
             (response) in switch response.result {
             case .success(let JSON):
                 let response = JSON as! NSDictionary
@@ -121,6 +122,14 @@ class NoticeVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         let nextVC = NoticeMainVC()
         nextVC.MyId = id
         self.navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let resultsArray = noticeDatas.object(forKey: "results") as! Array<NSDictionary>
+        if indexPath.row == resultsArray.count - 1 {
+            pagenum = pagenum + 1
+            getData(pagenum: pagenum)
+        }
     }
     
     @objc func back() {

@@ -546,8 +546,9 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
     }
     
     @objc func message() {
-        let nextVC = MessageVC()
-//        nextVC.destinationUid = Myid
+        let nextVC = MessageChatVC()
+        let sellerId = self.sellerDatas.object(forKey: "id") as! Int
+        nextVC.destinationUid = String(sellerId)
         self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
