@@ -219,8 +219,14 @@ class NotiActivityCell: BaseCollectionViewCell, UICollectionViewDataSource, UICo
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         // product_image_url count 에 따라서 height 바뀌도록 해야함!
         let resultDic = self.productDatas[indexPath.row]
+        let condition = resultDic.object(forKey: "condition") as! Int
         if let productImgArray = resultDic.object(forKey: "product_image_url") as? Array<NSDictionary> {
-            return CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/667 * 183)
+            if condition == 0 {
+                return CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/667 * 151)
+            }
+            else {
+                return CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/667 * 183)
+            }
         }
         return CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/667 * 72)
     }
