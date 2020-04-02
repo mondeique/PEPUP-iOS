@@ -16,16 +16,19 @@ class MessageVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollect
     
     var uid = String(UserDefaults.standard.object(forKey: "pk") as! Int)
     var chatrooms : [ChatModel]! = []
+    var users: [UserModel]! = []
+    var destinationUser: [String] = []
+    var readCount: Int = 0
     
     var messagecollectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        self.getChatRoomsList()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        self.getChatRoomsList()
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
         self.tabBarController?.tabBar.isHidden = true
@@ -98,22 +101,52 @@ class MessageVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollect
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MessageCell
-        
+        readCount = 0
         var destinationUid : String?
         
         for item in chatrooms[indexPath.row].users {
             if(item.key != self.uid) {
                 destinationUid = item.key
+                destinationUser.append(destinationUid as! String)
             }
         }
-        Database.database().reference().child("users").child("destinationUid").observeSingleEvent(of: DataEventType.value, with: {(datasnapshot) in
-            
+        Database.database().reference().child("users").child(destinationUid!).observeSingleEvent(of: DataEventType.value, with: {(datasnapshot) in
+            let userModel = UserModel()
+            let userDic = datasnapshot.value as! NSDictionary
+            userModel.pk = userDic.object(forKey: "pk") as! String
+            userModel.profileImgUrl = userDic.object(forKey: "profileImgUrl") as! String
+            cell.userNameLabel.text = userModel.pk
+            let imageUrl:NSURL = NSURL(string: userModel.profileImgUrl!)!
+            let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
+            let image = UIImage(data: imageData as Data)
+            cell.profileImage.image = image
+            cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
+            cell.profileImage.layer.borderColor = UIColor.clear.cgColor
+            cell.profileImage.layer.borderWidth = 1
+            cell.profileImage.layer.masksToBounds = false
+            cell.profileImage.clipsToBounds = true
         })
+        
+        let lastMessagekey = chatrooms[indexPath.row].comments.keys.sorted(){$0>$1}
+        cell.userChatLabel.text = self.chatrooms[indexPath.row].comments[lastMessagekey[0]]?.message
+        let unixTime = self.chatrooms[indexPath.row].comments[lastMessagekey[0]]?.timestamp
+        cell.chattimeLabel.text = String(unixTime!.todayTime)
+        for item in chatrooms[indexPath.row].comments {
+            let readDic = item.value.readUsers as NSDictionary
+            if let is_read = readDic.object(forKey: uid) as? Bool {
+                readCount = readCount + 1
+            }
+        }
+        cell.unreadCount.text = String(chatrooms[indexPath.row].comments.count - readCount)
+        if cell.unreadCount.text == "0" {
+            cell.unreadCount.text = ""
+        }
         return cell
     }
     
     func getChatRoomsList() {
         Database.database().reference().child("chatrooms").queryOrdered(byChild: "users/" + uid).queryEqual(toValue: true).observeSingleEvent(of: DataEventType.value, with: {(datasnapshot) in
+            self.chatrooms.removeAll()
             for item in datasnapshot.children.allObjects as! [DataSnapshot] {
                 if let chatroomdic = item.value as? [String:AnyObject] {
                     let chatModel = ChatModel(JSON: chatroomdic)
@@ -125,7 +158,14 @@ class MessageVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollect
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("SELECT \(indexPath.row)")
+        let destinationUid = self.destinationUser[indexPath.row]
+        let nextVC = MessageChatVC()
+        Database.database().reference().child("users").child(destinationUid).observeSingleEvent(of: DataEventType.value, with: {(datasnapshot) in
+            let userDic = datasnapshot.value as! NSDictionary
+            nextVC.destinationUid = userDic.object(forKey: "pk") as! String
+            nextVC.destinationUrlString = userDic.object(forKey: "profileImgUrl") as! String
+            self.navigationController?.pushViewController(nextVC, animated: true)
+        })
     }
 
     @objc func back() {

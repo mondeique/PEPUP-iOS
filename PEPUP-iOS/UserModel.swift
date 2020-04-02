@@ -10,6 +10,6 @@ import UIKit
 
 class UserModel: NSObject {
     
-    var profileUrlString: String?
     var pk: String?
+    var profileImgUrl: String?
 }

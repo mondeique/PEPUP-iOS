@@ -292,7 +292,7 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
     }
     
     @objc func didTapMessageButton(sender: AnyObject){
-        self.navigationController?.pushViewController(MessageVC(), animated: true)
+        self.navigationController?.pushViewController(MessageChatVC(), animated: true)
     }
     
     @objc func didTapCartButton(sender: AnyObject){

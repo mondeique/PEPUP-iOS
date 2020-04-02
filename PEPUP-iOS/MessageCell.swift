@@ -16,6 +16,7 @@ class MessageCell: BaseCollectionViewCell {
         messagecellcontentView.addSubview(userNameLabel)
         messagecellcontentView.addSubview(userChatLabel)
         messagecellcontentView.addSubview(chattimeLabel)
+        messagecellcontentView.addSubview(unreadCount)
         self.addSubview(messagecellcontentView)
 
         messagecellcontentViewLayout()
@@ -23,6 +24,7 @@ class MessageCell: BaseCollectionViewCell {
         userNameLabelLayout()
         userChatLabelLayout()
         chattimeLabelLayout()
+        unreadCountLayout()
         
     }
     
@@ -51,7 +53,7 @@ class MessageCell: BaseCollectionViewCell {
     
     let userChatLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = UIColor(rgb: 0xEBEBF6)
+        label.backgroundColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         label.textAlignment = .left
@@ -63,7 +65,16 @@ class MessageCell: BaseCollectionViewCell {
         let label = UILabel()
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 11)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "2020.11.02"
+        label.textColor = UIColor(rgb: 0xB7B7BF)
+        label.textAlignment = .left
+        label.backgroundColor = .white
+        return label
+    }()
+    
+    let unreadCount: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 13)
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor(rgb: 0xB7B7BF)
         label.textAlignment = .left
         label.backgroundColor = .white
@@ -103,5 +114,12 @@ class MessageCell: BaseCollectionViewCell {
         chattimeLabel.topAnchor.constraint(equalTo:messagecellcontentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 24).isActive = true
 //        chattimeLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width).isActive = true
         chattimeLabel.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 13).isActive = true
+    }
+    
+    func unreadCountLayout() {
+        unreadCount.rightAnchor.constraint(equalTo:messagecellcontentView.rightAnchor, constant: UIScreen.main.bounds.width/375 * -18).isActive = true
+        unreadCount.topAnchor.constraint(equalTo:chattimeLabel.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 7).isActive = true
+//        chattimeLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width).isActive = true
+        unreadCount.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 13).isActive = true
     }
 }

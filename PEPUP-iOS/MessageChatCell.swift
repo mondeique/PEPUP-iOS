@@ -8,9 +8,19 @@
 
 import UIKit
 
-class MyMessageChatCell: BaseCollectionViewCell {
+class MyMessageChatCell: UITableViewCell {
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+    }
 
-    override func setup() {
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+    }
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .white
 //        messagecellcontentView.addSubview(profileImage)
 //        messagecellcontentView.addSubview(userNameLabel)
@@ -25,7 +35,10 @@ class MyMessageChatCell: BaseCollectionViewCell {
 //        userNameLabelLayout()
         userChatLabelLayout()
 //        chattimeLabelLayout()
-        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     let messagecellcontentView: UIView = {
@@ -95,9 +108,19 @@ class MyMessageChatCell: BaseCollectionViewCell {
 
 }
 
-class DestinationMessageChatCell: BaseCollectionViewCell {
+class DestinationMessageChatCell: UITableViewCell {
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+    }
 
-    override func setup() {
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+    }
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .white
         messagecellcontentView.addSubview(profileImage)
         messagecellcontentView.addSubview(backgroundLabel)
@@ -110,7 +133,10 @@ class DestinationMessageChatCell: BaseCollectionViewCell {
         backgroundLabelLayout()
         userChatLabelLayout()
 //        chattimeLabelLayout()
-        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     let messagecellcontentView: UIView = {
@@ -147,7 +173,7 @@ class DestinationMessageChatCell: BaseCollectionViewCell {
 //        let label = UILabel()
 //        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 11)
 //        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.text = "2020.11.02"
+//        label.text = "2020.11.02 11:11"
 //        label.textColor = UIColor(rgb: 0xB7B7BF)
 //        label.textAlignment = .left
 //        label.backgroundColor = .white

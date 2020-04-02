@@ -12,24 +12,28 @@ import Firebase
 private let mycellID = "chatcell"
 private let destinationcellID = "chatdestinationcell"
 
-class MessageChatVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var destinationUid: String?
     var destinationUrlString : String?
     
-    var messagecollectionView: UICollectionView!
+    var databaseRef : DatabaseReference?
+    var observe : UInt?
     
-    var uid: String!
+    var messagetableView: UITableView!
+    
+    var uid = String(UserDefaults.standard.object(forKey: "pk") as! Int)
     var chatRoomUid : String?
     
     var comments: [ChatModel.Comment] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        uid = String(UserDefaults.standard.object(forKey: "pk") as! Int)
         checkChatRoom()
         createUserDB()
         setup()
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -37,12 +41,44 @@ class MessageChatVC: UIViewController, UICollectionViewDelegateFlowLayout, UICol
         self.navigationController?.navigationBar.isHidden = true
         self.tabBarController?.tabBar.isHidden = true
         self.tabBarController?.tabBar.isTranslucent = true
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.navigationBar.isHidden = false
         self.tabBarController?.tabBar.isHidden = false
+        NotificationCenter.default.removeObserver(self)
+        
+        databaseRef?.removeObserver(withHandle: observe!)
+    }
+    
+    @objc func keyboardWillShow(notification : Notification) {
+        
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            
+            self.bottomcontentView.bottomAnchor.constraint(equalTo:view.bottomAnchor, constant: -keyboardSize.height).isActive = true
+        }
+        
+        UIView.animate(withDuration: 0, animations: {
+            self.view.layoutIfNeeded()
+        }, completion: {
+            (complete) in
+            
+            if self.comments.count > 0 {
+                self.messagetableView.scrollToRow(at: IndexPath(item:self.comments.count - 1, section: 0), at: UITableView.ScrollPosition.bottom, animated: true)
+            }
+        })
+    }
+    
+    @objc func keyboardWillHide(notification: Notification) {
+        self.bottomcontentView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        self.view.layoutIfNeeded()
+    }
+    
+    @objc func dismissKeyboard() {
+        self.view.endEditing(true)
     }
     
     func setup() {
@@ -78,26 +114,21 @@ class MessageChatVC: UIViewController, UICollectionViewDelegateFlowLayout, UICol
         lineLabel.widthAnchor.constraint(equalTo: navcontentView.widthAnchor).isActive = true
         lineLabel.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 1).isActive = true
         
-        let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.itemSize = CGSize(width: screenWidth, height: screenHeight/defaultHeight * 36)
-        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 0.0
-        layout.minimumInteritemSpacing = 0.0
+        messagetableView = UITableView(frame: CGRect(x: 0, y: statusBarHeight + navBarHeight, width: screenWidth, height: screenHeight - statusBarHeight - navBarHeight - screenHeight/defaultHeight * 56), style: .plain)
         
-        messagecollectionView = UICollectionView(frame: CGRect(x: 0, y: statusBarHeight + navBarHeight, width: view.frame.width, height: screenHeight - statusBarHeight - navBarHeight - screenHeight/defaultHeight * 56), collectionViewLayout: layout)
-        messagecollectionView.delegate = self
-        messagecollectionView.dataSource = self
-        messagecollectionView.register(MyMessageChatCell.self, forCellWithReuseIdentifier: mycellID)
-        messagecollectionView.register(DestinationMessageChatCell.self, forCellWithReuseIdentifier: destinationcellID)
-        messagecollectionView.backgroundColor = UIColor.white
+        self.view.addSubview(messagetableView)
         
-        self.view.addSubview(messagecollectionView)
+        messagetableView.translatesAutoresizingMaskIntoConstraints = false
+        messagetableView.delegate = self
+        messagetableView.dataSource = self
+        messagetableView.separatorStyle = .none
+
+        messagetableView.register(MyMessageChatCell.self, forCellReuseIdentifier: mycellID)
+        messagetableView.register(DestinationMessageChatCell.self, forCellReuseIdentifier: destinationcellID)
         
-        messagecollectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        messagecollectionView.topAnchor.constraint(equalTo: navcontentView.bottomAnchor).isActive = true
-        messagecollectionView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
+        messagetableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        messagetableView.topAnchor.constraint(equalTo: navcontentView.bottomAnchor).isActive = true
+        messagetableView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
         
         self.view.addSubview(bottomcontentView)
         
@@ -105,7 +136,7 @@ class MessageChatVC: UIViewController, UICollectionViewDelegateFlowLayout, UICol
         bottomcontentView.addSubview(btnSend)
         
         bottomcontentView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        bottomcontentView.topAnchor.constraint(equalTo: messagecollectionView.bottomAnchor).isActive = true
+        bottomcontentView.topAnchor.constraint(equalTo: messagetableView.bottomAnchor).isActive = true
         bottomcontentView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         bottomcontentView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
         bottomcontentView.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 56).isActive = true
@@ -119,17 +150,17 @@ class MessageChatVC: UIViewController, UICollectionViewDelegateFlowLayout, UICol
         btnSend.bottomAnchor.constraint(equalTo: bottomcontentView.bottomAnchor, constant: screenHeight/defaultHeight * -8).isActive = true
         btnSend.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 40).isActive = true
         btnSend.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 40).isActive = true
+        
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return comments.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if (self.comments[indexPath.row].uid == uid) {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mycellID, for: indexPath) as! MyMessageChatCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: mycellID, for: indexPath) as! MyMessageChatCell
             cell.backgroundLabel.layer.cornerRadius = 22
-            cell.backgroundLabel.layer.masksToBounds = false
             cell.backgroundLabel.clipsToBounds = true
             cell.userChatLabel.text = self.comments[indexPath.row].message
             cell.userChatLabel.numberOfLines = 0
@@ -137,53 +168,42 @@ class MessageChatVC: UIViewController, UICollectionViewDelegateFlowLayout, UICol
             return cell
         }
         else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: destinationcellID, for: indexPath) as! DestinationMessageChatCell
-            if indexPath.row > 0 {
-                if self.comments[indexPath.row-1].uid != uid {
-                    cell.backgroundLabel.layer.cornerRadius = 22
-                    cell.backgroundLabel.layer.masksToBounds = false
-                    cell.backgroundLabel.clipsToBounds = true
-                    cell.backgroundLabel.layer.borderColor = UIColor.clear.cgColor
-                    cell.backgroundLabel.layer.borderWidth = 1
-                    cell.userChatLabel.text = self.comments[indexPath.row].message
-                    cell.userChatLabel.numberOfLines = 0
-                    cell.userChatLabel.lineBreakMode = .byWordWrapping
-                    let imageUrl:NSURL = NSURL(string: destinationUrlString!)!
-                    let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
-                    let image = UIImage(data: imageData as Data)
-                    cell.profileImage.image = image
-                    cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
-                    cell.profileImage.layer.borderColor = UIColor.clear.cgColor
-                    cell.profileImage.layer.borderWidth = 1
-                    cell.profileImage.layer.masksToBounds = false
-                    cell.profileImage.clipsToBounds = true
-                    cell.profileImage.isHidden = true
-                }
-                else {
-                    cell.backgroundLabel.layer.cornerRadius = 22
-                    cell.backgroundLabel.layer.masksToBounds = false
-                    cell.backgroundLabel.clipsToBounds = true
-                    cell.backgroundLabel.layer.borderColor = UIColor.clear.cgColor
-                    cell.backgroundLabel.layer.borderWidth = 1
-                    cell.userChatLabel.text = self.comments[indexPath.row].message
-                    cell.userChatLabel.numberOfLines = 0
-                    cell.userChatLabel.lineBreakMode = .byWordWrapping
-                    let imageUrl:NSURL = NSURL(string: destinationUrlString!)!
-                    let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
-                    let image = UIImage(data: imageData as Data)
-                    cell.profileImage.image = image
-                    cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
-                    cell.profileImage.layer.borderColor = UIColor.clear.cgColor
-                    cell.profileImage.layer.borderWidth = 1
-                    cell.profileImage.layer.masksToBounds = false
-                    cell.profileImage.clipsToBounds = true
-                    cell.profileImage.isHidden = false
-                }
-            }
+            let cell = tableView.dequeueReusableCell(withIdentifier: destinationcellID, for: indexPath) as! DestinationMessageChatCell
+//            if self.comments[indexPath.row-1].uid != uid {
+//                cell.backgroundLabel.layer.cornerRadius = 22
+//                cell.backgroundLabel.clipsToBounds = true
+//                cell.userChatLabel.text = self.comments[indexPath.row].message
+//                cell.userChatLabel.numberOfLines = 0
+//                cell.userChatLabel.lineBreakMode = .byWordWrapping
+//                let imageUrl:NSURL = NSURL(string: destinationUrlString!)!
+//                let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
+//                let image = UIImage(data: imageData as Data)
+//                cell.profileImage.image = image
+//                cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
+//                cell.profileImage.layer.borderColor = UIColor.clear.cgColor
+//                cell.profileImage.layer.borderWidth = 1
+//                cell.profileImage.layer.masksToBounds = false
+//                cell.profileImage.clipsToBounds = true
+//                cell.profileImage.isHidden = true
+//            }
+//            else {
+//                cell.backgroundLabel.layer.cornerRadius = 22
+//                cell.backgroundLabel.clipsToBounds = true
+//                cell.userChatLabel.text = self.comments[indexPath.row].message
+//                cell.userChatLabel.numberOfLines = 0
+//                cell.userChatLabel.lineBreakMode = .byWordWrapping
+//                let imageUrl:NSURL = NSURL(string: destinationUrlString!)!
+//                let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
+//                let image = UIImage(data: imageData as Data)
+//                cell.profileImage.image = image
+//                cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
+//                cell.profileImage.layer.borderColor = UIColor.clear.cgColor
+//                cell.profileImage.layer.borderWidth = 1
+//                cell.profileImage.layer.masksToBounds = false
+//                cell.profileImage.clipsToBounds = true
+//                cell.profileImage.isHidden = false
+//            }
             cell.backgroundLabel.layer.cornerRadius = 22
-            cell.backgroundLabel.layer.borderColor = UIColor.clear.cgColor
-            cell.backgroundLabel.layer.borderWidth = 1
-            cell.backgroundLabel.layer.masksToBounds = false
             cell.backgroundLabel.clipsToBounds = true
             cell.userChatLabel.text = self.comments[indexPath.row].message
             cell.userChatLabel.numberOfLines = 0
@@ -198,13 +218,12 @@ class MessageChatVC: UIViewController, UICollectionViewDelegateFlowLayout, UICol
             cell.profileImage.layer.masksToBounds = false
             cell.profileImage.clipsToBounds = true
             cell.profileImage.isHidden = false
-            
             return cell
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: 60)
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
     
     @objc func back() {
@@ -228,9 +247,12 @@ class MessageChatVC: UIViewController, UICollectionViewDelegateFlowLayout, UICol
         else {
             let value : Dictionary<String, Any> = [
                 "uid" : uid,
-                "message": messageTxtField.text
+                "message": messageTxtField.text,
+                "timestamp": ServerValue.timestamp()
             ]
-            Database.database().reference().child("chatrooms").child(chatRoomUid!).child("comments").childByAutoId().setValue(value)
+            Database.database().reference().child("chatrooms").child(chatRoomUid!).child("comments").childByAutoId().setValue(value) { (err, ref) in
+                self.messageTxtField.text = ""
+            }
         }
     }
     
@@ -260,14 +282,28 @@ class MessageChatVC: UIViewController, UICollectionViewDelegateFlowLayout, UICol
     }
     
     func getMessageList() {
-        Database.database().reference().child("chatrooms").child(self.chatRoomUid!).child("comments").observe(DataEventType.value, with: { (datasnapshot) in
+        databaseRef = Database.database().reference().child("chatrooms").child(self.chatRoomUid!).child("comments")
+        observe = databaseRef?.observe(DataEventType.value, with: { (datasnapshot) in
             self.comments.removeAll()
-            
+            var readUserDic : Dictionary<String, AnyObject> = [:]
             for item in datasnapshot.children.allObjects as! [DataSnapshot] {
+                let key = item.key as String
                 let comment = ChatModel.Comment(JSON: item.value as! [String:AnyObject])
+                comment?.readUsers[self.uid] = true
+                readUserDic[key] = comment?.toJSON() as! NSDictionary
                 self.comments.append(comment!)
             }
-            self.messagecollectionView.reloadData()
+            
+            let nsDic = readUserDic as NSDictionary
+            
+            datasnapshot.ref.updateChildValues(nsDic as! [AnyHashable : Any]) { (err, ref) in
+                
+                self.messagetableView.reloadData()
+                
+                if self.comments.count > 0 {
+                    self.messagetableView.scrollToRow(at: IndexPath(item:self.comments.count - 1, section: 0), at: UITableView.ScrollPosition.bottom, animated: true)
+                }
+            }
         })
     }
 
@@ -333,7 +369,7 @@ extension Int {
     var todayTime : String {
         let dataFormatter = DateFormatter()
         dataFormatter.locale = Locale(identifier: "ko_KR")
-        DateFormatter.dateFormat(fromTemplate: "yyyy.MM.dd HH:mm", options: 0, locale: Locale(identifier: "ko_KR"))
+        dataFormatter.dateFormat = "yyyy.MM.dd HH:mm"
         let date = Date(timeIntervalSince1970: Double(self)/1000)
         return dataFormatter.string(from: date)
     }
