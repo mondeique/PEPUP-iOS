@@ -15,6 +15,7 @@ private let destinationcellID = "chatdestinationcell"
 class MessageChatVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
     var destinationUid: String?
+    var destinationUrlString : String?
     
     var messagecollectionView: UICollectionView!
     
@@ -27,6 +28,7 @@ class MessageChatVC: UIViewController, UICollectionViewDelegateFlowLayout, UICol
         super.viewDidLoad()
         uid = String(UserDefaults.standard.object(forKey: "pk") as! Int)
         checkChatRoom()
+        createUserDB()
         setup()
     }
     
@@ -78,12 +80,13 @@ class MessageChatVC: UIViewController, UICollectionViewDelegateFlowLayout, UICol
         
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.itemSize = CGSize(width: screenWidth, height: screenHeight/defaultHeight * 88)
+        layout.itemSize = CGSize(width: screenWidth, height: screenHeight/defaultHeight * 36)
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 0.0
         layout.minimumInteritemSpacing = 0.0
         
-        messagecollectionView = UICollectionView(frame: CGRect(x: 0, y: statusBarHeight + navBarHeight, width: view.frame.width, height: screenHeight), collectionViewLayout: layout)
+        messagecollectionView = UICollectionView(frame: CGRect(x: 0, y: statusBarHeight + navBarHeight, width: view.frame.width, height: screenHeight - statusBarHeight - navBarHeight - screenHeight/defaultHeight * 56), collectionViewLayout: layout)
         messagecollectionView.delegate = self
         messagecollectionView.dataSource = self
         messagecollectionView.register(MyMessageChatCell.self, forCellWithReuseIdentifier: mycellID)
@@ -94,7 +97,6 @@ class MessageChatVC: UIViewController, UICollectionViewDelegateFlowLayout, UICol
         
         messagecollectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         messagecollectionView.topAnchor.constraint(equalTo: navcontentView.bottomAnchor).isActive = true
-        messagecollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         messagecollectionView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
         
         self.view.addSubview(bottomcontentView)
@@ -103,6 +105,7 @@ class MessageChatVC: UIViewController, UICollectionViewDelegateFlowLayout, UICol
         bottomcontentView.addSubview(btnSend)
         
         bottomcontentView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        bottomcontentView.topAnchor.constraint(equalTo: messagecollectionView.bottomAnchor).isActive = true
         bottomcontentView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         bottomcontentView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
         bottomcontentView.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 56).isActive = true
@@ -125,6 +128,9 @@ class MessageChatVC: UIViewController, UICollectionViewDelegateFlowLayout, UICol
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if (self.comments[indexPath.row].uid == uid) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mycellID, for: indexPath) as! MyMessageChatCell
+            cell.backgroundLabel.layer.cornerRadius = 22
+            cell.backgroundLabel.layer.masksToBounds = false
+            cell.backgroundLabel.clipsToBounds = true
             cell.userChatLabel.text = self.comments[indexPath.row].message
             cell.userChatLabel.numberOfLines = 0
             cell.userChatLabel.lineBreakMode = .byWordWrapping
@@ -132,12 +138,73 @@ class MessageChatVC: UIViewController, UICollectionViewDelegateFlowLayout, UICol
         }
         else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: destinationcellID, for: indexPath) as! DestinationMessageChatCell
+            if indexPath.row > 0 {
+                if self.comments[indexPath.row-1].uid != uid {
+                    cell.backgroundLabel.layer.cornerRadius = 22
+                    cell.backgroundLabel.layer.masksToBounds = false
+                    cell.backgroundLabel.clipsToBounds = true
+                    cell.backgroundLabel.layer.borderColor = UIColor.clear.cgColor
+                    cell.backgroundLabel.layer.borderWidth = 1
+                    cell.userChatLabel.text = self.comments[indexPath.row].message
+                    cell.userChatLabel.numberOfLines = 0
+                    cell.userChatLabel.lineBreakMode = .byWordWrapping
+                    let imageUrl:NSURL = NSURL(string: destinationUrlString!)!
+                    let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
+                    let image = UIImage(data: imageData as Data)
+                    cell.profileImage.image = image
+                    cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
+                    cell.profileImage.layer.borderColor = UIColor.clear.cgColor
+                    cell.profileImage.layer.borderWidth = 1
+                    cell.profileImage.layer.masksToBounds = false
+                    cell.profileImage.clipsToBounds = true
+                    cell.profileImage.isHidden = true
+                }
+                else {
+                    cell.backgroundLabel.layer.cornerRadius = 22
+                    cell.backgroundLabel.layer.masksToBounds = false
+                    cell.backgroundLabel.clipsToBounds = true
+                    cell.backgroundLabel.layer.borderColor = UIColor.clear.cgColor
+                    cell.backgroundLabel.layer.borderWidth = 1
+                    cell.userChatLabel.text = self.comments[indexPath.row].message
+                    cell.userChatLabel.numberOfLines = 0
+                    cell.userChatLabel.lineBreakMode = .byWordWrapping
+                    let imageUrl:NSURL = NSURL(string: destinationUrlString!)!
+                    let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
+                    let image = UIImage(data: imageData as Data)
+                    cell.profileImage.image = image
+                    cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
+                    cell.profileImage.layer.borderColor = UIColor.clear.cgColor
+                    cell.profileImage.layer.borderWidth = 1
+                    cell.profileImage.layer.masksToBounds = false
+                    cell.profileImage.clipsToBounds = true
+                    cell.profileImage.isHidden = false
+                }
+            }
+            cell.backgroundLabel.layer.cornerRadius = 22
+            cell.backgroundLabel.layer.borderColor = UIColor.clear.cgColor
+            cell.backgroundLabel.layer.borderWidth = 1
+            cell.backgroundLabel.layer.masksToBounds = false
+            cell.backgroundLabel.clipsToBounds = true
             cell.userChatLabel.text = self.comments[indexPath.row].message
             cell.userChatLabel.numberOfLines = 0
             cell.userChatLabel.lineBreakMode = .byWordWrapping
-            cell.profileImage.image = UIImage(named: "btnGO")
+            let imageUrl:NSURL = NSURL(string: destinationUrlString!)!
+            let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
+            let image = UIImage(data: imageData as Data)
+            cell.profileImage.image = image
+            cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
+            cell.profileImage.layer.borderColor = UIColor.clear.cgColor
+            cell.profileImage.layer.borderWidth = 1
+            cell.profileImage.layer.masksToBounds = false
+            cell.profileImage.clipsToBounds = true
+            cell.profileImage.isHidden = false
+            
             return cell
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: UIScreen.main.bounds.width, height: 60)
     }
     
     @objc func back() {
@@ -165,6 +232,14 @@ class MessageChatVC: UIViewController, UICollectionViewDelegateFlowLayout, UICol
             ]
             Database.database().reference().child("chatrooms").child(chatRoomUid!).child("comments").childByAutoId().setValue(value)
         }
+    }
+    
+    func createUserDB() {
+        let value : Dictionary<String, String> = [
+            "pk" : destinationUid!,
+            "profileImgUrl": destinationUrlString!
+        ]
+        Database.database().reference().child("users").child(destinationUid!).setValue(value)
     }
     
     func checkChatRoom() {

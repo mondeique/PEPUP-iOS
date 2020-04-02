@@ -549,6 +549,10 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         let nextVC = MessageChatVC()
         let sellerId = self.sellerDatas.object(forKey: "id") as! Int
         nextVC.destinationUid = String(sellerId)
+        if let sellerImgDic = self.sellerDatas.object(forKey: "profile") as? NSDictionary {
+            let sellerUrlString = sellerImgDic.object(forKey: "thumbnail_img") as! String
+            nextVC.destinationUrlString = sellerUrlString
+        }
         self.navigationController?.pushViewController(nextVC, animated: true)
     }
     

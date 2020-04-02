@@ -57,6 +57,7 @@
 		E9CBF5752431A8B000A058F7 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBF5742431A8B000A058F7 /* MessageCell.swift */; };
 		E9CBF5772431BED800A058F7 /* MessageChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBF5762431BED800A058F7 /* MessageChatVC.swift */; };
 		E9CBF5792431D18A00A058F7 /* MessageChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBF5782431D18A00A058F7 /* MessageChatCell.swift */; };
+		E9CBF57B24359C2900A058F7 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBF57A24359C2900A058F7 /* UserModel.swift */; };
 		E9D07A4123E2B0930095AD05 /* DetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4023E2B0930095AD05 /* DetailVC.swift */; };
 		E9D07A4323E2B1110095AD05 /* NotiVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4223E2B1110095AD05 /* NotiVC.swift */; };
 		E9D07A4723E2B6DE0095AD05 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D07A4623E2B6DE0095AD05 /* SearchVC.swift */; };
@@ -151,6 +152,7 @@
 		E9CBF5742431A8B000A058F7 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		E9CBF5762431BED800A058F7 /* MessageChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageChatVC.swift; sourceTree = "<group>"; };
 		E9CBF5782431D18A00A058F7 /* MessageChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageChatCell.swift; sourceTree = "<group>"; };
+		E9CBF57A24359C2900A058F7 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		E9D07A4023E2B0930095AD05 /* DetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC.swift; sourceTree = "<group>"; };
 		E9D07A4223E2B1110095AD05 /* NotiVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiVC.swift; sourceTree = "<group>"; };
 		E9D07A4623E2B6DE0095AD05 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 				E9CBF5742431A8B000A058F7 /* MessageCell.swift */,
 				E9CBF5762431BED800A058F7 /* MessageChatVC.swift */,
 				E9CBF5782431D18A00A058F7 /* MessageChatCell.swift */,
+				E9CBF57A24359C2900A058F7 /* UserModel.swift */,
 				E90E84EF24226E7900C215CB /* ChatModel.swift */,
 				E9D07A4223E2B1110095AD05 /* NotiVC.swift */,
 				E90E84F7242337CC00C215CB /* CustomNotiBar.swift */,
@@ -465,6 +468,7 @@
 				E90E8514242B33A000C215CB /* NoticeVC.swift in Sources */,
 				E9D111C0240F6F42006AE20C /* StoreShopCell.swift in Sources */,
 				E9D111D424177E48006AE20C /* PaymentCell.swift in Sources */,
+				E9CBF57B24359C2900A058F7 /* UserModel.swift in Sources */,
 				E9D111B2240E15CF006AE20C /* SearchCell.swift in Sources */,
 				E94D142623E82A570001F3A0 /* FindIdVC.swift in Sources */,
 				E9D111CE2410C316006AE20C /* PaymentVC.swift in Sources */,

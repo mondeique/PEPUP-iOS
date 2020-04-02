@@ -152,6 +152,10 @@ class SearchResultVC: UIViewController, UICollectionViewDataSource, UICollection
             }
         }
     }
+    
+    @objc func back() {
+        navigationController?.popViewController(animated: true)
+    }
 
     // MARK: UICollectionViewDataSource
 
@@ -190,10 +194,6 @@ class SearchResultVC: UIViewController, UICollectionViewDataSource, UICollection
 //        cell.btnDetail.tag = imageID
 //        cell.btnDetail.addTarget(self, action: #selector(detail(_:)), for: .touchUpInside)
         return cell
-    }
-    
-    @objc func back() {
-        navigationController?.popViewController(animated: true)
     }
     
 //    @objc func detail(_ sender: UIButton) {

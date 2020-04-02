@@ -13,8 +13,6 @@ class SearchResultCell: BaseCollectionViewCell {
     override func setup() {
         backgroundColor = .white
         
-        // TODO : - SearchResult cellcontentView + footercontentView 합친 btn & contentView 생성
-        
         self.addSubview(srtotalcontentView)
         
 //        srtotalcontentView.addSubview(btnDetail)
@@ -32,7 +30,7 @@ class SearchResultCell: BaseCollectionViewCell {
         srtotalcontentView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         srtotalcontentView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         srtotalcontentView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
-//
+
 //        btnDetail.leftAnchor.constraint(equalTo: srtotalcontentView.leftAnchor).isActive = true
 //        btnDetail.topAnchor.constraint(equalTo: srtotalcontentView.topAnchor).isActive = true
 //        btnDetail.widthAnchor.constraint(equalTo: srtotalcontentView.widthAnchor).isActive = true
