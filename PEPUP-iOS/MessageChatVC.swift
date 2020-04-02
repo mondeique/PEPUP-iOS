@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import Alamofire
 
 private let mycellID = "chatcell"
 private let destinationcellID = "chatdestinationcell"
@@ -16,6 +17,7 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     var destinationUid: String?
     var destinationUrlString : String?
+    var destinationName : String?
     
     var databaseRef : DatabaseReference?
     var observe : UInt?
@@ -31,6 +33,7 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         super.viewDidLoad()
         checkChatRoom()
         createUserDB()
+        createMyDB()
         setup()
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
@@ -169,55 +172,59 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: destinationcellID, for: indexPath) as! DestinationMessageChatCell
-//            if self.comments[indexPath.row-1].uid != uid {
-//                cell.backgroundLabel.layer.cornerRadius = 22
-//                cell.backgroundLabel.clipsToBounds = true
-//                cell.userChatLabel.text = self.comments[indexPath.row].message
-//                cell.userChatLabel.numberOfLines = 0
-//                cell.userChatLabel.lineBreakMode = .byWordWrapping
-//                let imageUrl:NSURL = NSURL(string: destinationUrlString!)!
-//                let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
-//                let image = UIImage(data: imageData as Data)
-//                cell.profileImage.image = image
-//                cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
-//                cell.profileImage.layer.borderColor = UIColor.clear.cgColor
-//                cell.profileImage.layer.borderWidth = 1
-//                cell.profileImage.layer.masksToBounds = false
-//                cell.profileImage.clipsToBounds = true
-//                cell.profileImage.isHidden = true
-//            }
-//            else {
-//                cell.backgroundLabel.layer.cornerRadius = 22
-//                cell.backgroundLabel.clipsToBounds = true
-//                cell.userChatLabel.text = self.comments[indexPath.row].message
-//                cell.userChatLabel.numberOfLines = 0
-//                cell.userChatLabel.lineBreakMode = .byWordWrapping
-//                let imageUrl:NSURL = NSURL(string: destinationUrlString!)!
-//                let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
-//                let image = UIImage(data: imageData as Data)
-//                cell.profileImage.image = image
-//                cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
-//                cell.profileImage.layer.borderColor = UIColor.clear.cgColor
-//                cell.profileImage.layer.borderWidth = 1
-//                cell.profileImage.layer.masksToBounds = false
-//                cell.profileImage.clipsToBounds = true
-//                cell.profileImage.isHidden = false
-//            }
-            cell.backgroundLabel.layer.cornerRadius = 22
-            cell.backgroundLabel.clipsToBounds = true
-            cell.userChatLabel.text = self.comments[indexPath.row].message
-            cell.userChatLabel.numberOfLines = 0
-            cell.userChatLabel.lineBreakMode = .byWordWrapping
-            let imageUrl:NSURL = NSURL(string: destinationUrlString!)!
-            let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
-            let image = UIImage(data: imageData as Data)
-            cell.profileImage.image = image
-            cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
-            cell.profileImage.layer.borderColor = UIColor.clear.cgColor
-            cell.profileImage.layer.borderWidth = 1
-            cell.profileImage.layer.masksToBounds = false
-            cell.profileImage.clipsToBounds = true
-            cell.profileImage.isHidden = false
+            if indexPath.row > 0 {
+                if self.comments[indexPath.row - 1].uid != uid {
+                    cell.backgroundLabel.layer.cornerRadius = 22
+                    cell.backgroundLabel.clipsToBounds = true
+                    cell.userChatLabel.text = self.comments[indexPath.row].message
+                    cell.userChatLabel.numberOfLines = 0
+                    cell.userChatLabel.lineBreakMode = .byWordWrapping
+                    let imageUrl:NSURL = NSURL(string: destinationUrlString!)!
+                    let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
+                    let image = UIImage(data: imageData as Data)
+                    cell.profileImage.image = image
+                    cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
+                    cell.profileImage.layer.borderColor = UIColor.clear.cgColor
+                    cell.profileImage.layer.borderWidth = 1
+                    cell.profileImage.layer.masksToBounds = false
+                    cell.profileImage.clipsToBounds = true
+                    cell.profileImage.isHidden = true
+                }
+                else {
+                    cell.backgroundLabel.layer.cornerRadius = 22
+                    cell.backgroundLabel.clipsToBounds = true
+                    cell.userChatLabel.text = self.comments[indexPath.row].message
+                    cell.userChatLabel.numberOfLines = 0
+                    cell.userChatLabel.lineBreakMode = .byWordWrapping
+                    let imageUrl:NSURL = NSURL(string: destinationUrlString!)!
+                    let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
+                    let image = UIImage(data: imageData as Data)
+                    cell.profileImage.image = image
+                    cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
+                    cell.profileImage.layer.borderColor = UIColor.clear.cgColor
+                    cell.profileImage.layer.borderWidth = 1
+                    cell.profileImage.layer.masksToBounds = false
+                    cell.profileImage.clipsToBounds = true
+                    cell.profileImage.isHidden = false
+                }
+            }
+            else {
+                cell.backgroundLabel.layer.cornerRadius = 22
+                cell.backgroundLabel.clipsToBounds = true
+                cell.userChatLabel.text = self.comments[indexPath.row].message
+                cell.userChatLabel.numberOfLines = 0
+                cell.userChatLabel.lineBreakMode = .byWordWrapping
+                let imageUrl:NSURL = NSURL(string: destinationUrlString!)!
+                let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
+                let image = UIImage(data: imageData as Data)
+                cell.profileImage.image = image
+                cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
+                cell.profileImage.layer.borderColor = UIColor.clear.cgColor
+                cell.profileImage.layer.borderWidth = 1
+                cell.profileImage.layer.masksToBounds = false
+                cell.profileImage.clipsToBounds = true
+                cell.profileImage.isHidden = false
+            }
             return cell
         }
     }
@@ -250,8 +257,33 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 "message": messageTxtField.text,
                 "timestamp": ServerValue.timestamp()
             ]
-            Database.database().reference().child("chatrooms").child(chatRoomUid!).child("comments").childByAutoId().setValue(value) { (err, ref) in
-                self.messageTxtField.text = ""
+            if messageTxtField.text == "" {
+                print("NO!")
+            }
+            else {
+                Database.database().reference().child("chatrooms").child(chatRoomUid!).child("comments").childByAutoId().setValue(value) { (err, ref) in
+                    self.messageTxtField.text = ""
+                }
+            }
+        }
+    }
+    
+    func createMyDB() {
+        Alamofire.AF.request("\(Config.baseURL)/accounts/chat_userinfo/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+            (response) in switch response.result {
+            case .success(let JSON):
+                let response = JSON as! NSDictionary
+                let pk = response.object(forKey: "id") as! Int
+                let nickname = response.object(forKey: "nickname") as! String
+                let profileImgUrl = response.object(forKey: "profile_img") as! String
+                let value : Dictionary<String, String> = [
+                    "pk" : String(pk),
+                    "username" : nickname,
+                    "profileImgUrl": profileImgUrl
+                ]
+                Database.database().reference().child("users").child(self.uid).setValue(value)
+            case .failure(let error):
+                print("Request failed with error: \(error)")
             }
         }
     }
@@ -259,6 +291,7 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func createUserDB() {
         let value : Dictionary<String, String> = [
             "pk" : destinationUid!,
+            "username" : destinationName!,
             "profileImgUrl": destinationUrlString!
         ]
         Database.database().reference().child("users").child(destinationUid!).setValue(value)
@@ -346,9 +379,13 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         return view
     }()
     
-    let messageTxtField: UITextField = {
-        let txtfield = UITextField()
+    let messageTxtField: TextField = {
+        let txtfield = TextField()
         txtfield.translatesAutoresizingMaskIntoConstraints = false
+        txtfield.placeholder = "메세지 보내기"
+        txtfield.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
+        txtfield.layer.borderWidth = 1
+        txtfield.layer.cornerRadius = 22
         return txtfield
     }()
     

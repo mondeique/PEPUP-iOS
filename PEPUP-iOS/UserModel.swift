@@ -11,5 +11,6 @@ import UIKit
 class UserModel: NSObject {
     
     var pk: String?
+    var username: String?
     var profileImgUrl: String?
 }

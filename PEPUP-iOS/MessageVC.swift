@@ -114,8 +114,9 @@ class MessageVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollect
             let userModel = UserModel()
             let userDic = datasnapshot.value as! NSDictionary
             userModel.pk = userDic.object(forKey: "pk") as! String
+            userModel.username = userDic.object(forKey: "username") as! String
             userModel.profileImgUrl = userDic.object(forKey: "profileImgUrl") as! String
-            cell.userNameLabel.text = userModel.pk
+            cell.userNameLabel.text = userModel.username
             let imageUrl:NSURL = NSURL(string: userModel.profileImgUrl!)!
             let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
             let image = UIImage(data: imageData as Data)
@@ -164,6 +165,7 @@ class MessageVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollect
             let userDic = datasnapshot.value as! NSDictionary
             nextVC.destinationUid = userDic.object(forKey: "pk") as! String
             nextVC.destinationUrlString = userDic.object(forKey: "profileImgUrl") as! String
+            nextVC.destinationName = userDic.object(forKey: "username") as! String
             self.navigationController?.pushViewController(nextVC, animated: true)
         })
     }
