@@ -120,12 +120,14 @@ class MessageVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollect
             let imageUrl:NSURL = NSURL(string: userModel.profileImgUrl!)!
             let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
             let image = UIImage(data: imageData as Data)
-            cell.profileImage.image = image
-            cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
-            cell.profileImage.layer.borderColor = UIColor.clear.cgColor
-            cell.profileImage.layer.borderWidth = 1
-            cell.profileImage.layer.masksToBounds = false
-            cell.profileImage.clipsToBounds = true
+            DispatchQueue.main.async {
+                cell.profileImage.image = image
+                cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
+                cell.profileImage.layer.borderColor = UIColor.clear.cgColor
+                cell.profileImage.layer.borderWidth = 1
+                cell.profileImage.layer.masksToBounds = false
+                cell.profileImage.clipsToBounds = true
+            }
         })
         
         let lastMessagekey = chatrooms[indexPath.row].comments.keys.sorted(){$0>$1}

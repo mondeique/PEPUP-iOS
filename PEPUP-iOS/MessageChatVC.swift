@@ -182,13 +182,15 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     let imageUrl:NSURL = NSURL(string: destinationUrlString!)!
                     let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
                     let image = UIImage(data: imageData as Data)
-                    cell.profileImage.image = image
-                    cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
-                    cell.profileImage.layer.borderColor = UIColor.clear.cgColor
-                    cell.profileImage.layer.borderWidth = 1
-                    cell.profileImage.layer.masksToBounds = false
-                    cell.profileImage.clipsToBounds = true
-                    cell.profileImage.isHidden = true
+                    DispatchQueue.main.async {
+                        cell.profileImage.image = image
+                        cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
+                        cell.profileImage.layer.borderColor = UIColor.clear.cgColor
+                        cell.profileImage.layer.borderWidth = 1
+                        cell.profileImage.layer.masksToBounds = false
+                        cell.profileImage.clipsToBounds = true
+                        cell.profileImage.isHidden = true
+                    }
                 }
                 else {
                     cell.backgroundLabel.layer.cornerRadius = 22
@@ -199,13 +201,15 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     let imageUrl:NSURL = NSURL(string: destinationUrlString!)!
                     let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
                     let image = UIImage(data: imageData as Data)
-                    cell.profileImage.image = image
-                    cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
-                    cell.profileImage.layer.borderColor = UIColor.clear.cgColor
-                    cell.profileImage.layer.borderWidth = 1
-                    cell.profileImage.layer.masksToBounds = false
-                    cell.profileImage.clipsToBounds = true
-                    cell.profileImage.isHidden = false
+                    DispatchQueue.main.async {
+                        cell.profileImage.image = image
+                        cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
+                        cell.profileImage.layer.borderColor = UIColor.clear.cgColor
+                        cell.profileImage.layer.borderWidth = 1
+                        cell.profileImage.layer.masksToBounds = false
+                        cell.profileImage.clipsToBounds = true
+                        cell.profileImage.isHidden = false
+                    }
                 }
             }
             else {
@@ -217,13 +221,15 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 let imageUrl:NSURL = NSURL(string: destinationUrlString!)!
                 let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
                 let image = UIImage(data: imageData as Data)
-                cell.profileImage.image = image
-                cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
-                cell.profileImage.layer.borderColor = UIColor.clear.cgColor
-                cell.profileImage.layer.borderWidth = 1
-                cell.profileImage.layer.masksToBounds = false
-                cell.profileImage.clipsToBounds = true
-                cell.profileImage.isHidden = false
+                DispatchQueue.main.async {
+                    cell.profileImage.image = image
+                    cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
+                    cell.profileImage.layer.borderColor = UIColor.clear.cgColor
+                    cell.profileImage.layer.borderWidth = 1
+                    cell.profileImage.layer.masksToBounds = false
+                    cell.profileImage.clipsToBounds = true
+                    cell.profileImage.isHidden = false
+                }
             }
             return cell
         }

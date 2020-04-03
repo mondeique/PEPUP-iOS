@@ -61,7 +61,15 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         follow.tabBarItem.image = #imageLiteral(resourceName: "follow_unselected")
         follow.tabBarItem.selectedImage = #imageLiteral(resourceName: "follow_selected")
         // Sell
-        let is_store = UserDefaults.standard.object(forKey: "exist_store") as! Bool
+        var sell = UINavigationController(rootViewController: SellSelectVC())
+        if let is_store = UserDefaults.standard.object(forKey: "exist_store") as? Bool {
+            if is_store == true {
+                sell = UINavigationController(rootViewController: SellSelectVC())
+            }
+            else  {
+                sell = UINavigationController(rootViewController: StoreInfoSettingVC())
+            }
+        }
 //        Alamofire.AF.request("\(Config.baseURL)/accounts/check_store/" , method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
 //            (response) in switch response.result {
 //            case .success(let JSON):
@@ -73,13 +81,6 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
 //                is_store = false
 //            }
 //        }
-        var sell = UINavigationController(rootViewController: SellSelectVC())
-        if is_store == true {
-            sell = UINavigationController(rootViewController: SellSelectVC())
-        }
-        else  {
-            sell = UINavigationController(rootViewController: StoreInfoSettingVC())
-        }
         sell.tabBarItem.image = #imageLiteral(resourceName: "sell_unselected")
         sell.tabBarItem.selectedImage = #imageLiteral(resourceName: "sell_selected")
         // Noti
