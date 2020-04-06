@@ -60,8 +60,7 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     @objc func keyboardWillShow(notification : Notification) {
         
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            
-            self.bottomcontentView.bottomAnchor.constraint(equalTo:view.bottomAnchor, constant: -keyboardSize.height).isActive = true
+            bottomcontentView.bottomAnchor.constraint(equalTo:view.bottomAnchor, constant: -keyboardSize.height).isActive = true
         }
         
         UIView.animate(withDuration: 0, animations: {
@@ -76,7 +75,7 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     @objc func keyboardWillHide(notification: Notification) {
-        self.bottomcontentView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        bottomcontentView.bottomAnchor.constraint(equalTo:view.bottomAnchor).isActive = true
         self.view.layoutIfNeeded()
     }
     
@@ -125,6 +124,7 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         messagetableView.delegate = self
         messagetableView.dataSource = self
         messagetableView.separatorStyle = .none
+        messagetableView.backgroundColor = .white
 
         messagetableView.register(MyMessageChatCell.self, forCellReuseIdentifier: mycellID)
         messagetableView.register(DestinationMessageChatCell.self, forCellReuseIdentifier: destinationcellID)
@@ -132,6 +132,7 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         messagetableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         messagetableView.topAnchor.constraint(equalTo: navcontentView.bottomAnchor).isActive = true
         messagetableView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
+        messagetableView.heightAnchor.constraint(equalToConstant: screenHeight - statusBarHeight - navBarHeight - screenHeight/defaultHeight * 56).isActive = true
         
         self.view.addSubview(bottomcontentView)
         

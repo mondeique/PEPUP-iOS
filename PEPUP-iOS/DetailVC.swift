@@ -102,7 +102,8 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         scrollView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: (screenHeight/defaultHeight) * -100.0).isActive = true
         
-        scrollView.contentSize = CGSize(width: screenWidth, height: screenHeight/defaultHeight * 1300)
+        scrollView.contentSize = CGSize(width: screenWidth, height: screenHeight/defaultHeight * 1200)
+        scrollView.isScrollEnabled = true
         scrollView.contentOffset = CGPoint(x: 0, y: 0)
         
         productImageContentView.addSubview(productScrollView)
@@ -359,6 +360,8 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         NSLayoutConstraint(item: lineLabel4, attribute: .top, relatedBy: .equal, toItem: btnReview, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 20).isActive = true
         NSLayoutConstraint(item: lineLabel4, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 1).isActive = true
         NSLayoutConstraint(item: lineLabel4, attribute: .centerX, relatedBy: .equal, toItem: scrollView, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        
+        scrollView.bottomAnchor.constraint(equalTo: lineLabel4.bottomAnchor).isActive = true
         
     }
     

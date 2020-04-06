@@ -87,20 +87,20 @@ class MyStoreReviewCell: BaseCollectionViewCell, UICollectionViewDelegate, UICol
             let productimage = UIImage(data: productimageData as Data)
             cell.productImg.image = productimage
         }
-        
         if let buyerImgDic = reviewDictionary.object(forKey: "buyer_profile") as? NSDictionary {
             let imageUrlString = buyerImgDic.object(forKey: "thumbnail_img") as! String
             let imageUrl:NSURL = NSURL(string: imageUrlString)!
             let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
             let image = UIImage(data: imageData as Data)
-            cell.buyerName.text = buyerName
-            cell.buyerImage.image = image
-            cell.buyerImage.layer.cornerRadius = cell.buyerImage.frame.height / 2
-            cell.buyerImage.layer.borderColor = UIColor.clear.cgColor
-            cell.buyerImage.layer.borderWidth = 1
-            cell.buyerImage.layer.masksToBounds = false
-            cell.buyerImage.clipsToBounds = true
-            cell.cosmosView.rating = Double(satisfactions)
+            DispatchQueue.main.async {
+                cell.buyerName.text = buyerName
+                cell.buyerImage.image = image
+                cell.buyerImage.layer.cornerRadius = cell.buyerImage.frame.height / 2
+                cell.buyerImage.layer.borderColor = UIColor.clear.cgColor
+                cell.buyerImage.layer.borderWidth = 1
+                cell.buyerImage.clipsToBounds = true
+                cell.cosmosView.rating = Double(satisfactions)
+            }
         }
         return cell
     }

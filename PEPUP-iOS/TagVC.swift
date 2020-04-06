@@ -19,6 +19,7 @@ class TagVC: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
     var pagenum : Int = 1
     var TagName : String!
     var tagCollectionView : UICollectionView!
+    var tag_follow : Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,6 +119,7 @@ class TagVC: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
             (response) in switch response.result {
             case .success(let JSON):
                 let response = JSON as! NSDictionary
+                self.tag_follow = response.object(forKey: "tag_followed") as! Bool
                 let results = response.object(forKey: "results") as! Array<Dictionary<String, Any>>
                 for i in 0..<results.count {
                     self.productDatas.append(results[i])
@@ -135,13 +137,36 @@ class TagVC: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
         let parameters: [String: Int] = [
             "tag" : TagID
         ]
-        Alamofire.AF.request("\(Config.baseURL)/api/follow/following/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-            (response) in switch response.result {
-            case .success(let JSON):
-                let response = JSON as! NSDictionary
-                print(response)
-            case .failure(let error):
-                print("Request failed with error: \(error)")
+        if sender.currentTitle == "Follow" {
+            sender.setTitle("Unfollow", for: .normal)
+            sender.setTitleColor(.black, for: .normal)
+            sender.backgroundColor = .white
+            sender.layer.borderColor = UIColor.black.cgColor
+            sender.layer.borderWidth = 1
+            Alamofire.AF.request("\(Config.baseURL)/api/follow/following/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+                (response) in switch response.result {
+                case .success(let JSON):
+                    let response = JSON as! NSDictionary
+                    print(response)
+                case .failure(let error):
+                    print("Request failed with error: \(error)")
+                }
+            }
+        }
+        else {
+            sender.setTitle("Follow", for: .normal)
+            sender.setTitleColor(.white, for: .normal)
+            sender.backgroundColor = .black
+            sender.layer.borderColor = UIColor.clear.cgColor
+            sender.layer.borderWidth = 0
+            Alamofire.AF.request("\(Config.baseURL)/api/follow/following/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+                (response) in switch response.result {
+                case .success(let JSON):
+                    let response = JSON as! NSDictionary
+                    print(response)
+                case .failure(let error):
+                    print("Request failed with error: \(error)")
+                }
             }
         }
     }
@@ -183,6 +208,20 @@ class TagVC: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
 
         case UICollectionView.elementKindSectionHeader:
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! TagHeaderCell
+            if tag_follow == true {
+                headerView.followButton.setTitle("Unfollow", for: .normal)
+                headerView.followButton.setTitleColor(.black, for: .normal)
+                headerView.followButton.backgroundColor = .white
+                headerView.followButton.layer.borderColor = UIColor.black.cgColor
+                headerView.followButton.layer.borderWidth = 1
+            }
+            else {
+                headerView.followButton.setTitle("Follow", for: .normal)
+                headerView.followButton.setTitleColor(.white, for: .normal)
+                headerView.followButton.backgroundColor = .black
+                headerView.followButton.layer.borderColor = UIColor.clear.cgColor
+                headerView.followButton.layer.borderWidth = 0
+            }
             headerView.followButton.addTarget(self, action: #selector(follow(_:)), for: .touchUpInside)
             return headerView
 

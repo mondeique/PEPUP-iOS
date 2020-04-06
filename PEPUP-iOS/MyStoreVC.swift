@@ -60,12 +60,12 @@ class MyStoreVC: UIViewController, CustomMenuBarDelegate{
         btnSetting.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 40).isActive = true
         btnSetting.heightAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 40).isActive = true
         
-        setupCustomTabBar()
-        setupPageCollectionView()
-        getData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        setupCustomTabBar()
+        setupPageCollectionView()
+        getData()
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
         tabBarController?.tabBar.isHidden = false
@@ -108,6 +108,7 @@ class MyStoreVC: UIViewController, CustomMenuBarDelegate{
         pageCollectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         pageCollectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         pageCollectionView.topAnchor.constraint(equalTo: self.customMenuBar.bottomAnchor).isActive = true
+        
     }
     
     func getData() {

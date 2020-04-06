@@ -43,6 +43,7 @@ class MyStoreLikeCell: BaseCollectionViewCell, UICollectionViewDelegate, UIColle
         likecollectionView.register(MyLikeCell.self, forCellWithReuseIdentifier: likecellId)
         
         getLikeData(pagenum: 1)
+        
     }
     
     func getLikeData(pagenum : Int) {

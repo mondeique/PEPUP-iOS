@@ -79,6 +79,7 @@ class LoginVC: UIViewController {
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.layer.cornerRadius = 3
         txtField.translatesAutoresizingMaskIntoConstraints = false
+        txtField.textColor = .black
         return txtField
     }()
     
@@ -91,6 +92,7 @@ class LoginVC: UIViewController {
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
         txtField.isSecureTextEntry = true
+        txtField.textColor = .black
         return txtField
     }()
     

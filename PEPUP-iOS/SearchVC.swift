@@ -77,6 +77,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         searchTableView.dataSource = self
         searchTableView.isHidden = true
         searchTableView.separatorStyle = .none
+        searchTableView.backgroundColor = .white
 
         searchTableView.register(SearchCell.self, forCellReuseIdentifier: cellID)
         
@@ -224,7 +225,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             nextVC.searchCount = self.name_result
             navigationController?.pushViewController(nextVC, animated: true)
         }
-        else if indexPath.section == 1 {
+        else if indexPath.section == 1 && self.seller_result.count == 0{
             let nextVC = TagVC()
             let tagDic = self.tag_result[indexPath.row] as NSDictionary
             let tagID = tagDic.object(forKey: "id") as! Int
@@ -233,12 +234,37 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             nextVC.TagName = tagName
             navigationController?.pushViewController(nextVC, animated: true)
         }
-        else if indexPath.section == 2 {
-            let nextVC = StoreVC()
+        else if indexPath.section == 1 && self.tag_result.count == 0{
+            
             let sellerDic = self.seller_result[indexPath.row] as NSDictionary
             let sellerID = sellerDic.object(forKey: "id") as! Int
-            nextVC.SellerID = sellerID
-            navigationController?.pushViewController(nextVC, animated: true)
+            print(sellerID)
+            if UserDefaults.standard.object(forKey: "pk") as! Int == sellerID {
+                let nextVC = MyStoreVC()
+                nextVC.SellerID = sellerID
+                navigationController?.pushViewController(nextVC, animated: true)
+            }
+            else {
+                let nextVC = StoreVC()
+                UserDefaults.standard.set(sellerID, forKey: "sellerId")
+                nextVC.SellerID = sellerID
+                navigationController?.pushViewController(nextVC, animated: true)
+            }
+        }
+        else if indexPath.section == 2 {
+            let sellerDic = self.seller_result[indexPath.row] as NSDictionary
+            let sellerID = sellerDic.object(forKey: "id") as! Int
+            if UserDefaults.standard.object(forKey: "pk") as! Int == sellerID {
+                let nextVC = MyStoreVC()
+                nextVC.SellerID = sellerID
+                navigationController?.pushViewController(nextVC, animated: true)
+            }
+            else {
+                let nextVC = StoreVC()
+                UserDefaults.standard.set(sellerID, forKey: "sellerId")
+                nextVC.SellerID = sellerID
+                navigationController?.pushViewController(nextVC, animated: true)
+            }
         }
     }
     

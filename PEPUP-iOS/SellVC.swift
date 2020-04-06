@@ -100,7 +100,7 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         
         sellproductcollectionView.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: screenWidth/defaultWidth * 18).isActive = true
         sellproductcollectionView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        sellproductcollectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        sellproductcollectionView.widthAnchor.constraint(equalToConstant: scrollView.frame.width - screenWidth/defaultWidth * 30).isActive = true
         sellproductcollectionView.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 128).isActive = true
         
         scrollView.addSubview(productNameLabel)

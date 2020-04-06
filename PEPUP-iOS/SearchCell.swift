@@ -100,6 +100,8 @@ class SearchCell: UITableViewCell {
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
         label.textAlignment = .left
         label.isHidden = true
+        label.backgroundColor = .white
+        label.textColor = .black
         return label
     }()
     
@@ -116,6 +118,8 @@ class SearchCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         label.isHidden = true
+        label.backgroundColor = .white
+        label.textColor = .black
         return label
     }()
     
@@ -139,6 +143,8 @@ class SearchCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
         label.isHidden = true
+        label.backgroundColor = .white
+        label.textColor = .black
         return label
     }()
     

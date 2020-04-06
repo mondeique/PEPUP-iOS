@@ -60,13 +60,13 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
         productNameLabel.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
         productNameLabel.centerXAnchor.constraint(equalTo: navcontentView.centerXAnchor).isActive = true
         
-        setupCustomTabBar()
-        setupPageCollectionView()
-        getData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setupCustomTabBar()
+        setupPageCollectionView()
+        getData()
         navigationController?.navigationBar.isHidden = true
     }
     

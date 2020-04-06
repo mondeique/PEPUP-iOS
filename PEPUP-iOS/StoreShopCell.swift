@@ -177,8 +177,24 @@ class StoreShopCell: BaseCollectionViewCell, UICollectionViewDelegate, UICollect
                 if let followingcount = sellerInfoDatas.object(forKey: "followings") as? Int {
                     headerView.followingCountLabel.text = String(followingcount)
                 }
+                if let sellerfollowed = sellerInfoDatas.object(forKey: "user_followed") as? Bool {
+                    if sellerfollowed == true {
+                        headerView.btnFollow.setTitle("Unfollow", for: .normal)
+                        headerView.btnFollow.setTitleColor(.black, for: .normal)
+                        headerView.btnFollow.backgroundColor = .white
+                        headerView.btnFollow.layer.borderColor = UIColor.black.cgColor
+                        headerView.btnFollow.layer.borderWidth = 1
+                    }
+                    else {
+                        headerView.btnFollow.setTitle("Follow", for: .normal)
+                        headerView.btnFollow.setTitleColor(.white, for: .normal)
+                        headerView.btnFollow.backgroundColor = .black
+                        headerView.btnFollow.layer.borderColor = UIColor.clear.cgColor
+                        headerView.btnFollow.layer.borderWidth = 0
+                    }
 
-                headerView.btnFollow.addTarget(self, action: #selector(follow), for: .touchUpInside)
+                }
+                headerView.btnFollow.addTarget(self, action: #selector(follow(_:)), for: .touchUpInside)
                 headerView.btnMessage.addTarget(self, action: #selector(message), for: .touchUpInside)
                 return headerView
 
@@ -202,25 +218,55 @@ class StoreShopCell: BaseCollectionViewCell, UICollectionViewDelegate, UICollect
         }
     }
     
-    @objc func follow() {
+    @objc func follow(_ sender: UIButton) {
         let parameters: [String: Int] = [
             "_to" : SellerID
         ]
-        Alamofire.AF.request("\(Config.baseURL)/api/follow/following/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-            (response) in switch response.result {
-            case .success(let JSON):
-                let response = JSON as! NSDictionary
-                print(response)
-            case .failure(let error):
-                print("Request failed with error: \(error)")
+        if sender.currentTitle == "Follow" {
+            sender.setTitle("Unfollow", for: .normal)
+            sender.setTitleColor(.black, for: .normal)
+            sender.backgroundColor = .white
+            sender.layer.borderColor = UIColor.black.cgColor
+            sender.layer.borderWidth = 1
+            Alamofire.AF.request("\(Config.baseURL)/api/follow/following/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+                (response) in switch response.result {
+                case .success(let JSON):
+                    let response = JSON as! NSDictionary
+                    print(response)
+                case .failure(let error):
+                    print("Request failed with error: \(error)")
+                }
             }
         }
+        else {
+            sender.setTitle("Follow", for: .normal)
+            sender.setTitleColor(.white, for: .normal)
+            sender.backgroundColor = .black
+            sender.layer.borderColor = UIColor.clear.cgColor
+            sender.layer.borderWidth = 0
+            Alamofire.AF.request("\(Config.baseURL)/api/follow/following/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+                (response) in switch response.result {
+                case .success(let JSON):
+                    let response = JSON as! NSDictionary
+                    print(response)
+                case .failure(let error):
+                    print("Request failed with error: \(error)")
+                }
+            }
+        }
+        
     }
     
     @objc func message() {
-        print("TOUCH MESSAGE")
+        let nextVC = MessageChatVC()
+        nextVC.destinationUid = String(SellerID)
+        nextVC.destinationName = self.sellerInfoDatas.object(forKey: "nickname") as! String
+        if let sellerImgDic = self.sellerInfoDatas.object(forKey: "profile") as? NSDictionary {
+            let imageUrlString = sellerImgDic.object(forKey: "thumbnail_img") as! String
+            nextVC.destinationUrlString = imageUrlString
+        }
+        delegate?.navigationController?.pushViewController(nextVC, animated: true)
     }
-
 }
 
 class ShopCell: BaseCollectionViewCell {
@@ -333,6 +379,8 @@ class ShopHeaderCell: BaseCollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         label.textAlignment = .left
+        label.backgroundColor = .white
+        label.textColor = .black
         return label
     }()
 
@@ -341,6 +389,8 @@ class ShopHeaderCell: BaseCollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         label.textAlignment = .left
+        label.backgroundColor = .white
+        label.textColor = .black
         return label
     }()
 
@@ -349,6 +399,8 @@ class ShopHeaderCell: BaseCollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         label.textAlignment = .left
+        label.backgroundColor = .white
+        label.textColor = .black
         return label
     }()
 
@@ -357,6 +409,8 @@ class ShopHeaderCell: BaseCollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
         label.textAlignment = .center
+        label.backgroundColor = .white
+        label.textColor = .black
         return label
     }()
 
@@ -366,6 +420,8 @@ class ShopHeaderCell: BaseCollectionViewCell {
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
         label.text = "Follower"
         label.textAlignment = .center
+        label.backgroundColor = .white
+        label.textColor = .black
         return label
     }()
 
@@ -374,6 +430,8 @@ class ShopHeaderCell: BaseCollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
         label.textAlignment = .center
+        label.backgroundColor = .white
+        label.textColor = .black
         return label
     }()
 
@@ -383,6 +441,8 @@ class ShopHeaderCell: BaseCollectionViewCell {
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
         label.textAlignment = .center
         label.text = "Following"
+        label.backgroundColor = .white
+        label.textColor = .black
         return label
     }()
 

@@ -319,6 +319,8 @@ class MyShopHeaderCell: BaseCollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         label.textAlignment = .left
+        label.backgroundColor = .white
+        label.textColor = .black
         return label
     }()
 
@@ -327,6 +329,8 @@ class MyShopHeaderCell: BaseCollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         label.textAlignment = .left
+        label.backgroundColor = .white
+        label.textColor = .black
         return label
     }()
 
@@ -335,6 +339,8 @@ class MyShopHeaderCell: BaseCollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         label.textAlignment = .left
+        label.backgroundColor = .white
+        label.textColor = .black
         return label
     }()
 
@@ -343,6 +349,8 @@ class MyShopHeaderCell: BaseCollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
         label.textAlignment = .center
+        label.backgroundColor = .white
+        label.textColor = .black
         return label
     }()
 
@@ -352,6 +360,8 @@ class MyShopHeaderCell: BaseCollectionViewCell {
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
         label.text = "Follower"
         label.textAlignment = .center
+        label.backgroundColor = .white
+        label.textColor = .black
         return label
     }()
 
@@ -360,6 +370,8 @@ class MyShopHeaderCell: BaseCollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
         label.textAlignment = .center
+        label.backgroundColor = .white
+        label.textColor = .black
         return label
     }()
 
@@ -369,6 +381,8 @@ class MyShopHeaderCell: BaseCollectionViewCell {
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
         label.textAlignment = .center
         label.text = "Following"
+        label.backgroundColor = .white
+        label.textColor = .black
         return label
     }()
 

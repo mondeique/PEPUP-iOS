@@ -93,7 +93,7 @@ class SellSelectVC: UIViewController {
         scrollView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: navBarHeight + statusBarHeight).isActive = true
         scrollView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        scrollView.heightAnchor.constraint(equalToConstant: view.frame.width).isActive = true
+        scrollView.heightAnchor.constraint(equalToConstant: view.frame.height).isActive = true
         
         scrollView.contentOffset = CGPoint(x: 0, y: 0)
         
@@ -127,6 +127,8 @@ class SellSelectVC: UIViewController {
         productImage.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         productImage.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
         productImage.heightAnchor.constraint(equalTo: scrollView.heightAnchor).isActive = true
+        
+//        scrollView.bottomAnchor.constraint(equalTo: productImage.bottomAnchor).isActive = true
     }
     
     @objc func back() {
@@ -218,14 +220,25 @@ extension SellSelectVC: UICollectionViewDataSource, UICollectionViewDelegateFlow
         let cell = self.collectionView.cellForItem(at: indexPath) as! AssetsCollectionViewCell
         let cell_image = cell.assetImageView.image!
         productImage.image = cell_image
-        nextVC.imageData.append(cell_image)
+        
         cell.btnSelect.isHidden = false
         if cell.btnSelect.currentImage == UIImage(named: "btnSelect_un") {
             cell.btnSelect.setImage(UIImage(named: "btnSelect"), for: .normal)
+            
+            let cropped_image = cropImage(image: productImage.image!, rect: CGRect(x: 0, y: 0, width: view.frame.width * 2, height: view.frame.width * 2))
+            nextVC.imageData.append(cropped_image)
+            cell.tag = nextVC.imageData.count
         }
         else if cell.btnSelect.currentImage == UIImage(named: "btnSelect") {
             cell.btnSelect.setImage(UIImage(named: "btnSelect_un"), for: .normal)
+            nextVC.imageData.removeLast()
         }
+    }
+    
+    func cropImage(image: UIImage, rect: CGRect) -> UIImage {
+        let cgImage = image.cgImage! // better to write "guard" in realm app
+        let croppedCGImage = cgImage.cropping(to: rect)
+        return UIImage(cgImage: croppedCGImage!)
     }
 }
 
