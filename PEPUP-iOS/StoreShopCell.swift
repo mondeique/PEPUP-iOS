@@ -29,7 +29,7 @@ class StoreShopCell: BaseCollectionViewCell, UICollectionViewDelegate, UICollect
         layout.minimumLineSpacing = 1.0
         layout.scrollDirection = .vertical
         layout.headerReferenceSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/667 * 204)
-        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - UIScreen.main.bounds.height/667 * 150 - UIApplication.shared.statusBarFrame.height), collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - UIScreen.main.bounds.height/667 * 150 - UIScreen.main.bounds.height/667 * 20), collectionViewLayout: layout)
         collectionView.backgroundColor = .white
         collectionView.isHidden = false
         return collectionView

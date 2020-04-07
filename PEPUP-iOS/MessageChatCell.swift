@@ -52,6 +52,7 @@ class MyMessageChatCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = .black
+        label.layer.cornerRadius = 22
         return label
     }()
     
@@ -59,7 +60,7 @@ class MyMessageChatCell: UITableViewCell {
         let label = UILabel()
         label.backgroundColor = .clear
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
         label.textAlignment = .left
         label.textColor = .white
         return label
@@ -156,6 +157,7 @@ class DestinationMessageChatCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = UIColor(rgb: 0xF4F5FC)
+        label.layer.cornerRadius = 22
         return label
     }()
     
@@ -163,7 +165,7 @@ class DestinationMessageChatCell: UITableViewCell {
         let label = UILabel()
         label.backgroundColor = .clear
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
         label.textAlignment = .left
         label.textColor = .black
         return label
@@ -179,7 +181,6 @@ class DestinationMessageChatCell: UITableViewCell {
 //        label.backgroundColor = .white
 //        return label
 //    }()
-
     func messagecellcontentViewLayout() {
         messagecellcontentView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         messagecellcontentView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
@@ -216,6 +217,4 @@ class DestinationMessageChatCell: UITableViewCell {
 ////        chattimeLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width).isActive = true
 //        chattimeLabel.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 13).isActive = true
 //    }
-
 }
-

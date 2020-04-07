@@ -20,6 +20,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         sleep(3)
         
+        if #available(iOS 13.0, *) {
+            UIApplication.shared.statusBarStyle = .darkContent
+        } else {
+            // Fallback on earlier versions
+        }
+        
         if let token = UserDefaults.standard.object(forKey: "token") as? String {
             Alamofire.AF.request("\(Config.baseURL)/accounts/check_userinfo/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": token]) .validate(statusCode: 200..<300) .responseJSON {
                 (response) in switch response.result {

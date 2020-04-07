@@ -73,11 +73,12 @@ class MessageCell: BaseCollectionViewCell {
     
     let unreadCount: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 13)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor(rgb: 0xB7B7BF)
+        label.textColor = .white
         label.textAlignment = .left
-        label.backgroundColor = .white
+        label.backgroundColor = .black
+        label.layer.cornerRadius = 12
         return label
     }()
 
@@ -118,8 +119,8 @@ class MessageCell: BaseCollectionViewCell {
     
     func unreadCountLayout() {
         unreadCount.rightAnchor.constraint(equalTo:messagecellcontentView.rightAnchor, constant: UIScreen.main.bounds.width/375 * -18).isActive = true
-        unreadCount.topAnchor.constraint(equalTo:chattimeLabel.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 7).isActive = true
+        unreadCount.topAnchor.constraint(equalTo:chattimeLabel.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 4).isActive = true
 //        chattimeLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width).isActive = true
-        unreadCount.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 13).isActive = true
+        unreadCount.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 21).isActive = true
     }
 }

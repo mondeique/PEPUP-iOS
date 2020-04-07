@@ -75,6 +75,9 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     @objc func keyboardWillHide(notification: Notification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            bottomcontentView.bottomAnchor.constraint(equalTo:view.bottomAnchor, constant: -keyboardSize.height).isActive = false
+        }
         bottomcontentView.bottomAnchor.constraint(equalTo:view.bottomAnchor).isActive = true
         self.view.layoutIfNeeded()
     }
@@ -90,7 +93,7 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         let screenHeight = screensize.height
         let defaultWidth: CGFloat = 375
         let defaultHeight: CGFloat = 667
-        let statusBarHeight: CGFloat! = UIApplication.shared.statusBarFrame.height
+        let statusBarHeight: CGFloat! = UIScreen.main.bounds.height/defaultHeight * 20
         let navBarHeight: CGFloat! = navigationController?.navigationBar.frame.height
 
         navcontentView.addSubview(btnBack)
@@ -393,6 +396,7 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         txtfield.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtfield.layer.borderWidth = 1
         txtfield.layer.cornerRadius = 22
+        txtfield.textColor = .black
         return txtfield
     }()
     

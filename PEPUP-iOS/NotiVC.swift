@@ -35,7 +35,7 @@ class NotiVC: UIViewController, CustomNotiBarDelegate{
         let screenHeight = screensize.height
         let defaultWidth: CGFloat = 375
         let defaultHeight: CGFloat = 667
-        let statusBarHeight: CGFloat! = UIApplication.shared.statusBarFrame.height
+        let statusBarHeight: CGFloat! = UIScreen.main.bounds.height/defaultHeight * 20
         let navBarHeight: CGFloat! = navigationController?.navigationBar.frame.height
         
         setupCustomTabBar()
@@ -63,7 +63,7 @@ class NotiVC: UIViewController, CustomNotiBarDelegate{
         customNotiBar.indicatorViewWidthConstraint.constant = UIScreen.main.bounds.width/375 * 74
         customNotiBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: UIScreen.main.bounds.width/375 * 8).isActive = true
         customNotiBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: UIScreen.main.bounds.width/375 * -83).isActive = true
-        customNotiBar.topAnchor.constraint(equalTo: view.topAnchor, constant: UIApplication.shared.statusBarFrame.height).isActive = true
+        customNotiBar.topAnchor.constraint(equalTo: view.topAnchor, constant: UIScreen.main.bounds.height/667 * 20).isActive = true
         customNotiBar.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 44).isActive = true
     }
     

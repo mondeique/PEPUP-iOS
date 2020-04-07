@@ -44,7 +44,7 @@ class NoticeVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         let screenHeight = screensize.height
         let defaultWidth: CGFloat = 375
         let defaultHeight: CGFloat = 667
-        let statusBarHeight: CGFloat! = UIApplication.shared.statusBarFrame.height
+        let statusBarHeight: CGFloat! = UIScreen.main.bounds.height/defaultHeight * 20
         let navBarHeight: CGFloat! = navigationController?.navigationBar.frame.height
         
         self.view.addSubview(navcontentView)
