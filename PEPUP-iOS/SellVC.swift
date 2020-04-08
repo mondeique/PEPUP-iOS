@@ -355,7 +355,6 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             guard let tag = UserDefaults.standard.object(forKey: "tag") else {
                 return
             }
-            print("ALSKDALSDKASLDK")
             print(key_Array)
             print(name)
             print(price)

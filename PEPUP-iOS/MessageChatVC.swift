@@ -80,6 +80,7 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
         bottomcontentView.bottomAnchor.constraint(equalTo:view.bottomAnchor).isActive = true
         self.view.layoutIfNeeded()
+        self.view.setNeedsLayout()
     }
     
     @objc func dismissKeyboard() {

@@ -225,8 +225,7 @@ extension SellSelectVC: UICollectionViewDataSource, UICollectionViewDelegateFlow
         if cell.btnSelect.currentImage == UIImage(named: "btnSelect_un") {
             cell.btnSelect.setImage(UIImage(named: "btnSelect"), for: .normal)
             
-            let cropped_image = cropImage(image: productImage.image!, rect: CGRect(x: 0, y: 0, width: view.frame.width * 2, height: view.frame.width * 2))
-            nextVC.imageData.append(cropped_image)
+            nextVC.imageData.append(cell_image)
             cell.tag = nextVC.imageData.count
         }
         else if cell.btnSelect.currentImage == UIImage(named: "btnSelect") {
