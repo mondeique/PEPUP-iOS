@@ -178,6 +178,7 @@ class MyReviewCell: BaseCollectionViewCell {
         view.settings.emptyBorderColor = UIColor(rgb: 0xEBEBF6)
         view.settings.filledBorderColor = .black
         view.settings.filledColor = .black
+        view.settings.updateOnTouch = false
         return view
     }()
 
@@ -281,6 +282,7 @@ class MyReviewHeaderCell: BaseCollectionViewCell {
         view.settings.filledColor = .black
         view.settings.emptyBorderColor = UIColor(rgb: 0xEBEBF6)
         view.settings.filledBorderColor = .black
+        view.settings.updateOnTouch = false
         return view
     }()
 

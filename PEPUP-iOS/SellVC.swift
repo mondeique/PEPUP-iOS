@@ -22,6 +22,8 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         super.viewDidLoad()
         setup()
         keyArray = []
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -29,6 +31,8 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
         self.tabBarController?.tabBar.isHidden = true
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -36,6 +40,19 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         self.navigationController?.navigationBar.isHidden = false
         self.tabBarController?.tabBar.isHidden = true
         self.tabBarController?.tabBar.isTranslucent = true
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func keyboardWillShow(notification : Notification) {
+        print("KEYBOARD OPEN")
+    }
+    
+    @objc func keyboardWillHide(notification: Notification) {
+        print("KEYBOARD CLOSE")
+    }
+    
+    @objc func dismissKeyboard() {
+        self.view.endEditing(true)
     }
     
     func setup() {
@@ -59,7 +76,7 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         
         btnBack.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 14).isActive = true
         btnBack.leftAnchor.constraint(equalTo: navcontentView.leftAnchor, constant: screenWidth/defaultWidth * 18).isActive = true
-        btnBack.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 10).isActive = true
+        btnBack.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 16).isActive = true
         btnBack.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 16).isActive = true
         
         sellLabel.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
@@ -326,7 +343,7 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                 }
             }
         }
-        let seconds = 4.0
+        let seconds = 2.0
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
             guard let key_Array = self.keyArray else {
                 return
@@ -485,6 +502,7 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         txtView.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtView.textColor = UIColor(rgb: 0xEBEBF6)
         txtView.text = "가격을 입력해주세요(원 단위)"
+        txtView.keyboardType = UIKeyboardType.decimalPad
         return txtView
     }()
     

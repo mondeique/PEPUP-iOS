@@ -339,7 +339,7 @@ class FindIdVC: UIViewController {
     func btnBackLayout() {
         btnBack.topAnchor.constraint(equalTo:findIdContentView.topAnchor, constant:UIScreen.main.bounds.height/667 * 34).isActive = true
         btnBack.leftAnchor.constraint(equalTo:findIdContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 18).isActive = true
-        btnBack.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 10).isActive = true
+        btnBack.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 18).isActive = true
         btnBack.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 18).isActive = true
     }
     

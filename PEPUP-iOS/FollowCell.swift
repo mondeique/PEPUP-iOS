@@ -179,6 +179,7 @@ class FollowFooterCell: BaseCollectionViewCell {
         footercontentView.addSubview(timeLabel)
         
         btnDetailContentView.addSubview(btnDetailLabel)
+        btnDetailContentView.addSubview(btnfakeDetail)
         btnDetailContentView.addSubview(btnDetail)
         
         footercontentView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
@@ -230,6 +231,11 @@ class FollowFooterCell: BaseCollectionViewCell {
         btnDetailLabel.topAnchor.constraint(equalTo: btnDetailContentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 7).isActive = true
 //        btnDetailLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 40).isActive = true
         btnDetailLabel.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 20).isActive = true
+        
+        btnfakeDetail.leftAnchor.constraint(equalTo: btnDetailContentView.leftAnchor, constant: UIScreen.main.bounds.width/375 * 16).isActive = true
+        btnfakeDetail.topAnchor.constraint(equalTo: btnDetailContentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 7).isActive = true
+        btnfakeDetail.widthAnchor.constraint(equalTo: btnDetailContentView.widthAnchor).isActive = true
+        btnfakeDetail.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 20).isActive = true
         
         btnDetail.leftAnchor.constraint(equalTo: btnDetailLabel.rightAnchor, constant: UIScreen.main.bounds.width/375 * 32).isActive = true
         btnDetail.topAnchor.constraint(equalTo: btnDetailContentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 11).isActive = true
@@ -293,6 +299,13 @@ class FollowFooterCell: BaseCollectionViewCell {
         label.textAlignment = .left
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         return label
+    }()
+    
+    let btnfakeDetail: UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.backgroundColor = .clear
+        return btn
     }()
     
     let btnDetail: UIButton = {

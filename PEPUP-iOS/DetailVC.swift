@@ -51,6 +51,7 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
 //        navcontentView.addSubview(sellerNameLabel)
         contentView.addSubview(btnCart)
         contentView.addSubview(btnCartBag)
+        contentView.addSubview(btnCartSold)
         
         view.addSubview(navcontentView)
         view.addSubview(contentView)
@@ -62,7 +63,7 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         
         btnBack.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 14).isActive = true
         btnBack.leftAnchor.constraint(equalTo: navcontentView.leftAnchor, constant: screenWidth/defaultWidth * 18).isActive = true
-        btnBack.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 10).isActive = true
+        btnBack.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 16).isActive = true
         btnBack.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 16).isActive = true
         
 //        sellerNameLabel.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
@@ -86,6 +87,12 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         btnCartBag.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         btnCartBag.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         
+        btnCartSold.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: screenHeight/defaultHeight * 20).isActive = true
+        btnCartSold.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 337).isActive = true
+        btnCartSold.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 50).isActive = true
+        btnCartSold.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        btnCartSold.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        
         scrollView = UIScrollView(frame: CGRect(origin: CGPoint(x: 0, y: navBarHeight+statusBarHeight), size: CGSize(width: screenWidth, height: screenHeight-100)))
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         if #available(iOS 11.0, *) {
@@ -96,6 +103,9 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
         scrollView.contentInset = UIEdgeInsets.zero
         view.addSubview(scrollView)
+        if btnBack.isEnabled == true {
+            showSpinner(onView: scrollView)
+        }
         
         scrollView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: navBarHeight + statusBarHeight).isActive = true
@@ -148,10 +158,14 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         scrollView.addSubview(lineLabel2)
         scrollView.addSubview(storeLabel)
         scrollView.addSubview(btnStore)
+        scrollView.addSubview(fakebtnStore)
         scrollView.addSubview(lineLabel3)
         scrollView.addSubview(reviewLabel)
         scrollView.addSubview(btnReview)
+        scrollView.addSubview(fakebtnReview)
         scrollView.addSubview(lineLabel4)
+        
+        btnBack.isEnabled = true
         
     
         NSLayoutConstraint(item: productImageContentView, attribute: .leading, relatedBy: .equal, toItem: scrollView, attribute: .leading, multiplier: 1, constant: 0).isActive = true
@@ -339,6 +353,11 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         NSLayoutConstraint(item: btnStore, attribute: .top, relatedBy: .equal, toItem: lineLabel2, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 18).isActive = true
 //        NSLayoutConstraint(item: btnStore, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 16).isActive = true
         
+        NSLayoutConstraint(item: fakebtnStore, attribute: .leading, relatedBy: .equal, toItem: scrollView, attribute: .leading, multiplier: 1, constant: screenWidth/defaultWidth * 0).isActive = true
+        NSLayoutConstraint(item: fakebtnStore, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: screenWidth).isActive = true
+        NSLayoutConstraint(item: fakebtnStore, attribute: .top, relatedBy: .equal, toItem: lineLabel2, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 0).isActive = true
+        NSLayoutConstraint(item: fakebtnStore, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: screenHeight/defaultHeight * 56).isActive = true
+        
         NSLayoutConstraint(item: lineLabel3, attribute: .leading, relatedBy: .equal, toItem: scrollView, attribute: .leading, multiplier: 1, constant: screenWidth/defaultWidth * 18).isActive = true
         NSLayoutConstraint(item: lineLabel3, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: screenWidth/defaultWidth * 339).isActive = true
         NSLayoutConstraint(item: lineLabel3, attribute: .top, relatedBy: .equal, toItem: btnStore, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 20).isActive = true
@@ -354,6 +373,11 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
 //        NSLayoutConstraint(item: btnReview, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 9).isActive = true
         NSLayoutConstraint(item: btnReview, attribute: .top, relatedBy: .equal, toItem: btnStore, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 40).isActive = true
 //        NSLayoutConstraint(item: btnReview, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 16).isActive = true
+        
+        NSLayoutConstraint(item: fakebtnReview, attribute: .leading, relatedBy: .equal, toItem: scrollView, attribute: .leading, multiplier: 1, constant: screenWidth/defaultWidth * 0).isActive = true
+        NSLayoutConstraint(item: fakebtnReview, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: screenWidth).isActive = true
+        NSLayoutConstraint(item: fakebtnReview, attribute: .top, relatedBy: .equal, toItem: lineLabel3, attribute: .bottom, multiplier: 1, constant: screenHeight/defaultHeight * 0).isActive = true
+        NSLayoutConstraint(item: fakebtnReview, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: screenHeight/defaultHeight * 56).isActive = true
         
         NSLayoutConstraint(item: lineLabel4, attribute: .leading, relatedBy: .equal, toItem: scrollView, attribute: .leading, multiplier: 1, constant: screenWidth/defaultWidth * 18).isActive = true
         NSLayoutConstraint(item: lineLabel4, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: screenHeight/defaultHeight * 339).isActive = true
@@ -461,6 +485,8 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
                 pepupadImage.isHidden = true
             }
         }
+        btnBack.isEnabled = false
+        removeSpinner()
         setup()
     }
     
@@ -474,7 +500,13 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
                 discountRate.text = String(Int(discounted_rate * 100.0)) + "%"
             }
         }
-        
+        if let sold = self.productDatas.object(forKey: "sold") as? Bool {
+            if sold == true {
+                btnCart.isHidden = true
+                btnCartBag.isHidden = true
+                btnCartSold.isHidden = false
+            }
+        }
         if let price = self.productDatas.object(forKey: "discounted_price") as? Int {
             productPrice.text = String(price) + "원"
         }
@@ -514,6 +546,7 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         if let sold = self.sellerDatas.object(forKey: "sold") as? Int {
             sellerSoldLabel.text = "SOLD " + String(sold)
         }
+        btnBack.isEnabled = false
         setup()
     }
     
@@ -579,7 +612,20 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
     }
     
     @objc func review() {
-        print("TOUCH REVIEW")
+        let sellerId = self.sellerDatas.object(forKey: "id") as! Int
+        UserDefaults.standard.set(sellerId, forKey: "sellerId")
+        let pk = UserDefaults.standard.object(forKey: "pk") as! Int
+        if sellerId == pk {
+            print("I am seller~")
+            let nextVC = MyStoreVC()
+            navigationController?.pushViewController(nextVC, animated: true)
+        }
+        else {
+            let nextVC = StoreVC()
+            nextVC.SellerID = sellerId
+            navigationController?.pushViewController(nextVC, animated: true)
+            print("I am not me")
+        }
     }
     
     @objc func cart() {
@@ -956,6 +1002,14 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         return btn
     }()
     
+    let fakebtnStore: UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.backgroundColor = .clear
+        btn.addTarget(self, action: #selector(store), for: .touchUpInside)
+        return btn
+    }()
+    
     let lineLabel3: UILabel = {
         let label = UILabel()
         label.backgroundColor = UIColor(rgb: 0xEBEBF6)
@@ -982,6 +1036,14 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         return btn
     }()
     
+    let fakebtnReview: UIButton = {
+        let btn = UIButton()
+        btn.backgroundColor = .clear
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(review), for: .touchUpInside)
+        return btn
+    }()
+    
     let lineLabel4: UILabel = {
         let label = UILabel()
         label.backgroundColor = UIColor(rgb: 0xEBEBF6)
@@ -998,7 +1060,7 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         btn.clipsToBounds = true
         btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         btn.addTarget(self, action: #selector(cart), for: .touchUpInside)
-        btn.isHidden = false
+        btn.isHidden = true
         return btn
     }()
     
@@ -1013,7 +1075,22 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         btn.layer.borderWidth = 1.5
         btn.layer.borderColor = UIColor.black.cgColor
         btn.addTarget(self, action: #selector(cart), for: .touchUpInside)
-        btn.isHidden = false
+        btn.isHidden = true
+        return btn
+    }()
+    
+    let btnCartSold: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("S O L D", for: .normal)
+        btn.backgroundColor = .white
+        btn.setTitleColor(.black, for: .normal)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.clipsToBounds = true
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
+        btn.layer.borderWidth = 1.5
+        btn.layer.borderColor = UIColor.black.cgColor
+        btn.isEnabled = false
+        btn.isHidden = true
         return btn
     }()
 

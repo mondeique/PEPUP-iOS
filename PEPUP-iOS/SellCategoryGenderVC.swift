@@ -57,7 +57,7 @@ class SellCategoryGenderVC: UIViewController, UICollectionViewDelegateFlowLayout
         
         btnBack.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 14).isActive = true
         btnBack.leftAnchor.constraint(equalTo: navcontentView.leftAnchor, constant: screenWidth/defaultWidth * 18).isActive = true
-        btnBack.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 10).isActive = true
+        btnBack.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 16).isActive = true
         btnBack.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 16).isActive = true
         
         sellLabel.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
@@ -140,6 +140,14 @@ class SellCategoryGenderVC: UIViewController, UICollectionViewDelegateFlowLayout
             cell.btnCategory.isHidden = true
         }
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let genderDic = self.genderArray[indexPath.row] as NSDictionary
+        let id = genderDic.object(forKey: "id") as! Int
+        let nextVC = SellCategoryFirstVC()
+        nextVC.Myid = id
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     // cell size 설정

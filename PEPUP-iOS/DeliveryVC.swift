@@ -18,6 +18,8 @@ class DeliveryVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -26,6 +28,8 @@ class DeliveryVC: UIViewController {
         self.navigationController?.navigationBar.isHidden = true
         self.tabBarController?.tabBar.isHidden = true
         self.tabBarController?.tabBar.isTranslucent = true
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -33,6 +37,19 @@ class DeliveryVC: UIViewController {
         self.navigationController?.navigationBar.isHidden = false
         self.tabBarController?.tabBar.isHidden = false
         self.tabBarController?.tabBar.isTranslucent = false
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func keyboardWillShow(notification : Notification) {
+        print("KEYBOARD OPEN")
+    }
+    
+    @objc func keyboardWillHide(notification: Notification) {
+        print("KEYBOARD CLOSE")
+    }
+    
+    @objc func dismissKeyboard() {
+        self.view.endEditing(true)
     }
 
     func setup() {
@@ -54,6 +71,7 @@ class DeliveryVC: UIViewController {
         maincontentView.addSubview(deliveryCompanyLabel)
         maincontentView.addSubview(deliveryTextView)
         deliveryTextView.addSubview(deliveryBtn)
+        deliveryTextView.addSubview(deliveryfakeBtn)
         maincontentView.addSubview(deliveryNumLabel)
         maincontentView.addSubview(deliveryNumTextView)
         
@@ -64,7 +82,7 @@ class DeliveryVC: UIViewController {
         
         btnBack.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 14).isActive = true
         btnBack.leftAnchor.constraint(equalTo: navcontentView.leftAnchor, constant: screenWidth/defaultWidth * 18).isActive = true
-        btnBack.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 10).isActive = true
+        btnBack.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 16).isActive = true
         btnBack.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 16).isActive = true
         
         deliveryLabel.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
@@ -89,6 +107,17 @@ class DeliveryVC: UIViewController {
         deliveryTextView.leftAnchor.constraint(equalTo: maincontentView.leftAnchor, constant: screenWidth/defaultWidth * 18).isActive = true
         deliveryTextView.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 339).isActive = true
         deliveryTextView.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 44).isActive = true
+        
+        print(DeliveryCompany)
+        if DeliveryCompany != nil {
+            deliveryTextView.text = DeliveryCompany
+        }
+        
+        deliveryfakeBtn.topAnchor.constraint(equalTo: deliveryTextView.topAnchor).isActive = true
+        deliveryfakeBtn.leftAnchor.constraint(equalTo: deliveryTextView.leftAnchor).isActive = true
+        deliveryfakeBtn.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 339).isActive = true
+        deliveryfakeBtn.heightAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 44).isActive = true
+        view.bringSubviewToFront(deliveryfakeBtn)
 
         deliveryBtn.topAnchor.constraint(equalTo: deliveryTextView.topAnchor, constant: screenHeight/defaultHeight * 16).isActive = true
         deliveryBtn.leftAnchor.constraint(equalTo: deliveryTextView.leftAnchor, constant: screenWidth/defaultWidth * 309).isActive = true
@@ -206,8 +235,15 @@ class DeliveryVC: UIViewController {
         txtView.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtView.textColor = UIColor(rgb: 0xEBEBF6)
         txtView.text = "택배사를 선택해주세요"
-        txtView.isEditable = false
         return txtView
+    }()
+    
+    let deliveryfakeBtn: UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.backgroundColor = .clear
+        btn.addTarget(self, action: #selector(delivery), for: .touchUpInside)
+        return btn
     }()
     
     let deliveryBtn: UIButton = {
@@ -240,6 +276,7 @@ class DeliveryVC: UIViewController {
         txtView.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtView.textColor = UIColor(rgb: 0xEBEBF6)
         txtView.text = "운송장 번호를 입력해주세요"
+        txtView.keyboardType = UIKeyboardType.decimalPad
         return txtView
     }()
 }
@@ -275,6 +312,8 @@ extension DeliveryVC: UITextViewDelegate {
 
 class DeliveryBottomSheetVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    var delegate : DeliveryVC?
+    
     private let reuseIdentifier = "tablecell"
     
     var deliverytableView: UITableView!
@@ -284,10 +323,6 @@ class DeliveryBottomSheetVC : UIViewController, UITableViewDelegate, UITableView
         super .viewDidLoad()
         setup()
         getData()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        
     }
     
     func getData() {
@@ -344,6 +379,8 @@ class DeliveryBottomSheetVC : UIViewController, UITableViewDelegate, UITableView
         let deliveryDic = deliveryDatas[indexPath.row]
         let name = deliveryDic.object(forKey: "name") as! String
         print(name)
+        delegate?.DeliveryCompany = name
+        delegate?.setup()
         self.dismiss(animated: true, completion: nil)
     }
 }

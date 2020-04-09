@@ -477,6 +477,7 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         btnPaymentAgree.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 22).isActive = true
         btnPaymentAgree.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 10).isActive = true
         
+        scrollView.bottomAnchor.constraint(equalTo: btnPaymentAgree.bottomAnchor, constant: screenHeight/defaultHeight * 30).isActive = true
     }
     
     func setinfo() {
@@ -691,7 +692,6 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         else if sender.tag == 1 {
             sender.tag = 0
         }
-        setup()
     }
     
     let contentView: UIView = {

@@ -241,8 +241,11 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
                         footerView.btnLike.tag = productId
                         footerView.btnLike.addTarget(self, action: #selector(self.like(_:)), for: .touchUpInside)
                     }
-                    footerView.btnMessage.addTarget(self, action: #selector(self.message), for: .touchUpInside)
+                    footerView.btnMessage.tag = indexPath.section
+                    footerView.btnMessage.addTarget(self, action: #selector(self.message(_:)), for: .touchUpInside)
                     footerView.btnDetail.tag = productId
+                    footerView.btnfakeDetail.tag = productId
+                    footerView.btnfakeDetail.addTarget(self, action: #selector(self.detail(_:)), for: .touchUpInside)
                     footerView.btnDetail.addTarget(self, action: #selector(self.detail(_:)), for: .touchUpInside)
                     footerView.productName.text = productName
                     if is_pepup == true {
@@ -256,7 +259,7 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
                         }
                         else {
                             footerView.pepupImage.isHidden = false
-                            footerView.btnDetailLabel.text = String(productPrice)
+                            footerView.btnDetailLabel.text = String(productPrice) + "원"
                             footerView.btnDetailContentView.backgroundColor = UIColor(rgb: 0xD8FF00)
                             footerView.btnDetailLabel.textColor = .black
                             footerView.btnDetailContentView.layer.borderWidth = 0
@@ -270,11 +273,11 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
                             footerView.btnDetailLabel.textColor = .black
                             footerView.btnDetailContentView.backgroundColor = .white
                             footerView.btnDetail.setTitleColor(.black, for: .normal)
-                        footerView.btnDetail.setImage(UIImage(named: "btnGO_sold"), for: .normal)
+                            footerView.btnDetail.setImage(UIImage(named: "btnGO_sold"), for: .normal)
                         }
                         else {
                             footerView.pepupImage.isHidden = true
-                            footerView.btnDetailLabel.text = String(productPrice)
+                            footerView.btnDetailLabel.text = String(productPrice) + "원"
                             footerView.btnDetailContentView.backgroundColor = .black
                             footerView.btnDetailLabel.textColor = .white
                             footerView.btnDetail.setImage(UIImage(named: "btnGO_notsold"), for: .normal)
@@ -339,8 +342,24 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
         }
     }
     
-    @objc func message() {
-        print("TOUCH MESSAGE")
+    @objc func message(_ sender: UIButton) {
+        let nextVC = MessageChatVC()
+        let productDic = self.productDatas[sender.tag] as NSDictionary
+        let sellerInfoDic = productDic.object(forKey: "seller") as! NSDictionary
+        let sellerId = sellerInfoDic.object(forKey: "id") as! Int
+        let sellerName = sellerInfoDic.object(forKey: "nickname") as! String
+        nextVC.destinationUid = String(sellerId)
+        nextVC.destinationName = sellerName
+        if let sellerImgDic = sellerInfoDic.object(forKey: "profile") as? NSDictionary {
+            let sellerUrlString = sellerImgDic.object(forKey: "thumbnail_img") as! String
+            nextVC.destinationUrlString = sellerUrlString
+        }
+        if UserDefaults.standard.object(forKey: "pk") as! Int == sellerId {
+            print("THIS IS ME")
+        }
+        else {
+            self.navigationController?.pushViewController(nextVC, animated: true)
+        }
     }
     
     @objc func detail(_ sender: UIButton) {

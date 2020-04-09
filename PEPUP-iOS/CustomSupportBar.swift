@@ -73,7 +73,7 @@ class CustomSupportBar: UIView {
         indicatorViewWidthConstraint = indicatorView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 48)
         indicatorViewWidthConstraint.isActive = true
         indicatorView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 2).isActive = true
-        indicatorViewLeadingConstraint = indicatorView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: UIScreen.main.bounds.width/375 * 16)
+        indicatorViewLeadingConstraint = indicatorView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: UIScreen.main.bounds.width/375 * 0)
         indicatorViewLeadingConstraint.isActive = true
         indicatorView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
     }

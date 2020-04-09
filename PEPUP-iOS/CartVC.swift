@@ -25,11 +25,11 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setup()
+        getData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        setup()
-        getData()
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
         self.tabBarController?.tabBar.isTranslucent = true
@@ -49,7 +49,7 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         let screenHeight = screensize.height
         let defaultWidth: CGFloat = 375
         let defaultHeight: CGFloat = 667
-        let statusBarHeight: CGFloat! = UIScreen.main.bounds.height/defaultHeight * 20
+        let statusBarHeight: CGFloat! = screenHeight/defaultHeight * 20
         let navBarHeight: CGFloat! = navigationController?.navigationBar.frame.height
         
         let navcontentView: UIView = {
@@ -237,7 +237,6 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                     headerView.btnsellerProfile.layer.cornerRadius = headerView.btnsellerProfile.frame.height / 2
                     headerView.btnsellerProfile.layer.borderColor = UIColor.clear.cgColor
                     headerView.btnsellerProfile.layer.borderWidth = 1
-                    headerView.btnsellerProfile.layer.masksToBounds = false
                     headerView.btnsellerProfile.clipsToBounds = true
                     headerView.btnsellerName.setTitle(sellerName, for: .normal)
                     headerView.btnsellerProfile.tag = sellerID
@@ -257,7 +256,6 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                     footerView.productpriceInfoLabel.text = String(productPrice) + "원"
                     footerView.productdeliveryInfoLabel.text = String(delivery_charge) + "원"
                     footerView.btnPayment.setTitle("총 " + String(productPrice + delivery_charge)+"원 구매하기", for: .normal)
-                    // TODO :- 배송비 더하기~
                     self.totalPrice = self.totalPrice + delivery_charge
                     self.btnPayment.setTitle("총 \(String(self.totalPrice))원 구매하기", for: .normal)
                     footerView.btnPayment.tag = indexPath.section

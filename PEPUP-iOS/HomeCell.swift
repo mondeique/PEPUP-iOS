@@ -16,7 +16,11 @@ class HomeCell: BaseCollectionViewCell {
         return view
     }()
     
-    var productImg: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: (UIScreen.main.bounds.width / 3) - 1, height: (UIScreen.main.bounds.width / 3) - 1))
+    var productImg: UIImageView = {
+        let image = UIImageView(frame: CGRect(x: 0, y: 0, width: (UIScreen.main.bounds.width / 3) - 1, height: (UIScreen.main.bounds.width / 3) - 1))
+        image.backgroundColor = .lightGray
+        return image
+    }()
     
     let soldLabel: UILabel = {
         let label = UILabel()

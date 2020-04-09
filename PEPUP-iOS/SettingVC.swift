@@ -59,7 +59,7 @@ class SettingVC: UIViewController, UICollectionViewDataSource, UICollectionViewD
         
         btnBack.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 14).isActive = true
         btnBack.leftAnchor.constraint(equalTo: navcontentView.leftAnchor, constant: screenWidth/defaultWidth * 18).isActive = true
-        btnBack.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 10).isActive = true
+        btnBack.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 16).isActive = true
         btnBack.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 16).isActive = true
         
         settingLabel.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
@@ -180,6 +180,40 @@ class SettingVC: UIViewController, UICollectionViewDataSource, UICollectionViewD
         }
         cell.btnGO.addTarget(self, action: #selector(gogo), for: .touchUpInside)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.section == 0 {
+            if indexPath.row == 0 {
+                print("ASDSDASDSAD")
+                let nextVC = NoticeVC()
+                navigationController?.pushViewController(nextVC, animated: true)
+            }
+            else {
+                let nextVC = StoreSettingVC()
+                navigationController?.pushViewController(nextVC, animated: true)
+            }
+        }
+        else if indexPath.section == 1 {
+            if indexPath.row == 0 {
+                let nextVC = SupportVC()
+                navigationController?.pushViewController(nextVC, animated: true)
+            }
+            else if indexPath.row == 1{
+                let nextVC = UseTermsVC()
+                navigationController?.pushViewController(nextVC, animated: true)
+            }
+            else {
+                let nextVC = PrivacyPolicyVC()
+                navigationController?.pushViewController(nextVC, animated: true)
+            }
+        }
+        else {
+            if indexPath.row == 1 {
+                let nextVC = LoginVC()
+                navigationController?.pushViewController(nextVC, animated: true)
+            }
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

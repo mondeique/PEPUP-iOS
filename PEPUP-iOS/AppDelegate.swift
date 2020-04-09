@@ -11,6 +11,7 @@ import Alamofire
 import CoreData
 import SwiftyBootpay
 import Firebase
+import SystemConfiguration
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,11 +21,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         sleep(3)
         
+        if(isConnectedToNetwork() == true){
+            print("NETWORK CONNECTED")
+        }else{
+            self.exitAlert()
+        }
+        
         if #available(iOS 13.0, *) {
             UIApplication.shared.statusBarStyle = .darkContent
         } else {
             // Fallback on earlier versions
         }
+        
         
         if let token = UserDefaults.standard.object(forKey: "token") as? String {
             Alamofire.AF.request("\(Config.baseURL)/accounts/check_userinfo/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": token]) .validate(statusCode: 200..<300) .responseJSON {
@@ -118,6 +126,47 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = controller
         window?.makeKeyAndVisible()
     }
+    
+    func exitAlert() {
+        let controller = HomeVC()
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.rootViewController = controller
+        print("NETWORK ERROR")
+        let alertController = UIAlertController(title: nil, message: "네트워크가 올바르지 않습니다.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: { (UIAlertAction) in
+            exit(0)
+        }))
+        window?.makeKeyAndVisible()
+        window?.rootViewController?.present(alertController, animated: false, completion: nil)
+    }
+    
+    func isConnectedToNetwork() -> Bool {
+        var zeroAddress = sockaddr_in()
+        zeroAddress.sin_len = UInt8(MemoryLayout<sockaddr_in>.size)
+        zeroAddress.sin_family = sa_family_t(AF_INET)
+
+        guard let defaultRouteReachability = withUnsafePointer(to: &zeroAddress, {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
+                SCNetworkReachabilityCreateWithAddress(nil, $0)
+            }
+        }) else {
+            return false
+        }
+
+        var flags: SCNetworkReachabilityFlags = []
+        if !SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) {
+            return false
+        }
+        if flags.isEmpty {
+            return false
+        }
+
+        let isReachable = flags.contains(.reachable)
+        let needsConnection = flags.contains(.connectionRequired)
+
+        return (isReachable && !needsConnection)
+    }
+
     // MARK: - Core Data stack
 
     lazy var persistentContainer: NSPersistentContainer = {

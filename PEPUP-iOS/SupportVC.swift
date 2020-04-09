@@ -52,7 +52,7 @@ class SupportVC: UIViewController, CustomSupportBarDelegate {
         customSupportBar.delegate = self
         customSupportBar.translatesAutoresizingMaskIntoConstraints = false
         customSupportBar.indicatorViewWidthConstraint.constant = UIScreen.main.bounds.width/375 * 48
-        customSupportBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: UIScreen.main.bounds.width/375 * 8).isActive = true
+        customSupportBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: UIScreen.main.bounds.width/375 * 0).isActive = true
         customSupportBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         customSupportBar.topAnchor.constraint(equalTo: faqlabel.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 16).isActive = true
         customSupportBar.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 39).isActive = true
@@ -101,7 +101,7 @@ class SupportVC: UIViewController, CustomSupportBarDelegate {
         
         btnBack.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 14).isActive = true
         btnBack.leftAnchor.constraint(equalTo: navcontentView.leftAnchor, constant: screenWidth/defaultWidth * 18).isActive = true
-        btnBack.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 10).isActive = true
+        btnBack.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 16).isActive = true
         btnBack.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 16).isActive = true
         
         supportLabel.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
