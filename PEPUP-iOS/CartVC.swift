@@ -106,14 +106,22 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         cartCollectionView.register(CartHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         cartCollectionView.register(CartFooterCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerId)
         cartCollectionView.backgroundColor = UIColor.white
+        cartCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.view.addSubview(cartCollectionView)
+        
+        cartCollectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        cartCollectionView.topAnchor.constraint(equalTo: navcontentView.bottomAnchor).isActive = true
+        cartCollectionView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
+        cartCollectionView.heightAnchor.constraint(equalToConstant: screenHeight - statusBarHeight - navBarHeight - screenHeight/defaultHeight * 72).isActive = true
         
         self.view.addSubview(btnPayment)
-        self.view.addSubview(cartCollectionView)
         
         btnPayment.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant:screenWidth/defaultWidth * 18).isActive = true
         btnPayment.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant:screenHeight/defaultHeight * -8).isActive = true
         btnPayment.widthAnchor.constraint(equalToConstant:screenWidth/defaultWidth * 339).isActive = true
         btnPayment.heightAnchor.constraint(equalToConstant:screenWidth/defaultWidth * 56).isActive = true
+        
     }
     
     let btnPayment : UIButton = {
@@ -178,25 +186,25 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        var count = productDatas[indexPath.section].count
+//        var count = productDatas[indexPath.section].count
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CartCell
         let sellerDictionary = self.sellerDatas[indexPath.section] as NSDictionary
         let totalproductDatas = sellerDictionary.object(forKey: "products") as! Array<NSDictionary>
         let trade_id = totalproductDatas[indexPath.row].object(forKey: "trade_id") as! Int
-        if count > indexPath.row {
-            trades[indexPath.section][indexPath.row] = trade_id
-        }
+//        if count > indexPath.row {
+        trades[indexPath.section][indexPath.row] = trade_id
+//        }
         if let productInfoDic = totalproductDatas[indexPath.row].object(forKey: "product") as? NSDictionary {
-            if count > indexPath.row {
-                productDatas[indexPath.section][indexPath.row] = productInfoDic
-            }
+//            if count > indexPath.row {
+            productDatas[indexPath.section][indexPath.row] = productInfoDic
+//            }
             let productName = productInfoDic.object(forKey: "name") as! String
             let productId = productInfoDic.object(forKey: "id") as! Int
             let productPrice = productInfoDic.object(forKey: "discounted_price") as! Int
-            if count > indexPath.row {
-                productpriceArray[indexPath.section][indexPath.row] = productPrice
-                totalPrice = totalPrice + productPrice
-            }
+//            if count > indexPath.row {
+            productpriceArray[indexPath.section][indexPath.row] = productPrice
+//            totalPrice = totalPrice + productPrice
+//            }
             let productSize = productInfoDic.object(forKey: "size") as! String
             let productImgDic = productInfoDic.object(forKey: "thumbnails") as! NSDictionary
             let imageUrlString = productImgDic.object(forKey: "thumbnail") as! String
@@ -256,7 +264,8 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                     footerView.productpriceInfoLabel.text = String(productPrice) + "원"
                     footerView.productdeliveryInfoLabel.text = String(delivery_charge) + "원"
                     footerView.btnPayment.setTitle("총 " + String(productPrice + delivery_charge)+"원 구매하기", for: .normal)
-                    self.totalPrice = self.totalPrice + delivery_charge
+//                    self.totalPrice = self.totalPrice + delivery_charge
+                    self.totalPrice = self.settotalprice()
                     self.btnPayment.setTitle("총 \(String(self.totalPrice))원 구매하기", for: .normal)
                     footerView.btnPayment.tag = indexPath.section
                     footerView.btnPayment.addTarget(self, action: #selector(self.payment(_:)), for: .touchUpInside)
@@ -266,6 +275,17 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             default:
                 assert(false, "Unexpected element kind")
         }
+    }
+    
+    func settotalprice() -> Int{
+        var totalprice = 0
+        for i in 0..<sellerDatas.count {
+            let payinfoDic = sellerDatas[i].object(forKey: "payinfo") as! NSDictionary
+            let total = payinfoDic.object(forKey: "total") as! Int
+            let delivery_charge = payinfoDic.object(forKey: "delivery_charge") as! Int
+            totalprice = totalprice + total + delivery_charge
+        }
+        return totalprice
     }
     
     @objc func back() {
@@ -291,7 +311,13 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     }
     
     @objc func totalpayment() {
-        print("TOUCH TOTAL PAYMENT")
+        let nextVC = PaymentVC()
+        for i in 0..<trades.count {
+            for j in 0..<trades[i].count {
+                nextVC.trades.append(trades[i][j])
+            }
+        }
+        self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
     // MARK: UICollectionViewDelegate

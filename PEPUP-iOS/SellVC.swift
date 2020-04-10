@@ -129,14 +129,17 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         scrollView.addSubview(categoryLabel)
         scrollView.addSubview(categoryRealLabel)
         scrollView.addSubview(btnCategoryGO)
+        scrollView.addSubview(btnCategoryfakeGO)
         scrollView.addSubview(lineLabel1)
         scrollView.addSubview(sizeLabel)
         scrollView.addSubview(sizeRealLabel)
         scrollView.addSubview(btnSizeGO)
+        scrollView.addSubview(btnSizefakeGO)
         scrollView.addSubview(lineLabel2)
         scrollView.addSubview(brandLabel)
         scrollView.addSubview(brandRealLabel)
         scrollView.addSubview(btnBrandGO)
+        scrollView.addSubview(btnBrandfakeGO)
         scrollView.addSubview(lineLabel3)
         scrollView.addSubview(tagLabel)
         scrollView.addSubview(tagtxtView)
@@ -190,6 +193,11 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         btnCategoryGO.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 10).isActive = true
         btnCategoryGO.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 16).isActive = true
         
+        btnCategoryfakeGO.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
+        btnCategoryfakeGO.topAnchor.constraint(equalTo: productDetailtxtView.bottomAnchor, constant: screenHeight/defaultHeight * 16).isActive = true
+        btnCategoryfakeGO.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
+        btnCategoryfakeGO.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 56).isActive = true
+        
         lineLabel1.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
         lineLabel1.topAnchor.constraint(equalTo: categoryLabel.bottomAnchor, constant: screenHeight/defaultHeight * 18).isActive = true
         lineLabel1.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
@@ -210,6 +218,11 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         btnSizeGO.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 10).isActive = true
         btnSizeGO.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 16).isActive = true
         
+        btnSizefakeGO.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
+        btnSizefakeGO.topAnchor.constraint(equalTo: lineLabel1.bottomAnchor).isActive = true
+        btnSizefakeGO.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
+        btnSizefakeGO.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 56).isActive = true
+        
         lineLabel2.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
         lineLabel2.topAnchor.constraint(equalTo: sizeLabel.bottomAnchor, constant: screenHeight/defaultHeight * 18).isActive = true
         lineLabel2.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
@@ -229,6 +242,11 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         btnBrandGO.topAnchor.constraint(equalTo: lineLabel2.bottomAnchor, constant: screenHeight/defaultHeight * 20).isActive = true
         btnBrandGO.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 10).isActive = true
         btnBrandGO.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 16).isActive = true
+        
+        btnBrandfakeGO.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
+        btnBrandfakeGO.topAnchor.constraint(equalTo: lineLabel2.bottomAnchor).isActive = true
+        btnBrandfakeGO.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
+        btnBrandfakeGO.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 56).isActive = true
         
         lineLabel3.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
         lineLabel3.topAnchor.constraint(equalTo: brandLabel.bottomAnchor, constant: screenHeight/defaultHeight * 18).isActive = true
@@ -381,7 +399,7 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             print(size)
             print(brand)
             print(tag)
-            print("EIXT")
+            print("EXIT")
             if key_Array.count == self.imageData.count {
                 let parameters = [
                     "image_key" : key_Array,
@@ -402,12 +420,19 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                         self.navigationController?.pushViewController(nextVC, animated: true)
                     case .failure(let error):
                         print("THERE!")
+                        self.uploadfailAlert()
                         print("Request failed with error: \(error)")
                         
                     }
                 }
             }
         }
+    }
+    
+    func uploadfailAlert() {
+        let alertController = UIAlertController(title: nil, message: "모든 내용을 입력해주세요.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -560,6 +585,14 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         return btn
     }()
     
+    let btnCategoryfakeGO : UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.backgroundColor = .clear
+        btn.addTarget(self, action: #selector(categorygo), for: .touchUpInside)
+        return btn
+    }()
+    
     let lineLabel1 : UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -596,6 +629,14 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         return btn
     }()
     
+    let btnSizefakeGO : UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.backgroundColor = .clear
+        btn.addTarget(self, action: #selector(sizego), for: .touchUpInside)
+        return btn
+    }()
+    
     let lineLabel2 : UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -628,6 +669,14 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setImage(UIImage(named: "btnGO"), for: .normal)
+        btn.addTarget(self, action: #selector(brandgo), for: .touchUpInside)
+        return btn
+    }()
+    
+    let btnBrandfakeGO : UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.backgroundColor = .clear
         btn.addTarget(self, action: #selector(brandgo), for: .touchUpInside)
         return btn
     }()
@@ -686,6 +735,7 @@ extension SellVC: UITextViewDelegate {
 
     func textViewDidBeginEditing(_ textView: UITextView) {
         textViewSetupView()
+        productPricetxtView.text = productPricetxtView.text + "원"
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {

@@ -109,7 +109,7 @@ class SoldVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         soldcollectionView.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
         soldcollectionView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         soldcollectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        soldcollectionView.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 250).isActive = true
+        soldcollectionView.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 180).isActive = true
         
         userinfocontentView.addSubview(lineLabel1)
         userinfocontentView.addSubview(userinfoLabel)
@@ -126,6 +126,7 @@ class SoldVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         lineLabel1.topAnchor.constraint(equalTo: userinfocontentView.topAnchor).isActive = true
         lineLabel1.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 339).isActive = true
         lineLabel1.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 1).isActive = true
+        lineLabel1.centerXAnchor.constraint(equalTo: userinfocontentView.centerXAnchor).isActive = true
         
         userinfoLabel.leftAnchor.constraint(equalTo: userinfocontentView.leftAnchor, constant: screenWidth/defaultWidth * 18).isActive = true
         userinfoLabel.topAnchor.constraint(equalTo: userinfocontentView.topAnchor, constant: screenHeight/defaultHeight * 34).isActive = true
@@ -146,6 +147,7 @@ class SoldVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         lineLabel2.bottomAnchor.constraint(equalTo: userinfocontentView.bottomAnchor).isActive = true
         lineLabel2.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 339).isActive = true
         lineLabel2.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 1).isActive = true
+        lineLabel2.centerXAnchor.constraint(equalTo: userinfocontentView.centerXAnchor).isActive = true
         
         totalpaymentcontentView.addSubview(paymentInfoLabel)
         totalpaymentcontentView.addSubview(paymentmethodLabel)
@@ -212,6 +214,7 @@ class SoldVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         lineLabel3.topAnchor.constraint(equalTo: totalpaymentLabel.bottomAnchor, constant: screenHeight/defaultHeight * 32).isActive = true
         lineLabel3.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 339).isActive = true
         lineLabel3.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 1).isActive = true
+        lineLabel3.centerXAnchor.constraint(equalTo: totalpaymentcontentView.centerXAnchor).isActive = true
 
         deliveryinfocontentView.addSubview(deliveryinfoLabel)
         deliveryinfocontentView.addSubview(deliveryusernameLabel)
@@ -242,6 +245,8 @@ class SoldVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         deliveryaddressLabel.topAnchor.constraint(equalTo: deliveryphonenumLabel.bottomAnchor, constant: screenHeight/defaultHeight * 10).isActive = true
         deliveryaddressLabel.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 162).isActive = true
 //        deliveryaddressLabel.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 40).isActive = true
+        
+        scrollView.bottomAnchor.constraint(equalTo: deliveryaddressLabel.bottomAnchor, constant: screenHeight/defaultHeight * 10).isActive = true
         
         self.setinfo()
     }

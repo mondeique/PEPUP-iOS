@@ -76,7 +76,9 @@ class MyStoreReviewCell: BaseCollectionViewCell, UICollectionViewDelegate, UICol
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reviewcellId, for: indexPath) as! MyReviewCell
         let reviewDictionary = self.reviewDatas[indexPath.row] as NSDictionary
-        let satisfactions = reviewDictionary.object(forKey: "satisfaction") as! Int
+        if let satisfactions = reviewDictionary.object(forKey: "satisfaction") as? Int {
+            cell.cosmosView.rating = Double(satisfactions)
+        }
         let buyerName = reviewDictionary.object(forKey: "buyer_name") as! String
         if let context = reviewDictionary.object(forKey: "context") as? String {
             cell.reviewcontentLabel.text = context
@@ -99,7 +101,6 @@ class MyStoreReviewCell: BaseCollectionViewCell, UICollectionViewDelegate, UICol
                 cell.buyerImage.layer.borderColor = UIColor.clear.cgColor
                 cell.buyerImage.layer.borderWidth = 1
                 cell.buyerImage.clipsToBounds = true
-                cell.cosmosView.rating = Double(satisfactions)
             }
         }
         return cell
@@ -112,7 +113,9 @@ class MyStoreReviewCell: BaseCollectionViewCell, UICollectionViewDelegate, UICol
                 let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: reviewheaderId, for: indexPath) as! MyReviewHeaderCell
                 if let sellerInfoDic = self.sellerInfoDatas.object(forKey: "info") as? NSDictionary {
                     let nickname = sellerInfoDic.object(forKey: "nickname") as! String
-                    let satisfactions = sellerInfoDic.object(forKey: "review_score") as! Int
+                    if let satisfactions = sellerInfoDic.object(forKey: "review_score") as? Int {
+                        headerView.cosmosView.rating = Double(satisfactions)
+                    }
                     if let sellerImgDic = sellerInfoDic.object(forKey: "profile") as? NSDictionary {
                         let imageUrlString = sellerImgDic.object(forKey: "thumbnail_img") as! String
                         let imageUrl:NSURL = NSURL(string: imageUrlString)!
@@ -126,7 +129,6 @@ class MyStoreReviewCell: BaseCollectionViewCell, UICollectionViewDelegate, UICol
                             headerView.sellerImage.layer.borderWidth = 1
                             headerView.sellerImage.layer.masksToBounds = false
                             headerView.sellerImage.clipsToBounds = true
-                            headerView.cosmosView.rating = Double(satisfactions)
                         }
                     }
                 }

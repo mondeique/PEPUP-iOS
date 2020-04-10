@@ -78,7 +78,8 @@ class MessageCell: BaseCollectionViewCell {
         label.textColor = .white
         label.textAlignment = .left
         label.backgroundColor = .black
-        label.layer.cornerRadius = 12
+        label.layer.cornerRadius = 22
+        label.clipsToBounds = true
         return label
     }()
 

@@ -92,7 +92,7 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
     
     var paymentcollectionView : UICollectionView!
     var scrollView: UIScrollView!
-    var trades : Array<Int>!
+    var trades : Array<Int> = []
     
     var ordertotalDatas : NSDictionary!
     var orderproductDic = Array<NSDictionary>()
@@ -103,6 +103,8 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         super.viewDidLoad()
         setup()
         getData()
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -110,12 +112,27 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         self.navigationController?.navigationBar.isHidden = true
         self.tabBarController?.tabBar.isHidden = true
         self.tabBarController?.tabBar.isTranslucent = true
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.navigationBar.isHidden = false
         self.tabBarController?.tabBar.isHidden = false
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func keyboardWillShow(notification : Notification) {
+        print("KEYBOARD OPEN")
+    }
+    
+    @objc func keyboardWillHide(notification: Notification) {
+        print("KEYBOARD CLOSE")
+    }
+    
+    @objc func dismissKeyboard() {
+        self.view.endEditing(true)
     }
     
     func setup() {
@@ -634,7 +651,7 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
             return
         }
         let parameters = [
-            "trades" : trades!,
+            "trades" : trades,
             "price" : Int(price)!,
             "memo" : memo,
             "address" : address,
@@ -833,16 +850,15 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         return txtView
     }()
     
-    let deliveryaddressLabel : UITextView = {
-        let txtView = UITextView()
+    let deliveryaddressLabel : TextField = {
+        let txtView = TextField()
         txtView.translatesAutoresizingMaskIntoConstraints = false
-        txtView.isEditable = true
+        txtView.placeholder = "배송지 주소"
         txtView.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
         txtView.textAlignment = .left
         txtView.backgroundColor = .white
         txtView.textColor = .black
-        txtView.layer.borderWidth = 1.0
-        txtView.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
+        txtView.borderStyle = .none
         return txtView
     }()
     

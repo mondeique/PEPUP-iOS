@@ -112,21 +112,22 @@ class MessageVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollect
         }
         Database.database().reference().child("users").child(destinationUid!).observeSingleEvent(of: DataEventType.value, with: {(datasnapshot) in
             let userModel = UserModel()
-            let userDic = datasnapshot.value as! NSDictionary
-            userModel.pk = userDic.object(forKey: "pk") as! String
-            userModel.username = userDic.object(forKey: "username") as! String
-            userModel.profileImgUrl = userDic.object(forKey: "profileImgUrl") as! String
-            cell.userNameLabel.text = userModel.username
-            let imageUrl:NSURL = NSURL(string: userModel.profileImgUrl!)!
-            let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
-            let image = UIImage(data: imageData as Data)
-            DispatchQueue.main.async {
-                cell.profileImage.image = image
-                cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
-                cell.profileImage.layer.borderColor = UIColor.clear.cgColor
-                cell.profileImage.layer.borderWidth = 1
-                cell.profileImage.layer.masksToBounds = false
-                cell.profileImage.clipsToBounds = true
+            if let userDic = datasnapshot.value as? NSDictionary {
+                userModel.pk = userDic.object(forKey: "pk") as! String
+                userModel.username = userDic.object(forKey: "username") as! String
+                userModel.profileImgUrl = userDic.object(forKey: "profileImgUrl") as! String
+                cell.userNameLabel.text = userModel.username
+                let imageUrl:NSURL = NSURL(string: userModel.profileImgUrl!)!
+                let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
+                let image = UIImage(data: imageData as Data)
+                DispatchQueue.main.async {
+                    cell.profileImage.image = image
+                    cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height / 2
+                    cell.profileImage.layer.borderColor = UIColor.clear.cgColor
+                    cell.profileImage.layer.borderWidth = 1
+                    cell.profileImage.layer.masksToBounds = false
+                    cell.profileImage.clipsToBounds = true
+                }
             }
         })
         
@@ -164,11 +165,12 @@ class MessageVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollect
         let destinationUid = self.destinationUser[indexPath.row]
         let nextVC = MessageChatVC()
         Database.database().reference().child("users").child(destinationUid).observeSingleEvent(of: DataEventType.value, with: {(datasnapshot) in
-            let userDic = datasnapshot.value as! NSDictionary
-            nextVC.destinationUid = userDic.object(forKey: "pk") as! String
-            nextVC.destinationUrlString = userDic.object(forKey: "profileImgUrl") as! String
-            nextVC.destinationName = userDic.object(forKey: "username") as! String
-            self.navigationController?.pushViewController(nextVC, animated: true)
+            if let userDic = datasnapshot.value as? NSDictionary {
+                nextVC.destinationUid = userDic.object(forKey: "pk") as! String
+                nextVC.destinationUrlString = userDic.object(forKey: "profileImgUrl") as! String
+                nextVC.destinationName = userDic.object(forKey: "username") as! String
+                self.navigationController?.pushViewController(nextVC, animated: true)
+            }
         })
     }
 

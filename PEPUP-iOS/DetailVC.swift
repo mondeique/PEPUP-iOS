@@ -48,6 +48,7 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         var scrollView: UIScrollView!
         
         navcontentView.addSubview(btnBack)
+        navcontentView.addSubview(ButtonCart)
 //        navcontentView.addSubview(sellerNameLabel)
         contentView.addSubview(btnCart)
         contentView.addSubview(btnCartBag)
@@ -65,6 +66,11 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         btnBack.leftAnchor.constraint(equalTo: navcontentView.leftAnchor, constant: screenWidth/defaultWidth * 18).isActive = true
         btnBack.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 16).isActive = true
         btnBack.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 16).isActive = true
+        
+        ButtonCart.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 0).isActive = true
+        ButtonCart.rightAnchor.constraint(equalTo: navcontentView.rightAnchor, constant: screenWidth/defaultWidth * -18).isActive = true
+        ButtonCart.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 40).isActive = true
+        ButtonCart.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 40).isActive = true
         
 //        sellerNameLabel.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
 //        sellerNameLabel.leftAnchor.constraint(equalTo: navcontentView.leftAnchor).isActive = true
@@ -93,7 +99,7 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         btnCartSold.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         btnCartSold.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         
-        scrollView = UIScrollView(frame: CGRect(origin: CGPoint(x: 0, y: navBarHeight+statusBarHeight), size: CGSize(width: screenWidth, height: screenHeight-100)))
+        scrollView = UIScrollView(frame: CGRect(origin: CGPoint(x: 0, y: navBarHeight+statusBarHeight), size: CGSize(width: screenWidth, height: screenHeight-screenHeight/defaultHeight * 100)))
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         if #available(iOS 11.0, *) {
             scrollView.contentInsetAdjustmentBehavior = .never
@@ -104,7 +110,7 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         scrollView.contentInset = UIEdgeInsets.zero
         view.addSubview(scrollView)
         if btnBack.isEnabled == true {
-            showSpinner(onView: scrollView)
+            showSpinner(onView: self.view)
         }
         
         scrollView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
@@ -667,6 +673,10 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
+    @objc func gocart() {
+        self.navigationController?.pushViewController(CartVC(), animated: true)
+    }
+    
     func cartAlert() {
         let alertController = UIAlertController(title: nil, message: "본인 상품은 담을 수 없습니다.", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
@@ -685,6 +695,14 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         btn.setImage(UIImage(named: "btnBack"), for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(back), for: .touchUpInside)
+        return btn
+    }()
+    
+    let ButtonCart: UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setImage(UIImage(named: "btnCart"), for: .normal)
+        btn.addTarget(self, action: #selector(gocart), for: .touchUpInside)
         return btn
     }()
     

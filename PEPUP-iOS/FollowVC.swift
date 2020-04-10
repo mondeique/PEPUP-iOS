@@ -154,13 +154,17 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
         let productDic = self.productDatas[indexPath.section] as NSDictionary
         let imageArray = productDic.object(forKey: "images") as! Array<Dictionary<String, Any>>
         for i in 0..<imageArray.count {
+            let productimage = UIImageView(frame: CGRect(x: CGFloat(i) * self.view.frame.width , y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
             let imageDic = imageArray[i] as NSDictionary
             let ImageUrlString = imageDic.object(forKey: "image_url") as! String
             let imageUrl:NSURL = NSURL(string: ImageUrlString)!
             let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
             let image = UIImage(data: imageData as Data)
-            cell.productImage.image = image
+            productimage.image = image
+            cell.productScrollView.addSubview(productimage)
         }
+        cell.productScrollView.contentSize = CGSize(width: CGFloat(imageArray.count) * UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
+        cell.pageControl.numberOfPages = imageArray.count
         return cell
     }
     

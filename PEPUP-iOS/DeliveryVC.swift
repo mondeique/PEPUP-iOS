@@ -144,19 +144,19 @@ class DeliveryVC: UIViewController {
     }
     
     @objc func ok() {
-//        let parameters = [
-//            "code" : DeliveryId,
-//            "number" : deliveryNumTextView.text
-//        ]
-//        Alamofire.AF.request("\(Config.baseURL)/api/sold/leave_waybill/" + String(Myid) , method: .post, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-//            (response) in switch response.result {
-//            case .success(let JSON):
-//                print(JSON)
-//
-//            case .failure(let error):
-//                print("Request failed with error: \(error)")
-//            }
-//        }
+        let parameters = [
+            "code" : UserDefaults.standard.object(forKey: "Delivery_Company") as! String,
+            "number" : deliveryNumTextView.text!
+            ] as [String : Any]
+        Alamofire.AF.request("\(Config.baseURL)/api/sold/leave_waybill/" + String(Myid) , method: .post, parameters: parameters, encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+            (response) in switch response.result {
+            case .success(let JSON):
+                print(JSON)
+
+            case .failure(let error):
+                print("Request failed with error: \(error)")
+            }
+        }
         print("OK")
     }
     
@@ -378,6 +378,8 @@ class DeliveryBottomSheetVC : UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let deliveryDic = deliveryDatas[indexPath.row]
         let name = deliveryDic.object(forKey: "name") as! String
+        let code = deliveryDic.object(forKey: "code") as! String
+        UserDefaults.standard.set(code, forKey: "Delivery_Company")
         print(name)
         delegate?.DeliveryCompany = name
         delegate?.setup()
