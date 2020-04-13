@@ -37,7 +37,7 @@ class MyStoreLikeCell: BaseCollectionViewCell, UICollectionViewDelegate, UIColle
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: UIControl.Event.valueChanged)
-        refreshControl.tintColor = UIColor.red
+        refreshControl.tintColor = UIColor.black
         
         return refreshControl
     }()

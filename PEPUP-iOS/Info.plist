@@ -18,7 +18,7 @@
 		</dict>
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>사진앱 사용하겠습니다?</string>
+	<string>$(PRODUCT_NAME) photo use</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AppleSDGothicNeo-Heavy</string>

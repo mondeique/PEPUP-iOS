@@ -23,7 +23,12 @@ class SellSelectVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
+        if PHPhotoLibrary.authorizationStatus() == .authorized {
+            setup()
+        }
+        else {
+            self.photopermissionAlert()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -45,6 +50,19 @@ class SellSelectVC: UIViewController {
         self.navigationController?.navigationBar.isHidden = false
         self.tabBarController?.tabBar.isHidden = true
         self.tabBarController?.tabBar.isTranslucent = true
+    }
+    
+    @objc func photopermissionAlert() {
+        view.backgroundColor = .white
+        let alertController = UIAlertController(title: "사진 허용이 거부되어 있습니다.", message: "알림을 켜주세요", preferredStyle: .alert)
+        let permissionAction = UIAlertAction(title: "확인", style: .default) { (action) in
+//            UIApplication.shared.openURL(NSURL(string: UIApplication.openSettingsURLString) as! URL)
+            UIApplication.shared.open(NSURL(string: UIApplication.openSettingsURLString)! as URL, options: [:], completionHandler: nil)
+//            let nextVC = TabBarController()
+//            self.navigationController?.pushViewController(nextVC, animated: true)
+        }
+        alertController.addAction(permissionAction)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     func setup() {

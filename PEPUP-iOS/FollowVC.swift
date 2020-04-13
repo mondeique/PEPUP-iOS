@@ -35,12 +35,13 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: UIControl.Event.valueChanged)
-        refreshControl.tintColor = UIColor.red
+        refreshControl.tintColor = UIColor.black
         
         return refreshControl
     }()
 
     @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        self.productDatas = []
         getData(pagenum: 1)
         refreshControl.endRefreshing()
     }
@@ -165,23 +166,28 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! FollowCell
-        let productDic = self.productDatas[indexPath.section] as NSDictionary
-        let imageArray = productDic.object(forKey: "images") as! Array<Dictionary<String, Any>>
-        for i in 0..<imageArray.count {
-            let productimage = UIImageView(frame: CGRect(x: CGFloat(i) * self.view.frame.width , y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
-            let imageDic = imageArray[i] as NSDictionary
-            let ImageUrlString = imageDic.object(forKey: "image_url") as! String
-            let imageUrl:NSURL = NSURL(string: ImageUrlString)!
-            let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
-            DispatchQueue.main.async {
-                let image = UIImage(data: imageData as Data)
-                productimage.image = image
-                cell.productScrollView.addSubview(productimage)
-                cell.productScrollView.contentSize = CGSize(width: CGFloat(imageArray.count) * UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
-                cell.pageControl.numberOfPages = imageArray.count
-            }
+        if self.productDatas.count == 0 {
+            return cell
         }
-        return cell
+        else {
+            let productDic = self.productDatas[indexPath.section] as NSDictionary
+            let imageArray = productDic.object(forKey: "images") as! Array<Dictionary<String, Any>>
+            for i in 0..<imageArray.count {
+                let productimage = UIImageView(frame: CGRect(x: CGFloat(i) * self.view.frame.width , y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
+                let imageDic = imageArray[i] as NSDictionary
+                let ImageUrlString = imageDic.object(forKey: "image_url") as! String
+                let imageUrl:NSURL = NSURL(string: ImageUrlString)!
+                let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
+                DispatchQueue.main.async {
+                    let image = UIImage(data: imageData as Data)
+                    productimage.image = image
+                    cell.productScrollView.addSubview(productimage)
+                    cell.productScrollView.contentSize = CGSize(width: CGFloat(imageArray.count) * UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
+                    cell.pageControl.numberOfPages = imageArray.count
+                }
+            }
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -191,124 +197,133 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
             case UICollectionView.elementKindSectionHeader:
 
                 let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: followheaderId, for: indexPath) as! FollowHeaderCell
-                let productDic = self.productDatas[indexPath.section] as NSDictionary
-                let sellerInfoDic = productDic.object(forKey: "seller") as! NSDictionary
-                if let profileDic = sellerInfoDic.object(forKey: "profile") as? NSDictionary {
-                    let sellerUrlString = profileDic.object(forKey: "thumbnail_img") as! String
-                    let imageUrl:NSURL = NSURL(string: sellerUrlString)!
-                    let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
-                    let image = UIImage(data: imageData as Data)
-                    let nickname = sellerInfoDic.object(forKey: "nickname") as! String
-                    let tagArray = productDic.object(forKey: "tag") as! Array<Dictionary<String, Any>>
-                    let tagDic = tagArray[0] as NSDictionary
-                    let tag = tagDic.object(forKey: "tag") as! String
-                    let tagid = tagDic.object(forKey: "id") as! Int
-                    let sellerId = sellerInfoDic.object(forKey: "id") as! Int
-                    let by = productDic.object(forKey: "by") as! Int
-                    DispatchQueue.main.async {
-                        if by == 1 {
-                            headerView.sellerImage.setImage(image, for: .normal)
-                            headerView.sellerName.setTitle(nickname, for: .normal)
-                            headerView.sellerImage.setImage(image, for: .normal)
-                            headerView.sellerName.setTitle(nickname, for: .normal)
-                            headerView.sellerImage.layer.cornerRadius = headerView.sellerImage.frame.height / 2
-                            headerView.sellerImage.layer.borderColor = UIColor.clear.cgColor
-                            headerView.sellerImage.layer.borderWidth = 1
-                            headerView.sellerImage.layer.masksToBounds = false
-                            headerView.sellerImage.clipsToBounds = true
-                            headerView.tagName.setTitle(tag, for: .normal)
-                            headerView.sellerImage.tag = sellerId
-                            headerView.sellerName.tag = sellerId
-                            headerView.tagName.tag = tagid
-                            headerView.sellerImage.addTarget(self, action: #selector(self.sellerstore(_:)), for: .touchUpInside)
-                            headerView.sellerName.addTarget(self, action: #selector(self.sellerstore(_:)), for: .touchUpInside)
-                            headerView.tagName.addTarget(self, action: #selector(self.tag(_:)), for: .touchUpInside)
-                        }
-                        else if by == 2{
-                            headerView.sellerImage.setImage(UIImage(named: "TagImage"), for: .normal)
-                            headerView.sellerName.setTitle("#" + tag, for: .normal)
-                            headerView.tagName.setTitle(nickname, for: .normal)
-                            headerView.sellerName.tag = tagid
-                            headerView.sellerName.addTarget(self, action: #selector(self.tag(_:)), for: .touchUpInside)
-                            headerView.tagName.tag = sellerId
-                            headerView.tagName.addTarget(self, action: #selector(self.sellerstore(_:)), for: .touchUpInside)
+                if self.productDatas.count == 0 {
+                    return headerView
+                }
+                else {
+                    let productDic = self.productDatas[indexPath.section] as NSDictionary
+                    let sellerInfoDic = productDic.object(forKey: "seller") as! NSDictionary
+                    if let profileDic = sellerInfoDic.object(forKey: "profile") as? NSDictionary {
+                        let sellerUrlString = profileDic.object(forKey: "thumbnail_img") as! String
+                        let imageUrl:NSURL = NSURL(string: sellerUrlString)!
+                        let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
+                        let image = UIImage(data: imageData as Data)
+                        let nickname = sellerInfoDic.object(forKey: "nickname") as! String
+                        let tagArray = productDic.object(forKey: "tag") as! Array<Dictionary<String, Any>>
+                        let tagDic = tagArray[0] as NSDictionary
+                        let tag = tagDic.object(forKey: "tag") as! String
+                        let tagid = tagDic.object(forKey: "id") as! Int
+                        let sellerId = sellerInfoDic.object(forKey: "id") as! Int
+                        let by = productDic.object(forKey: "by") as! Int
+                        DispatchQueue.main.async {
+                            if by == 1 {
+                                headerView.sellerImage.setImage(image, for: .normal)
+                                headerView.sellerName.setTitle(nickname, for: .normal)
+                                headerView.sellerImage.setImage(image, for: .normal)
+                                headerView.sellerName.setTitle(nickname, for: .normal)
+                                headerView.sellerImage.layer.cornerRadius = headerView.sellerImage.frame.height / 2
+                                headerView.sellerImage.layer.borderColor = UIColor.clear.cgColor
+                                headerView.sellerImage.layer.borderWidth = 1
+                                headerView.sellerImage.layer.masksToBounds = false
+                                headerView.sellerImage.clipsToBounds = true
+                                headerView.tagName.setTitle(tag, for: .normal)
+                                headerView.sellerImage.tag = sellerId
+                                headerView.sellerName.tag = sellerId
+                                headerView.tagName.tag = tagid
+                                headerView.sellerImage.addTarget(self, action: #selector(self.sellerstore(_:)), for: .touchUpInside)
+                                headerView.sellerName.addTarget(self, action: #selector(self.sellerstore(_:)), for: .touchUpInside)
+                                headerView.tagName.addTarget(self, action: #selector(self.tag(_:)), for: .touchUpInside)
+                            }
+                            else if by == 2{
+                                headerView.sellerImage.setImage(UIImage(named: "TagImage"), for: .normal)
+                                headerView.sellerName.setTitle("#" + tag, for: .normal)
+                                headerView.tagName.setTitle(nickname, for: .normal)
+                                headerView.sellerName.tag = tagid
+                                headerView.sellerName.addTarget(self, action: #selector(self.tag(_:)), for: .touchUpInside)
+                                headerView.tagName.tag = sellerId
+                                headerView.tagName.addTarget(self, action: #selector(self.sellerstore(_:)), for: .touchUpInside)
+                            }
                         }
                     }
+                    return headerView
                 }
-                return headerView
             
         case UICollectionView.elementKindSectionFooter:
                 let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: followfooterId, for: indexPath) as! FollowFooterCell
-                let productDic = self.productDatas[indexPath.section] as NSDictionary
-                let productName = productDic.object(forKey: "name") as! String
-                let productPrice = productDic.object(forKey: "price") as! Int
-                let is_sold = productDic.object(forKey: "sold") as! Bool
-                let is_like = productDic.object(forKey: "liked") as! Bool
-                let is_pepup = productDic.object(forKey: "is_refundable") as! Bool
-                let productSize = productDic.object(forKey: "size") as! String
-                let productBrandDic = productDic.object(forKey: "brand") as! NSDictionary
-                let productBrand = productBrandDic.object(forKey: "name") as! String
-                let productId = productDic.object(forKey: "id") as! Int
-                let age = productDic.object(forKey: "age") as! String
-                DispatchQueue.main.async {
-                    if is_like == true {
-                        footerView.btnLike.setImage(UIImage(named: "btnLike_fill"), for: .normal)
-                        footerView.btnLike.tag = productId
-                        footerView.btnLike.addTarget(self, action: #selector(self.like(_:)), for: .touchUpInside)
-                    }
-                    else {
-                        footerView.btnLike.setImage(UIImage(named: "btnLike"), for: .normal)
-                        footerView.btnLike.tag = productId
-                        footerView.btnLike.addTarget(self, action: #selector(self.like(_:)), for: .touchUpInside)
-                    }
-                    footerView.btnMessage.tag = indexPath.section
-                    footerView.btnMessage.addTarget(self, action: #selector(self.message(_:)), for: .touchUpInside)
-                    footerView.btnDetail.tag = productId
-                    footerView.btnfakeDetail.tag = productId
-                    footerView.btnfakeDetail.addTarget(self, action: #selector(self.detail(_:)), for: .touchUpInside)
-                    footerView.btnDetail.addTarget(self, action: #selector(self.detail(_:)), for: .touchUpInside)
-                    footerView.productName.text = productName
-                    if is_pepup == true {
-                        if is_sold == true {
-                            footerView.pepupImage.isHidden = false
-                            footerView.btnDetailLabel.text = "S O L D"
-                            footerView.btnDetailLabel.textColor = .black
-                            footerView.btnDetailContentView.backgroundColor = .white
-                            footerView.btnDetail.setTitleColor(.black, for: .normal)
-                            footerView.btnDetail.setImage(UIImage(named: "btnGO_sold"), for: .normal)
-                        }
-                        else {
-                            footerView.pepupImage.isHidden = false
-                            footerView.btnDetailLabel.text = String(productPrice) + "원"
-                            footerView.btnDetailContentView.backgroundColor = UIColor(rgb: 0xD8FF00)
-                            footerView.btnDetailLabel.textColor = .black
-                            footerView.btnDetailContentView.layer.borderWidth = 0
-                            footerView.btnDetail.setImage(UIImage(named: "btnGO_sold"), for: .normal)
-                        }
-                    }
-                    else {
-                        if is_sold == true {
-                            footerView.pepupImage.isHidden = true
-                            footerView.btnDetailLabel.text = "S O L D"
-                            footerView.btnDetailLabel.textColor = .black
-                            footerView.btnDetailContentView.backgroundColor = .white
-                            footerView.btnDetail.setTitleColor(.black, for: .normal)
-                            footerView.btnDetail.setImage(UIImage(named: "btnGO_sold"), for: .normal)
-                        }
-                        else {
-                            footerView.pepupImage.isHidden = true
-                            footerView.btnDetailLabel.text = String(productPrice) + "원"
-                            footerView.btnDetailContentView.backgroundColor = .black
-                            footerView.btnDetailLabel.textColor = .white
-                            footerView.btnDetail.setImage(UIImage(named: "btnGO_notsold"), for: .normal)
-                        }
-                    }
-                    footerView.sizeInfoLabel.text = productSize
-                    footerView.brandInfoLabel.text = productBrand
-                    footerView.timeLabel.text = age
+                if self.productDatas.count == 0 {
+                    return footerView
                 }
-                return footerView
-
+                else {
+                    let productDic = self.productDatas[indexPath.section] as NSDictionary
+                    let productName = productDic.object(forKey: "name") as! String
+                    let productPrice = productDic.object(forKey: "price") as! Int
+                    let is_sold = productDic.object(forKey: "sold") as! Bool
+                    let is_like = productDic.object(forKey: "liked") as! Bool
+                    let is_pepup = productDic.object(forKey: "is_refundable") as! Bool
+                    let productSize = productDic.object(forKey: "size") as! String
+                    let productBrandDic = productDic.object(forKey: "brand") as! NSDictionary
+                    let productBrand = productBrandDic.object(forKey: "name") as! String
+                    let productId = productDic.object(forKey: "id") as! Int
+                    let age = productDic.object(forKey: "age") as! String
+                    DispatchQueue.main.async {
+                        if is_like == true {
+                            footerView.btnLike.setImage(UIImage(named: "btnLike_fill"), for: .normal)
+                            footerView.btnLike.tag = productId
+                            footerView.btnLike.addTarget(self, action: #selector(self.like(_:)), for: .touchUpInside)
+                        }
+                        else {
+                            footerView.btnLike.setImage(UIImage(named: "btnLike"), for: .normal)
+                            footerView.btnLike.tag = productId
+                            footerView.btnLike.addTarget(self, action: #selector(self.like(_:)), for: .touchUpInside)
+                        }
+                        footerView.btnMessage.tag = indexPath.section
+                        footerView.btnMessage.addTarget(self, action: #selector(self.message(_:)), for: .touchUpInside)
+                        footerView.btnDetail.tag = productId
+                        footerView.btnfakeDetail.tag = productId
+                        footerView.btnfakeDetail.addTarget(self, action: #selector(self.detail(_:)), for: .touchUpInside)
+                        footerView.btnDetail.addTarget(self, action: #selector(self.detail(_:)), for: .touchUpInside)
+                        footerView.productName.text = productName
+                        if is_pepup == true {
+                            if is_sold == true {
+                                footerView.pepupImage.isHidden = false
+                                footerView.btnDetailLabel.text = "S O L D"
+                                footerView.btnDetailLabel.textColor = .black
+                                footerView.btnDetailContentView.backgroundColor = .white
+                                footerView.btnDetail.setTitleColor(.black, for: .normal)
+                                footerView.btnDetail.setImage(UIImage(named: "btnGO_sold"), for: .normal)
+                            }
+                            else {
+                                footerView.pepupImage.isHidden = false
+                                footerView.btnDetailLabel.text = String(productPrice) + "원"
+                                footerView.btnDetailContentView.backgroundColor = UIColor(rgb: 0xD8FF00)
+                                footerView.btnDetailLabel.textColor = .black
+                                footerView.btnDetailContentView.layer.borderWidth = 0
+                                footerView.btnDetail.setImage(UIImage(named: "btnGO_sold"), for: .normal)
+                            }
+                        }
+                        else {
+                            if is_sold == true {
+                                footerView.pepupImage.isHidden = true
+                                footerView.btnDetailLabel.text = "S O L D"
+                                footerView.btnDetailLabel.textColor = .black
+                                footerView.btnDetailContentView.backgroundColor = .white
+                                footerView.btnDetail.setTitleColor(.black, for: .normal)
+                                footerView.btnDetail.setImage(UIImage(named: "btnGO_sold"), for: .normal)
+                            }
+                            else {
+                                footerView.pepupImage.isHidden = true
+                                footerView.btnDetailLabel.text = String(productPrice) + "원"
+                                footerView.btnDetailContentView.backgroundColor = .black
+                                footerView.btnDetailLabel.textColor = .white
+                                footerView.btnDetail.setImage(UIImage(named: "btnGO_notsold"), for: .normal)
+                            }
+                        }
+                        footerView.sizeInfoLabel.text = productSize
+                        footerView.brandInfoLabel.text = productBrand
+                        footerView.timeLabel.text = age
+                    }
+                    return footerView
+                }
             default:
                 assert(false, "Unexpected element kind")
         }
