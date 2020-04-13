@@ -273,9 +273,15 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         
         if btnCell.tag == 0 {
             paymentcollectionView.isHidden = true
+            UIView.animate(withDuration: 0.1) {
+                self.btnCell.transform = CGAffineTransform.identity
+            }
         }
         else if btnCell.tag == 1 {
             paymentcollectionView.isHidden = false
+            UIView.animate(withDuration: 0.1) {
+                self.btnCell.transform = CGAffineTransform(rotationAngle: .pi)
+            }
         }
         
         userinfocontentView.addSubview(spaceLabel1)

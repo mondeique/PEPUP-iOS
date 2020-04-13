@@ -32,10 +32,32 @@ class NotiActivityCell: BaseCollectionViewCell, UICollectionViewDataSource, UICo
         return collectionView
     }()
     
+    let emptyImg: UIImageView = {
+        let image = UIImageView()
+        image.image = UIImage(named: "activity_empty")
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.isHidden = true
+        return image
+    }()
+    
+    let emptyLabel: UILabel = {
+        let label = UILabel()
+        label.text = "아무 소식도 없어요"
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
+        label.textAlignment = .center
+        label.textColor = .black
+        label.alpha = 0.3
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.isHidden = true
+        return label
+    }()
+    
     override func setup() {
         backgroundColor = .white
         
         self.addSubview(activitycollectionView)
+        self.addSubview(emptyImg)
+        self.addSubview(emptyLabel)
 
         activitycollectionView.delegate = self
         activitycollectionView.dataSource = self
@@ -45,6 +67,16 @@ class NotiActivityCell: BaseCollectionViewCell, UICollectionViewDataSource, UICo
         activitycollectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         activitycollectionView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         activitycollectionView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+        
+        emptyImg.centerXAnchor.constraint(equalTo:activitycollectionView.centerXAnchor).isActive = true
+        emptyImg.topAnchor.constraint(equalTo:activitycollectionView.topAnchor, constant: UIScreen.main.bounds.height/667 * 228).isActive = true
+        emptyImg.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 50).isActive = true
+        emptyImg.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 34).isActive = true
+    
+        emptyLabel.centerXAnchor.constraint(equalTo:activitycollectionView.centerXAnchor).isActive = true
+        emptyLabel.topAnchor.constraint(equalTo:emptyImg.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 24).isActive = true
+//        emptyLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 40).isActive = true
+        emptyLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 19).isActive = true
 
         getActivityData(pagenum: pagenum)
     }
@@ -54,10 +86,17 @@ class NotiActivityCell: BaseCollectionViewCell, UICollectionViewDataSource, UICo
             (response) in switch response.result {
             case .success(let JSON):
                 let response = JSON as! NSDictionary
-                print(response)
                 let results = response.object(forKey: "results") as! Array<NSDictionary>
                 for i in 0..<results.count {
                     self.productDatas.append(results[i])
+                }
+                if self.productDatas.count == 0 {
+                    self.emptyImg.isHidden = false
+                    self.emptyLabel.isHidden = false
+                }
+                else {
+                    self.emptyImg.isHidden = true
+                    self.emptyLabel.isHidden = true
                 }
                 DispatchQueue.main.async {
                     self.activitycollectionView.reloadData()

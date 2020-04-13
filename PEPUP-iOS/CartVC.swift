@@ -115,6 +115,19 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         cartCollectionView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
         cartCollectionView.heightAnchor.constraint(equalToConstant: screenHeight - statusBarHeight - navBarHeight - screenHeight/defaultHeight * 72).isActive = true
         
+        self.view.addSubview(emptyImg)
+        self.view.addSubview(emptyLabel)
+        
+        emptyImg.centerXAnchor.constraint(equalTo:cartCollectionView.centerXAnchor).isActive = true
+        emptyImg.topAnchor.constraint(equalTo:cartCollectionView.topAnchor, constant: UIScreen.main.bounds.height/667 * 220).isActive = true
+        emptyImg.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 45).isActive = true
+        emptyImg.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 42).isActive = true
+    
+        emptyLabel.centerXAnchor.constraint(equalTo:cartCollectionView.centerXAnchor).isActive = true
+        emptyLabel.topAnchor.constraint(equalTo:emptyImg.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 24).isActive = true
+//        emptyLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 40).isActive = true
+        emptyLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 19).isActive = true
+        
         self.view.addSubview(btnPayment)
         
         btnPayment.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant:screenWidth/defaultWidth * 18).isActive = true
@@ -123,6 +136,26 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         btnPayment.heightAnchor.constraint(equalToConstant:screenWidth/defaultWidth * 56).isActive = true
         
     }
+    
+    let emptyImg: UIImageView = {
+        let image = UIImageView()
+        image.image = UIImage(named: "cart_empty")
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.isHidden = true
+        return image
+    }()
+    
+    let emptyLabel: UILabel = {
+        let label = UILabel()
+        label.text = "아직 담긴 상품이 없어요!"
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
+        label.textAlignment = .center
+        label.textColor = .black
+        label.alpha = 0.3
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.isHidden = true
+        return label
+    }()
     
     let btnPayment : UIButton = {
         let btn = UIButton()
@@ -152,6 +185,16 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                     self.sellerDatas.append(response[i])
                 }
                 print(self.sellerDatas)
+                if self.sellerDatas.count == 0 {
+                    self.btnPayment.isEnabled = false
+                    self.emptyImg.isHidden = false
+                    self.emptyLabel.isHidden = false
+                }
+                else {
+                    self.btnPayment.isEnabled = true
+                    self.emptyImg.isHidden = true
+                    self.emptyLabel.isHidden = true
+                }
                 for i in 0..<self.sellerDatas.count {
                     self.productpriceArray.append([])
                     self.productDatas.append([])
@@ -363,6 +406,7 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         }
         productDatas[indexPath.section].remove(at: indexPath.row)
         productpriceArray[indexPath.section].remove(at: indexPath.row)
+        btnPayment.setTitle("총 0원 구매하기", for: .normal)
         collectionView.deleteItems(at: [IndexPath(row: indexPath.row, section: indexPath.section)])
         getData()
     }

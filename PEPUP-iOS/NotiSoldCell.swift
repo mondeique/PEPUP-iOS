@@ -32,11 +32,33 @@ class NotiSoldCell: BaseCollectionViewCell, UICollectionViewDataSource, UICollec
         return collectionView
     }()
     
+    let emptyImg: UIImageView = {
+        let image = UIImageView()
+        image.image = UIImage(named: "sold_empty")
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.isHidden = true
+        return image
+    }()
+    
+    let emptyLabel: UILabel = {
+        let label = UILabel()
+        label.text = "판매한 상품이 없어요!"
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
+        label.textAlignment = .center
+        label.textColor = .black
+        label.alpha = 0.3
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.isHidden = true
+        return label
+    }()
+    
     override func setup() {
         
         backgroundColor = .white
         
         self.addSubview(soldcollectionView)
+        self.addSubview(emptyImg)
+        self.addSubview(emptyLabel)
 
         soldcollectionView.delegate = self
         soldcollectionView.dataSource = self
@@ -47,6 +69,16 @@ class NotiSoldCell: BaseCollectionViewCell, UICollectionViewDataSource, UICollec
         soldcollectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         soldcollectionView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         soldcollectionView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+        
+        emptyImg.centerXAnchor.constraint(equalTo:soldcollectionView.centerXAnchor).isActive = true
+        emptyImg.topAnchor.constraint(equalTo:soldcollectionView.topAnchor, constant: UIScreen.main.bounds.height/667 * 209).isActive = true
+        emptyImg.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 56).isActive = true
+        emptyImg.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 56).isActive = true
+    
+        emptyLabel.centerXAnchor.constraint(equalTo:soldcollectionView.centerXAnchor).isActive = true
+        emptyLabel.topAnchor.constraint(equalTo:emptyImg.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 21).isActive = true
+//        emptyLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 40).isActive = true
+        emptyLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 19).isActive = true
 
         getSoldData()
     }
@@ -59,7 +91,14 @@ class NotiSoldCell: BaseCollectionViewCell, UICollectionViewDataSource, UICollec
                 for i in 0..<response.count {
                     self.productDatas.append(response[i])
                 }
-                print(response)
+                if self.productDatas.count == 0 {
+                    self.emptyImg.isHidden = false
+                    self.emptyLabel.isHidden = false
+                }
+                else {
+                    self.emptyImg.isHidden = true
+                    self.emptyLabel.isHidden = true
+                }
                 DispatchQueue.main.async {
                     self.soldcollectionView.reloadData()
                 }

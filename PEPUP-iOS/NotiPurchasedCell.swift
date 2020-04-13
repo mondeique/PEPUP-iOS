@@ -34,10 +34,32 @@ class NotiPurchasedCell: BaseCollectionViewCell, UICollectionViewDataSource, UIC
         return collectionView
     }()
     
+    let emptyImg: UIImageView = {
+        let image = UIImageView()
+        image.image = UIImage(named: "purchased_empty")
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.isHidden = true
+        return image
+    }()
+    
+    let emptyLabel: UILabel = {
+        let label = UILabel()
+        label.text = "아직 구매한 상품이 없어요"
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
+        label.textAlignment = .center
+        label.textColor = .black
+        label.alpha = 0.3
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.isHidden = true
+        return label
+    }()
+    
     override func setup() {
         backgroundColor = .white
         
         self.addSubview(purchasedcollectionView)
+        self.addSubview(emptyImg)
+        self.addSubview(emptyLabel)
 
         purchasedcollectionView.delegate = self
         purchasedcollectionView.dataSource = self
@@ -48,6 +70,16 @@ class NotiPurchasedCell: BaseCollectionViewCell, UICollectionViewDataSource, UIC
         purchasedcollectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         purchasedcollectionView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         purchasedcollectionView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+        
+        emptyImg.centerXAnchor.constraint(equalTo:purchasedcollectionView.centerXAnchor).isActive = true
+        emptyImg.topAnchor.constraint(equalTo:purchasedcollectionView.topAnchor, constant: UIScreen.main.bounds.height/667 * 209).isActive = true
+        emptyImg.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 50).isActive = true
+        emptyImg.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 56).isActive = true
+    
+        emptyLabel.centerXAnchor.constraint(equalTo:purchasedcollectionView.centerXAnchor).isActive = true
+        emptyLabel.topAnchor.constraint(equalTo:emptyImg.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 21).isActive = true
+//        emptyLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 40).isActive = true
+        emptyLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 19).isActive = true
 
         getPurchasedData()
     }
@@ -60,7 +92,14 @@ class NotiPurchasedCell: BaseCollectionViewCell, UICollectionViewDataSource, UIC
                 for i in 0..<response.count {
                     self.productDatas.append(response[i])
                 }
-                print(response)
+                if self.productDatas.count == 0 {
+                    self.emptyImg.isHidden = false
+                    self.emptyLabel.isHidden = false
+                }
+                else {
+                    self.emptyImg.isHidden = true
+                    self.emptyLabel.isHidden = true
+                }
                 DispatchQueue.main.async {
                     self.purchasedcollectionView.reloadData()
                 }

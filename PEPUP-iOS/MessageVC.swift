@@ -93,6 +93,19 @@ class MessageVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollect
         messagecollectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         messagecollectionView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         messagecollectionView.heightAnchor.constraint(equalToConstant: screenHeight).isActive = true
+        
+        self.view.addSubview(emptyImg)
+        self.view.addSubview(emptyLabel)
+        
+        emptyImg.centerXAnchor.constraint(equalTo:messagecollectionView.centerXAnchor).isActive = true
+        emptyImg.topAnchor.constraint(equalTo:messagecollectionView.topAnchor, constant: UIScreen.main.bounds.height/667 * 230).isActive = true
+        emptyImg.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 40).isActive = true
+        emptyImg.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 32).isActive = true
+    
+        emptyLabel.centerXAnchor.constraint(equalTo:messagecollectionView.centerXAnchor).isActive = true
+        emptyLabel.topAnchor.constraint(equalTo:emptyImg.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 24).isActive = true
+//        emptyLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 40).isActive = true
+        emptyLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 19).isActive = true
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -157,6 +170,14 @@ class MessageVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollect
                     self.chatrooms.append(chatModel!)
                 }
             }
+            if self.chatrooms.count == 0 {
+                self.emptyImg.isHidden = false
+                self.emptyLabel.isHidden = false
+            }
+            else {
+                self.emptyImg.isHidden = true
+                self.emptyLabel.isHidden = true
+            }
             self.messagecollectionView.reloadData()
         })
     }
@@ -207,6 +228,26 @@ class MessageVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollect
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = UIColor(rgb: 0xEBEBF6)
+        return label
+    }()
+    
+    let emptyImg: UIImageView = {
+        let image = UIImageView()
+        image.image = UIImage(named: "message_empty")
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.isHidden = true
+        return image
+    }()
+    
+    let emptyLabel: UILabel = {
+        let label = UILabel()
+        label.text = "대화중인 메세지가 없어요"
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
+        label.textAlignment = .center
+        label.textColor = .black
+        label.alpha = 0.3
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.isHidden = true
         return label
     }()
 
