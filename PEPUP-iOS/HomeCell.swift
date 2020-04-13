@@ -60,6 +60,12 @@ class HomeCell: BaseCollectionViewCell {
         soldLabelLayout()
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        productImg.image = nil
+    }
+    
     func homecellcontentViewLayout() {
         homecellcontentView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         homecellcontentView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true

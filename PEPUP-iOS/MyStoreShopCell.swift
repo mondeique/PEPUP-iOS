@@ -35,6 +35,19 @@ class MyStoreShopCell: BaseCollectionViewCell, UICollectionViewDelegate, UIColle
         return collectionView
     }()
     
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: UIControl.Event.valueChanged)
+        refreshControl.tintColor = UIColor.red
+        
+        return refreshControl
+    }()
+
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        getShopData(pagenum: 1)
+        refreshControl.endRefreshing()
+    }
+    
     override func setup() {
         backgroundColor = .white
         
@@ -44,6 +57,8 @@ class MyStoreShopCell: BaseCollectionViewCell, UICollectionViewDelegate, UIColle
         shopcollectionView.dataSource = self
         shopcollectionView.register(MyShopCell.self, forCellWithReuseIdentifier: myshopcellId)
         shopcollectionView.register(MyShopHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: myshopheaderId)
+        
+        shopcollectionView.addSubview(refreshControl)
         
         getShopData(pagenum: 1)
     }

@@ -23,18 +23,21 @@ class SellSelectVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setup()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         UserDefaults.standard.set("", forKey: "second_category")
+        UserDefaults.standard.set(-1, forKey: "second_category_id")
         UserDefaults.standard.set("", forKey: "size")
+        UserDefaults.standard.set(-1, forKey: "size_id")
         UserDefaults.standard.set("", forKey: "brand")
-        UserDefaults.standard.set("", forKey: "tag")
+        UserDefaults.standard.set(-1, forKey: "brand_id")
+//        UserDefaults.standard.set("", forKey: "tag")
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
         self.tabBarController?.tabBar.isHidden = true
-        setup()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -137,7 +140,19 @@ class SellSelectVC: UIViewController {
     }
     
     @objc func ok() {
-        self.navigationController?.pushViewController(nextVC, animated: true)
+        if nextVC.imageData.count == 0 {
+            self.selectAlert()
+        }
+        else {
+            self.navigationController?.pushViewController(nextVC, animated: true)
+        }
+    }
+    
+    func selectAlert() {
+        let alertController = UIAlertController(title: nil, message: "사진을 1장 이상 선택해주세요", preferredStyle: .alert)
+        let selectAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+        alertController.addAction(selectAction)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     let navcontentView: UIView = {

@@ -327,6 +327,7 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     }
     
     @objc func upload() {
+        self.keyArray = []
         for i in 0..<imageData.count {
             Alamofire.AF.request("\(Config.baseURL)/api/s3/temp_key/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
                 (response) in switch response.result {
@@ -361,7 +362,7 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                 }
             }
         }
-        let seconds = 2.0
+        let seconds = 1.0
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
             guard let key_Array = self.keyArray else {
                 return
@@ -375,54 +376,48 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             guard let content = self.productDetailtxtView.text else {
                 return
             }
-            guard let first_category = UserDefaults.standard.object(forKey: "first_category") else {
-                return
-            }
-            guard let second_category = UserDefaults.standard.object(forKey: "second_category_id") else {
-                return
-            }
-            guard let size = UserDefaults.standard.object(forKey: "size_id") else {
-                return
-            }
-            guard let brand = UserDefaults.standard.object(forKey: "brand_id") else {
-                return
-            }
-            guard let tag = UserDefaults.standard.object(forKey: "tag") else {
-                return
-            }
-            print(key_Array)
-            print(name)
-            print(price)
-            print(content)
-            print(first_category)
-            print(second_category)
-            print(size)
-            print(brand)
-            print(tag)
-            print("EXIT")
-            if key_Array.count == self.imageData.count {
-                let parameters = [
-                    "image_key" : key_Array,
-                    "name" : name,
-                    "price" : Int(price),
-                    "content" : content,
-                    "first_category" : first_category,
-                    "second_category" : second_category,
-                    "size" : size,
-                    "brand" : brand,
-                    "tag" : [tag]
-                ]
-                Alamofire.AF.request("\(Config.baseURL)/api/products/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-                    (response) in switch response.result {
-                    case .success(let JSON):
-                        print("SUCESS UPLOAD! \(JSON)")
-                        let nextVC = TabBarController()
-                        self.navigationController?.pushViewController(nextVC, animated: true)
-                    case .failure(let error):
-                        print("THERE!")
-                        self.uploadfailAlert()
-                        print("Request failed with error: \(error)")
-                        
+            if let first_category = UserDefaults.standard.object(forKey: "first_category") as? Int {
+                let second_category = UserDefaults.standard.object(forKey: "second_category_id") as! Int
+                let size = UserDefaults.standard.object(forKey: "size_id") as! Int
+                let brand = UserDefaults.standard.object(forKey: "brand_id") as! Int
+                let tag = UserDefaults.standard.object(forKey: "tag") as! String
+                if second_category == -1 || size == -1 || brand == -1 || tag == "" {
+                    self.uploadfailAlert()
+                }
+                print(key_Array)
+                print(name)
+                print(price)
+                print(content)
+                print(first_category)
+                print(second_category)
+                print(size)
+                print(brand)
+                print(tag)
+                print("EXIT")
+                if key_Array.count == self.imageData.count {
+                    let parameters = [
+                        "image_key" : key_Array,
+                        "name" : name,
+                        "price" : Int(price),
+                        "content" : content,
+                        "first_category" : first_category,
+                        "second_category" : second_category,
+                        "size" : size,
+                        "brand" : brand,
+                        "tag" : [tag]
+                        ] as [String : Any]
+                    Alamofire.AF.request("\(Config.baseURL)/api/products/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+                        (response) in switch response.result {
+                        case .success(let JSON):
+                            print("SUCESS UPLOAD! \(JSON)")
+                            let nextVC = TabBarController()
+                            self.navigationController?.pushViewController(nextVC, animated: true)
+                        case .failure(let error):
+                            print("THERE!")
+                            self.uploadfailAlert()
+                            print("Request failed with error: \(error)")
+                            
+                        }
                     }
                 }
             }
@@ -735,7 +730,7 @@ extension SellVC: UITextViewDelegate {
 
     func textViewDidBeginEditing(_ textView: UITextView) {
         textViewSetupView()
-        productPricetxtView.text = productPricetxtView.text + "원"
+        productPricetxtView.text = productPricetxtView.text
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {

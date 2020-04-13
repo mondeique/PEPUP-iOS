@@ -22,14 +22,27 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        productDatas = Array<Dictionary<String, Any>>()
+        getData(pagenum: 1)
+        setup()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
-        productDatas = Array<Dictionary<String, Any>>()
+    }
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: UIControl.Event.valueChanged)
+        refreshControl.tintColor = UIColor.red
+        
+        return refreshControl
+    }()
+
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
         getData(pagenum: 1)
-        setup()
+        refreshControl.endRefreshing()
     }
     
     fileprivate func setup() {
@@ -86,6 +99,8 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
         followcollectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         followcollectionView.topAnchor.constraint(equalTo: navcontentView.bottomAnchor).isActive = true
         followcollectionView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
+        
+        followcollectionView.addSubview(refreshControl)
     }
     
     let navcontentView: UIView = {
@@ -139,7 +154,6 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
                 for i in 0..<products.count {
                     self.productDatas.append(products[i])
                 }
-                print(response)
                 DispatchQueue.main.async {
                     self.followcollectionView.reloadData()
                 }
@@ -159,12 +173,14 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
             let ImageUrlString = imageDic.object(forKey: "image_url") as! String
             let imageUrl:NSURL = NSURL(string: ImageUrlString)!
             let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
-            let image = UIImage(data: imageData as Data)
-            productimage.image = image
-            cell.productScrollView.addSubview(productimage)
+            DispatchQueue.main.async {
+                let image = UIImage(data: imageData as Data)
+                productimage.image = image
+                cell.productScrollView.addSubview(productimage)
+                cell.productScrollView.contentSize = CGSize(width: CGFloat(imageArray.count) * UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
+                cell.pageControl.numberOfPages = imageArray.count
+            }
         }
-        cell.productScrollView.contentSize = CGSize(width: CGFloat(imageArray.count) * UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
-        cell.pageControl.numberOfPages = imageArray.count
         return cell
     }
     
@@ -309,7 +325,9 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
     @objc func tag(_ sender: UIButton) {
         let nextVC = TagVC()
         nextVC.TagID = sender.tag
-        nextVC.TagName = sender.currentTitle
+        let somestring = sender.currentTitle as! String
+        let range = somestring.index(after: somestring.startIndex)..<somestring.endIndex
+        nextVC.TagName = String(somestring[range])
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
@@ -390,12 +408,12 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
         return CGSize(width: collectionView.frame.width, height: UIScreen.main.bounds.height/667 * 114)
     }
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.row == self.productDatas.count - 1 {
-            pagenum = pagenum + 1
-            getData(pagenum: pagenum)
-        }
-    }
+//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        if indexPath.row == self.productDatas.count - 1 {
+//            pagenum = pagenum + 1
+//            getData(pagenum: pagenum)
+//        }
+//    }
 }
 
 extension Date {

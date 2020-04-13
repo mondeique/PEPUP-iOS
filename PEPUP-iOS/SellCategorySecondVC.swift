@@ -133,6 +133,7 @@ class SellCategorySecondVC: UIViewController, UICollectionViewDelegateFlowLayout
         let id  = secondDictionary.object(forKey: "id") as! Int
         UserDefaults.standard.set(name, forKey: "second_category")
         UserDefaults.standard.set(id, forKey: "second_category_id")
+        print("Hello \(UserDefaults.standard.object(forKey: "first_category"))")
         let controller = self.navigationController?.viewControllers[(self.navigationController?.viewControllers.count)! - 4]
         self.navigationController?.popToViewController(controller!, animated: true)
     }

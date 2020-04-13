@@ -14,6 +14,12 @@ class NickNameVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        self.view.endEditing(true)
     }
     
     // MARK: Declare each view programmatically

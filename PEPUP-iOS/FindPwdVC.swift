@@ -18,10 +18,16 @@ class FindPwdVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+    }
+    
+    @objc func dismissKeyboard() {
+        self.view.endEditing(true)
     }
     
     // MARK: Declare each view programmatically 
@@ -94,6 +100,7 @@ class FindPwdVC: UIViewController {
         txtField.layer.borderWidth = 1.0
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
+        txtField.keyboardType = .decimalPad
         return txtField
     }()
     
@@ -118,6 +125,7 @@ class FindPwdVC: UIViewController {
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
         txtField.isEnabled = false
+        txtField.keyboardType = .decimalPad
         return txtField
     }()
     

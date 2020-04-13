@@ -18,6 +18,12 @@ class PhoneConfirmVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        self.view.endEditing(true)
     }
     
     // MARK: Declare each view programmatically 
@@ -57,6 +63,7 @@ class PhoneConfirmVC: UIViewController {
         txtField.layer.borderWidth = 1.0
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
+        txtField.keyboardType = .decimalPad
         return txtField
     }()
     
@@ -81,6 +88,7 @@ class PhoneConfirmVC: UIViewController {
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
         txtField.isEnabled = false
+        txtField.keyboardType = .decimalPad
         return txtField
     }()
     

@@ -62,7 +62,6 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             bottomcontentView.bottomAnchor.constraint(equalTo:view.bottomAnchor, constant: -keyboardSize.height).isActive = true
         }
-        
         UIView.animate(withDuration: 0, animations: {
             self.view.layoutIfNeeded()
         }, completion: {
@@ -75,12 +74,13 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     @objc func keyboardWillHide(notification: Notification) {
+        
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             bottomcontentView.bottomAnchor.constraint(equalTo:view.bottomAnchor, constant: -keyboardSize.height).isActive = false
         }
         bottomcontentView.bottomAnchor.constraint(equalTo:view.bottomAnchor).isActive = true
-        self.view.layoutIfNeeded()
         self.view.setNeedsLayout()
+        self.view.layoutIfNeeded()
     }
     
     @objc func dismissKeyboard() {
@@ -125,6 +125,8 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         self.view.addSubview(messagetableView)
         
         messagetableView.translatesAutoresizingMaskIntoConstraints = false
+        messagetableView.estimatedRowHeight = screenHeight/defaultHeight * 36
+        messagetableView.rowHeight = UITableView.automaticDimension
         messagetableView.delegate = self
         messagetableView.dataSource = self
         messagetableView.separatorStyle = .none
@@ -145,7 +147,7 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         
         bottomcontentView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         bottomcontentView.topAnchor.constraint(equalTo: messagetableView.bottomAnchor).isActive = true
-        bottomcontentView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+//        bottomcontentView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         bottomcontentView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
         bottomcontentView.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 56).isActive = true
         
@@ -240,7 +242,7 @@ class MessageChatVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
     

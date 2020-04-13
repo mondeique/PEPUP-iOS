@@ -29,11 +29,24 @@ class MyStoreReviewCell: BaseCollectionViewCell, UICollectionViewDelegate, UICol
         layout.minimumInteritemSpacing = 0.0
         layout.minimumLineSpacing = 0.0
         layout.headerReferenceSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/667 * 149)
-        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height), collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - UIScreen.main.bounds.height/667 * 130), collectionViewLayout: layout)
         collectionView.backgroundColor = .white
         collectionView.isHidden = false
         return collectionView
     }()
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: UIControl.Event.valueChanged)
+        refreshControl.tintColor = UIColor.red
+        
+        return refreshControl
+    }()
+
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        getReviewData(pagenum: 1)
+        refreshControl.endRefreshing()
+    }
     
     override func setup() {
         backgroundColor = .white
@@ -45,6 +58,7 @@ class MyStoreReviewCell: BaseCollectionViewCell, UICollectionViewDelegate, UICol
         reviewcollectionView.register(MyReviewCell.self, forCellWithReuseIdentifier: reviewcellId)
         reviewcollectionView.register(MyReviewHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: reviewheaderId)
         
+        reviewcollectionView.addSubview(refreshControl)
         
     }
     

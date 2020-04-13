@@ -27,11 +27,25 @@ class MyStoreLikeCell: BaseCollectionViewCell, UICollectionViewDelegate, UIColle
         layout.itemSize = CGSize(width: (UIScreen.main.bounds.width / 3) - 1, height: (UIScreen.main.bounds.width / 3) - 1)
         layout.minimumInteritemSpacing = 1.0
         layout.minimumLineSpacing = 1.0
-        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height), collectionViewLayout: layout)
+        layout.scrollDirection = .vertical
+        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - UIScreen.main.bounds.height/667 * 150), collectionViewLayout: layout)
         collectionView.backgroundColor = .white
         collectionView.isHidden = false
         return collectionView
     }()
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: UIControl.Event.valueChanged)
+        refreshControl.tintColor = UIColor.red
+        
+        return refreshControl
+    }()
+
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        getLikeData(pagenum: 1)
+        refreshControl.endRefreshing()
+    }
     
     override func setup() {
         backgroundColor = .white
@@ -41,6 +55,8 @@ class MyStoreLikeCell: BaseCollectionViewCell, UICollectionViewDelegate, UIColle
         likecollectionView.delegate = self
         likecollectionView.dataSource = self
         likecollectionView.register(MyLikeCell.self, forCellWithReuseIdentifier: likecellId)
+        
+        likecollectionView.addSubview(refreshControl)
         
         getLikeData(pagenum: 1)
         

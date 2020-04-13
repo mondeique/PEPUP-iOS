@@ -365,7 +365,7 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         deliveryaddressLabel.leftAnchor.constraint(equalTo: deliveryinfocontentView.leftAnchor, constant: screenWidth/defaultWidth * 18).isActive = true
         deliveryaddressLabel.topAnchor.constraint(equalTo: deliveryphonenumLabel.bottomAnchor, constant: screenHeight/defaultHeight * 16).isActive = true
         deliveryaddressLabel.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 300).isActive = true
-        deliveryaddressLabel.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 40).isActive = true
+        deliveryaddressLabel.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 20).isActive = true
 
         lineLabel1.leftAnchor.constraint(equalTo: deliveryinfocontentView.leftAnchor, constant: screenWidth/defaultWidth * 18).isActive = true
         lineLabel1.topAnchor.constraint(equalTo: deliveryaddressLabel.bottomAnchor, constant: screenHeight/defaultHeight * 24).isActive = true

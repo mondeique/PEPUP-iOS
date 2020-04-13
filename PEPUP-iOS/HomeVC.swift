@@ -13,32 +13,6 @@ import SystemConfiguration
 private let reuseIdentifier = "homecell"
 private let headerId = "homeheadercell"
 
-var vSpinner : UIView?
- 
-extension UIViewController {
-    func showSpinner(onView : UIView) {
-        let spinnerView = UIView.init(frame: onView.bounds)
-        spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
-        let ai = UIActivityIndicatorView.init(style: .whiteLarge)
-        ai.startAnimating()
-        ai.center = spinnerView.center
-        
-        DispatchQueue.main.async {
-            spinnerView.addSubview(ai)
-            onView.addSubview(spinnerView)
-        }
-        
-        vSpinner = spinnerView
-    }
-    
-    func removeSpinner() {
-        DispatchQueue.main.async {
-            vSpinner?.removeFromSuperview()
-            vSpinner = nil
-        }
-    }
-}
-
 class HomeVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     
     var pagenum: Int = 1
@@ -96,7 +70,7 @@ class HomeVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         homecollectionView.topAnchor.constraint(equalTo: homecontentView.topAnchor).isActive = true
         homecollectionView.widthAnchor.constraint(equalTo: homecontentView.widthAnchor).isActive = true
         homecollectionView.heightAnchor.constraint(equalTo: homecontentView.heightAnchor).isActive = true
-        
+
         btnFilter.rightAnchor.constraint(equalTo: homecontentView.rightAnchor, constant: screenWidth/defaultWidth * -16).isActive = true
         btnFilter.bottomAnchor.constraint(equalTo: homecontentView.bottomAnchor, constant: screenWidth/defaultWidth * -16).isActive = true
         btnFilter.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 48).isActive = true
@@ -187,15 +161,15 @@ class HomeVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                     else {
                         cell.soldLabel.isHidden = true
                     }
+                    let is_refundable = productDictionary.object(forKey: "is_refundable") as! Bool
+                    if is_refundable == true {
+                        cell.pepuptag.isHidden = false
+                    }
+                    else {
+                        cell.pepuptag.isHidden = true
+                    }
                 }
             }
-        }
-        let is_refundable = productDictionary.object(forKey: "is_refundable") as! Bool
-        if is_refundable == true {
-            cell.pepuptag.isHidden = false
-        }
-        else {
-            cell.pepuptag.isHidden = true
         }
         return cell
     }

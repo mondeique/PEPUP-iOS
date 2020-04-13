@@ -90,6 +90,15 @@ class SupportTotalCell: BaseCollectionViewCell, UICollectionViewDataSource, UICo
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("TOUCH")
+        let supportDic = self.productDatas[indexPath.row]
+        let title = supportDic.object(forKey: "title") as! String
+        let id  = supportDic.object(forKey: "id") as! Int
+        let content = supportDic.object(forKey: "content") as! String
+        let nextVC = SupportMainVC()
+        nextVC.Mytitle = title
+        nextVC.Myid = id
+        nextVC.Mycontent = content
+        delegate?.navigationController?.pushViewController(nextVC, animated: true)
     }
     
 //    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

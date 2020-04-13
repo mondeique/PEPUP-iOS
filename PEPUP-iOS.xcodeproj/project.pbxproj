@@ -45,6 +45,7 @@
 		E968FF0623F13FE600B2B1D3 /* MessageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E968FF0523F13FE600B2B1D3 /* MessageVC.swift */; };
 		E968FF1223F5139000B2B1D3 /* CartVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E968FF1123F5139000B2B1D3 /* CartVC.swift */; };
 		E968FF1423F513BB00B2B1D3 /* CartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E968FF1323F513BB00B2B1D3 /* CartCell.swift */; };
+		E9B9220A2444312300DCE99E /* SupportMainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B922092444312200DCE99E /* SupportMainVC.swift */; };
 		E9C8467023E1A5D200359A93 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C8466F23E1A5D200359A93 /* AppDelegate.swift */; };
 		E9C8467723E1A5D200359A93 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E9C8467523E1A5D200359A93 /* Main.storyboard */; };
 		E9C8467A23E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E9C8467823E1A5D200359A93 /* PEPUP_iOS.xcdatamodeld */; };
@@ -139,6 +140,7 @@
 		E968FF0523F13FE600B2B1D3 /* MessageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageVC.swift; sourceTree = "<group>"; };
 		E968FF1123F5139000B2B1D3 /* CartVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartVC.swift; sourceTree = "<group>"; };
 		E968FF1323F513BB00B2B1D3 /* CartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartCell.swift; sourceTree = "<group>"; };
+		E9B922092444312200DCE99E /* SupportMainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportMainVC.swift; sourceTree = "<group>"; };
 		E9C8466C23E1A5D200359A93 /* PEPUP-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PEPUP-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9C8466F23E1A5D200359A93 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E9C8467623E1A5D200359A93 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -326,6 +328,7 @@
 				E90E8517242B34DC00C215CB /* SupportVC.swift */,
 				E9EE6B5B242C605600844023 /* CustomSupportBar.swift */,
 				E9EE6B5D242C609600844023 /* SupportCell.swift */,
+				E9B922092444312200DCE99E /* SupportMainVC.swift */,
 				E9EE6B5F242C60C900844023 /* SupportTotalCell.swift */,
 				E9CBF56E242D9F4400A058F7 /* SupportOtherCell.swift */,
 				E9CBF570242DA0BA00A058F7 /* SupportErrorCell.swift */,
@@ -458,6 +461,7 @@
 				E94D142623E82A570001F3A0 /* FindIdVC.swift in Sources */,
 				E9D111CE2410C316006AE20C /* PaymentVC.swift in Sources */,
 				E9CBF56F242D9F4400A058F7 /* SupportOtherCell.swift in Sources */,
+				E9B9220A2444312300DCE99E /* SupportMainVC.swift in Sources */,
 				E9C8468723E1A77300359A93 /* TabBarController.swift in Sources */,
 				E9D07A4723E2B6DE0095AD05 /* SearchVC.swift in Sources */,
 				E9D1119A24038C27006AE20C /* CustomMenuBar.swift in Sources */,

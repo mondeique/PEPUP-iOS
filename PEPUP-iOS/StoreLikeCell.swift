@@ -33,6 +33,19 @@ class StoreLikeCell: BaseCollectionViewCell, UICollectionViewDelegate, UICollect
         return collectionView
     }()
     
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: UIControl.Event.valueChanged)
+        refreshControl.tintColor = UIColor.red
+        
+        return refreshControl
+    }()
+
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        getLikeData(pagenum: 1)
+        refreshControl.endRefreshing()
+    }
+    
     override func setup() {
         backgroundColor = .white
         
@@ -43,6 +56,8 @@ class StoreLikeCell: BaseCollectionViewCell, UICollectionViewDelegate, UICollect
         likecollectionView.register(LikeCell.self, forCellWithReuseIdentifier: likecellId)
         
         getLikeData(pagenum: 1)
+        
+        likecollectionView.addSubview(refreshControl)
     }
     
     func getLikeData(pagenum: Int) {

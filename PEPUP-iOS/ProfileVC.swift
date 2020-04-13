@@ -17,6 +17,12 @@ class ProfileVC: UIViewController {
         super.viewDidLoad()
         picker.delegate = self
         setup()
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        self.view.endEditing(true)
     }
     
     // MARK: Declare each view programmatically

@@ -122,8 +122,19 @@ class SettingVC: UIViewController, UICollectionViewDataSource, UICollectionViewD
     }
     
     @objc func logout() {
-        let nextVC = LoginVC()
-        self.navigationController?.pushViewController(nextVC, animated: true)
+        self.logoutAlert()
+    }
+    
+    func logoutAlert() {
+        let alertController = UIAlertController(title: nil, message: "로그아웃 하시겠습니까?", preferredStyle: .alert)
+        let logoutAction = UIAlertAction(title: "예", style: .default) { (action) in
+            let nextVC = LoginVC()
+            self.navigationController?.pushViewController(nextVC, animated: true)
+        }
+        let cancelAction = UIAlertAction(title: "아니오", style: .default, handler: nil)
+        alertController.addAction(logoutAction)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -185,7 +196,6 @@ class SettingVC: UIViewController, UICollectionViewDataSource, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
-                print("ASDSDASDSAD")
                 let nextVC = NoticeVC()
                 navigationController?.pushViewController(nextVC, animated: true)
             }
@@ -210,8 +220,7 @@ class SettingVC: UIViewController, UICollectionViewDataSource, UICollectionViewD
         }
         else {
             if indexPath.row == 1 {
-                let nextVC = LoginVC()
-                navigationController?.pushViewController(nextVC, animated: true)
+                logoutAlert()
             }
         }
     }
