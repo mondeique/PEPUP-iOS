@@ -24,6 +24,7 @@ class CartCell: BaseCollectionViewCell, UIGestureRecognizerDelegate {
     override func setup() {
         backgroundColor = .white
         cartcellContentView.addSubview(productImage)
+        cartcellContentView.addSubview(deleteButton)
         cartcellContentView.addSubview(productNameLabel)
         cartcellContentView.addSubview(productSizeLabel)
         cartcellContentView.addSubview(productPriceLabel)
@@ -32,6 +33,7 @@ class CartCell: BaseCollectionViewCell, UIGestureRecognizerDelegate {
 
         cartcellContentViewLayout()
         productImageLayout()
+        deleteButtonLayout()
         productNameLabelLayout()
         productSizeLabelLayout()
         productPriceLabelLayout()
@@ -97,6 +99,14 @@ class CartCell: BaseCollectionViewCell, UIGestureRecognizerDelegate {
         label.backgroundColor = .red
         return label
     }()
+    
+    let deleteButton: UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setImage(UIImage(named: "cart_delete"), for: .normal)
+        btn.isHidden = true
+        return btn
+    }()
 
     let productImage: UIButton = {
         let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
@@ -144,6 +154,13 @@ class CartCell: BaseCollectionViewCell, UIGestureRecognizerDelegate {
         productImage.topAnchor.constraint(equalTo:cartcellContentView.topAnchor, constant:UIScreen.main.bounds.height/667 * 10).isActive = true
         productImage.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 80).isActive = true
         productImage.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 80).isActive = true
+    }
+    
+    func deleteButtonLayout() {
+        deleteButton.leftAnchor.constraint(equalTo:cartcellContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 10).isActive = true
+        deleteButton.topAnchor.constraint(equalTo:cartcellContentView.topAnchor, constant:UIScreen.main.bounds.height/667 * 2).isActive = true
+        deleteButton.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 22).isActive = true
+        deleteButton.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 22).isActive = true
     }
 
     func productNameLabelLayout() {
@@ -238,6 +255,7 @@ class CartFooterCell: BaseCollectionViewCell {
         cartfootercellContentView.addSubview(productdeliveryLabel)
         cartfootercellContentView.addSubview(productdeliveryInfoLabel)
         cartfootercellContentView.addSubview(btnPayment)
+        cartfootercellContentView.addSubview(btnDelete)
         cartfootercellContentView.addSubview(spaceLabel)
         self.addSubview(cartfootercellContentView)
 
@@ -248,6 +266,7 @@ class CartFooterCell: BaseCollectionViewCell {
         productdeliveryLabelLayout()
         productdeliveryInfoLabelLayout()
         btnPaymentLayout()
+        btnDeleteLayout()
         spaceLabelLayout()
     }
     
@@ -315,6 +334,20 @@ class CartFooterCell: BaseCollectionViewCell {
         return btn
     }()
     
+    let btnDelete: UIButton = {
+        let btn = UIButton()
+        btn.backgroundColor = .white
+        btn.setTitle("스토어 삭제하기", for: .normal)
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
+        btn.layer.borderColor = UIColor.red.cgColor
+        btn.layer.borderWidth = 1.5
+        btn.setTitleColor(.red, for: .normal)
+        btn.clipsToBounds = true
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.isHidden = true
+        return btn
+    }()
+    
     let spaceLabel: UILabel = {
         let label = UILabel()
         label.backgroundColor = UIColor(rgb: 0xF4F5FC)
@@ -371,6 +404,14 @@ class CartFooterCell: BaseCollectionViewCell {
         btnPayment.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 339).isActive = true
         btnPayment.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 48).isActive = true
         btnPayment.centerXAnchor.constraint(equalTo:cartfootercellContentView.centerXAnchor).isActive = true
+    }
+    
+    func btnDeleteLayout() {
+        btnDelete.leftAnchor.constraint(equalTo:cartfootercellContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 18).isActive = true
+        btnDelete.topAnchor.constraint(equalTo:productdeliveryLabel.bottomAnchor, constant:24).isActive = true
+        btnDelete.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 339).isActive = true
+        btnDelete.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 48).isActive = true
+        btnDelete.centerXAnchor.constraint(equalTo:cartfootercellContentView.centerXAnchor).isActive = true
     }
     
     func spaceLabelLayout() {

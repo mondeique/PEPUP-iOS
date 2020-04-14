@@ -853,6 +853,7 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         txtView.backgroundColor = .white
         txtView.textColor = .black
         txtView.borderStyle = .none
+        txtView.keyboardType = .decimalPad
         return txtView
     }()
     

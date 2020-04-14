@@ -362,7 +362,7 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                 }
             }
         }
-        let seconds = 1.0
+        let seconds = 1.5
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
             guard let key_Array = self.keyArray else {
                 return
@@ -384,39 +384,40 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                 if second_category == -1 || size == -1 || brand == -1 || tag == "" {
                     self.uploadfailAlert()
                 }
-                print(key_Array)
-                print(name)
-                print(price)
-                print(content)
-                print(first_category)
-                print(second_category)
-                print(size)
-                print(brand)
-                print(tag)
-                print("EXIT")
-                if key_Array.count == self.imageData.count {
-                    let parameters = [
-                        "image_key" : key_Array,
-                        "name" : name,
-                        "price" : Int(price),
-                        "content" : content,
-                        "first_category" : first_category,
-                        "second_category" : second_category,
-                        "size" : size,
-                        "brand" : brand,
-                        "tag" : [tag]
-                        ] as [String : Any]
-                    Alamofire.AF.request("\(Config.baseURL)/api/products/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-                        (response) in switch response.result {
-                        case .success(let JSON):
-                            print("SUCESS UPLOAD! \(JSON)")
-                            let nextVC = TabBarController()
-                            self.navigationController?.pushViewController(nextVC, animated: true)
-                        case .failure(let error):
-                            print("THERE!")
-                            self.uploadfailAlert()
-                            print("Request failed with error: \(error)")
-                            
+                else {
+                    print(key_Array)
+                    print(name)
+                    print(price)
+                    print(content)
+                    print(first_category)
+                    print(second_category)
+                    print(size)
+                    print(brand)
+                    print(tag)
+                    print("EXIT")
+                    if key_Array.count == self.imageData.count {
+                        let parameters = [
+                            "image_key" : key_Array,
+                            "name" : name,
+                            "price" : Int(price),
+                            "content" : content,
+                            "first_category" : first_category,
+                            "second_category" : second_category,
+                            "size" : size,
+                            "brand" : brand,
+                            "tag" : [tag]
+                            ] as [String : Any]
+                        Alamofire.AF.request("\(Config.baseURL)/api/products/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+                            (response) in switch response.result {
+                            case .success(let JSON):
+                                print("SUCESS UPLOAD! \(JSON)")
+                                let nextVC = TabBarController()
+                                self.navigationController?.pushViewController(nextVC, animated: true)
+                            case .failure(let error):
+                                print("THERE!")
+                                print("Request failed with error: \(error)")
+                                
+                            }
                         }
                     }
                 }
@@ -722,6 +723,7 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         btn.backgroundColor = .black
         btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         btn.addTarget(self, action: #selector(upload), for: .touchUpInside)
+        btn.isEnabled = true
         return btn
     }()
 }

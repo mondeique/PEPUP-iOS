@@ -22,6 +22,7 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     var productpriceArray: Array<Array<Int>> = []
     var totalPrice: Int = 0
     var trades : Array<Array<Int>> = []
+    var removeidArray : Array<Int> = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,38 +53,15 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         let statusBarHeight: CGFloat! = screenHeight/defaultHeight * 20
         let navBarHeight: CGFloat! = navigationController?.navigationBar.frame.height
         
-        let navcontentView: UIView = {
-            let view = UIView()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.backgroundColor = .white
-            return view
-        }()
-
-        let btnClose: UIButton = {
-            let btn = UIButton()
-            btn.setImage(UIImage(named: "btnClose"), for: .normal)
-            btn.translatesAutoresizingMaskIntoConstraints = false
-            btn.addTarget(self, action: #selector(back), for: .touchUpInside)
-            return btn
-        }()
-        
-        let cartLabel: UILabel = {
-            let label = UILabel()
-            label.translatesAutoresizingMaskIntoConstraints = false
-            label.text = "C A R T"
-            label.font = UIFont(name: "AppleSDGothicNeo-Heavy", size: 17)
-            label.textColor = .black
-            label.textAlignment = .center
-            return label
-        }()
-        
         navcontentView.addSubview(btnClose)
         navcontentView.addSubview(cartLabel)
+        navcontentView.addSubview(editButton)
         
         self.view.addSubview(navcontentView)
         
         navcontentView.topAnchor.constraint(equalTo: view.topAnchor, constant: screenHeight/defaultHeight * statusBarHeight).isActive = true
         navcontentView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        navcontentView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         navcontentView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
         navcontentView.heightAnchor.constraint(equalToConstant: navBarHeight).isActive = true
         
@@ -94,6 +72,11 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         
         cartLabel.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
         cartLabel.centerXAnchor.constraint(equalTo: navcontentView.centerXAnchor).isActive = true
+        
+        editButton.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 14).isActive = true
+        editButton.rightAnchor.constraint(equalTo: navcontentView.rightAnchor, constant: screenWidth/defaultWidth * -18).isActive = true
+        editButton.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 50).isActive = true
+        editButton.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 22).isActive = true
         
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
@@ -129,13 +112,89 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         emptyLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 19).isActive = true
         
         self.view.addSubview(btnPayment)
+        self.view.addSubview(btnAllDelete)
         
         btnPayment.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant:screenWidth/defaultWidth * 18).isActive = true
         btnPayment.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant:screenHeight/defaultHeight * -8).isActive = true
         btnPayment.widthAnchor.constraint(equalToConstant:screenWidth/defaultWidth * 339).isActive = true
         btnPayment.heightAnchor.constraint(equalToConstant:screenWidth/defaultWidth * 56).isActive = true
         
+        btnAllDelete.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant:screenWidth/defaultWidth * 18).isActive = true
+        btnAllDelete.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant:screenHeight/defaultHeight * -8).isActive = true
+        btnAllDelete.widthAnchor.constraint(equalToConstant:screenWidth/defaultWidth * 339).isActive = true
+        btnAllDelete.heightAnchor.constraint(equalToConstant:screenWidth/defaultWidth * 56).isActive = true
+        
     }
+    
+    @objc func edit() {
+        if editButton.currentTitle == "Edit" {
+            editButton.setTitle("Done", for: .normal)
+            btnPayment.isHidden = true
+            btnAllDelete.isHidden = false
+            setup()
+        }
+        else {
+            editButton.setTitle("Edit", for: .normal)
+            btnPayment.isHidden = false
+            btnAllDelete.isHidden = true
+            
+            let parameters = [
+                "trades" : removeidArray
+            ]
+            Alamofire.AF.request("\(Config.baseURL)/api/trades/cancel/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+                (response) in switch response.result {
+                case .success(let JSON):
+                    print("\(JSON)")
+
+                case .failure(let error):
+                    print("Request failed with error: \(error)")
+                }
+            }
+            if productDatas.count == 0 {
+                emptyImg.isHidden = false
+                emptyLabel.isHidden = false
+                btnPayment.setTitle("총 0원 구매하기", for: .normal)
+            }
+            setup()
+        }
+    }
+    
+    let navcontentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        return view
+    }()
+
+    let btnClose: UIButton = {
+        let btn = UIButton()
+        btn.setImage(UIImage(named: "btnClose"), for: .normal)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(back), for: .touchUpInside)
+        return btn
+    }()
+    
+    let cartLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "C A R T"
+        label.font = UIFont(name: "AppleSDGothicNeo-Heavy", size: 17)
+        label.textColor = .black
+        label.textAlignment = .center
+        return label
+    }()
+    
+    let editButton: UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setTitle("Edit", for: .normal)
+        btn.setTitleColor(.black, for: .normal)
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNoe-Regular", size: 16)
+        btn.titleLabel?.textAlignment = .right
+        btn.backgroundColor = .clear
+        btn.addTarget(self, action: #selector(edit), for: .touchUpInside)
+        return btn
+    }()
     
     let emptyImg: UIImageView = {
         let image = UIImageView()
@@ -171,7 +230,21 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         return btn
     }()
     
-    
+    let btnAllDelete : UIButton = {
+        let btn = UIButton()
+        btn.backgroundColor = .black
+        btn.layer.cornerRadius = 3
+        btn.clipsToBounds = true
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.layer.cornerRadius = 3
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
+        btn.setTitleColor(.white, for: .normal)
+        btn.addTarget(self, action: #selector(deleteallstore), for: .touchUpInside)
+        btn.setTitle("전체 스토어 삭제하기", for: .normal)
+        btn.isHidden = true
+        return btn
+    }()
+
     func getData() {
         sellerDatas = Array<NSDictionary>()
         productDatas = Array<Array<NSDictionary>>()
@@ -234,6 +307,14 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         let sellerDictionary = self.sellerDatas[indexPath.section] as NSDictionary
         let totalproductDatas = sellerDictionary.object(forKey: "products") as! Array<NSDictionary>
         let trade_id = totalproductDatas[indexPath.row].object(forKey: "trade_id") as! Int
+        if self.editButton.currentTitle == "Edit" {
+            cell.deleteButton.isHidden = true
+        }
+        else {
+            cell.deleteButton.isHidden = false
+            cell.deleteButton.tag = (indexPath.section * 1000) + indexPath.row
+            cell.deleteButton.addTarget(self, action: #selector(deleteitem(_:)), for: .touchUpInside)
+        }
 //        if count > indexPath.row {
         trades[indexPath.section][indexPath.row] = trade_id
 //        }
@@ -306,12 +387,22 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                 DispatchQueue.main.async {
                     footerView.productpriceInfoLabel.text = String(productPrice) + "원"
                     footerView.productdeliveryInfoLabel.text = String(delivery_charge) + "원"
-                    footerView.btnPayment.setTitle("총 " + String(productPrice + delivery_charge)+"원 구매하기", for: .normal)
-//                    self.totalPrice = self.totalPrice + delivery_charge
-                    self.totalPrice = self.settotalprice()
-                    self.btnPayment.setTitle("총 \(String(self.totalPrice))원 구매하기", for: .normal)
-                    footerView.btnPayment.tag = indexPath.section
-                    footerView.btnPayment.addTarget(self, action: #selector(self.payment(_:)), for: .touchUpInside)
+                    if self.editButton.currentTitle == "Edit" {
+                        footerView.btnPayment.setTitle("총 " + String(productPrice + delivery_charge)+"원 구매하기", for: .normal)
+    //                    self.totalPrice = self.totalPrice + delivery_charge
+                        self.totalPrice = self.settotalprice()
+                        self.btnPayment.setTitle("총 \(String(self.totalPrice))원 구매하기", for: .normal)
+                        footerView.btnPayment.tag = indexPath.section
+                        footerView.btnPayment.addTarget(self, action: #selector(self.payment(_:)), for: .touchUpInside)
+                        footerView.btnDelete.isHidden = true
+                        footerView.btnPayment.isHidden = false
+                    }
+                    else {
+                        footerView.btnPayment.isHidden = true
+                        footerView.btnDelete.isHidden = false
+                        footerView.btnDelete.tag = indexPath.section
+                        footerView.btnDelete.addTarget(self, action: #selector(self.deletestore(_:)), for: .touchUpInside)
+                    }
                 }
                 return footerView
 
@@ -351,6 +442,72 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         let nextVC = PaymentVC()
         nextVC.trades = trades[sender.tag]
         self.navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    @objc func deleteitem(_ sender: UIButton) {
+        print(sender.tag)
+        let row = sender.tag % 1000
+        let section = sender.tag / 1000
+        print(row)
+        print(section)
+//        let removeBaseDic = sellerDatas[section]
+//        let removeproductDatas = removeBaseDic.object(forKey: "products") as! Array<NSDictionary>
+//        let removeDic = removeproductDatas[row]
+//        let removeid = removeDic.object(forKey: "trade_id") as! Int
+//        removeidArray.append(removeid)
+//        sellerDatas.remove(at: section)
+//        productDatas[section].remove(at: row)
+//        productpriceArray[section].remove(at: row)
+//        cartCollectionView.deleteItems(at: [IndexPath(row: row, section: section)])
+//        cartCollectionView.reloadData()
+    }
+    
+    @objc func deletestore(_ sender: UIButton) {
+        
+        let removeBaseDic = sellerDatas[sender.tag]
+        let removeproductDatas = removeBaseDic.object(forKey: "products") as! Array<NSDictionary>
+        for i in 0..<removeproductDatas.count {
+            let removeDic = removeproductDatas[i]
+            let removeid = removeDic.object(forKey: "trade_id") as! Int
+            removeidArray.append(removeid)
+        }
+        sellerDatas.remove(at: sender.tag)
+        productDatas.remove(at: sender.tag)
+        productpriceArray.remove(at: sender.tag)
+        cartCollectionView.deleteSections(NSIndexSet(index: sender.tag) as IndexSet)
+        cartCollectionView.reloadData()
+    }
+    
+    @objc func deleteallstore() {
+        for i in 0..<sellerDatas.count {
+            if i == 0 {
+                let removeBaseDic = sellerDatas[i]
+                let removeproductDatas = removeBaseDic.object(forKey: "products") as! Array<NSDictionary>
+                for i in 0..<removeproductDatas.count {
+                    let removeDic = removeproductDatas[i]
+                    let removeid = removeDic.object(forKey: "trade_id") as! Int
+                    removeidArray.append(removeid)
+                }
+                sellerDatas.remove(at: i)
+                productDatas.remove(at: i)
+                productpriceArray.remove(at: i)
+                cartCollectionView.deleteSections(NSIndexSet(index: i) as IndexSet)
+            }
+            else {
+                let removeBaseDic = sellerDatas[i-1]
+                let removeproductDatas = removeBaseDic.object(forKey: "products") as! Array<NSDictionary>
+                for i in 0..<removeproductDatas.count {
+                    let removeDic = removeproductDatas[i]
+                    let removeid = removeDic.object(forKey: "trade_id") as! Int
+                    removeidArray.append(removeid)
+                }
+                sellerDatas.remove(at: i-1)
+                productDatas.remove(at: i-1)
+                productpriceArray.remove(at: i-1)
+                cartCollectionView.deleteSections(NSIndexSet(index: i-1) as IndexSet)
+            }
+        }
+        cartCollectionView.reloadData()
     }
     
     @objc func totalpayment() {

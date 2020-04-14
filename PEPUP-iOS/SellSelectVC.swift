@@ -23,22 +23,24 @@ class SellSelectVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setup()
         if PHPhotoLibrary.authorizationStatus() == .authorized {
             setup()
         }
-        else {
+        else if PHPhotoLibrary.authorizationStatus() == .denied{
             self.photopermissionAlert()
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        UserDefaults.standard.set(-1, forKey: "first_category")
         UserDefaults.standard.set("", forKey: "second_category")
         UserDefaults.standard.set(-1, forKey: "second_category_id")
         UserDefaults.standard.set("", forKey: "size")
         UserDefaults.standard.set(-1, forKey: "size_id")
         UserDefaults.standard.set("", forKey: "brand")
         UserDefaults.standard.set(-1, forKey: "brand_id")
-//        UserDefaults.standard.set("", forKey: "tag")
+        UserDefaults.standard.set("", forKey: "tag")
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
         self.tabBarController?.tabBar.isHidden = true

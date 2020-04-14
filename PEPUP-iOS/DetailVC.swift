@@ -112,6 +112,7 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         btnCart.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 50).isActive = true
         btnCart.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         btnCart.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 0).isActive = true
+        btnCart.isEnabled = true
         
         btnCartBag.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: screenHeight/defaultHeight * 20).isActive = true
         btnCartBag.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 337).isActive = true
@@ -664,11 +665,11 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         if btnCart.isHidden == false {
             btnCart.isHidden = true
             btnCartBag.isHidden = false
-            btnCartBag.isEnabled = false
+            btnCartBag.isEnabled = true
             btnCart.isEnabled = false
         }
         else {
-            btnCart.isEnabled = false
+            btnCart.isEnabled = true
             btnCartBag.isEnabled = false
         }
         let seller_id = self.sellerDatas.object(forKey: "id") as! Int
@@ -997,7 +998,7 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
     
     let sellerStarImage: UIImageView = {
         let image = UIImageView()
-        image.image = UIImage(named: "Star")
+        image.image = UIImage(named: "star")
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
