@@ -66,6 +66,7 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
         followcollectionView.register(FollowCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         followcollectionView.register(FollowHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: followheaderId)
         followcollectionView.register(FollowFooterCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: followfooterId)
+        followcollectionView.alwaysBounceVertical = true
         followcollectionView.backgroundColor = UIColor.white
         
         navcontentView.addSubview(btnCart)
@@ -101,6 +102,19 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
         followcollectionView.topAnchor.constraint(equalTo: navcontentView.bottomAnchor).isActive = true
         followcollectionView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
         
+        self.view.addSubview(emptyImg)
+        self.view.addSubview(emptyLabel)
+        
+        emptyImg.centerXAnchor.constraint(equalTo:followcollectionView.centerXAnchor).isActive = true
+        emptyImg.topAnchor.constraint(equalTo:followcollectionView.topAnchor, constant: UIScreen.main.bounds.height/667 * 221).isActive = true
+        emptyImg.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 42).isActive = true
+        emptyImg.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 42).isActive = true
+    
+        emptyLabel.centerXAnchor.constraint(equalTo:followcollectionView.centerXAnchor).isActive = true
+        emptyLabel.topAnchor.constraint(equalTo:emptyImg.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 23).isActive = true
+//        emptyLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 40).isActive = true
+        emptyLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 19).isActive = true
+        
         followcollectionView.addSubview(refreshControl)
     }
     
@@ -132,6 +146,27 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
         return label
     }()
     
+    let emptyImg: UIImageView = {
+        let image = UIImageView()
+        image.image = UIImage(named: "follow_empty")
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.isHidden = true
+        return image
+    }()
+    
+    let emptyLabel: UILabel = {
+        let label = UILabel()
+        label.text = "팔로우한 스토어가 없어요"
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
+        label.textAlignment = .center
+        label.textColor = .black
+        label.alpha = 0.3
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.isHidden = true
+        return label
+    }()
+    
+    
     
     // MARK: UICollectionViewDataSource
 
@@ -146,6 +181,7 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
     }
     
     func getData(pagenum: Int) {
+        showSpinner(onView: self.view)
         Alamofire.AF.request("\(Config.baseURL)/api/follow/?page=" + String(pagenum) , method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
             (response) in switch response.result {
             case .success(let JSON):
@@ -155,9 +191,18 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
                 for i in 0..<products.count {
                     self.productDatas.append(products[i])
                 }
+                if self.productDatas.count == 0 {
+                    self.emptyImg.isHidden = false
+                    self.emptyLabel.isHidden = false
+                }
+                else {
+                    self.emptyImg.isHidden = true
+                    self.emptyLabel.isHidden = true
+                }
                 DispatchQueue.main.async {
                     self.followcollectionView.reloadData()
                 }
+                self.removeSpinner()
             case .failure(let error):
                 print("Request failed with error: \(error)")
             }
@@ -203,8 +248,7 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
                 else {
                     let productDic = self.productDatas[indexPath.section] as NSDictionary
                     let sellerInfoDic = productDic.object(forKey: "seller") as! NSDictionary
-                    if let profileDic = sellerInfoDic.object(forKey: "profile") as? NSDictionary {
-                        let sellerUrlString = profileDic.object(forKey: "thumbnail_img") as! String
+                    if let sellerUrlString = sellerInfoDic.object(forKey: "profile") as? String {
                         let imageUrl:NSURL = NSURL(string: sellerUrlString)!
                         let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
                         let image = UIImage(data: imageData as Data)
@@ -387,8 +431,7 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
         let sellerName = sellerInfoDic.object(forKey: "nickname") as! String
         nextVC.destinationUid = String(sellerId)
         nextVC.destinationName = sellerName
-        if let sellerImgDic = sellerInfoDic.object(forKey: "profile") as? NSDictionary {
-            let sellerUrlString = sellerImgDic.object(forKey: "thumbnail_img") as! String
+        if let sellerUrlString = sellerInfoDic.object(forKey: "profile") as? String {
             nextVC.destinationUrlString = sellerUrlString
         }
         if UserDefaults.standard.object(forKey: "pk") as! Int == sellerId {

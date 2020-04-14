@@ -476,8 +476,7 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
             productimage.image = image
             productScrollView.addSubview(productimage)
         }
-        if let sellerImgDic = self.sellerDatas.object(forKey: "profile") as? NSDictionary {
-            let sellerUrlString = sellerImgDic.object(forKey: "thumbnail_img") as! String
+        if let sellerUrlString = self.sellerDatas.object(forKey: "profile") as? String {
             let imageUrl:NSURL = NSURL(string: sellerUrlString)!
             let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
             let image = UIImage(data: imageData as Data)
@@ -573,7 +572,7 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         if let nickname = self.sellerDatas.object(forKey: "nickname") as? String {
             sellerNameLabel.text = nickname
         }
-        if let review = self.sellerDatas.object(forKey: "review_score") as? Int {
+        if let review = self.sellerDatas.object(forKey: "review_score") as? Float {
             sellerReviewLabel.text = String(review) + " / 5"
         }
         if let sold = self.sellerDatas.object(forKey: "sold") as? Int {
@@ -620,8 +619,7 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         let sellerName = self.sellerDatas.object(forKey: "nickname") as! String
         nextVC.destinationUid = String(sellerId)
         nextVC.destinationName = sellerName
-        if let sellerImgDic = self.sellerDatas.object(forKey: "profile") as? NSDictionary {
-            let sellerUrlString = sellerImgDic.object(forKey: "thumbnail_img") as! String
+        if let sellerUrlString = self.sellerDatas.object(forKey: "profile") as? String {
             nextVC.destinationUrlString = sellerUrlString
         }
         self.navigationController?.pushViewController(nextVC, animated: true)

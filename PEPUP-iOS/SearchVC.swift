@@ -174,8 +174,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         else if indexPath.section == 1 && self.tag_result.count == 0 {
             cell.cellcontentView.isHidden = true
             let sellerDic = self.seller_result[indexPath.row] as NSDictionary
-            let profileDic = sellerDic.object(forKey: "profile") as! NSDictionary
-            let ImageUrlString = profileDic.object(forKey: "thumbnail_img") as! String
+            let ImageUrlString = sellerDic.object(forKey: "profile") as! String
             let imageUrl:NSURL = NSURL(string: ImageUrlString)!
             let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
             let image = UIImage(data: imageData as Data)
@@ -196,8 +195,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         else if indexPath.section == 2{
             cell.cellcontentView.isHidden = true
             let sellerDic = self.seller_result[indexPath.row] as NSDictionary
-            let profileDic = sellerDic.object(forKey: "profile") as! NSDictionary
-            let ImageUrlString = profileDic.object(forKey: "thumbnail_img") as! String
+            let ImageUrlString = sellerDic.object(forKey: "profile") as! String
             let imageUrl:NSURL = NSURL(string: ImageUrlString)!
             let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
             let image = UIImage(data: imageData as Data)

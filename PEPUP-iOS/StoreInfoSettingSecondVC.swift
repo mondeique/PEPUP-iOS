@@ -18,6 +18,8 @@ class StoreInfoSettingSecondVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -32,6 +34,10 @@ class StoreInfoSettingSecondVC: UIViewController {
         self.navigationController?.navigationBar.isHidden = false
         self.tabBarController?.tabBar.isHidden = true
         self.tabBarController?.tabBar.isTranslucent = true
+    }
+    
+    @objc func dismissKeyboard() {
+        self.view.endEditing(true)
     }
     
     func setup() {
@@ -197,6 +203,7 @@ class StoreInfoSettingSecondVC: UIViewController {
         txtView.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtView.textColor = UIColor(rgb: 0xEBEBF6)
         txtView.text = "배송비를 설정해주세요"
+        txtView.keyboardType = .decimalPad
         return txtView
     }()
     
@@ -222,6 +229,7 @@ class StoreInfoSettingSecondVC: UIViewController {
         txtView.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtView.textColor = UIColor(rgb: 0xEBEBF6)
         txtView.text = "도서산간지역 배송비를 설정해주세요"
+        txtView.keyboardType = .decimalPad
         return txtView
     }()
     

@@ -32,6 +32,7 @@ class MyStoreReviewCell: BaseCollectionViewCell, UICollectionViewDelegate, UICol
         let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - UIScreen.main.bounds.height/667 * 130), collectionViewLayout: layout)
         collectionView.backgroundColor = .white
         collectionView.isHidden = false
+        collectionView.alwaysBounceVertical = true
         return collectionView
     }()
     
@@ -103,8 +104,7 @@ class MyStoreReviewCell: BaseCollectionViewCell, UICollectionViewDelegate, UICol
             let productimage = UIImage(data: productimageData as Data)
             cell.productImg.image = productimage
         }
-        if let buyerImgDic = reviewDictionary.object(forKey: "buyer_profile") as? NSDictionary {
-            let imageUrlString = buyerImgDic.object(forKey: "thumbnail_img") as! String
+        if let imageUrlString = reviewDictionary.object(forKey: "buyer_profile") as? String {
             let imageUrl:NSURL = NSURL(string: imageUrlString)!
             let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
             let image = UIImage(data: imageData as Data)
@@ -130,8 +130,7 @@ class MyStoreReviewCell: BaseCollectionViewCell, UICollectionViewDelegate, UICol
                     if let satisfactions = sellerInfoDic.object(forKey: "review_score") as? Int {
                         headerView.cosmosView.rating = Double(satisfactions)
                     }
-                    if let sellerImgDic = sellerInfoDic.object(forKey: "profile") as? NSDictionary {
-                        let imageUrlString = sellerImgDic.object(forKey: "thumbnail_img") as! String
+                    if let imageUrlString = sellerInfoDic.object(forKey: "profile") as? String {
                         let imageUrl:NSURL = NSURL(string: imageUrlString)!
                         let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
                         DispatchQueue.main.async {

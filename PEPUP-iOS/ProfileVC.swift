@@ -135,8 +135,6 @@ class ProfileVC: UIViewController {
         btnProfileImageLayout()
         profileLabelLayout()
         btnCheckLayout()
-        
-        
     }
     
     // MARK: Set Layout of each view
@@ -167,6 +165,7 @@ class ProfileVC: UIViewController {
         btnProfileImage.leftAnchor.constraint(equalTo:profileContentView.leftAnchor, constant:120).isActive = true
         btnProfileImage.widthAnchor.constraint(equalToConstant:120).isActive = true
         btnProfileImage.heightAnchor.constraint(equalToConstant:120).isActive = true
+        btnProfileImage.centerXAnchor.constraint(equalTo: profileContentView.centerXAnchor).isActive = true
     }
     
     func btnCheckLayout() {
@@ -174,6 +173,7 @@ class ProfileVC: UIViewController {
         btnCheck.leftAnchor.constraint(equalTo:profileContentView.leftAnchor, constant:18).isActive = true
         btnCheck.widthAnchor.constraint(equalToConstant:339).isActive = true
         btnCheck.heightAnchor.constraint(equalToConstant:56).isActive = true
+        btnCheck.centerXAnchor.constraint(equalTo: profileContentView.centerXAnchor).isActive = true
     }
 }
 

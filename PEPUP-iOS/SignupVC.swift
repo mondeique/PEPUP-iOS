@@ -118,7 +118,7 @@ class SignupVC: UIViewController {
 
     private let pwordTxtField: TextField = {
         let txtField = TextField()
-        txtField.placeholder = " 비밀번호 8자 이상"
+        txtField.placeholder = " 비밀번호 8자 이상, 특수문자 사용 불가"
         txtField.backgroundColor = .white
         txtField.layer.cornerRadius = 3
         txtField.layer.borderWidth = 1.0

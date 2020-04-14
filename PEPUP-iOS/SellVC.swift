@@ -327,6 +327,7 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     }
     
     @objc func upload() {
+        self.showSpinner(onView: self.view)
         self.keyArray = []
         for i in 0..<imageData.count {
             Alamofire.AF.request("\(Config.baseURL)/api/s3/temp_key/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
@@ -339,7 +340,7 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                     let key = response.object(forKey: "key") as! String
                     print("KEY IS \(key)")
                     self.keyArray.append(key)
-                    print(self.keyArray)
+                    print(self.keyArray!)
                     let content_type = response.object(forKey: "content_type") as! String
                     if let upload_image = self.imageData[i]?.jpegData(compressionQuality: 1){
                         let parameters = [
@@ -362,7 +363,7 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                 }
             }
         }
-        let seconds = 1.5
+        let seconds = 2.0
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
             guard let key_Array = self.keyArray else {
                 return
@@ -410,6 +411,7 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                         Alamofire.AF.request("\(Config.baseURL)/api/products/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
                             (response) in switch response.result {
                             case .success(let JSON):
+                                self.removeSpinner()
                                 print("SUCESS UPLOAD! \(JSON)")
                                 let nextVC = TabBarController()
                                 self.navigationController?.pushViewController(nextVC, animated: true)

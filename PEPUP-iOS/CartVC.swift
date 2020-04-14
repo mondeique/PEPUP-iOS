@@ -357,9 +357,8 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                 let sellerDictionary = self.sellerDatas[indexPath.section] as NSDictionary
                 let sellerInfoDic = sellerDictionary.object(forKey: "seller") as! NSDictionary
                 let sellerName = sellerInfoDic.object(forKey: "nickname") as! String
-                let sellerprofileDic = sellerInfoDic.object(forKey: "profile") as! NSDictionary
+                let imageUrlString = sellerInfoDic.object(forKey: "profile") as! String
                 let sellerID = sellerInfoDic.object(forKey: "id") as! Int
-                let imageUrlString = sellerprofileDic.object(forKey: "thumbnail_img") as! String
                 let imageUrl:NSURL = NSURL(string: imageUrlString)!
                 let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
 
@@ -373,6 +372,7 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                     headerView.btnsellerName.setTitle(sellerName, for: .normal)
                     headerView.btnsellerProfile.tag = sellerID
                     headerView.btnsellerName.tag = sellerID
+                    UserDefaults.standard.set(sellerID, forKey: "sellerId")
                     headerView.btnsellerProfile.addTarget(self, action: #selector(self.sellerstore(_:)), for: .touchUpInside)
                     headerView.btnsellerName.addTarget(self, action: #selector(self.sellerstore(_:)), for: .touchUpInside)
                 }
@@ -544,28 +544,28 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             return CGSize(width: collectionView.frame.width, height: UIScreen.main.bounds.height/667 * 164.0)
     }
     
-    func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-        let removeBaseDic = sellerDatas[indexPath.section]
-        let removeproductDatas = removeBaseDic.object(forKey: "products") as! Array<NSDictionary>
-        let removeDic = removeproductDatas[indexPath.row]
-        let removeid = removeDic.object(forKey: "trade_id") as! Int
-        let parameters = [
-            "trades" : [removeid]
-        ]
-        Alamofire.AF.request("\(Config.baseURL)/api/trades/cancel/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-            (response) in switch response.result {
-            case .success(let JSON):
-                print("\(JSON)")
-                
-            case .failure(let error):
-                print("Request failed with error: \(error)")
-            }
-        }
-        productDatas[indexPath.section].remove(at: indexPath.row)
-        productpriceArray[indexPath.section].remove(at: indexPath.row)
-        btnPayment.setTitle("총 0원 구매하기", for: .normal)
-        collectionView.deleteItems(at: [IndexPath(row: indexPath.row, section: indexPath.section)])
-        getData()
-    }
+//    func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
+//        let removeBaseDic = sellerDatas[indexPath.section]
+//        let removeproductDatas = removeBaseDic.object(forKey: "products") as! Array<NSDictionary>
+//        let removeDic = removeproductDatas[indexPath.row]
+//        let removeid = removeDic.object(forKey: "trade_id") as! Int
+//        let parameters = [
+//            "trades" : [removeid]
+//        ]
+//        Alamofire.AF.request("\(Config.baseURL)/api/trades/cancel/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+//            (response) in switch response.result {
+//            case .success(let JSON):
+//                print("\(JSON)")
+//                
+//            case .failure(let error):
+//                print("Request failed with error: \(error)")
+//            }
+//        }
+//        productDatas[indexPath.section].remove(at: indexPath.row)
+//        productpriceArray[indexPath.section].remove(at: indexPath.row)
+//        btnPayment.setTitle("총 0원 구매하기", for: .normal)
+//        collectionView.deleteItems(at: [IndexPath(row: indexPath.row, section: indexPath.section)])
+//        getData()
+//    }
 }
 

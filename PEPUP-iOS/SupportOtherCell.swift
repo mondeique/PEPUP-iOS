@@ -128,7 +128,7 @@ class SupportOtherMainCell: BaseCollectionViewCell {
     let btnDown: UIButton = {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setImage(UIImage(named: "disclosure_indicator_faq"), for: .normal)
+        btn.setImage(UIImage(named: "btnGO"), for: .normal)
         btn.isHidden = false
         return btn
     }()

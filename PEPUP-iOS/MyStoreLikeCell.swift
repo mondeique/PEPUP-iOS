@@ -31,6 +31,7 @@ class MyStoreLikeCell: BaseCollectionViewCell, UICollectionViewDelegate, UIColle
         let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - UIScreen.main.bounds.height/667 * 150), collectionViewLayout: layout)
         collectionView.backgroundColor = .white
         collectionView.isHidden = false
+        collectionView.alwaysBounceVertical = true
         return collectionView
     }()
     

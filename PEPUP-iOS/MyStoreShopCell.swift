@@ -32,6 +32,7 @@ class MyStoreShopCell: BaseCollectionViewCell, UICollectionViewDelegate, UIColle
         let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - UIScreen.main.bounds.height/667 * 150 - UIScreen.main.bounds.height/667 * 20), collectionViewLayout: layout)
         collectionView.backgroundColor = .white
         collectionView.isHidden = false
+        collectionView.alwaysBounceVertical = true
         return collectionView
     }()
     
@@ -111,8 +112,7 @@ class MyStoreShopCell: BaseCollectionViewCell, UICollectionViewDelegate, UIColle
 
             case UICollectionView.elementKindSectionHeader:
                 let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: myshopheaderId, for: indexPath) as! MyShopHeaderCell
-                if let sellerImgDic = sellerInfoDatas.object(forKey: "profile") as? NSDictionary {
-                    let imageUrlString = sellerImgDic.object(forKey: "thumbnail_img") as! String
+                if let imageUrlString = sellerInfoDatas.object(forKey: "profile") as? String {
                     let imageUrl:NSURL = NSURL(string: imageUrlString)!
                     let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
                     let image = UIImage(data: imageData as Data)

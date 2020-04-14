@@ -42,6 +42,8 @@ class StoreVC: UIViewController, CustomMenuBarDelegate{
         let statusBarHeight: CGFloat! = UIScreen.main.bounds.height/defaultHeight * 20
         let navBarHeight: CGFloat! = navigationController?.navigationBar.frame.height
         
+        print("I AM \(SellerID)!!!!!")
+        
         navcontentView.addSubview(btnBack)
         navcontentView.addSubview(productNameLabel)
         

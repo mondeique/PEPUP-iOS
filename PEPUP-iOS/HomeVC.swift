@@ -56,6 +56,7 @@ class HomeVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         homecollectionView.dataSource = self
         homecollectionView.register(HomeCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         homecollectionView.register(HomeHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
+        homecollectionView.alwaysBounceVertical = true
         
         self.view.addSubview(homecontentView)
         
@@ -151,22 +152,23 @@ class HomeVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             let imageUrlString = productImgDic.object(forKey: "thumbnail") as! String
             let imageUrl:NSURL = NSURL(string: imageUrlString)!
             DispatchQueue.global(qos: .userInitiated).async {
-                let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
-                DispatchQueue.main.async {
-                    let image = UIImage(data: imageData as Data)
-                    cell.productImg.image = image
-                    if is_sold == true {
-                        cell.soldLabel.isHidden = false
-                    }
-                    else {
-                        cell.soldLabel.isHidden = true
-                    }
-                    let is_refundable = productDictionary.object(forKey: "is_refundable") as! Bool
-                    if is_refundable == true {
-                        cell.pepuptag.isHidden = false
-                    }
-                    else {
-                        cell.pepuptag.isHidden = true
+                if let imageData = NSData(contentsOf: imageUrl as URL)! as? NSData {
+                    DispatchQueue.main.async {
+                        let image = UIImage(data: imageData as Data)
+                        cell.productImg.image = image
+                        if is_sold == true {
+                            cell.soldLabel.isHidden = false
+                        }
+                        else {
+                            cell.soldLabel.isHidden = true
+                        }
+                        let is_refundable = productDictionary.object(forKey: "is_refundable") as! Bool
+                        if is_refundable == true {
+                            cell.pepuptag.isHidden = false
+                        }
+                        else {
+                            cell.pepuptag.isHidden = true
+                        }
                     }
                 }
             }

@@ -24,14 +24,14 @@ class NickNameVC: UIViewController {
     
     // MARK: Declare each view programmatically
     
-    private let nicknameContentView: UIView = {
+    let nicknameContentView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
         return view
     }()
     
-    private let btnBack: UIButton = {
+    let btnBack: UIButton = {
         let btn = UIButton()
         btn.backgroundColor = .white
         btn.setImage(UIImage(named: "btnBack"), for: .normal)
@@ -41,7 +41,7 @@ class NickNameVC: UIViewController {
         return btn
     }()
     
-    private let nicknameLabel: UILabel = {
+    let nicknameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "닉네임"
@@ -51,7 +51,7 @@ class NickNameVC: UIViewController {
         return label
     }()
     
-    private let nicknameTxtField: UITextField = {
+    let nicknameTxtField: UITextField = {
         let txtField = UITextField()
         txtField.placeholder = "닉네임을 입력하세요"
         txtField.backgroundColor = .white
@@ -63,7 +63,7 @@ class NickNameVC: UIViewController {
         return txtField
     }()
     
-    private let nicknameerrLabel: UILabel = {
+    let nicknameerrLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "이미 사용 중인 닉네임입니다."
@@ -71,6 +71,7 @@ class NickNameVC: UIViewController {
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         label.isHidden = true
         label.backgroundColor = .white
+        label.textAlignment = .center
         return label
     }()
     
@@ -84,7 +85,7 @@ class NickNameVC: UIViewController {
         btn.clipsToBounds = true
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(update), for: .touchUpInside)
-        btn.isEnabled = false
+        btn.isEnabled = true
         return btn
     }()
     
@@ -100,7 +101,7 @@ class NickNameVC: UIViewController {
         }
         
         if isValidNickName(nickname: nicknameText) {
-//            btnCheck.isEnabled = true
+            btnCheck.isEnabled = true
             let parameters: [String: String] = [
                 "nickname" : nicknameText
             ]
@@ -116,6 +117,7 @@ class NickNameVC: UIViewController {
                     }
                     else if code == -1 {
                         self.nicknameerrLabel.isHidden = false
+                        self.btnCheck.isEnabled = false
                     }
                 case .failure(let error):
                     print("Request failed with error: \(error)")
@@ -128,7 +130,7 @@ class NickNameVC: UIViewController {
         guard let nicknameText = nicknameTxtField.text else {
             return
         }
-        
+        btnCheck.isEnabled = true
         if isValidNickName(nickname: nicknameText) {
 //            btnCheck.isEnabled = true
             let parameters: [String: String] = [
@@ -219,9 +221,10 @@ class NickNameVC: UIViewController {
     
     func nicknameerrLabelLayout() {
         nicknameerrLabel.topAnchor.constraint(equalTo:nicknameTxtField.bottomAnchor, constant:6).isActive = true
-        nicknameerrLabel.leftAnchor.constraint(equalTo:nicknameContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 111).isActive = true
-        nicknameerrLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 153).isActive = true
+//        nicknameerrLabel.leftAnchor.constraint(equalTo:nicknameContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 111).isActive = true
+//        nicknameerrLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 153).isActive = true
         nicknameerrLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 16).isActive = true
+        nicknameerrLabel.centerXAnchor.constraint(equalTo: nicknameContentView.centerXAnchor).isActive = true
     }
     
     func btnCheckLayout() {

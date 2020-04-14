@@ -585,8 +585,7 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
                 let DataDic = orderproductDic[indexPath.section] as NSDictionary
                 let sellerInfoDic = DataDic.object(forKey: "seller") as! NSDictionary
                 let sellerName = sellerInfoDic.object(forKey: "nickname") as! String
-                let sellerprofileDic = sellerInfoDic.object(forKey: "profile") as! NSDictionary
-                let imageUrlString = sellerprofileDic.object(forKey: "thumbnail_img") as! String
+                let imageUrlString = sellerInfoDic.object(forKey: "profile") as! String
                 let imageUrl:NSURL = NSURL(string: imageUrlString)!
                 let imageData:NSData = NSData(contentsOf: imageUrl as URL)!
 

@@ -13,6 +13,8 @@ class StoreInfoSettingVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -27,6 +29,10 @@ class StoreInfoSettingVC: UIViewController {
         self.navigationController?.navigationBar.isHidden = false
         self.tabBarController?.tabBar.isHidden = true
         self.tabBarController?.tabBar.isTranslucent = true
+    }
+    
+    @objc func dismissKeyboard() {
+        self.view.endEditing(true)
     }
     
     func setup() {
