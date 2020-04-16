@@ -197,7 +197,6 @@ class EditProfileVC: UIViewController, UIImagePickerControllerDelegate,UINavigat
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             picker.dismiss(animated: false) {
-                print("ALSDKALSDKAJSLDKJASLDKJAS")
                 self.imageData = image
                 self.profileImage.setImage(image, for: .normal)
                 self.profileImage.layer.cornerRadius = self.profileImage.frame.height / 2
@@ -210,6 +209,15 @@ class EditProfileVC: UIViewController, UIImagePickerControllerDelegate,UINavigat
         dismiss(animated: true, completion: nil)
     }
     
+    func changeprofileAlert() {
+        let alertController = UIAlertController(title: nil, message: "회원정보가 변경되었습니다.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: { (action) in
+            let nextVC = MyStoreVC()
+            self.navigationController?.pushViewController(nextVC, animated: true)
+        }))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
     @objc func back() {
         self.navigationController?.popViewController(animated: true)
     }
@@ -220,19 +228,21 @@ class EditProfileVC: UIViewController, UIImagePickerControllerDelegate,UINavigat
         let nickname = nicknameTxtView.text
         let introduce = storedetailTxtView.text
         if self.imageData != nil {
-            if let upload_image = self.imageData.jpegData(compressionQuality: 1){
+            if let upload_image = self.imageData.jpegData(compressionQuality: 0.8){
                 let parameters = [
                     "nickname" : nickname,
                     "introduce" : introduce
-                ]
+                ] as! [String: String]
+                showSpinner(onView: self.view)
                 AF.upload(multipartFormData: { (multipartFormData) in
                     for(key,value) in parameters{
-                        print(value)
-                        multipartFormData.append(value!.data(using: String.Encoding.utf8)!, withName: key)
+                        multipartFormData.append(value.data(using: String.Encoding.utf8)!, withName: key)
                     }
                     multipartFormData.append(upload_image, withName: "profile_img", fileName: "image.jpeg", mimeType: "image/jpeg")
                 }, to: url, method: .put, headers: ["Authorization": UserDefaults.standard.object(forKey: "token") as! String]).responseData { (response) in
                     debugPrint("RESPONSE: \(response)")
+                    self.changeprofileAlert()
+                    self.removeSpinner()
                 }
             }
         }
@@ -241,14 +251,15 @@ class EditProfileVC: UIViewController, UIImagePickerControllerDelegate,UINavigat
                 "nickname" : nickname,
                 "introduce" : introduce
             ] as! [String: String]
-            Alamofire.AF.request("\(Config.baseURL)/api/profile/" + String(pk) + "/" , method: .put, parameters: parameters as Parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-                (response) in switch response.result {
-                case .success(let JSON):
-                    let response = JSON
-                    print(response)
-                case .failure(let error):
-                    print("Request failed with error: \(error)")
+            showSpinner(onView: self.view)
+            AF.upload(multipartFormData: { (multipartFormData) in
+                for(key,value) in parameters{
+                    multipartFormData.append(value.data(using: String.Encoding.utf8)!, withName: key)
                 }
+            }, to: url, method: .put, headers: ["Authorization": UserDefaults.standard.object(forKey: "token") as! String]).responseData { (response) in
+                debugPrint("RESPONSE: \(response)")
+                self.changeprofileAlert()
+                self.removeSpinner()
             }
         }
     }
@@ -322,6 +333,7 @@ class EditProfileVC: UIViewController, UIImagePickerControllerDelegate,UINavigat
         textView.layer.borderWidth = 1.0
         textView.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         textView.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
+        textView.textColor = .black
         return textView
     }()
     
@@ -343,6 +355,7 @@ class EditProfileVC: UIViewController, UIImagePickerControllerDelegate,UINavigat
         textView.layer.borderWidth = 1.0
         textView.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         textView.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
+        textView.textColor = .black
         return textView
     }()
     

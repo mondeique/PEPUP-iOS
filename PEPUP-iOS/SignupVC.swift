@@ -96,6 +96,7 @@ class SignupVC: UIViewController {
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
         txtField.addTarget(self, action: #selector(emailcheck), for: UIControl.Event.editingDidEnd)
+        txtField.textColor = .black
         return txtField
     }()
     
@@ -125,6 +126,7 @@ class SignupVC: UIViewController {
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
         txtField.addTarget(self, action: #selector(pwdcheck), for: UIControl.Event.editingChanged)
+        txtField.textColor = .black
         return txtField
     }()
     
@@ -137,6 +139,7 @@ class SignupVC: UIViewController {
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
         txtField.addTarget(self, action: #selector(againpwdcheck), for: UIControl.Event.editingChanged)
+        txtField.textColor = .black
         return txtField
     }()
     

@@ -121,10 +121,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     fileprivate func loadNickName() {
-        let controller = NickNameVC()
+        let controller = UINavigationController(rootViewController: LoginVC())
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = controller
         window?.makeKeyAndVisible()
+        let nextVC = NickNameVC()
+        controller.pushViewController(nextVC, animated: true)
     }
     
     func exitAlert() {

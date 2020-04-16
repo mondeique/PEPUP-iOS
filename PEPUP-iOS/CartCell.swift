@@ -208,7 +208,6 @@ class CartHeaderCell: BaseCollectionViewCell {
     let btnsellerProfile:UIButton = {
         let btn = UIButton()
         btn.backgroundColor = .white
-        btn.clipsToBounds = true
         btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
     }()
@@ -232,7 +231,7 @@ class CartHeaderCell: BaseCollectionViewCell {
 
     func btnsellerProfileLayout() {
         btnsellerProfile.leftAnchor.constraint(equalTo:cartheadercellContentView.leftAnchor, constant: UIScreen.main.bounds.width/375 * 18).isActive = true
-        btnsellerProfile.topAnchor.constraint(equalTo:cartheadercellContentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 6).isActive = true
+//        btnsellerProfile.topAnchor.constraint(equalTo:cartheadercellContentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 6).isActive = true
         btnsellerProfile.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 44).isActive = true
         btnsellerProfile.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 44).isActive = true
         btnsellerProfile.centerYAnchor.constraint(equalTo:cartheadercellContentView.centerYAnchor).isActive = true

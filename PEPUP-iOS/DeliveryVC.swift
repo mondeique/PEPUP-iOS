@@ -108,11 +108,6 @@ class DeliveryVC: UIViewController {
         deliveryTextView.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 339).isActive = true
         deliveryTextView.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 44).isActive = true
         
-        print(DeliveryCompany)
-        if DeliveryCompany != nil {
-            deliveryTextView.text = DeliveryCompany
-        }
-        
         deliveryfakeBtn.topAnchor.constraint(equalTo: deliveryTextView.topAnchor).isActive = true
         deliveryfakeBtn.leftAnchor.constraint(equalTo: deliveryTextView.leftAnchor).isActive = true
         deliveryfakeBtn.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 339).isActive = true
@@ -144,20 +139,30 @@ class DeliveryVC: UIViewController {
     }
     
     @objc func ok() {
-        let parameters = [
-            "code" : UserDefaults.standard.object(forKey: "Delivery_Company") as! String,
-            "number" : deliveryNumTextView.text!
-            ] as [String : Any]
-        Alamofire.AF.request("\(Config.baseURL)/api/sold/leave_waybill/" + String(Myid) , method: .post, parameters: parameters, encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-            (response) in switch response.result {
-            case .success(let JSON):
-                print(JSON)
+        if (UserDefaults.standard.object(forKey: "Delivery_Company") as! String) != nil {
+            let parameters = [
+                "code" : UserDefaults.standard.object(forKey: "Delivery_Company") as! String,
+                "number" : deliveryNumTextView.text!
+                ] as [String : Any]
+            Alamofire.AF.request("\(Config.baseURL)/api/sold/leave_waybill/" + String(Myid) , method: .post, parameters: parameters, encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+                (response) in switch response.result {
+                case .success(let JSON):
+                    print(JSON)
 
-            case .failure(let error):
-                print("Request failed with error: \(error)")
+                case .failure(let error):
+                    print("Request failed with error: \(error)")
+                }
             }
         }
-        print("OK")
+        else {
+            self.deliveryfailAlert()
+        }
+    }
+    
+    func deliveryfailAlert() {
+        let alertController = UIAlertController(title: nil, message: "택배사를 선택해주세요.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
     
     @objc func delivery() {
@@ -380,9 +385,6 @@ class DeliveryBottomSheetVC : UIViewController, UITableViewDelegate, UITableView
         let name = deliveryDic.object(forKey: "name") as! String
         let code = deliveryDic.object(forKey: "code") as! String
         UserDefaults.standard.set(code, forKey: "Delivery_Company")
-        print(name)
-        delegate?.DeliveryCompany = name
-        delegate?.setup()
         self.dismiss(animated: true, completion: nil)
     }
 }

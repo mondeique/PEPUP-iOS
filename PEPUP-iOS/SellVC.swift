@@ -340,9 +340,9 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                     let key = response.object(forKey: "key") as! String
                     print("KEY IS \(key)")
                     self.keyArray.append(key)
-                    print(self.keyArray!)
+                    print(self.keyArray)
                     let content_type = response.object(forKey: "content_type") as! String
-                    if let upload_image = self.imageData[i]?.jpegData(compressionQuality: 1){
+                    if let upload_image = self.imageData[i]?.jpegData(compressionQuality: 0.5){
                         let parameters = [
                             "key": image_key,
                             "content_type" : content_type
@@ -363,7 +363,7 @@ class SellVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                 }
             }
         }
-        let seconds = 2.0
+        let seconds = 3.0
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
             guard let key_Array = self.keyArray else {
                 return

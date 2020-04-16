@@ -64,6 +64,7 @@ class PhoneConfirmVC: UIViewController {
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
         txtField.keyboardType = .decimalPad
+        txtField.textColor = .black
         return txtField
     }()
     
@@ -89,6 +90,7 @@ class PhoneConfirmVC: UIViewController {
         txtField.translatesAutoresizingMaskIntoConstraints = false
         txtField.isEnabled = false
         txtField.keyboardType = .decimalPad
+        txtField.textColor = .black
         return txtField
     }()
     

@@ -11,7 +11,7 @@ import Alamofire
 
 class StoreInfoSettingSecondVC: UIViewController {
     
-    var bankId: Int!
+    var bankId = UserDefaults.standard.object(forKey: "bank_id") as! Int
     var accountnum: String!
     var accountname: String!
 
@@ -117,13 +117,12 @@ class StoreInfoSettingSecondVC: UIViewController {
     }
     
     @objc func back() {
-        let nextVC = TabBarController()
-        self.navigationController?.pushViewController(nextVC, animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     @objc func complete() {
         let parameters = [
-            "bank" : bankId!,
+            "bank" : bankId,
             "account" : Int(accountnum)!,
             "account_holder" : accountname!,
             "general" : origindeliverytxtView.text!,

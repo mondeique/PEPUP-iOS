@@ -369,6 +369,7 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                     headerView.btnsellerProfile.layer.borderColor = UIColor.clear.cgColor
                     headerView.btnsellerProfile.layer.borderWidth = 1
                     headerView.btnsellerProfile.clipsToBounds = true
+//                    headerView.btnsellerProfile.layer.masksToBounds = false
                     headerView.btnsellerName.setTitle(sellerName, for: .normal)
                     headerView.btnsellerProfile.tag = sellerID
                     headerView.btnsellerName.tag = sellerID

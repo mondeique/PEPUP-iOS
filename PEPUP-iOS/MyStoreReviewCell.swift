@@ -188,7 +188,7 @@ class MyReviewCell: BaseCollectionViewCell {
     let cosmosView: CosmosView = {
         let view = CosmosView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.settings.starSize = 16
+        view.settings.starSize = Double(UIScreen.main.bounds.width/375 * 16)
         view.settings.emptyColor = UIColor(rgb: 0xEBEBF6)
         view.settings.emptyBorderColor = UIColor(rgb: 0xEBEBF6)
         view.settings.filledBorderColor = .black

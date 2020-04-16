@@ -61,7 +61,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         follow.tabBarItem.image = #imageLiteral(resourceName: "follow_unselected")
         follow.tabBarItem.selectedImage = #imageLiteral(resourceName: "follow_selected")
         // Sell
-        var sell = UINavigationController(rootViewController: SellSelectVC())
+        var sell = UINavigationController(rootViewController: StoreInfoSettingVC())
         if let is_store = UserDefaults.standard.object(forKey: "exist_store") as? Bool {
             if is_store == true {
                 sell = UINavigationController(rootViewController: SellSelectVC())

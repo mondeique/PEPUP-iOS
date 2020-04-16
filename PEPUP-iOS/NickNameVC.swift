@@ -60,6 +60,7 @@ class NickNameVC: UIViewController {
         txtField.textAlignment = .center
         txtField.translatesAutoresizingMaskIntoConstraints = false
         txtField.addTarget(self, action: #selector(checknickname), for: UIControl.Event.editingChanged)
+        txtField.textColor = .black
         return txtField
     }()
     

@@ -7,8 +7,12 @@
 //
 
 import UIKit
+import Alamofire
+import MaterialComponents.MaterialBottomSheet
 
 class StoreInfoSettingVC: UIViewController {
+    
+    var bankid : Int!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,6 +81,13 @@ class StoreInfoSettingVC: UIViewController {
         banktxtView.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 44).isActive = true
         banktxtView.delegate = self
         
+        self.view.addSubview(bankbutton)
+        bankbutton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: screenWidth/defaultWidth * 25).isActive = true
+        bankbutton.topAnchor.constraint(equalTo: bankLabel.bottomAnchor, constant: screenHeight/defaultHeight * 8).isActive = true
+        bankbutton.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 325).isActive = true
+        bankbutton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        bankbutton.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 44).isActive = true
+        
         self.view.addSubview(accountnumLabel)
         accountnumLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: screenWidth/defaultWidth * 25).isActive = true
         accountnumLabel.topAnchor.constraint(equalTo: banktxtView.bottomAnchor, constant: screenHeight/defaultHeight * 18).isActive = true
@@ -121,7 +132,17 @@ class StoreInfoSettingVC: UIViewController {
         btnNext.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 48).isActive = true
         btnNext.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 325).isActive = true
         btnNext.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
+//        self.setinfo()
 
+    }
+    
+    func setinfo() {
+        if let bankid = UserDefaults.standard.object(forKey: "bank_id") as? Int {
+            if let bank = UserDefaults.standard.object(forKey: "bank") as? String{
+                banktxtView.text = bank
+            }
+        }
     }
     
     @objc func back() {
@@ -131,10 +152,23 @@ class StoreInfoSettingVC: UIViewController {
     
     @objc func gonext() {
         let nextVC = StoreInfoSettingSecondVC()
-        nextVC.bankId = Int(banktxtView.text)
+        nextVC.bankId = UserDefaults.standard.object(forKey: "bank_id") as! Int
         nextVC.accountnum = accountnumtxtView.text
         nextVC.accountname = accountnametxtView.text
         self.navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    @objc func bank() {
+        // View controller the bottom sheet will hold
+        let viewController: UIViewController = BankBottomSheetVC()
+        
+        // Initialize the bottom sheet with the view controller just created
+        let bottomSheet: MDCBottomSheetController = MDCBottomSheetController(contentViewController: viewController)
+        bottomSheet.dismissOnDraggingDownSheet = true
+        bottomSheet.dismissOnBackgroundTap = true
+        bottomSheet.preferredContentSize = CGSize(width: self.view.frame.size.width, height: 350)
+        // Present the bottom sheet
+        present(bottomSheet, animated: true, completion: nil)
     }
     
     let navcontentView: UIView = {
@@ -186,6 +220,14 @@ class StoreInfoSettingVC: UIViewController {
         txtView.textColor = UIColor(rgb: 0xEBEBF6)
         txtView.text = "은행을 선택해 주세요"
         return txtView
+    }()
+    
+    let bankbutton : UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.backgroundColor = .clear
+        btn.addTarget(self, action: #selector(bank), for: .touchUpInside)
+        return btn
     }()
     
     let accountnumLabel: UILabel = {
@@ -312,3 +354,83 @@ extension StoreInfoSettingVC: UITextViewDelegate {
         }
     }
 }
+
+class BankBottomSheetVC : UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    var delegate : StoreInfoSettingVC?
+    
+    private let reuseIdentifier = "tablecell"
+    
+    var banktableView: UITableView!
+    var bankDatas = Array<NSDictionary>()
+    
+    override func viewDidLoad() {
+        super .viewDidLoad()
+        setup()
+        getData()
+    }
+    
+    func getData() {
+        Alamofire.AF.request("\(Config.baseURL)/api/store-account/banks/", method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+            (response) in switch response.result {
+            case .success(let JSON):
+                let response = JSON as! Array<NSDictionary>
+                self.bankDatas = response
+                print(self.bankDatas)
+                DispatchQueue.main.async {
+                    self.banktableView.reloadData()
+                }
+            case .failure(let error):
+                print("Request failed with error: \(error)")
+            }
+        }
+    }
+    
+    func setup() {
+        view.backgroundColor = .white
+        let screensize: CGRect = UIScreen.main.bounds
+        let screenWidth = screensize.width
+        let screenHeight = screensize.height
+//        let defaultWidth: CGFloat = 375
+//        let defaultHeight: CGFloat = 667
+//        let statusBarHeight: CGFloat! = UIApplication.shared.statusBarFrame.height
+//        let navBarHeight: CGFloat! = navigationController?.navigationBar.frame.height
+        
+        banktableView = UITableView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight), style: .plain)
+        banktableView.delegate = self
+        banktableView.dataSource = self
+        self.banktableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
+        view.addSubview(self.banktableView)
+        banktableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        banktableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        banktableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        banktableView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        banktableView.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return bankDatas.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
+        let bankDic = bankDatas[indexPath.row]
+        let name = bankDic.object(forKey: "bank") as! String
+        cell.textLabel?.text = name
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let bankDic = bankDatas[indexPath.row]
+        let name = bankDic.object(forKey: "bank") as! String
+        let code = bankDic.object(forKey: "bank_id") as! Int
+        UserDefaults.standard.set(name, forKey: "bank")
+        UserDefaults.standard.set(code, forKey: "bank_id")
+        self.dismiss(animated: true) {
+            self.delegate?.bankbutton.setTitle(name, for: .normal)
+            self.delegate?.bankbutton.setTitleColor(.black, for: .normal)
+        }
+    }
+}
+

@@ -49,8 +49,16 @@ class SupportTotalCell: BaseCollectionViewCell, UICollectionViewDataSource, UICo
         getTotalData()
     }
     
-    @objc func down() {
-        print("DOWN!")
+    @objc func down(_ sender : UIButton) {
+        let supportDic = self.productDatas[sender.tag]
+        let title = supportDic.object(forKey: "title") as! String
+        let id  = supportDic.object(forKey: "id") as! Int
+        let content = supportDic.object(forKey: "content") as! String
+        let nextVC = SupportMainVC()
+        nextVC.Mytitle = title
+        nextVC.Myid = id
+        nextVC.Mycontent = content
+        delegate?.navigationController?.pushViewController(nextVC, animated: true)
     }
     
     func getTotalData() {
@@ -84,12 +92,12 @@ class SupportTotalCell: BaseCollectionViewCell, UICollectionViewDataSource, UICo
         let supportDic = self.productDatas[indexPath.row]
         let title = supportDic.object(forKey: "title") as! String
         cell.faqtitleLabel.text = title
-        cell.btnDown.addTarget(self, action: #selector(down), for: .touchUpInside)
+        cell.btnDown.tag = indexPath.row
+        cell.btnDown.addTarget(self, action: #selector(down(_:)), for: .touchUpInside)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("TOUCH")
         let supportDic = self.productDatas[indexPath.row]
         let title = supportDic.object(forKey: "title") as! String
         let id  = supportDic.object(forKey: "id") as! Int

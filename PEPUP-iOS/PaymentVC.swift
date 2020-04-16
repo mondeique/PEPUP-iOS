@@ -916,7 +916,6 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
     let btnMemo : UIButton = {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("배송메모입니다 고쳐주세요", for: .normal)
         btn.backgroundColor = .white
         btn.setTitleColor(.black, for: .normal)
         return btn

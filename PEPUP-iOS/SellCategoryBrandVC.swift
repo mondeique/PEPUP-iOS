@@ -82,6 +82,7 @@ class SellCategoryBrandVC: UIViewController, UITableViewDelegate, UITableViewDat
         searchTableView.delegate = self
         searchTableView.dataSource = self
         searchTableView.separatorStyle = .none
+        searchTableView.backgroundColor = .white
 
         searchTableView.register(SearchBrandCell.self, forCellReuseIdentifier: cellID)
         
@@ -259,6 +260,7 @@ class SearchBrandCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
         label.textAlignment = .left
+        label.textColor = .black
         return label
     }()
     

@@ -102,7 +102,7 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
 //        sellerNameLabel.leftAnchor.constraint(equalTo: navcontentView.leftAnchor).isActive = true
 //        sellerNameLabel.centerXAnchor.constraint(equalTo: navcontentView.centerXAnchor).isActive = true
         
-        contentView.topAnchor.constraint(equalTo: view.topAnchor, constant: screenHeight/defaultHeight * 567).isActive = true
+        contentView.topAnchor.constraint(equalTo: view.topAnchor, constant: screenHeight/defaultHeight * 540).isActive = true
         contentView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         contentView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
         contentView.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 100).isActive = true
@@ -143,7 +143,7 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         scrollView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: navBarHeight + statusBarHeight).isActive = true
         scrollView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: (screenHeight/defaultHeight) * -100.0).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: (screenHeight/defaultHeight) * -120.0).isActive = true
         
         scrollView.contentSize = CGSize(width: screenWidth, height: screenHeight/defaultHeight * 1200)
         scrollView.isScrollEnabled = true
@@ -649,10 +649,12 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         if sellerId == pk {
             print("I am seller~")
             let nextVC = MyStoreVC()
+            nextVC.customMenuBar(scrollTo: 2)
             navigationController?.pushViewController(nextVC, animated: true)
         }
         else {
             let nextVC = StoreVC()
+            nextVC.customMenuBar(scrollTo: 2)
             nextVC.SellerID = sellerId
             navigationController?.pushViewController(nextVC, animated: true)
             print("I am not me")

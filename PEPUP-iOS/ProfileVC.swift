@@ -12,6 +12,7 @@ import Alamofire
 class ProfileVC: UIViewController {
     
     let picker = UIImagePickerController()
+    var imageData: UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,9 +57,7 @@ class ProfileVC: UIViewController {
     
     private let btnProfileImage:UIButton = {
         let btn = UIButton()
-        btn.backgroundColor = .white
         btn.setImage(UIImage(named: "default_profile"), for: .normal)
-        btn.clipsToBounds = true
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(setimage), for: .touchUpInside)
         return btn
@@ -97,9 +96,18 @@ class ProfileVC: UIViewController {
     }
     
     @objc func changeprofile() {
-        // TODO: - image AF upload
-        self.successAlert()
-        self.successsignupAlert()
+        let url = "\(Config.baseURL)/accounts/profile/"
+        if self.imageData != nil {
+            if let upload_image = self.imageData.jpegData(compressionQuality: 1){
+                AF.upload(multipartFormData: { (multipartFormData) in
+                    multipartFormData.append(upload_image, withName: "thumbnail_img", fileName: "image.jpeg", mimeType: "image/jpeg")
+                }, to: url, method: .post, headers: ["Authorization": UserDefaults.standard.object(forKey: "token") as! String]).responseData { (response) in
+                    debugPrint("RESPONSE: \(response)")
+                    self.successAlert()
+                    self.successsignupAlert()
+                }
+            }
+        }
     }
     
     func successsignupAlert() {
@@ -124,6 +132,13 @@ class ProfileVC: UIViewController {
     
     func setup() {
         view.backgroundColor = .white
+        let screensize: CGRect = UIScreen.main.bounds
+        let screenWidth = screensize.width
+        let screenHeight = screensize.height
+        let defaultWidth: CGFloat = 375
+        let defaultHeight: CGFloat = 667
+        let statusBarHeight: CGFloat! = UIScreen.main.bounds.height/defaultHeight * 20
+        let navBarHeight: CGFloat! = navigationController?.navigationBar.frame.height
         profileContentView.addSubview(btnBack)
         profileContentView.addSubview(profileLabel)
         profileContentView.addSubview(btnProfileImage)
@@ -147,32 +162,32 @@ class ProfileVC: UIViewController {
     }
     
     func btnBackLayout() {
-        btnBack.topAnchor.constraint(equalTo:profileContentView.topAnchor, constant:34).isActive = true
-        btnBack.leftAnchor.constraint(equalTo:profileContentView.leftAnchor, constant:18).isActive = true
-        btnBack.widthAnchor.constraint(equalToConstant:10).isActive = true
-        btnBack.heightAnchor.constraint(equalToConstant:18).isActive = true
+        btnBack.topAnchor.constraint(equalTo:profileContentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 34).isActive = true
+        btnBack.leftAnchor.constraint(equalTo:profileContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 18).isActive = true
+        btnBack.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 10).isActive = true
+        btnBack.heightAnchor.constraint(equalToConstant:(navigationController?.navigationBar.frame.height)!).isActive = true
     }
     
     func profileLabelLayout() {
-        profileLabel.topAnchor.constraint(equalTo:profileContentView.topAnchor, constant:104).isActive = true
-        profileLabel.leftAnchor.constraint(equalTo:profileContentView.leftAnchor, constant:25).isActive = true
-        profileLabel.widthAnchor.constraint(equalToConstant:78).isActive = true
-        profileLabel.heightAnchor.constraint(equalToConstant:35).isActive = true
+        profileLabel.topAnchor.constraint(equalTo:profileContentView.topAnchor, constant:UIScreen.main.bounds.height/667 * 104).isActive = true
+        profileLabel.leftAnchor.constraint(equalTo:profileContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 25).isActive = true
+        profileLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 78).isActive = true
+        profileLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 35).isActive = true
     }
     
     func btnProfileImageLayout() {
-        btnProfileImage.topAnchor.constraint(equalTo:profileLabel.bottomAnchor, constant:124).isActive = true
-        btnProfileImage.leftAnchor.constraint(equalTo:profileContentView.leftAnchor, constant:120).isActive = true
-        btnProfileImage.widthAnchor.constraint(equalToConstant:120).isActive = true
-        btnProfileImage.heightAnchor.constraint(equalToConstant:120).isActive = true
+        btnProfileImage.topAnchor.constraint(equalTo:profileLabel.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 124).isActive = true
+//        btnProfileImage.leftAnchor.constraint(equalTo:profileContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 120).isActive = true
+        btnProfileImage.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 120).isActive = true
+        btnProfileImage.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 120).isActive = true
         btnProfileImage.centerXAnchor.constraint(equalTo: profileContentView.centerXAnchor).isActive = true
     }
     
     func btnCheckLayout() {
-        btnCheck.topAnchor.constraint(equalTo:btnProfileImage.bottomAnchor, constant:204).isActive = true
-        btnCheck.leftAnchor.constraint(equalTo:profileContentView.leftAnchor, constant:18).isActive = true
-        btnCheck.widthAnchor.constraint(equalToConstant:339).isActive = true
-        btnCheck.heightAnchor.constraint(equalToConstant:56).isActive = true
+        btnCheck.topAnchor.constraint(equalTo:btnProfileImage.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 204).isActive = true
+        btnCheck.leftAnchor.constraint(equalTo:profileContentView.leftAnchor, constant:UIScreen.main.bounds.width/375 * 18).isActive = true
+        btnCheck.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 339).isActive = true
+        btnCheck.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 56).isActive = true
         btnCheck.centerXAnchor.constraint(equalTo: profileContentView.centerXAnchor).isActive = true
     }
 }
@@ -181,18 +196,20 @@ extension ProfileVC : UIImagePickerControllerDelegate,UINavigationControllerDele
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            picker.dismiss(animated: false, completion: nil)
-            btnProfileImage.setImage(image, for: .normal)
-            btnProfileImage.layer.cornerRadius = btnProfileImage.frame.height / 2
-            btnProfileImage.layer.borderColor = UIColor.clear.cgColor
-            btnProfileImage.layer.borderWidth = 1
-            btnProfileImage.layer.masksToBounds = false
-            btnProfileImage.clipsToBounds = true
-            if self.btnProfileImage.currentImage == UIImage(named: "default_profile") {
-                btnCheck.setTitle("다음에 할래요", for: .normal)
-            }
-            else {
-                btnCheck.setTitle("확인", for: .normal)
+            picker.dismiss(animated: false) {
+                self.imageData = image
+                self.btnProfileImage.setImage(image, for: .normal)
+                self.btnProfileImage.layer.cornerRadius = UIScreen.main.bounds.width/375 * 60
+                self.btnProfileImage.layer.borderColor = UIColor.clear.cgColor
+                self.btnProfileImage.layer.borderWidth = 1
+                self.btnProfileImage.layer.masksToBounds = false
+                self.btnProfileImage.clipsToBounds = true
+                if self.btnProfileImage.currentImage == UIImage(named: "default_profile") {
+                    self.btnCheck.setTitle("다음에 할래요", for: .normal)
+                }
+                else {
+                    self.btnCheck.setTitle("확인", for: .normal)
+                }
             }
         }
         dismiss(animated: true, completion: nil)

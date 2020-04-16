@@ -148,7 +148,7 @@ class PaymentHeaderCell: BaseCollectionViewCell {
 
     func btnsellerProfileLayout() {
         btnsellerProfile.leftAnchor.constraint(equalTo:paymentheadercellContentView.leftAnchor, constant: UIScreen.main.bounds.width/375 * 18).isActive = true
-        btnsellerProfile.topAnchor.constraint(equalTo:paymentheadercellContentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 10).isActive = true
+//        btnsellerProfile.topAnchor.constraint(equalTo:paymentheadercellContentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 10).isActive = true
         btnsellerProfile.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 40).isActive = true
         btnsellerProfile.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 40).isActive = true
         btnsellerProfile.centerYAnchor.constraint(equalTo:paymentheadercellContentView.centerYAnchor).isActive = true

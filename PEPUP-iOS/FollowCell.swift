@@ -237,7 +237,7 @@ class FollowFooterCell: BaseCollectionViewCell {
         btnfakeDetail.widthAnchor.constraint(equalTo: btnDetailContentView.widthAnchor).isActive = true
         btnfakeDetail.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 20).isActive = true
         
-        btnDetail.leftAnchor.constraint(equalTo: btnDetailLabel.rightAnchor, constant: UIScreen.main.bounds.width/375 * 32).isActive = true
+        btnDetail.rightAnchor.constraint(equalTo: btnDetailContentView.rightAnchor, constant: UIScreen.main.bounds.width/375 * -8).isActive = true
         btnDetail.topAnchor.constraint(equalTo: btnDetailContentView.topAnchor, constant: UIScreen.main.bounds.height/667 * 11).isActive = true
         btnDetail.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/375 * 6).isActive = true
         btnDetail.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/667 * 10).isActive = true

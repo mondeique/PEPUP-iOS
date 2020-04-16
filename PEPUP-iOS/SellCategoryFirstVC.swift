@@ -227,6 +227,7 @@ class SellCategoryFirstCell : BaseCollectionViewCell {
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
+        label.textColor = .black
         return label
     }()
 
