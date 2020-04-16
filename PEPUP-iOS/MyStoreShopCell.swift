@@ -219,7 +219,8 @@ class MyStoreShopCell: BaseCollectionViewCell, UICollectionViewDelegate, UIColle
     }
     
     @objc func editprofile() {
-        print("TOUCH EDIT")
+        let nextVC = EditProfileVC()
+        self.delegate?.navigationController?.pushViewController(nextVC, animated: true)
     }
 
 }
