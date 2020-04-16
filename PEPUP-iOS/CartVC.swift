@@ -455,9 +455,11 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
 //        let removeDic = removeproductDatas[row]
 //        let removeid = removeDic.object(forKey: "trade_id") as! Int
 //        removeidArray.append(removeid)
-//        sellerDatas.remove(at: section)
 //        productDatas[section].remove(at: row)
 //        productpriceArray[section].remove(at: row)
+//        if productDatas[section].count == 0 {
+//            sellerDatas.remove(at: section)
+//        }
 //        cartCollectionView.deleteItems(at: [IndexPath(row: row, section: section)])
 //        cartCollectionView.reloadData()
     }

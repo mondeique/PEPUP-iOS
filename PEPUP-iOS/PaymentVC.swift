@@ -649,8 +649,9 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         guard let price = totalpaymentmoneyLabel.text else {
             return
         }
-        guard let memo = memoTextView.text else {
-            return
+        var memo = memoTextView.text
+        if memo == nil {
+            memo = ""
         }
         guard let address = deliveryaddressLabel.text else {
             return

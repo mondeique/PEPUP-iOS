@@ -136,11 +136,13 @@ class NickNameVC: UIViewController {
             let parameters: [String: String] = [
                 "nickname" : nicknameText
             ]
+            print("PARAMETER IS \(parameters)")
             Alamofire.AF.request("\(Config.baseURL)/accounts/signup/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
                 (response) in switch response.result {
                 case .success(let JSON):
                     print("Success with JSON: \(JSON)")
                     let response = JSON as! NSDictionary
+                    print(response)
                     let code = response.object(forKey: "code") as! Int
                     if code == 1 {
                         self.changeprofile()

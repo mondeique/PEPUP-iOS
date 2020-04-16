@@ -198,7 +198,8 @@ class SignupVC: UIViewController {
         btn.setTitle("가입하기", for: .normal)
         btn.layer.cornerRadius = 3
         btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
-        btn.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
+        btn.backgroundColor = .black
+        btn.setTitleColor(.white, for: .normal)
         btn.clipsToBounds = true
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(signup), for: .touchUpInside)
@@ -229,18 +230,18 @@ class SignupVC: UIViewController {
         }
         if btnCheckPayment.currentImage == UIImage(named: "un_checkbox") {
             btnCheckPayment.setImage(UIImage(named: "checkbox"), for: .normal)
+//            if isValidEmailAddress(email: emailText) && isVaildPassword(password: passwordText) && isSamePassword(password: passwordText, againpassword: passwordagainText) && isCheckedBox(checkBox1: checkPaymentBox, checkBox2: checkADBox) {
+//                btnSignup.backgroundColor = .black
+//                btnSignup.setTitleColor(.white, for: .normal)
+//            }
+//            else {
+//                btnSignup.backgroundColor = UIColor(rgb: 0xEBEBF6)
+//                btnSignup.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
+//            }
         }
         else {
             btnCheckPayment.setImage(UIImage(named: "un_checkbox"), for: .normal)
         }
-        if isValidEmailAddress(email: emailText) && isVaildPassword(password: passwordText) && isSamePassword(password: passwordText, againpassword: passwordagainText) && isCheckedBox(checkBox1: checkPaymentBox, checkBox2: checkADBox) {
-            btnSignup.backgroundColor = .black
-            btnSignup.setTitleColor(.white, for: .normal)
-        }
-//        else {
-//            btnSignup.backgroundColor = UIColor(rgb: 0xEBEBF6)
-//            btnSignup.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
-//        }
     }
     
     @objc func checkad() {
@@ -261,18 +262,18 @@ class SignupVC: UIViewController {
         }
         if btnCheckAD.currentImage == UIImage(named: "un_checkbox") {
             btnCheckAD.setImage(UIImage(named: "checkbox"), for: .normal)
+//            if isValidEmailAddress(email: emailText) && isVaildPassword(password: passwordText) && isSamePassword(password: passwordText, againpassword: passwordagainText) && isCheckedBox(checkBox1: checkPaymentBox, checkBox2: checkADBox) {
+//                btnSignup.backgroundColor = .black
+//                btnSignup.setTitleColor(.white, for: .normal)
+//            }
+//            else {
+//                btnSignup.backgroundColor = UIColor(rgb: 0xEBEBF6)
+//                btnSignup.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
+//            }
         }
         else {
             btnCheckAD.setImage(UIImage(named: "un_checkbox"), for: .normal)
         }
-        if isValidEmailAddress(email: emailText) && isVaildPassword(password: passwordText) && isSamePassword(password: passwordText, againpassword: passwordagainText) && isCheckedBox(checkBox1: checkPaymentBox, checkBox2: checkADBox) {
-            btnSignup.backgroundColor = .black
-            btnSignup.setTitleColor(.white, for: .normal)
-        }
-//        else {
-//            btnSignup.backgroundColor = UIColor(rgb: 0xEBEBF6)
-//            btnSignup.setTitleColor(UIColor(rgb: 0xB7B7BF), for: .normal)
-//        }
     }
     
     @objc func emailcheck() {
