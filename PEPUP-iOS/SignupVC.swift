@@ -119,7 +119,7 @@ class SignupVC: UIViewController {
 
     private let pwordTxtField: TextField = {
         let txtField = TextField()
-        txtField.placeholder = " 비밀번호 8자 이상, 특수문자 사용 불가"
+        txtField.placeholder = " 비밀번호 8자 이상"
         txtField.backgroundColor = .white
         txtField.layer.cornerRadius = 3
         txtField.layer.borderWidth = 1.0
@@ -147,7 +147,7 @@ class SignupVC: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor(rgb: 0xFF0000)
-        label.text = "비밀번호 형식이 올바르지 않습니다."
+        label.text = "영문, 숫자, 특수문자 포함 8자 이상"
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         label.backgroundColor = .white
         label.isHidden = true
@@ -470,7 +470,7 @@ class SignupVC: UIViewController {
     }
 
     func isVaildPassword(password: String) -> Bool {
-        let passwordRegEx = "^[a-zA-Z0-9]{8,}$"
+        let passwordRegEx = "^[a-zA-Z0-9._%!@#$^&*+-]{8,}$"
         let passwordTest = NSPredicate(format:"SELF MATCHES %@", passwordRegEx)
         return passwordTest.evaluate(with: password)
     }
@@ -602,8 +602,8 @@ class SignupVC: UIViewController {
     
     func passworderrorLabelLayout() {
         passworderrorLabel.topAnchor.constraint(equalTo:unameTxtField.bottomAnchor, constant:UIScreen.main.bounds.height/667 * 44).isActive = true
-        passworderrorLabel.leftAnchor.constraint(equalTo:passwordLabel.rightAnchor, constant:UIScreen.main.bounds.width/375 * 77).isActive = true
-        passworderrorLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 188).isActive = true
+        passworderrorLabel.leftAnchor.constraint(equalTo:passwordLabel.rightAnchor, constant:UIScreen.main.bounds.width/375 * 80).isActive = true
+        passworderrorLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 300).isActive = true
         passworderrorLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 16).isActive = true
     }
     

@@ -304,7 +304,7 @@ class LoginVC: UIViewController {
     }
     
     func isVaildPassword(password: String) -> Bool {
-        let passwordRegEx = "^[a-zA-Z0-9]{8,}$"
+        let passwordRegEx = "^[a-zA-Z0-9._%!@#$^&*+-]{8,}$"
         let passwordTest = NSPredicate(format:"SELF MATCHES %@", passwordRegEx)
         return passwordTest.evaluate(with: password)
     }

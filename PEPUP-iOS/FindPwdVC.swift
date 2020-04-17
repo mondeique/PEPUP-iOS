@@ -89,6 +89,7 @@ class FindPwdVC: UIViewController {
         txtField.layer.borderWidth = 1.0
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
+        txtField.textColor = .black
         return txtField
     }()
     
@@ -101,6 +102,7 @@ class FindPwdVC: UIViewController {
         txtField.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         txtField.translatesAutoresizingMaskIntoConstraints = false
         txtField.keyboardType = .decimalPad
+        txtField.textColor = .black
         return txtField
     }()
     
@@ -126,6 +128,7 @@ class FindPwdVC: UIViewController {
         txtField.translatesAutoresizingMaskIntoConstraints = false
         txtField.isEnabled = false
         txtField.keyboardType = .decimalPad
+        txtField.textColor = .black
         return txtField
     }()
     
@@ -198,6 +201,9 @@ class FindPwdVC: UIViewController {
                 else if code == -20 {
                     self.helpmondeAlert()
                 }
+                else if code == -4 {
+                    self.nouserAlert()
+                }
                 case .failure(let error):
                    print("Request failed with error: \(error)")
                 }
@@ -245,6 +251,9 @@ class FindPwdVC: UIViewController {
                     self.smsAlreadyAlert()
                 }
                 else if code == -5 {
+                    self.nouserAlert()
+                }
+                else if code == -4 {
                     self.nouserAlert()
                 }
             case .failure(let error):

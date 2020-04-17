@@ -17,6 +17,7 @@ class StoreInfoSettingVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        self.updateAlert()
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
     }
@@ -37,6 +38,14 @@ class StoreInfoSettingVC: UIViewController {
     
     @objc func dismissKeyboard() {
         self.view.endEditing(true)
+    }
+    
+    func updateAlert() {
+        let alertController = UIAlertController(title: nil, message: "업데이트 예정입니다.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: { (action) in
+            self.navigationController?.pushViewController(TabBarController(), animated: true)
+        }))
+        self.present(alertController, animated: true, completion: nil)
     }
     
     func setup() {

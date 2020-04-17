@@ -23,7 +23,7 @@ class SellSelectVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
+        self.updateAlert()
         if PHPhotoLibrary.authorizationStatus() == .authorized {
             setup()
         }
@@ -64,6 +64,14 @@ class SellSelectVC: UIViewController {
 //            self.navigationController?.pushViewController(nextVC, animated: true)
         }
         alertController.addAction(permissionAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func updateAlert() {
+        let alertController = UIAlertController(title: nil, message: "업데이트 예정입니다.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: { (action) in
+            self.navigationController?.pushViewController(TabBarController(), animated: true)
+        }))
         self.present(alertController, animated: true, completion: nil)
     }
     

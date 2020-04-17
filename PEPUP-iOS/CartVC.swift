@@ -257,7 +257,6 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
                 for i in 0..<response.count {
                     self.sellerDatas.append(response[i])
                 }
-                print(self.sellerDatas)
                 if self.sellerDatas.count == 0 {
                     self.btnPayment.isEnabled = false
                     self.emptyImg.isHidden = false
@@ -311,7 +310,7 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             cell.deleteButton.isHidden = true
         }
         else {
-            cell.deleteButton.isHidden = false
+            cell.deleteButton.isHidden = true
             cell.deleteButton.tag = (indexPath.section * 1000) + indexPath.row
             cell.deleteButton.addTarget(self, action: #selector(deleteitem(_:)), for: .touchUpInside)
         }
@@ -483,32 +482,17 @@ class CartVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     
     @objc func deleteallstore() {
         for i in 0..<sellerDatas.count {
-            if i == 0 {
-                let removeBaseDic = sellerDatas[i]
-                let removeproductDatas = removeBaseDic.object(forKey: "products") as! Array<NSDictionary>
-                for i in 0..<removeproductDatas.count {
-                    let removeDic = removeproductDatas[i]
-                    let removeid = removeDic.object(forKey: "trade_id") as! Int
-                    removeidArray.append(removeid)
-                }
-                sellerDatas.remove(at: i)
-                productDatas.remove(at: i)
-                productpriceArray.remove(at: i)
-                cartCollectionView.deleteSections(NSIndexSet(index: i) as IndexSet)
+            let removeBaseDic = sellerDatas[0]
+            let removeproductDatas = removeBaseDic.object(forKey: "products") as! Array<NSDictionary>
+            for j in 0..<removeproductDatas.count {
+                let removeDic = removeproductDatas[0]
+                let removeid = removeDic.object(forKey: "trade_id") as! Int
+                removeidArray.append(removeid)
             }
-            else {
-                let removeBaseDic = sellerDatas[i-1]
-                let removeproductDatas = removeBaseDic.object(forKey: "products") as! Array<NSDictionary>
-                for i in 0..<removeproductDatas.count {
-                    let removeDic = removeproductDatas[i]
-                    let removeid = removeDic.object(forKey: "trade_id") as! Int
-                    removeidArray.append(removeid)
-                }
-                sellerDatas.remove(at: i-1)
-                productDatas.remove(at: i-1)
-                productpriceArray.remove(at: i-1)
-                cartCollectionView.deleteSections(NSIndexSet(index: i-1) as IndexSet)
-            }
+            sellerDatas.remove(at: 0)
+            productDatas.remove(at: 0)
+            productpriceArray.remove(at: 0)
+            cartCollectionView.deleteSections(NSIndexSet(index: 0) as IndexSet)
         }
         cartCollectionView.reloadData()
     }

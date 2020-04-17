@@ -31,6 +31,20 @@ class HomeVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         navigationController?.navigationBar.isHidden = true
     }
     
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: UIControl.Event.valueChanged)
+        refreshControl.tintColor = UIColor.black
+        
+        return refreshControl
+    }()
+
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        self.productDatas = []
+        getData(pagenum: 1)
+        refreshControl.endRefreshing()
+    }
+    
     // MARK: collectionView 전체 View setting
     
     fileprivate func setup() {
@@ -71,6 +85,8 @@ class HomeVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         homecollectionView.topAnchor.constraint(equalTo: homecontentView.topAnchor).isActive = true
         homecollectionView.widthAnchor.constraint(equalTo: homecontentView.widthAnchor).isActive = true
         homecollectionView.heightAnchor.constraint(equalTo: homecontentView.heightAnchor).isActive = true
+        
+        homecollectionView.addSubview(refreshControl)
 
         btnFilter.rightAnchor.constraint(equalTo: homecontentView.rightAnchor, constant: screenWidth/defaultWidth * -16).isActive = true
         btnFilter.bottomAnchor.constraint(equalTo: homecontentView.bottomAnchor, constant: screenWidth/defaultWidth * -16).isActive = true

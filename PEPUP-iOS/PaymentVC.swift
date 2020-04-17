@@ -641,6 +641,14 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         memocountLabel.text = String(count) + "/50"
     }
     
+    func agreeAlert() {
+        let alertController = UIAlertController(title: nil, message: "결제약관에 동의해주세요.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: { (action) in
+            print("SELECT!")
+        }))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
     @objc func back() {
         navigationController?.popViewController(animated: true)
     }
@@ -656,23 +664,28 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         guard let address = deliveryaddressLabel.text else {
             return
         }
-        let parameters = [
-            "trades" : trades,
-            "price" : Int(price)!,
-            "memo" : memo,
-            "address" : address,
-            "mountain" : is_mountain,
-            "application_id" : 3
-            ] as [String : Any]
-        print(parameters)
-        Alamofire.AF.request("\(Config.baseURL)/api/payment/get_payform/" , method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
-            (response) in switch response.result {
-            case .success(let JSON):
-                let response = JSON as! NSDictionary
-                self.payformData = response.object(forKey: "results") as! NSDictionary
-                self.goBuy()
-            case .failure(let error):
-                print("Request failed with error: \(error)")
+        if btnAgree.currentImage == UIImage(named: "un_checkbox") {
+            self.agreeAlert()
+        }
+        else {
+            let parameters = [
+                "trades" : trades,
+                "price" : Int(price)!,
+                "memo" : memo,
+                "address" : address,
+                "mountain" : is_mountain,
+                "application_id" : 3
+                ] as [String : Any]
+            print(parameters)
+            Alamofire.AF.request("\(Config.baseURL)/api/payment/get_payform/" , method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
+                (response) in switch response.result {
+                case .success(let JSON):
+                    let response = JSON as! NSDictionary
+                    self.payformData = response.object(forKey: "results") as! NSDictionary
+                    self.goBuy()
+                case .failure(let error):
+                    print("Request failed with error: \(error)")
+                }
             }
         }
     }
@@ -704,7 +717,7 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         }
         else if btnAgree.currentImage == UIImage(named: "checkbox") {
             btnAgree.setImage(UIImage(named: "un_checkbox"), for: .normal)
-            btnPayment.isEnabled = false
+            btnPayment.isEnabled = true
         }
     }
     
@@ -734,7 +747,7 @@ class PaymentVC: UIViewController, UIScrollViewDelegate, UICollectionViewDataSou
         btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         btn.addTarget(self, action: #selector(payment), for: .touchUpInside)
         btn.isHidden = false
-        btn.isEnabled = false
+        btn.isEnabled = true
         return btn
     }()
     

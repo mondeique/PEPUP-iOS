@@ -27,7 +27,7 @@ class MyStoreReviewCell: BaseCollectionViewCell, UICollectionViewDelegate, UICol
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: (UIScreen.main.bounds.width/667 * 114))
         layout.minimumInteritemSpacing = 0.0
-        layout.minimumLineSpacing = 0.0
+        layout.minimumLineSpacing = 30.0
         layout.headerReferenceSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/667 * 149)
         let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - UIScreen.main.bounds.height/667 * 130), collectionViewLayout: layout)
         collectionView.backgroundColor = .white
@@ -64,8 +64,7 @@ class MyStoreReviewCell: BaseCollectionViewCell, UICollectionViewDelegate, UICol
     }
     
     func getReviewData(pagenum : Int) {
-        
-        print(SellerID)
+        reviewDatas = []
         Alamofire.AF.request("\(Config.baseURL)/api/store/review/" + String(SellerID) + "/?page=" + String(pagenum), method: .get, parameters: [:], encoding: URLEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json", "Authorization": UserDefaults.standard.object(forKey: "token") as! String]) .validate(statusCode: 200..<300) .responseJSON {
             (response) in switch response.result {
             case .success(let JSON):
@@ -159,6 +158,10 @@ class MyStoreReviewCell: BaseCollectionViewCell, UICollectionViewDelegate, UICol
             getReviewData(pagenum: pagenum)
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: UIScreen.main.bounds.height/667 * 114)
+    }
 }
 
 class MyReviewCell: BaseCollectionViewCell {
@@ -209,8 +212,6 @@ class MyReviewCell: BaseCollectionViewCell {
         label.textColor = .black
         label.textAlignment = .left
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
-        label.clipsToBounds = true
-        label.isHidden = true
         return label
     }()
 
@@ -261,7 +262,7 @@ class MyReviewCell: BaseCollectionViewCell {
     
     func reviewcontentLabelLayout() {
         reviewcontentLabel.leftAnchor.constraint(equalTo:reviewcellcontentView.leftAnchor, constant: UIScreen.main.bounds.width/375 * 18).isActive = true
-        reviewcontentLabel.topAnchor.constraint(equalTo:cosmosView.topAnchor, constant: UIScreen.main.bounds.height/667 * 6).isActive = true
+        reviewcontentLabel.topAnchor.constraint(equalTo:cosmosView.bottomAnchor, constant: UIScreen.main.bounds.height/667 * 6).isActive = true
         reviewcontentLabel.widthAnchor.constraint(equalToConstant:UIScreen.main.bounds.width/375 * 226).isActive = true
         reviewcontentLabel.heightAnchor.constraint(equalToConstant:UIScreen.main.bounds.height/667 * 32).isActive = true
     }

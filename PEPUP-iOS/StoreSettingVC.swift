@@ -13,6 +13,7 @@ class StoreSettingVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        self.updateAlert()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,6 +56,14 @@ class StoreSettingVC: UIViewController {
         
         storesettingLabel.topAnchor.constraint(equalTo: navcontentView.topAnchor, constant: screenHeight/defaultHeight * 12).isActive = true
         storesettingLabel.centerXAnchor.constraint(equalTo: navcontentView.centerXAnchor).isActive = true
+    }
+    
+    func updateAlert() {
+        let alertController = UIAlertController(title: nil, message: "업데이트 예정입니다.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: { (action) in
+            self.navigationController?.popViewController(animated: true)
+        }))
+        self.present(alertController, animated: true, completion: nil)
     }
     
     @objc func back() {
