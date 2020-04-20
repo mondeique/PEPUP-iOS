@@ -110,20 +110,20 @@ class DetailVC: UIViewController, UIScrollViewDelegate{
         btnCart.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: screenHeight/defaultHeight * 20).isActive = true
         btnCart.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 337).isActive = true
         btnCart.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 50).isActive = true
-        btnCart.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        btnCart.topAnchor.constraint(equalTo: contentView.topAnchor, constant: screenHeight/defaultHeight * 10).isActive = true
         btnCart.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 0).isActive = true
         btnCart.isEnabled = true
         
         btnCartBag.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: screenHeight/defaultHeight * 20).isActive = true
         btnCartBag.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 337).isActive = true
         btnCartBag.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 50).isActive = true
-        btnCartBag.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        btnCartBag.topAnchor.constraint(equalTo: contentView.topAnchor, constant: screenHeight/defaultHeight * 10).isActive = true
         btnCartBag.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         
         btnCartSold.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: screenHeight/defaultHeight * 20).isActive = true
         btnCartSold.widthAnchor.constraint(equalToConstant: screenWidth/defaultWidth * 337).isActive = true
         btnCartSold.heightAnchor.constraint(equalToConstant: screenHeight/defaultHeight * 50).isActive = true
-        btnCartSold.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        btnCartSold.topAnchor.constraint(equalTo: contentView.topAnchor, constant: screenHeight/defaultHeight * 10).isActive = true
         btnCartSold.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         
         scrollView = UIScrollView(frame: CGRect(origin: CGPoint(x: 0, y: navBarHeight+statusBarHeight), size: CGSize(width: screenWidth, height: screenHeight-screenHeight/defaultHeight * 100)))

@@ -334,6 +334,7 @@ class EditProfileVC: UIViewController, UIImagePickerControllerDelegate,UINavigat
         textView.layer.borderColor = UIColor(rgb: 0xEBEBF6).cgColor
         textView.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 17)
         textView.textColor = .black
+        textView.isEditable = false
         return textView
     }()
     

@@ -16,7 +16,8 @@ class StoreInfoSettingVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
+//        setup()
+        self.view.backgroundColor = .white
         self.updateAlert()
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)

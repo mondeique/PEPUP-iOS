@@ -23,13 +23,14 @@ class SellSelectVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = .white
         self.updateAlert()
-        if PHPhotoLibrary.authorizationStatus() == .authorized {
-            setup()
-        }
-        else if PHPhotoLibrary.authorizationStatus() == .denied{
-            self.photopermissionAlert()
-        }
+//        if PHPhotoLibrary.authorizationStatus() == .authorized {
+//            setup()
+//        }
+//        else if PHPhotoLibrary.authorizationStatus() == .denied{
+//            self.photopermissionAlert()
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
