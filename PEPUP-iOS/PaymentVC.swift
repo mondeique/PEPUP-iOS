@@ -1152,6 +1152,8 @@ extension PaymentVC: BootpayRequestProtocol {
             (response) in switch response.result {
             case .success(let JSON):
                 print(JSON)
+                let nextVC = TabBarController()
+                self.navigationController?.pushViewController(nextVC, animated: true)
             case .failure(let error):
                 print("Request failed with error: \(error)")
             }

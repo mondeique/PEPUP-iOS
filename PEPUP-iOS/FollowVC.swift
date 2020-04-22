@@ -385,7 +385,7 @@ class FollowVC: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
         let nextVC = TagVC()
         nextVC.TagID = sender.tag
         let somestring = sender.currentTitle as! String
-        let range = somestring.index(after: somestring.startIndex)..<somestring.endIndex
+        let range = somestring.startIndex..<somestring.endIndex
         nextVC.TagName = String(somestring[range])
         navigationController?.pushViewController(nextVC, animated: true)
     }

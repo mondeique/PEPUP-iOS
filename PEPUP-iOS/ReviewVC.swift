@@ -13,7 +13,7 @@ import Cosmos
 
 class ReviewVC: UIViewController {
     
-    var purchasedUid = UserDefaults.standard.object(forKey: "purchaseUid") as! Int
+    var purchasedUid = UserDefaults.standard.object(forKey: "puchaseUid") as! Int
     var reviewDatas : NSDictionary!
 
     override func viewDidLoad() {
